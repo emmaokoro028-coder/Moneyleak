@@ -3,7 +3,7 @@ let transactions = JSON.parse(
 ) || [];
 
 function formatMoney(amount) {
-    return "₦" + amount.toLocaleString("en-NG");
+    return "₦" + Math.round(amount).toLocaleString("en-NG");
 }
 
 function saveTransactions() {
@@ -163,6 +163,9 @@ function detectMoneyLeak() {
         biggestCategory.charAt(0).toUpperCase() +
         biggestCategory.slice(1);
 
+    const potentialWeeklySaving = biggestAmount * 0.20;
+    const potentialYearlySaving = potentialWeeklySaving * 52;
+
     leakMessage.innerHTML = `
         <p>
             🚨 Your biggest money leak is
@@ -174,6 +177,24 @@ function detectMoneyLeak() {
         <p>
             That's the category where you've spent
             the most money so far.
+        </p>
+
+        <hr>
+
+        <p>
+            💡 If you reduce this spending by 20%:
+        </p>
+
+        <p>
+            You could save
+            <strong>${formatMoney(potentialWeeklySaving)}</strong>
+            per week.
+        </p>
+
+        <p>
+            That's approximately
+            <strong>${formatMoney(potentialYearlySaving)}</strong>
+            per year.
         </p>
     `;
 }
