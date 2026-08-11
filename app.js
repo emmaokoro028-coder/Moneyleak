@@ -202,3 +202,54 @@ function detectMoneyLeak() {
 updateDashboard();
 displayTransactions();
 detectMoneyLeak();
+
+function calculateSavingsGoal() {
+    const goal = Number(document.getElementById("savingsGoal").value);
+    const current = Number(document.getElementById("currentSavings").value);
+    const weeks = Number(document.getElementById("goalWeeks").value);
+
+    const result = document.getElementById("savingsResult");
+
+    if (goal <= 0 || current < 0 || weeks <= 0) {
+        result.innerHTML = `
+            <p>⚠️ Please enter a valid goal, savings amount, and number of weeks.</p>
+        `;
+        return;
+    }
+
+    const remaining = goal - current;
+
+    if (remaining <= 0) {
+        result.innerHTML = `
+            <h3>🎉 Goal Reached!</h3>
+            <p>You have already reached your savings goal.</p>
+        `;
+        return;
+    }
+
+    const weeklyAmount = remaining / weeks;
+    const dailyAmount = weeklyAmount / 7;
+
+    result.innerHTML = `
+        <hr>
+        <h3>🎯 Your Savings Plan</h3>
+
+        <p>
+            You still need
+            <strong>${formatMoney(remaining)}</strong>
+            to reach your goal.
+        </p>
+
+        <p>
+            Save approximately
+            <strong>${formatMoney(weeklyAmount)}</strong>
+            per week.
+        </p>
+
+        <p>
+            That's about
+            <strong>${formatMoney(dailyAmount)}</strong>
+            per day.
+        </p>
+    `;
+}
