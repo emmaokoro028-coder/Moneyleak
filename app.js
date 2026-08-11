@@ -45,6 +45,7 @@ function addTransaction() {
     saveTransactions();
     updateDashboard();
     displayTransactions();
+    detectMoneyLeak();
 
     amountInput.value = "";
     categoryInput.value = "";
@@ -115,5 +116,68 @@ function displayTransactions() {
         });
 }
 
+function detectMoneyLeak() {
+    const leakMessage = document.getElementById("leakMessage");
+
+    const expenses = transactions.filter(function(transaction) {
+        return transaction.type === "expense";
+    });
+
+    if (expenses.length === 0) {
+        leakMessage.innerHTML = `
+            <p>
+                Add some expenses and MoneyLeak will find
+                where your money is going.
+            </p>
+        `;
+        return;
+    }
+
+    const categoryTotals = {};
+
+    expenses.forEach(function(transaction) {
+
+        const category = transaction.category
+            .trim()
+            .toLowerCase();
+
+        if (!categoryTotals[category]) {
+            categoryTotals[category] = 0;
+        }
+
+        categoryTotals[category] += transaction.amount;
+    });
+
+    let biggestCategory = "";
+    let biggestAmount = 0;
+
+    for (const category in categoryTotals) {
+
+        if (categoryTotals[category] > biggestAmount) {
+            biggestAmount = categoryTotals[category];
+            biggestCategory = category;
+        }
+    }
+
+    const displayCategory =
+        biggestCategory.charAt(0).toUpperCase() +
+        biggestCategory.slice(1);
+
+    leakMessage.innerHTML = `
+        <p>
+            🚨 Your biggest money leak is
+            <strong>${displayCategory}</strong>.
+        </p>
+
+        <h3>${formatMoney(biggestAmount)}</h3>
+
+        <p>
+            That's the category where you've spent
+            the most money so far.
+        </p>
+    `;
+}
+
 updateDashboard();
 displayTransactions();
+detectMoneyLeak();
