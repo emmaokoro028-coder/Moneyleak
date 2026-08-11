@@ -159,3 +159,296 @@ button:hover {
     font-weight: 600;
     margin-top: 8px;
 }
+/* =========================================
+   MONEY LEAK — MATURE FINANCE UI
+   ========================================= */
+
+:root {
+    --primary: #123c2a;
+    --primary-light: #1f6b4a;
+    --accent: #c9a227;
+    --background: #f4f6f3;
+    --card: #ffffff;
+    --text: #17211b;
+    --muted: #6b756f;
+    --border: #e2e7e3;
+    --danger: #c94c4c;
+    --success: #159447;
+}
+
+/* Page */
+body {
+    background:
+        radial-gradient(circle at top left, #e5f1ea 0%, transparent 35%),
+        linear-gradient(180deg, #f7f9f7 0%, #eef2ef 100%);
+    color: var(--text);
+}
+
+/* Main container */
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 35px 20px 25px;
+}
+
+header h1 {
+    font-size: clamp(2.2rem, 7vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+/* All major sections */
+section {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 12px 35px rgba(18, 60, 42, 0.07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(18, 60, 42, 0.10);
+}
+
+/* Section headings */
+section h2 {
+    color: var(--primary);
+    font-size: 1.35rem;
+    margin-bottom: 18px;
+    font-weight: 750;
+}
+
+/* Balance card */
+.balance-card {
+    background:
+        linear-gradient(135deg, #123c2a, #1f6b4a);
+    color: white;
+    border: none;
+    box-shadow: 0 18px 45px rgba(18, 60, 42, 0.22);
+}
+
+.balance-card p,
+.balance-card h2 {
+    color: white;
+}
+
+.balance-card h2 {
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    margin-top: 8px;
+    letter-spacing: -1px;
+}
+
+/* Summary cards */
+.summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.summary > div {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 8px 25px rgba(18, 60, 42, 0.06);
+}
+
+.summary h3 {
+    margin-top: 8px;
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+/* Inputs */
+input,
+select {
+    width: 100%;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: #fbfcfb;
+    color: var(--text);
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 4px rgba(31, 107, 74, 0.10);
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 15px;
+    background: var(--primary);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+button:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(18, 60, 42, 0.18);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Transactions */
+.transactions {
+    background: var(--card);
+}
+
+.transaction {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.transaction strong {
+    color: var(--text);
+}
+
+.transaction small {
+    color: var(--muted);
+}
+
+/* Savings section */
+.savings-section {
+    border-left: 5px solid var(--accent);
+}
+
+.savings-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Savings result */
+#savingsResult {
+    margin-top: 18px;
+    line-height: 1.7;
+}
+
+#savingsResult h3 {
+    color: var(--primary);
+}
+
+/* Savings progress */
+.savings-progress {
+    margin-top: 20px;
+    padding: 18px;
+    background: #f7faf8;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 18px;
+    background: #e3e8e4;
+    border-radius: 50px;
+    overflow: hidden;
+    margin: 12px 0;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #159447, #36b86c);
+    border-radius: 50px;
+    transition: width 0.7s ease;
+}
+
+#progressText {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Money Leak */
+.leak-section {
+    border-left: 5px solid var(--danger);
+}
+
+.leak-section h2 {
+    color: var(--danger);
+}
+
+#leakMessage {
+    line-height: 1.7;
+    color: var(--text);
+}
+
+/* Smooth entrance */
+section,
+header {
+    animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    main {
+        padding: 14px;
+    }
+
+    section {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding: 25px 10px 20px;
+    }
+}
