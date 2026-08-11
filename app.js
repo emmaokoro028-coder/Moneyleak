@@ -202,11 +202,12 @@ function detectMoneyLeak() {
 
     const categoryTotals = {};
 
-    expenses.forEach(function(transaction) {
-
-        const category = transaction.category
-            .trim()
-            .toLowerCase();
+transactions
+    .filter(function (transaction) {
+        return transaction.type === "expense";
+    })
+    .forEach(function (transaction) {
+        const category = transaction.category.trim();
 
         if (!categoryTotals[category]) {
             categoryTotals[category] = 0;
