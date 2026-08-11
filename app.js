@@ -367,6 +367,55 @@ function updateSpendingBreakdown() {
         return categoryTotals[b] - categoryTotals[a];
     });
 
+    const totalExpenses = categories.reduce(function (total, category) {
+        return total + categoryTotals[category];
+    }, 0);
+
+    breakdown.innerHTML = "";
+
+    categories.forEach(function (category) {
+        const amount = categoryTotals[category];
+        const percentage = (amount / totalExpenses) * 100;
+
+        const item = document.createElement("div");
+        item.className = "breakdown-item";
+
+        item.innerHTML = `
+            <div class="breakdown-header">
+                <strong>${category}</strong>
+                <strong>${formatMoney(amount)}</strong>
+            </div>
+
+            <div class="breakdown-bar">
+                <div
+                    class="breakdown-fill"
+                    style="width: ${percentage}%"
+                ></div>
+            </div>
+
+            <div class="breakdown-percentage">
+                ${percentage.toFixed(0)}% of expenses
+            </div>
+        `;
+
+        breakdown.appendChild(item);
+    });
+
+    const total = document.createElement("div");
+    total.className = "breakdown-total";
+
+    total.innerHTML = `
+        <strong>Total Expenses</strong>
+        <strong>${formatMoney(totalExpenses)}</strong>
+    `;
+
+    breakdown.appendChild(total);
+}
+
+    categories.sort(function (a, b) {
+        return categoryTotals[b] - categoryTotals[a];
+    });
+
     breakdown.innerHTML = "";
 
     categories.forEach(function (category) {
