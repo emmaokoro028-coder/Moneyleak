@@ -387,4 +387,9 @@ function updateSpendingBreakdown() {
 
         breakdown.appendChild(item);
     });
-}
+    }
+    updateDashboard();
+    displayTransactions();
+    detectMoneyLeak();
+    updateMoneyHealth();
+    updateSpendingBreakdown();
