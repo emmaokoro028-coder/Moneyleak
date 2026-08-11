@@ -330,3 +330,57 @@ function calculateSavingsGoal() {
         </p>
     `;
 }
+function updateSpendingBreakdown() {
+    const breakdown = document.getElementById("spendingBreakdown");
+
+    if (!breakdown) {
+        return;
+    }
+
+    if (expenses.length === 0) {
+        breakdown.innerHTML =
+            "<p>Add some expenses to see your spending breakdown.</p>";
+        return;
+    }
+
+    const categoryTotals = {};
+
+    expenses.forEach(function (transaction) {
+        const category = transaction.category.trim();
+
+        if (!categoryTotals[category]) {
+            categoryTotals[category] = 0;
+        }
+
+        categoryTotals[category] += transaction.amount;
+    });
+
+    const categories = Object.keys(categoryTotals);
+
+    categories.sort(function (a, b) {
+        return categoryTotals[b] - categoryTotals[a];
+    });
+
+    breakdown.innerHTML = "";
+
+    categories.forEach(function (category) {
+        const amount = categoryTotals[category];
+
+        const item = document.createElement("div");
+        item.className = "breakdown-item";
+
+        item.innerHTML = `
+            <div class="breakdown-category">
+                <strong>${category}</strong>
+            </div>
+
+            <div class="breakdown-amount">
+                ${formatMoney(amount)}
+            </div>
+        `;
+
+        breakdown.appendChild(item);
+    });
+}
+
+updateSpendingBreakdown();
