@@ -46,7 +46,8 @@ function addTransaction() {
     updateDashboard();
     displayTransactions();
     detectMoneyLeak();
-
+    updateSpendingBreakdown();
+    
     amountInput.value = "";
     categoryInput.value = "";
 }
