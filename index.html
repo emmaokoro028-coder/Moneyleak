@@ -63,8 +63,34 @@
             <div id="transactionList">
                 <p>No transactions yet.</p>
             </div>
-        </section>  
-        
+        </section> 
+        <section class="savings-section">
+    <h2>🎯 Savings Goal</h2>
+
+    <input
+        type="number"
+        id="savingsGoal"
+        placeholder="Goal amount (₦)"
+    >
+
+    <input
+        type="number"
+        id="currentSavings"
+        placeholder="Already saved (₦)"
+    >
+
+    <input
+        type="number"
+        id="goalWeeks"
+        placeholder="How many weeks?"
+    >
+
+    <button onclick="calculateSavingsGoal()">
+        Calculate My Goal
+    </button>
+
+    <div id="savingsResult"></div>
+</section>        
         <section class="leak-section">
     <h2>🚨 Money Leak</h2>
 
