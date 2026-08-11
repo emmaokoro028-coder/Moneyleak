@@ -1,0 +1,135 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7f5;
+    color: #17221b;
+    padding-bottom: 40px;
+}
+
+header {
+    background: #17221b;
+    color: white;
+    padding: 35px 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 16px;
+    opacity: 0.85;
+}
+
+main {
+    width: 90%;
+    max-width: 600px;
+    margin: 25px auto;
+}
+
+.balance-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.balance-card p {
+    color: #6c756f;
+    margin-bottom: 10px;
+}
+
+.balance-card h2 {
+    font-size: 40px;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.summary div {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+}
+
+.summary p {
+    color: #6c756f;
+    margin-bottom: 8px;
+}
+
+.summary h3 {
+    font-size: 22px;
+}
+
+.add-section,
+.transactions {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.add-section h2,
+.transactions h2 {
+    margin-bottom: 20px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 12px;
+    border: 1px solid #d9dfdb;
+    border-radius: 12px;
+    font-size: 16px;
+    background: white;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #17221b;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.transaction {
+    padding: 15px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.transaction strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.transaction small {
+    color: #777;
+}
