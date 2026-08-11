@@ -633,3 +633,57 @@ button:active {
         transform: none;
     }
 }
+/* Spending Breakdown */
+
+.breakdown-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.breakdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.breakdown-header strong:first-child {
+    color: #173f2d;
+    text-transform: capitalize;
+}
+
+.breakdown-header strong:last-child {
+    color: #0f5132;
+}
+
+.breakdown-bar {
+    width: 100%;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.breakdown-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    border-radius: 999px;
+    transition: width 0.5s ease;
+}
+
+.breakdown-percentage {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.breakdown-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 2px solid #d1d5db;
+    color: #173f2d;
+    font-size: 17px;
+}
