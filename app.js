@@ -46,6 +46,7 @@ function addTransaction() {
     updateDashboard();
     displayTransactions();
     detectMoneyLeak();
+    updateMoneyHealth();
     updateSpendingBreakdown();
     
     amountInput.value = "";
@@ -335,29 +336,31 @@ function calculateSavingsGoal() {
 function updateSpendingBreakdown() {
     const breakdown = document.getElementById("spendingBreakdown");
 
-    if (!breakdown) {
-        return;
-    }
+    if (!breakdown) return;
 
-    if (expenses.length === 0) {
+    const categoryTotals = {};
+
+    transactions
+        .filter(function (transaction) {
+            return transaction.type === "expense";
+        })
+        .forEach(function (transaction) {
+            const category = transaction.category.trim();
+
+            if (!categoryTotals[category]) {
+                categoryTotals[category] = 0;
+            }
+
+            categoryTotals[category] += transaction.amount;
+        });
+
+    const categories = Object.keys(categoryTotals);
+
+    if (categories.length === 0) {
         breakdown.innerHTML =
             "<p>Add some expenses to see your spending breakdown.</p>";
         return;
     }
-
-    const categoryTotals = {};
-
-    expenses.forEach(function (transaction) {
-        const category = transaction.category.trim();
-
-        if (!categoryTotals[category]) {
-            categoryTotals[category] = 0;
-        }
-
-        categoryTotals[category] += transaction.amount;
-    });
-
-    const categories = Object.keys(categoryTotals);
 
     categories.sort(function (a, b) {
         return categoryTotals[b] - categoryTotals[a];
@@ -384,5 +387,3 @@ function updateSpendingBreakdown() {
         breakdown.appendChild(item);
     });
 }
-
-updateSpendingBreakdown();
