@@ -272,6 +272,7 @@ updateDashboard();
 displayTransactions();
 detectMoneyLeak();
 updateMoneyHealth();
+updateSpendingBreakdown();
 
 function calculateSavingsGoal() {
     const goal = Number(document.getElementById("savingsGoal").value);
