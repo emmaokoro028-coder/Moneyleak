@@ -268,6 +268,7 @@ function detectMoneyLeak() {
 updateDashboard();
 displayTransactions();
 detectMoneyLeak();
+updateMoneyHealth();
 
 function calculateSavingsGoal() {
     const goal = Number(document.getElementById("savingsGoal").value);
