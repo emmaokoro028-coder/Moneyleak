@@ -229,7 +229,17 @@ function calculateSavingsGoal() {
 
     const weeklyAmount = remaining / weeks;
     const dailyAmount = weeklyAmount / 7;
+    
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
+   
+    let progress = (current / goal) * 100;
+    progress = Math.max(0, Math.min(progress, 100));
 
+    progressFill.style.width = progress + "%";
+    progressText.textContent =
+    `${progress.toFixed(0)}% saved — ${formatMoney(current)} of ${formatMoney(goal)}`;    
+    
     result.innerHTML = `
         <hr>
         <h3>🎯 Your Savings Plan</h3>
