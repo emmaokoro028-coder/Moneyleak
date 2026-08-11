@@ -81,10 +81,76 @@ function updateDashboard() {
 
     document.getElementById("expenses").textContent =
         formatMoney(totals.expenses);
+    
+    updateMoneyHealth();
 }
 
-function displayTransactions() {
-    const list = document.getElementById("transactionList");
+function updateMoneyHealth() {
+    const totals = calculateTotals();
+
+    const healthScore = document.getElementById("healthScore");
+    const healthFill = document.getElementById("healthFill");
+    const healthMessage = document.getElementById("healthMessage");
+    const healthIcon = document.getElementById("healthIcon");
+
+    if (!healthScore || !healthFill || !healthMessage || !healthIcon) {
+        return;
+    }
+
+    if (totals.income <= 0) {
+        healthScore.textContent = "0 / 100";
+        healthFill.style.width = "0%";
+        healthMessage.textContent =
+            "Add some income and transactions to calculate your Money Health.";
+        healthIcon.textContent = "💚";
+        return;
+    }
+
+    const spendingRatio = totals.expenses / totals.income;
+
+    let score;
+
+    if (spendingRatio <= 0.30) {
+        score = 95;
+    } else if (spendingRatio <= 0.50) {
+        score = 85;
+    } else if (spendingRatio <= 0.70) {
+        score = 70;
+    } else if (spendingRatio <= 0.85) {
+        score = 50;
+    } else if (spendingRatio <= 1) {
+        score = 30;
+    } else {
+        score = 15;
+    }
+
+    healthScore.textContent = `${score} / 100`;
+    healthFill.style.width = `${score}%`;
+
+    if (score >= 85) {
+        healthMessage.textContent =
+            "Excellent! Your spending is well under control.";
+        healthIcon.textContent = "💚";
+    } else if (score >= 70) {
+        healthMessage.textContent =
+            "Good job! Your finances are looking healthy.";
+        healthIcon.textContent = "🟢";
+    } else if (score >= 50) {
+        healthMessage.textContent =
+            "You're doing okay, but there is room to improve.";
+        healthIcon.textContent = "🟡";
+    } else if (score >= 30) {
+        healthMessage.textContent =
+            "Your spending is getting high. Watch your expenses.";
+        healthIcon.textContent = "🟠";
+    } else {
+        healthMessage.textContent =
+            "Your expenses are very high compared with your income.";
+        healthIcon.textContent = "🔴";
+    }   
+    } 
+    function displayTransactions() { 
+        const list = document.getElementById("transactionList");
 
     if (transactions.length === 0) {
         list.innerHTML = "<p>No transactions yet.</p>";
