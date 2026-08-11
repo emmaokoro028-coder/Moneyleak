@@ -1,9 +1,16 @@
-let income = 0;
-let expenses = 0;
-let transactions = [];
+let transactions = JSON.parse(
+    localStorage.getItem("moneyLeakTransactions")
+) || [];
 
 function formatMoney(amount) {
     return "₦" + amount.toLocaleString("en-NG");
+}
+
+function saveTransactions() {
+    localStorage.setItem(
+        "moneyLeakTransactions",
+        JSON.stringify(transactions)
+    );
 }
 
 function addTransaction() {
@@ -26,19 +33,16 @@ function addTransaction() {
     }
 
     const transaction = {
+        id: Date.now(),
         amount: amount,
         type: type,
-        category: category
+        category: category,
+        date: new Date().toISOString()
     };
 
     transactions.push(transaction);
 
-    if (type === "income") {
-        income += amount;
-    } else {
-        expenses += amount;
-    }
-
+    saveTransactions();
     updateDashboard();
     displayTransactions();
 
@@ -46,17 +50,36 @@ function addTransaction() {
     categoryInput.value = "";
 }
 
+function calculateTotals() {
+    let income = 0;
+    let expenses = 0;
+
+    transactions.forEach(function(transaction) {
+        if (transaction.type === "income") {
+            income += transaction.amount;
+        } else {
+            expenses += transaction.amount;
+        }
+    });
+
+    return {
+        income: income,
+        expenses: expenses,
+        balance: income - expenses
+    };
+}
+
 function updateDashboard() {
-    const balance = income - expenses;
+    const totals = calculateTotals();
 
     document.getElementById("balance").textContent =
-        formatMoney(balance);
+        formatMoney(totals.balance);
 
     document.getElementById("income").textContent =
-        formatMoney(income);
+        formatMoney(totals.income);
 
     document.getElementById("expenses").textContent =
-        formatMoney(expenses);
+        formatMoney(totals.expenses);
 }
 
 function displayTransactions() {
@@ -69,25 +92,28 @@ function displayTransactions() {
 
     list.innerHTML = "";
 
-    transactions.slice().reverse().forEach(function(transaction) {
+    transactions
+        .slice()
+        .reverse()
+        .forEach(function(transaction) {
 
-        const item = document.createElement("div");
-        item.className = "transaction";
+            const item = document.createElement("div");
 
-        const sign = transaction.type === "income" ? "+" : "-";
+            item.className = "transaction";
 
-        item.innerHTML = `
-            <strong>
-                ${transaction.category}
-            </strong>
+            const sign =
+                transaction.type === "income" ? "+" : "-";
 
-            <small>
-                ${sign}${formatMoney(transaction.amount)}
-            </small>
-        `;
+            item.innerHTML = `
+                <strong>${transaction.category}</strong>
+                <small>
+                    ${sign}${formatMoney(transaction.amount)}
+                </small>
+            `;
 
-        list.appendChild(item);
-    });
+            list.appendChild(item);
+        });
 }
 
 updateDashboard();
+displayTransactions();
