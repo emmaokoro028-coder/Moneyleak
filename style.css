@@ -736,10 +736,15 @@ button:active {
     }
 
     .transaction-actions {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 8px;
+        margin-top: 8px;
     }
 
     .transaction-actions button {
-        width: 70px;
+        width: auto;
+        padding: 6px 12px;
+        font-size: 12px;
     }
 }
