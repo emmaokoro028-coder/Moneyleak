@@ -174,16 +174,102 @@ function updateMoneyHealth() {
                 transaction.type === "income" ? "+" : "-";
 
             item.innerHTML = `
-                <strong>${transaction.category}</strong>
-                <small>
-                    ${sign}${formatMoney(transaction.amount)}
-                </small>
-            `;
+    <div class="transaction-info">
+        <strong>${transaction.category}</strong>
+        <small>
+            ${sign}${formatMoney(transaction.amount)}
+        </small>
+    </div>
+
+    <div class="transaction-actions">
+        <button
+            class="edit-transaction"
+            onclick="editTransaction(${transaction.id})"
+        >
+            Edit
+        </button>
+
+        <button
+            class="delete-transaction"
+            onclick="deleteTransaction(${transaction.id})"
+        >
+            Delete
+        </button>
+    </div>
+`;
 
             list.appendChild(item);
         });
 }
+function editTransaction(id) {
+    const transaction = transactions.find(function (transaction) {
+        return transaction.id === id;
+    });
 
+    if (!transaction) return;
+
+    const newAmount = prompt(
+        "Enter the new amount:",
+        transaction.amount
+    );
+
+    if (newAmount === null) return;
+
+    const amount = Number(newAmount);
+
+    if (!amount || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+    }
+
+    const newCategory = prompt(
+        "Enter the new category:",
+        transaction.category
+    );
+
+    if (newCategory === null) return;
+
+    const category = newCategory.trim();
+
+    if (!category) {
+        alert("Please enter a category.");
+        return;
+    }
+
+    transaction.amount = amount;
+    transaction.category = category;
+
+    saveTransactions();
+    updateDashboard();
+    displayTransactions();
+    detectMoneyLeak();
+    updateMoneyHealth();
+    updateSpendingBreakdown();
+}
+function deleteTransaction(id) {
+    const transaction = transactions.find(function (transaction) {
+        return transaction.id === id;
+    });
+
+    if (!transaction) return;
+
+    const confirmed = confirm(
+        "Are you sure you want to delete this transaction?"
+    );
+
+    if (!confirmed) return;
+
+    transactions = transactions.filter(function (transaction) {
+        return transaction.id !== id;
+    });
+
+    saveTransactions();
+    updateDashboard();
+    displayTransactions();
+    detectMoneyLeak();
+    updateMoneyHealth();
+    updateSpendingBreakdown();
+}
 function detectMoneyLeak() {
     const leakMessage = document.getElementById("leakMessage");
 
