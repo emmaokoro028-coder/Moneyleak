@@ -86,6 +86,7 @@ function updateDashboard() {
     
     updateMoneyHealth();
     updateMonthlyOverview();
+    updateSpendingChart();
 }
 function updateMonthlyOverview() {
     const monthlyIncome = document.getElementById("monthlyIncome");
