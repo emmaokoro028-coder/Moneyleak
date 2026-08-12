@@ -139,9 +139,17 @@ function updateMoneyHealth() {
     const healthFill = document.getElementById("healthFill");
     const healthMessage = document.getElementById("healthMessage");
     const healthIcon = document.getElementById("healthIcon");
-
-    if (!healthScore || !healthFill || !healthMessage || !healthIcon) {
+    const healthExplanation = document.getElementById("healthExplanation");
+    
+    if (
+        !healthScore ||
+        !healthFill ||
+        !healthMessage ||
+        !healthIcon ||
+        !healthExplanation
+    ) {
         return;
+    }
     }
 
     if (totals.income <= 0) {
