@@ -363,13 +363,13 @@ function updateSpendingBreakdown() {
         return;
     }
 
-    categories.sort(function (a, b) {
-        return categoryTotals[b] - categoryTotals[a];
-    });
-
     const totalExpenses = categories.reduce(function (total, category) {
         return total + categoryTotals[category];
     }, 0);
+
+    categories.sort(function (a, b) {
+        return categoryTotals[b] - categoryTotals[a];
+    });
 
     breakdown.innerHTML = "";
 
@@ -394,7 +394,7 @@ function updateSpendingBreakdown() {
             </div>
 
             <div class="breakdown-percentage">
-                ${percentage.toFixed(0)}% of expenses
+                ${percentage.toFixed(1)}% of expenses
             </div>
         `;
 
@@ -410,6 +410,4 @@ function updateSpendingBreakdown() {
     `;
 
     breakdown.appendChild(total);
-}
-
-    
+}    
