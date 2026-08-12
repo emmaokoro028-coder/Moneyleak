@@ -412,33 +412,4 @@ function updateSpendingBreakdown() {
     breakdown.appendChild(total);
 }
 
-    categories.sort(function (a, b) {
-        return categoryTotals[b] - categoryTotals[a];
-    });
-
-    breakdown.innerHTML = "";
-
-    categories.forEach(function (category) {
-        const amount = categoryTotals[category];
-
-        const item = document.createElement("div");
-        item.className = "breakdown-item";
-
-        item.innerHTML = `
-            <div class="breakdown-category">
-                <strong>${category}</strong>
-            </div>
-
-            <div class="breakdown-amount">
-                ${formatMoney(amount)}
-            </div>
-        `;
-
-        breakdown.appendChild(item);
-    });
-    }
-    updateDashboard();
-    displayTransactions();
-    detectMoneyLeak();
-    updateMoneyHealth();
-    updateSpendingBreakdown();
+    
