@@ -687,3 +687,59 @@ button:active {
     color: #173f2d;
     font-size: 17px;
 }
+/* Transaction Actions */
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.transaction-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.transaction-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.transaction-actions button {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.edit-transaction {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.delete-transaction {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.transaction-actions button:hover {
+    transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+    .transaction {
+        align-items: flex-start;
+    }
+
+    .transaction-actions {
+        flex-direction: column;
+    }
+
+    .transaction-actions button {
+        width: 70px;
+    }
+}
