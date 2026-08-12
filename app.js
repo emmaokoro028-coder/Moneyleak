@@ -541,3 +541,68 @@ function updateSpendingBreakdown() {
 
     breakdown.appendChild(total);
 }    
+function updateSpendingChart() {
+    const chart = document.getElementById("spendingChart");
+
+    if (!chart) return;
+
+    const expenses = transactions.filter(function (transaction) {
+        return transaction.type === "expense";
+    });
+
+    if (expenses.length === 0) {
+        chart.innerHTML = "<p>No spending data yet.</p>";
+        return;
+    }
+
+    const categoryTotals = {};
+
+    expenses.forEach(function (transaction) {
+        const category = transaction.category.trim();
+
+        if (!categoryTotals[category]) {
+            categoryTotals[category] = 0;
+        }
+
+        categoryTotals[category] += transaction.amount;
+    });
+
+    const categories = Object.keys(categoryTotals);
+
+    categories.sort(function (a, b) {
+        return categoryTotals[b] - categoryTotals[a];
+    });
+
+    const totalExpenses = expenses.reduce(function (total, transaction) {
+        return total + transaction.amount;
+    }, 0);
+
+    chart.innerHTML = "";
+
+    categories.forEach(function (category) {
+        const amount = categoryTotals[category];
+        const percentage = (amount / totalExpenses) * 100;
+
+        const item = document.createElement("div");
+        item.className = "chart-item";
+
+        item.innerHTML = `
+            <div class="chart-header">
+                <strong>${category}</strong>
+                <strong>${formatMoney(amount)}</strong>
+            </div>
+
+            <div class="chart-bar">
+                <div
+                    class="chart-fill"
+                    style="width: ${percentage}%"
+                ></div>
+            </div>
+
+            <small>${percentage.toFixed(1)}% of spending</small>
+        `;
+
+        chart.appendChild(item);
+    });
+}
+updateSpendingChart();
