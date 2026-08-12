@@ -748,3 +748,61 @@ button:active {
         font-size: 12px;
     }
 }
+/* FINAL TRANSACTION BUTTON FIX */
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.transaction-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.transaction-actions {
+    display: flex;
+    gap: 6px;
+    width: auto;
+    margin-left: auto;
+}
+
+.transaction-actions button {
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 5px 9px !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+    white-space: nowrap;
+}
+
+.edit-transaction {
+    background: #dcfce7 !important;
+    color: #166534 !important;
+}
+
+.delete-transaction {
+    background: #fee2e2 !important;
+    color: #b91c1c !important;
+}
+
+@media (max-width: 600px) {
+    .transaction {
+        align-items: center;
+    }
+
+    .transaction-actions {
+        flex-direction: row !important;
+        width: auto !important;
+        margin-left: auto;
+    }
+
+    .transaction-actions button {
+        width: auto !important;
+        padding: 5px 8px !important;
+        font-size: 11px !important;
+    }
+}
