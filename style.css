@@ -806,3 +806,72 @@ button:active {
         font-size: 11px !important;
     }
 }
+/* Spending This Month Chart */
+
+.spending-chart {
+    margin-top: 20px;
+}
+
+.chart-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+    gap: 12px;
+}
+
+.chart-header strong:first-child {
+    color: #173f2d;
+    font-size: 17px;
+    text-transform: capitalize;
+}
+
+.chart-header strong:last-child {
+    color: #0f5132;
+    font-size: 16px;
+}
+
+.chart-bar {
+    width: 100%;
+    height: 11px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.chart-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    border-radius: 999px;
+    transition: width 0.7s ease;
+}
+
+.chart-item small {
+    display: block;
+    margin-top: 7px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.chart-item:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 600px) {
+    .chart-header strong:first-child {
+        font-size: 16px;
+    }
+
+    .chart-header strong:last-child {
+        font-size: 15px;
+    }
+
+    .chart-bar {
+        height: 10px;
+    }
+}
