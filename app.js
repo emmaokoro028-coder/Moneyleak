@@ -85,8 +85,52 @@ function updateDashboard() {
         formatMoney(totals.expenses);
     
     updateMoneyHealth();
+    updateMonthlyOverview();
 }
+function updateMonthlyOverview() {
+    const monthlyIncome = document.getElementById("monthlyIncome");
+    const monthlyExpenses = document.getElementById("monthlyExpenses");
+    const monthlySavings = document.getElementById("monthlySavings");
+    const monthlyBalance = document.getElementById("monthlyBalance");
 
+    if (
+        !monthlyIncome ||
+        !monthlyExpenses ||
+        !monthlySavings ||
+        !monthlyBalance
+    ) {
+        return;
+    }
+
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    let income = 0;
+    let expenses = 0;
+
+    transactions.forEach(function (transaction) {
+        const date = new Date(transaction.date);
+
+        if (
+            date.getMonth() === currentMonth &&
+            date.getFullYear() === currentYear
+        ) {
+            if (transaction.type === "income") {
+                income += transaction.amount;
+            } else {
+                expenses += transaction.amount;
+            }
+        }
+    });
+
+    const savings = income - expenses;
+
+    monthlyIncome.textContent = formatMoney(income);
+    monthlyExpenses.textContent = formatMoney(expenses);
+    monthlySavings.textContent = formatMoney(savings);
+    monthlyBalance.textContent = formatMoney(savings);
+}
 function updateMoneyHealth() {
     const totals = calculateTotals();
 
