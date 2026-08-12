@@ -202,7 +202,12 @@ function updateMoneyHealth() {
         healthMessage.textContent =
             "Your expenses are very high compared with your income.";
         healthIcon.textContent = "🔴";
-    }   
+    } 
+   
+    if (healthExplanation) {
+        healthExplanation.textContent =
+            `Your Money Health score is ${score}/100 because you spend ${Math.round(spendingRatio * 100)}% of your income.`; 
+    } 
     } 
     function displayTransactions() { 
         const list = document.getElementById("transactionList");
