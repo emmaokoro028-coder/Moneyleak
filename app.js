@@ -170,9 +170,7 @@ function updateMoneyHealth() {
     ) {
         return;
     }
-    }
-
-    if (totals.income <= 0) {
+    if (totals.income <= 0) {        
         healthScore.textContent = "0 / 100";
         healthFill.style.width = "0%";
         healthMessage.textContent =
