@@ -43,11 +43,31 @@ function addTransaction() {
     transactions.push(transaction);
 
     saveTransactions();
+displayTransactions();
+
+try {
     updateDashboard();
-    displayTransactions();
+} catch (error) {
+    console.error("Dashboard error:", error);
+}
+
+try {
     detectMoneyLeak();
+} catch (error) {
+    console.error("MoneyLeak error:", error);
+}
+
+try {
     updateMoneyHealth();
+} catch (error) {
+    console.error("Money Health error:", error);
+}
+
+try {
     updateSpendingBreakdown();
+} catch (error) {
+    console.error("Spending Breakdown error:", error);
+}
     
     amountInput.value = "";
     categoryInput.value = "";
