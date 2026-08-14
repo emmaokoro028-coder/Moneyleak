@@ -437,64 +437,98 @@ updateMoneyHealth();
 updateSpendingBreakdown();
 
 function calculateSavingsGoal() {
-    const goal = Number(document.getElementById("savingsGoal").value);
-    const current = Number(document.getElementById("currentSavings").value);
-    const weeks = Number(document.getElementById("goalWeeks").value);
+    const goalInput = document.getElementById("savingsGoal");
+    const currentInput = document.getElementById("currentSavings");
+    const weeksInput = document.getElementById("goalWeeks");
 
     const result = document.getElementById("savingsResult");
-
-    if (goal <= 0 || current < 0 || weeks <= 0) {
-        result.innerHTML = `
-            <p>⚠️ Please enter a valid goal, savings amount, and number of weeks.</p>
-        `;
-        return;
-    }
-
-    const remaining = goal - current;
-
-    if (remaining <= 0) {
-        result.innerHTML = `
-            <h3>🎉 Goal Reached!</h3>
-            <p>You have already reached your savings goal.</p>
-        `;
-        return;
-    }
-
-    const weeklyAmount = remaining / weeks;
-    const dailyAmount = weeklyAmount / 7;
-    
     const progressFill = document.getElementById("progressFill");
     const progressText = document.getElementById("progressText");
-   
-    let progress = (current / goal) * 100;
-    progress = Math.max(0, Math.min(progress, 100));
 
-    progressFill.style.width = progress + "%";
-    progressText.textContent =
-    `${progress.toFixed(0)}% saved — ${formatMoney(current)} of ${formatMoney(goal)}`;    
-    
-    result.innerHTML = `
-        <hr>
-        <h3>🎯 Your Savings Plan</h3>
+    const savedAmountEl = document.getElementById("savedAmount");
+    const targetAmountEl = document.getElementById("targetAmount");
+    const remainingAmountEl = document.getElementById("remainingAmount");
 
-        <p>
-            You still need
-            <strong>${formatMoney(remaining)}</strong>
-            to reach your goal.
-        </p>
+    const goal = Number(goalInput.value);
+    const saved = Number(currentInput.value);
+    const weeks = Number(weeksInput.value);
 
-        <p>
-            Save approximately
-            <strong>${formatMoney(weeklyAmount)}</strong>
-            per week.
-        </p>
+    if (!goal || goal <= 0) {
+        alert("Please enter a valid savings goal.");
+        return;
+    }
 
-        <p>
-            That's about
-            <strong>${formatMoney(dailyAmount)}</strong>
-            per day.
-        </p>
-    `;
+    if (saved < 0 || saved > goal) {
+        alert("Your saved amount must be between ₦0 and your goal.");
+        return;
+    }
+
+    if (!weeks || weeks <= 0) {
+        alert("Please enter how many weeks you have.");
+        return;
+    }
+
+    const remaining = goal - saved;
+    const percentage = Math.min((saved / goal) * 100, 100);
+    const weeklyAmount = remaining / weeks;
+    const dailyAmount = weeklyAmount / 7;
+
+    const formatSavingsMoney = function(amount) {
+        return "₦" + Math.round(amount).toLocaleString("en-NG");
+    };
+
+    if (percentage >= 100) {
+        result.innerHTML = `
+            <div class="savings-plan">
+                <h3>🎉 Goal Reached!</h3>
+                <p>You have reached your savings goal of
+                <strong>${formatSavingsMoney(goal)}</strong>.</p>
+            </div>
+        `;
+    } else {
+        result.innerHTML = `
+            <div class="savings-plan">
+                <h3>🎯 Your Savings Plan</h3>
+                <p>You still need <strong>${formatSavingsMoney(remaining)}</strong>
+                to reach your goal.</p>
+
+                <p>Save approximately
+                <strong>${formatSavingsMoney(weeklyAmount)}</strong> per week.</p>
+
+                <p>That's about
+                <strong>${formatSavingsMoney(dailyAmount)}</strong> per day.</p>
+            </div>
+        `;
+    }
+
+    if (progressFill) {
+        progressFill.style.width = percentage + "%";
+    }
+
+    if (progressText) {
+        progressText.textContent =
+            Math.round(percentage) + "% saved — " +
+            formatSavingsMoney(saved) +
+            " of " +
+            formatSavingsMoney(goal);
+    }
+
+    if (savedAmountEl) {
+        savedAmountEl.textContent = formatSavingsMoney(saved);
+    }
+
+    if (targetAmountEl) {
+        targetAmountEl.textContent = formatSavingsMoney(goal);
+    }
+
+    if (remainingAmountEl) {
+        if (percentage >= 100) {
+            remainingAmountEl.textContent = "🎉 You've reached your savings goal!";
+        } else {
+            remainingAmountEl.textContent =
+                formatSavingsMoney(remaining) + " remaining to reach your goal.";
+        }
+    }
 }
 function updateSpendingBreakdown() {
     const breakdown = document.getElementById("spendingBreakdown");
