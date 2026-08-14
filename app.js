@@ -588,7 +588,13 @@ function updateSpendingChart() {
     });
 
     if (expenses.length === 0) {
-        chart.innerHTML = "<p>No spending data yet.</p>";
+        chart.innerHTML = `
+            <div class="chart-empty">
+                <span>📊</span>
+                <p>No spending data yet.</p>
+                <small>Add an expense to see where your money goes.</small>
+            </div>
+        `;
         return;
     }
 
@@ -596,6 +602,8 @@ function updateSpendingChart() {
 
     expenses.forEach(function (transaction) {
         const category = transaction.category.trim();
+
+        if (!category) return;
 
         if (!categoryTotals[category]) {
             categoryTotals[category] = 0;
@@ -606,19 +614,33 @@ function updateSpendingChart() {
 
     const categories = Object.keys(categoryTotals);
 
-    categories.sort(function (a, b) {
-        return categoryTotals[b] - categoryTotals[a];
-    });
-
     const totalExpenses = expenses.reduce(function (total, transaction) {
         return total + transaction.amount;
     }, 0);
 
+    categories.sort(function (a, b) {
+        return categoryTotals[b] - categoryTotals[a];
+    });
+
     chart.innerHTML = "";
+
+    const title = document.createElement("div");
+    title.className = "chart-total";
+
+    title.innerHTML = `
+        <span>Total Spending</span>
+        <strong>${formatMoney(totalExpenses)}</strong>
+    `;
+
+    chart.appendChild(title);
 
     categories.forEach(function (category) {
         const amount = categoryTotals[category];
-        const percentage = (amount / totalExpenses) * 100;
+
+        const percentage =
+            totalExpenses > 0
+                ? (amount / totalExpenses) * 100
+                : 0;
 
         const item = document.createElement("div");
         item.className = "chart-item";
@@ -636,10 +658,33 @@ function updateSpendingChart() {
                 ></div>
             </div>
 
-            <small>${percentage.toFixed(1)}% of spending</small>
+            <div class="chart-footer">
+                <span>${percentage.toFixed(1)}% of spending</span>
+            </div>
         `;
 
         chart.appendChild(item);
     });
+
+    const insight = document.createElement("div");
+    insight.className = "chart-insight";
+
+    const topCategory = categories[0];
+    const topAmount = categoryTotals[topCategory];
+    const topPercentage =
+        totalExpenses > 0
+            ? (topAmount / totalExpenses) * 100
+            : 0;
+
+    insight.innerHTML = `
+        <strong>💡 Spending Insight</strong>
+        <p>
+            Your biggest expense category is
+            <strong>${topCategory}</strong>,
+            accounting for ${topPercentage.toFixed(1)}% of your spending.
+        </p>
+    `;
+
+    chart.appendChild(insight);
 }
 updateSpendingChart();
