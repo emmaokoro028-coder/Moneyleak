@@ -87,41 +87,72 @@
                 <p>No transactions yet.</p>
             </div>
         </section> 
-        <section class="savings-section">
+       <section class="savings-section">
     <h2>🎯 Savings Goal</h2>
 
-    <input
-        type="number"
-        id="savingsGoal"
-        placeholder="Goal amount (₦)"
-    >
+    <div class="savings-inputs">
 
-    <input
-        type="number"
-        id="currentSavings"
-        placeholder="Already saved (₦)"
-    >
+        <input
+            type="number"
+            id="savingsGoal"
+            placeholder="Goal amount (₦)"
+            min="0"
+        >
 
-    <input
-        type="number"
-        id="goalWeeks"
-        placeholder="How many weeks?"
-    >
+        <input
+            type="number"
+            id="currentSavings"
+            placeholder="Already saved (₦)"
+            min="0"
+        >
 
-    <button onclick="calculateSavingsGoal()">
-        Calculate My Goal
-    </button>
+        <input
+            type="number"
+            id="goalWeeks"
+            placeholder="How many weeks?"
+            min="1"
+        >
 
-    <div id="savingsResult"></div>
-    <div id="savingsProgress" class="savings-progress">
-    <p><strong>Savings Progress</strong></p>
+        <button onclick="calculateSavingsGoal()">
+            Calculate My Goal
+        </button>
 
-    <div class="progress-bar">
-        <div id="progressFill" class="progress-fill"></div>
     </div>
 
-    <p id="progressText">0% saved</p>
-</div>
+    <div id="savingsResult" class="savings-result"></div>
+
+    <div id="savingsProgress" class="savings-progress">
+
+        <div class="savings-progress-header">
+            <strong>💰 Savings Progress</strong>
+            <strong id="progressText">0% saved</strong>
+        </div>
+
+        <div class="progress-bar">
+            <div
+                id="progressFill"
+                class="progress-fill"
+                style="width: 0%;"
+            ></div>
+        </div>
+
+        <div class="savings-stats">
+            <span>
+                Saved:
+                <strong id="savedAmount">₦0</strong>
+            </span>
+
+            <span>
+                Target:
+                <strong id="targetAmount">₦0</strong>
+            </span>
+        </div>
+
+        <p id="remainingAmount">
+            Enter your goal to start tracking.
+        </p>
+
+    </div>
         </section>
      <section class="monthly-section">
     <h2>📅 Monthly Overview</h2>
