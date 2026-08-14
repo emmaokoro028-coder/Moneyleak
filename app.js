@@ -510,6 +510,8 @@ function updateSpendingBreakdown() {
         .forEach(function (transaction) {
             const category = transaction.category.trim();
 
+            if (!category) return;
+
             if (!categoryTotals[category]) {
                 categoryTotals[category] = 0;
             }
@@ -537,7 +539,10 @@ function updateSpendingBreakdown() {
 
     categories.forEach(function (category) {
         const amount = categoryTotals[category];
-        const percentage = (amount / totalExpenses) * 100;
+        const percentage =
+            totalExpenses > 0
+                ? (amount / totalExpenses) * 100
+                : 0;
 
         const item = document.createElement("div");
         item.className = "breakdown-item";
@@ -572,7 +577,7 @@ function updateSpendingBreakdown() {
     `;
 
     breakdown.appendChild(total);
-}    
+}   
 function updateSpendingChart() {
     const chart = document.getElementById("spendingChart");
 
