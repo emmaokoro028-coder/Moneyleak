@@ -452,6 +452,9 @@ function calculateSavingsGoal() {
     const goal = Number(goalInput.value);
     const saved = Number(currentInput.value);
     const weeks = Number(weeksInput.value);
+   localStorage.setItem("moneyLeakSavingsGoal", goalInput.value);
+   localStorage.setItem("moneyLeakCurrentSavings", currentInput.value);
+   localStorage.setItem("moneyLeakGoalWeeks", weeksInput.value); 
 
     if (!goal || goal <= 0) {
         alert("Please enter a valid savings goal.");
