@@ -725,3 +725,28 @@ function updateSpendingChart() {
     chart.appendChild(insight);
 }
 updateSpendingChart();
+    chart.appendChild(insight);
+}
+updateSpendingChart();
+
+window.addEventListener("DOMContentLoaded", function () {
+    const goal = localStorage.getItem("moneyLeakSavingsGoal");
+    const saved = localStorage.getItem("moneyLeakCurrentSavings");
+    const weeks = localStorage.getItem("moneyLeakGoalWeeks");
+
+    if (goal) {
+        document.getElementById("savingsGoal").value = goal;
+    }
+
+    if (saved) {
+        document.getElementById("currentSavings").value = saved;
+    }
+
+    if (weeks) {
+        document.getElementById("goalWeeks").value = weeks;
+    }
+
+    if (goal && saved && weeks) {
+        calculateSavingsGoal();
+    }
+});
