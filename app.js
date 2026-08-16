@@ -724,9 +724,8 @@ function updateSpendingChart() {
 
     chart.appendChild(insight);
 }
-updateSpendingChart();
-    chart.appendChild(insight);
-}
+
+
 updateSpendingChart();
 
 window.addEventListener("DOMContentLoaded", function () {
