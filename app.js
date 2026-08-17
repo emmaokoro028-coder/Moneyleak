@@ -780,6 +780,37 @@ function resetSavingsGoal() {
     document.getElementById("progressFill").style.width = "0%";
 
     updateMonthlyOverview();
+    function updateSavingsGoal() {
+    const goalInput = document.getElementById("savingsGoal");
+    const currentInput = document.getElementById("currentSavings");
+    const weeksInput = document.getElementById("goalWeeks");
+
+    const goal = Number(goalInput.value);
+    const saved = Number(currentInput.value);
+    const weeks = Number(weeksInput.value);
+
+    if (!goal || goal <= 0) {
+        alert("Please enter a valid savings goal.");
+        return;
+    }
+
+    if (saved < 0 || saved > goal) {
+        alert("Your saved amount must be between ₦0 and your goal.");
+        return;
+    }
+
+    if (!weeks || weeks <= 0) {
+        alert("Please enter how many weeks you have.");
+        return;
+    }
+
+    localStorage.setItem("moneyLeakSavingsGoal", goalInput.value);
+    localStorage.setItem("moneyLeakCurrentSavings", currentInput.value);
+    localStorage.setItem("moneyLeakGoalWeeks", weeksInput.value);
+
+    calculateSavingsGoal();
+
+    alert("Your savings goal has been updated!");
 }
 window.addEventListener("DOMContentLoaded", function () {
     const goal = localStorage.getItem("moneyLeakSavingsGoal");
