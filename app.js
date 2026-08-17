@@ -766,7 +766,21 @@ function updateMonthlyOverview() {
     monthlyBalance.textContent = formatMoney(savings);
 }
 updateSpendingChart();
+function resetSavingsGoal() {
+    localStorage.removeItem("moneyLeakSavingsGoal");
+    localStorage.removeItem("moneyLeakCurrentSavings");
+    localStorage.removeItem("moneyLeakGoalWeeks");
 
+    document.getElementById("savingsGoal").value = "";
+    document.getElementById("currentSavings").value = "";
+    document.getElementById("goalWeeks").value = "";
+
+    document.getElementById("savingsResult").innerHTML = "";
+    document.getElementById("progressText").textContent = "0% saved";
+    document.getElementById("progressFill").style.width = "0%";
+
+    updateMonthlyOverview();
+}
 window.addEventListener("DOMContentLoaded", function () {
     const goal = localStorage.getItem("moneyLeakSavingsGoal");
     const saved = localStorage.getItem("moneyLeakCurrentSavings");
@@ -789,5 +803,7 @@ window.addEventListener("DOMContentLoaded", function () {
 }
 document.getElementById("savingsGoal").addEventListener("input", calculateSavingsGoal);
 document.getElementById("currentSavings").addEventListener("input", calculateSavingsGoal);
-document.getElementById("goalWeeks").addEventListener("input", calculateSavingsGoal);updateMonthlyOverview();
+document.getElementById("goalWeeks").addEventListener("input", calculateSavingsGoal);
+
+updateMonthlyOverview();
 });
