@@ -787,6 +787,7 @@ window.addEventListener("DOMContentLoaded", function () {
     if (goal && weeks) {
     calculateSavingsGoal();
 }
-
-updateMonthlyOverview();
+document.getElementById("savingsGoal").addEventListener("input", calculateSavingsGoal);
+document.getElementById("currentSavings").addEventListener("input", calculateSavingsGoal);
+document.getElementById("goalWeeks").addEventListener("input", calculateSavingsGoal);updateMonthlyOverview();
 });
