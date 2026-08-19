@@ -780,6 +780,7 @@ function resetSavingsGoal() {
     document.getElementById("progressFill").style.width = "0%";
 
     updateMonthlyOverview();
+    }    
     function updateSavingsGoal() {
     const goalInput = document.getElementById("savingsGoal");
     const currentInput = document.getElementById("currentSavings");
