@@ -394,8 +394,8 @@ transactions
         biggestCategory.charAt(0).toUpperCase() +
         biggestCategory.slice(1);
 
-    const potentialWeeklySaving = biggestAmount * 0.20;
-   const potentialYearlySaving = potentialWeeklySaving * 12;
+    const potentialMonthlySaving = biggestAmount * 0.20;
+    const potentialYearlySaving = potentialMonthlySaving * 12;
 
     leakMessage.innerHTML = `
         <p>
@@ -418,7 +418,7 @@ transactions
 
         <p>
             You could save
-            <strong>${formatMoney(potentialWeeklySaving)}</strong>
+            <strong>${formatMoney(potentialMonthlySaving)}</strong>
             per month.
         </p>
 
