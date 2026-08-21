@@ -111,7 +111,13 @@ button {
     font-weight: bold;
     cursor: pointer;
 }
-
+button[onclick="calculateSavingsGoal()"],
+button[onclick="updateSavingsGoal()"],
+button[onclick="resetSavingsGoal()"] {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 10px;
+}
 button:hover {
     opacity: 0.9;
 }
