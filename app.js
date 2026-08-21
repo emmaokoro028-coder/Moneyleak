@@ -419,7 +419,7 @@ transactions
         <p>
             You could save
             <strong>${formatMoney(potentialWeeklySaving)}</strong>
-            per week.
+            per month.
         </p>
 
         <p>
