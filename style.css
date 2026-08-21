@@ -914,3 +914,213 @@ button:active {
 .spending-chart .chart-fill {
     transition: width 0.8s ease;
 }
+/* =========================================
+   MONEY LEAK — PROFESSIONAL DASHBOARD
+   ========================================= */
+
+body {
+    background: #f4f7f6;
+    color: #172a21;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+}
+
+/* Main dashboard */
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 25px 20px 60px;
+}
+
+/* Dashboard sections / cards */
+section {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
+    border: 1px solid #e5ebe8;
+    box-shadow: 0 8px 25px rgba(23, 42, 33, 0.07);
+}
+
+/* Section headings */
+section h2 {
+    color: #123f2d;
+    font-size: 24px;
+    font-weight: 750;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Money Leak card */
+.leak-section {
+    border-left: 6px solid #c84d4d;
+}
+
+.leak-section h2 {
+    color: #b94343;
+}
+
+/* Chart sections */
+.chart-section,
+.breakdown-section {
+    overflow: hidden;
+}
+
+/* Spending bars */
+.progress-bar {
+    height: 12px;
+    background: #e4ebe8;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+/* Savings progress */
+.savings-progress {
+    background: #f8faf9;
+    border: 1px solid #e1e8e4;
+    border-radius: 18px;
+    padding: 22px;
+    margin-top: 20px;
+}
+
+.savings-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 14px;
+}
+
+/* Buttons */
+button {
+    border-radius: 12px;
+    transition: transform 0.15s ease, opacity 0.15s ease,
+                box-shadow 0.15s ease;
+}
+
+button:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(23, 42, 33, 0.12);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Savings Goal buttons */
+button[onclick="calculateSavingsGoal()"],
+button[onclick="updateSavingsGoal()"],
+button[onclick="resetSavingsGoal()"] {
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+/* Inputs */
+input,
+select {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #31805f;
+    box-shadow: 0 0 0 3px rgba(49, 128, 95, 0.12);
+}
+
+/* Transaction list */
+.transaction {
+    padding: 17px 0;
+    border-bottom: 1px solid #e8eeeb;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.transaction strong {
+    color: #173d2d;
+}
+
+/* Edit/Delete buttons */
+.transaction button {
+    width: auto;
+    padding: 7px 12px;
+    font-size: 13px;
+    margin-left: 6px;
+}
+
+/* Money values */
+strong {
+    font-weight: 750;
+}
+
+/* Better text */
+p {
+    color: #44544d;
+}
+
+h1,
+h2,
+h3 {
+    letter-spacing: -0.3px;
+}
+
+/* Responsive mobile dashboard */
+@media (max-width: 600px) {
+
+    main {
+        padding: 15px 12px 40px;
+    }
+
+    section {
+        padding: 20px 17px;
+        border-radius: 17px;
+        margin-bottom: 18px;
+    }
+
+    section h2 {
+        font-size: 21px;
+    }
+
+    .savings-progress-header {
+        display: block;
+    }
+
+    .savings-progress-header strong {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    button[onclick="calculateSavingsGoal()"],
+    button[onclick="updateSavingsGoal()"],
+    button[onclick="resetSavingsGoal()"] {
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Smooth dashboard appearance */
+section {
+    animation: dashboardFade 0.35s ease both;
+}
+
+@keyframes dashboardFade {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
