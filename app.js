@@ -395,7 +395,7 @@ transactions
         biggestCategory.slice(1);
 
     const potentialWeeklySaving = biggestAmount * 0.20;
-    const potentialYearlySaving = potentialWeeklySaving * 52;
+   const potentialYearlySaving = potentialWeeklySaving * 12;
 
     leakMessage.innerHTML = `
         <p>
