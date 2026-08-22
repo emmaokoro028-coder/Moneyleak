@@ -836,3 +836,68 @@ window.addEventListener("DOMContentLoaded", function () {
 
 updateMonthlyOverview();
 });
+function calculateSavingsGoal() {
+    const target = Number(document.getElementById("savingsTarget").value);
+    const saved = Number(document.getElementById("alreadySaved").value);
+    const days = Number(document.getElementById("savingsDays").value);
+
+    if (target <= 0 || saved < 0 || days <= 0) {
+        alert("Please enter a valid target, saved amount, and number of days.");
+        return;
+    }
+
+    if (saved >= target) {
+        document.getElementById("savingsResult").innerHTML = `
+            <div class="goal-success">
+                🎉 Congratulations! You've already reached your savings goal.
+            </div>
+        `;
+        return;
+    }
+
+    const remaining = target - saved;
+    const daily = remaining / days;
+    const weekly = daily * 7;
+    const progress = (saved / target) * 100;
+
+    document.getElementById("savingsResult").innerHTML = `
+        <div class="goal-result">
+            <h3>🎯 Your Savings Plan</h3>
+
+            <p>
+                You still need
+                <strong>₦${remaining.toLocaleString()}</strong>
+                to reach your goal.
+            </p>
+
+            <p>
+                Save approximately
+                <strong>₦${Math.ceil(daily).toLocaleString()}</strong>
+                per day.
+            </p>
+
+            <p>
+                That's about
+                <strong>₦${Math.ceil(weekly).toLocaleString()}</strong>
+                per week.
+            </p>
+
+            <div class="goal-progress">
+                <div style="width: ${Math.min(progress, 100)}%"></div>
+            </div>
+
+            <p class="progress-text">
+                ${Math.round(progress)}% saved
+            </p>
+        </div>
+    `;
+
+    localStorage.setItem("savingsGoal", JSON.stringify({
+        target,
+        saved,
+        days,
+        remaining,
+        daily,
+        progress
+    }));
+}
