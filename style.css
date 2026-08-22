@@ -1271,3 +1271,42 @@ section {
 .health-score {
     font-size: 28px;
 }
+/* QUICK ACTIONS */
+.quick-actions {
+    margin: 20px 0;
+}
+
+.quick-actions h2 {
+    font-size: 20px;
+    color: #17221b;
+    margin-bottom: 14px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.action-grid button {
+    width: 100%;
+    min-height: 90px;
+    padding: 14px 8px;
+    background: #ffffff;
+    color: #17221b;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.action-grid button span {
+    display: block;
+    margin-top: 7px;
+    font-size: 12px;
+}
+
+.action-grid button:hover {
+    transform: translateY(-2px);
+}
