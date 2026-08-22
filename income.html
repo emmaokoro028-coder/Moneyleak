@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Income | MoneyLeak</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>MoneyLeak</h1>
+    <p>Add your income</p>
+</header>
+
+<main>
+
+    <section class="form-section">
+
+        <h2>💰 Add Income</h2>
+
+        <input
+            type="number"
+            id="incomeAmount"
+            placeholder="Amount (₦)"
+        >
+
+        <input
+            type="text"
+            id="incomeCategory"
+            placeholder="Category e.g. Salary"
+        >
+
+        <button onclick="addIncome()">
+            Add Income
+        </button>
+
+        <a href="index.html" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </section>
+
+</main>
+
+<script>
+function addIncome() {
+
+    const amount = Number(
+        document.getElementById("incomeAmount").value
+    );
+
+    const category =
+        document.getElementById("incomeCategory").value;
+
+    if (!amount || !category) {
+        alert("Please enter an amount and category.");
+        return;
+    }
+
+    alert("Income added successfully!");
+
+    document.getElementById("incomeAmount").value = "";
+    document.getElementById("incomeCategory").value = "";
+}
+</script>
+
+</body>
+</html>
