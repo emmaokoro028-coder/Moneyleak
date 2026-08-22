@@ -1310,3 +1310,49 @@ section {
 .action-grid button:hover {
     transform: translateY(-2px);
 }
+/* PROFESSIONAL SPENDING CHART */
+.spending-chart {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.spending-chart p {
+    color: #6b7280;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.spending-chart > div {
+    margin-bottom: 18px;
+}
+
+.spending-chart > div:last-child {
+    margin-bottom: 0;
+}
+
+.spending-chart strong {
+    color: #17221b;
+    font-size: 15px;
+}
+
+.spending-chart .bar,
+.spending-chart .progress-bar {
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.spending-chart .bar-fill,
+.spending-chart .progress-fill {
+    height: 100%;
+    background: #22a65a;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
