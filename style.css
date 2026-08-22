@@ -1653,3 +1653,23 @@ section {
   background: #18553e !important;
   transform: translateY(-3px);
 }
+/* MONEY LEAK - GREEN QUICK ACTION BUTTONS */
+
+.quick-actions .quick-action-grid .quick-action,
+.quick-action-grid a.quick-action {
+  background: #123d2d !important;
+  background-color: #123d2d !important;
+  color: white !important;
+  border: 1px solid #123d2d !important;
+}
+
+.quick-actions .quick-action-grid .quick-action strong,
+.quick-action-grid a.quick-action strong,
+.quick-action-grid a.quick-action .quick-action-icon {
+  color: white !important;
+}
+
+.quick-action-grid a.quick-action:hover {
+  background: #18553e !important;
+  background-color: #18553e !important;
+}
