@@ -1531,3 +1531,59 @@ section {
         text-align: center;
     }
 }
+/* MoneyLeak Quick Actions */
+.quick-action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+.quick-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 140px;
+  padding: 20px 12px;
+  border: 1px solid #dfe5e2;
+  border-radius: 24px;
+  background: #ffffff;
+  color: #123d2d;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.quick-action-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.quick-action strong {
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .quick-action-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .quick-action {
+    min-height: 125px;
+    padding: 14px 6px;
+    border-radius: 20px;
+  }
+
+  .quick-action-icon {
+    font-size: 27px;
+    margin-bottom: 8px;
+  }
+
+  .quick-action strong {
+    font-size: 15px;
+  }
+}
