@@ -970,3 +970,27 @@ function saveSavingsGoal() {
 
     alert("Savings goal saved successfully! 🎯");
 }
+function loadSavedSavingsGoal() {
+    const savedGoal = localStorage.getItem("moneyLeakSavingsGoal");
+
+    if (!savedGoal) return;
+
+    const goal = JSON.parse(savedGoal);
+
+    const goalInput = document.getElementById("savingsGoal");
+    const savingsInput = document.getElementById("currentSavings");
+    const weeksInput = document.getElementById("goalWeeks");
+
+    if (goalInput) goalInput.value = goal.target || "";
+    if (savingsInput) savingsInput.value = goal.saved || "";
+
+    if (weeksInput && goal.days) {
+        weeksInput.value = Math.ceil(goal.days / 7);
+    }
+
+    if (typeof calculateSavingsGoal === "function") {
+        calculateSavingsGoal();
+    }
+}
+
+loadSavedSavingsGoal();
