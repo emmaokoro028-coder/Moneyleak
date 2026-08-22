@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Goal | MoneyLeak</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>MoneyLeak</h1>
+    <p>Build your savings goal</p>
+</header>
+
+<main>
+
+    <section class="form-section">
+
+        <h2>🎯 Savings Goal</h2>
+
+        <input
+            type="number"
+            id="savingsTarget"
+            placeholder="Savings target (₦)"
+        >
+
+        <input
+            type="number"
+            id="savingsSaved"
+            placeholder="Already saved (₦)"
+        >
+
+        <input
+            type="number"
+            id="savingsDays"
+            placeholder="Number of days"
+        >
+
+        <button onclick="calculateGoal()">
+            Calculate My Goal
+        </button>
+
+        <div id="goalResult"></div>
+
+        <a href="index.html" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </section>
+
+</main>
+
+<script>
+function calculateGoal() {
+
+    const target = Number(
+        document.getElementById("savingsTarget").value
+    );
+
+    const saved = Number(
+        document.getElementById("savingsSaved").value
+    );
+
+    const days = Number(
+        document.getElementById("savingsDays").value
+    );
+
+    if (!target || days <= 0) {
+        alert("Please enter your target and number of days.");
+        return;
+    }
+
+    const remaining = Math.max(target - saved, 0);
+    const daily = remaining / days;
+    const weekly = daily * 7;
+
+    document.getElementById("goalResult").innerHTML = `
+        <h3>Your Savings Plan</h3>
+        <p>You still need <strong>₦${remaining.toLocaleString()}</strong>.</p>
+        <p>Save approximately <strong>₦${Math.round(weekly).toLocaleString()}</strong> per week.</p>
+        <p>That's about <strong>₦${Math.round(daily).toLocaleString()}</strong> per day.</p>
+    `;
+}
+</script>
+
+</body>
+</html>
