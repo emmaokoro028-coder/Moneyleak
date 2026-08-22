@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Add Income | MoneyLeak</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,25 +13,50 @@
 
 <header>
     <h1>MoneyLeak</h1>
-    <p>Add your income</p>
+    <p>Track your income and stay in control.</p>
 </header>
 
 <main>
 
     <section class="form-section">
 
-        <h2>💰 Add Income</h2>
+        <div class="page-icon">💰</div>
+
+        <h2>Add Income</h2>
+
+        <p class="form-description">
+            Record money you've received so your balance stays accurate.
+        </p>
+
+        <label for="incomeAmount">Amount</label>
 
         <input
             type="number"
             id="incomeAmount"
-            placeholder="Amount (₦)"
+            placeholder="₦0"
         >
+
+        <label for="incomeCategory">Category</label>
+
+        <select id="incomeCategory">
+
+            <option value="">Select category</option>
+
+            <option value="Salary">Salary</option>
+            <option value="Business">Business</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Gift">Gift</option>
+            <option value="Investment">Investment</option>
+            <option value="Other">Other</option>
+
+        </select>
+
+        <label for="incomeNote">Note</label>
 
         <input
             type="text"
-            id="incomeCategory"
-            placeholder="Category e.g. Salary"
+            id="incomeNote"
+            placeholder="e.g. August salary"
         >
 
         <button onclick="addIncome()">
@@ -45,6 +72,7 @@
 </main>
 
 <script>
+
 function addIncome() {
 
     const amount = Number(
@@ -54,16 +82,41 @@ function addIncome() {
     const category =
         document.getElementById("incomeCategory").value;
 
-    if (!amount || !category) {
-        alert("Please enter an amount and category.");
+    const note =
+        document.getElementById("incomeNote").value;
+
+    if (!amount || amount <= 0) {
+        alert("Please enter a valid income amount.");
         return;
     }
 
+    if (!category) {
+        alert("Please select an income category.");
+        return;
+    }
+
+    const income = {
+        amount: amount,
+        category: category,
+        note: note,
+        date: new Date().toISOString()
+    };
+
+    const incomes =
+        JSON.parse(localStorage.getItem("moneyLeakIncomes")) || [];
+
+    incomes.push(income);
+
+    localStorage.setItem(
+        "moneyLeakIncomes",
+        JSON.stringify(incomes)
+    );
+
     alert("Income added successfully!");
 
-    document.getElementById("incomeAmount").value = "";
-    document.getElementById("incomeCategory").value = "";
+    window.location.href = "index.html";
 }
+
 </script>
 
 </body>
