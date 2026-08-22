@@ -1124,3 +1124,66 @@ section {
         transform: translateY(0);
     }
 }
+/* =========================================
+   COMPACT FINANCIAL SUMMARY
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    /* Make dashboard summary cards more compact */
+    .summary,
+    .summary-cards,
+    .dashboard-summary {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .summary > *,
+    .summary-cards > *,
+    .dashboard-summary > * {
+        min-width: 0;
+    }
+
+    /* Compact individual cards */
+    .summary-card,
+    .dashboard-card {
+        padding: 18px 15px;
+        min-height: 120px;
+        border-radius: 16px;
+    }
+
+    .summary-card h3,
+    .dashboard-card h3 {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .summary-card strong,
+    .dashboard-card strong {
+        font-size: 22px;
+    }
+
+    /* Make Total Balance stand out */
+    .balance-card,
+    .total-balance {
+        padding: 24px 18px;
+        min-height: 145px;
+        border-radius: 18px;
+    }
+
+    .balance-card strong,
+    .total-balance strong {
+        font-size: 32px;
+    }
+
+    /* Money Health */
+    .money-health {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .money-health h2 {
+        font-size: 21px;
+    }
+}
