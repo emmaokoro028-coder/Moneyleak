@@ -1634,3 +1634,22 @@ section {
     font-size: 14px !important;
   }
 }
+/* Green Quick Action Buttons */
+.quick-action {
+  background: #123d2d !important;
+  color: #ffffff !important;
+  border: 1px solid #0d2f22 !important;
+}
+
+.quick-action strong {
+  color: #ffffff !important;
+}
+
+.quick-action-icon {
+  color: #ffffff !important;
+}
+
+.quick-action:hover {
+  background: #18553e !important;
+  transform: translateY(-3px);
+}
