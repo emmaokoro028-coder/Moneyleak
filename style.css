@@ -1243,3 +1243,31 @@ section {
         font-size: 20px;
     }
 }
+/* Compact dashboard cards */
+.balance-card,
+.health-card,
+.summary > div {
+    padding: 20px;
+    border-radius: 18px;
+}
+
+.summary {
+    gap: 16px;
+}
+
+.summary > div {
+    min-height: 110px;
+}
+
+.summary h3 {
+    margin: 6px 0 0;
+    font-size: 24px;
+}
+
+.health-card {
+    padding: 20px;
+}
+
+.health-score {
+    font-size: 28px;
+}
