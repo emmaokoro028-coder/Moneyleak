@@ -901,3 +901,72 @@ function calculateSavingsGoal() {
         progress
     }));
 }
+function calculateGoal() {
+    const target = Number(document.getElementById("savingsTarget").value);
+    const saved = Number(document.getElementById("savingsSaved").value);
+    const days = Number(document.getElementById("savingsDays").value);
+
+    if (target <= 0 || saved < 0 || days <= 0) {
+        alert("Please enter valid savings goal details.");
+        return;
+    }
+
+    const remaining = Math.max(target - saved, 0);
+    const daily = remaining / days;
+    const weekly = daily * 7;
+    const progress = Math.min((saved / target) * 100, 100);
+
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + days);
+
+    document.getElementById("goalResult").innerHTML = `
+        <div class="goal-result">
+            <h3>🎯 Your Savings Plan</h3>
+
+            <p>You still need
+                <strong>₦${remaining.toLocaleString()}</strong>
+                to reach your goal.
+            </p>
+
+            <p>Save approximately
+                <strong>₦${Math.ceil(daily).toLocaleString()}</strong>
+                per day.
+            </p>
+
+            <p>That's about
+                <strong>₦${Math.ceil(weekly).toLocaleString()}</strong>
+                per week.
+            </p>
+
+            <div class="goal-progress-bar">
+                <div style="width:${progress}%"></div>
+            </div>
+
+            <p><strong>${Math.round(progress)}% saved</strong></p>
+
+            <p>📅 Target date:
+                <strong>${targetDate.toLocaleDateString("en-NG", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                })}</strong>
+            </p>
+
+            <button onclick="saveSavingsGoal()">💾 Save Goal</button>
+        </div>
+    `;
+}
+
+function saveSavingsGoal() {
+    const target = Number(document.getElementById("savingsTarget").value);
+    const saved = Number(document.getElementById("savingsSaved").value);
+    const days = Number(document.getElementById("savingsDays").value);
+
+    localStorage.setItem("moneyLeakSavingsGoal", JSON.stringify({
+        target,
+        saved,
+        days
+    }));
+
+    alert("Savings goal saved successfully! 🎯");
+}
