@@ -105,7 +105,6 @@ function updateDashboard() {
         formatMoney(totals.expenses);
     
     updateMoneyHealth();
-    updateMonthlyOverview();
     updateSpendingChart();
 }
 function updateMonthlyOverview() {
@@ -779,7 +778,6 @@ function resetSavingsGoal() {
     document.getElementById("progressText").textContent = "0% saved";
     document.getElementById("progressFill").style.width = "0%";
 
-    updateMonthlyOverview();
     }    
     function updateSavingsGoal() {
     const goalInput = document.getElementById("savingsGoal");
@@ -834,7 +832,6 @@ window.addEventListener("DOMContentLoaded", function () {
     calculateSavingsGoal();
 }
 
-updateMonthlyOverview();
 });
 function calculateSavingsGoal() {
     const target = Number(document.getElementById("savingsTarget").value);
