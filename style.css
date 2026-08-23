@@ -1673,3 +1673,68 @@ section {
   background: #18553e !important;
   background-color: #18553e !important;
 }
+/* ================================
+   MONEY LEAK - MONTHLY OVERVIEW
+   ================================ */
+
+.monthly-section {
+  margin: 28px auto;
+  width: 90%;
+}
+
+.monthly-section h2 {
+  color: #123d2d;
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+
+.monthly-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.monthly-card {
+  background: #ffffff;
+  border: 1px solid #dce9e2;
+  border-radius: 18px;
+  padding: 22px 16px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(18, 61, 45, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.monthly-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(18, 61, 45, 0.14);
+}
+
+.monthly-card span {
+  display: block;
+  color: #5b6b64;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.monthly-card strong {
+  display: block;
+  color: #123d2d;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .monthly-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .monthly-card {
+    padding: 20px 12px;
+  }
+
+  .monthly-card strong {
+    font-size: 20px;
+  }
+}
