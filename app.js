@@ -680,47 +680,7 @@ function updateSpendingChart() {
 
     chart.appendChild(insight);
 }
-function updateMonthlyOverview() {
-    const monthlyIncome = document.getElementById("monthlyIncome");
-    const monthlyExpenses = document.getElementById("monthlyExpenses");
-    const monthlySavings = document.getElementById("monthlySavings");
-    const monthlyBalance = document.getElementById("monthlyBalance");
 
-    if (!monthlyIncome || !monthlyExpenses || !monthlySavings || !monthlyBalance) {
-        return;
-    }
-
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-
-    let income = 0;
-    let expenses = 0;
-
-    transactions.forEach(function (transaction) {
-        const transactionDate = new Date(transaction.date);
-
-        if (
-            transactionDate.getMonth() === currentMonth &&
-            transactionDate.getFullYear() === currentYear
-        ) {
-            if (transaction.type === "income") {
-                income += Number(transaction.amount) || 0;
-            }
-
-            if (transaction.type === "expense") {
-                expenses += Number(transaction.amount) || 0;
-            }
-        }
-    });
-
-    const savings = income - expenses;
-
-    monthlyIncome.textContent = formatMoney(income);
-    monthlyExpenses.textContent = formatMoney(expenses);
-    monthlySavings.textContent = formatMoney(savings);
-    monthlyBalance.textContent = formatMoney(savings);
-}
 updateSpendingChart();
 function resetSavingsGoal() {
     localStorage.removeItem("moneyLeakSavingsGoal");
