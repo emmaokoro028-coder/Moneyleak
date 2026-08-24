@@ -628,3 +628,376 @@ hr {
         padding-bottom: max(50px, env(safe-area-inset-bottom));
     }
 }
+/* =========================================
+   MOBILE + IPAD FINAL LAYOUT
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    background: #f4f8f6;
+    color: #173b2d;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+        "SF Pro Text", Arial, sans-serif;
+}
+
+/* Main page container */
+main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+}
+
+/* All major sections */
+section {
+    width: 100%;
+    margin: 0 0 24px;
+}
+
+/* Cards */
+section,
+.card {
+    border-radius: 26px;
+}
+
+/* Headings */
+h1 {
+    font-size: clamp(34px, 8vw, 58px);
+    line-height: 1.05;
+    margin: 0 0 12px;
+}
+
+h2 {
+    font-size: clamp(25px, 6vw, 38px);
+    line-height: 1.15;
+    margin: 0 0 22px;
+}
+
+h3 {
+    font-size: 21px;
+    line-height: 1.2;
+}
+
+/* Paragraphs */
+p {
+    line-height: 1.55;
+}
+
+/* =========================================
+   QUICK ACTIONS
+   ========================================= */
+
+.quick-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.quick-actions button {
+    min-width: 0;
+    min-height: 120px;
+    padding: 16px 10px;
+    border-radius: 24px;
+    font-size: 17px;
+    font-weight: 700;
+    white-space: normal;
+}
+
+/* =========================================
+   BALANCE
+   ========================================= */
+
+.balance-card {
+    width: 100%;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.balance-card strong,
+#balance {
+    font-size: clamp(38px, 10vw, 62px);
+}
+
+/* =========================================
+   MONEY HEALTH
+   ========================================= */
+
+.health-card {
+    width: 100%;
+    padding: 28px;
+}
+
+.health-card p {
+    font-size: 18px;
+}
+
+/* =========================================
+   INCOME + EXPENSES
+   ========================================= */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    width: 100%;
+}
+
+.summary-card {
+    min-width: 0;
+    padding: 26px;
+    border-radius: 24px;
+}
+
+/* =========================================
+   FORMS
+   ========================================= */
+
+input,
+select,
+textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 62px;
+    padding: 15px 18px;
+    border-radius: 18px;
+    font-size: 17px;
+}
+
+button {
+    max-width: 100%;
+}
+
+/* =========================================
+   RECENT TRANSACTIONS
+   ========================================= */
+
+.transaction {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid #dce5e0;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.transaction-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.transaction-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.transaction-actions button {
+    padding: 10px 15px;
+    border-radius: 12px;
+}
+
+/* =========================================
+   SAVINGS GOAL
+   ========================================= */
+
+.savings-section {
+    width: 100%;
+}
+
+.savings-section input {
+    margin-bottom: 12px;
+}
+
+.savings-section button {
+    width: 100%;
+    min-height: 58px;
+    margin-top: 0;
+}
+
+/* =========================================
+   MONEY LEAK
+   ========================================= */
+
+.leak-section {
+    width: 100%;
+}
+
+#leakMessage {
+    width: 100%;
+}
+
+#leakMessage p {
+    margin: 10px 0;
+}
+
+/* =========================================
+   SPENDING THIS MONTH
+   ========================================= */
+
+.chart-section {
+    width: 100%;
+    overflow: hidden;
+}
+
+#spendingChart {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* =========================================
+   SPENDING BREAKDOWN
+   ========================================= */
+
+.breakdown-section {
+    width: 100%;
+    overflow: hidden;
+}
+
+#spendingBreakdown {
+    width: 100%;
+    max-width: 100%;
+}
+
+.breakdown-item {
+    width: 100%;
+    padding: 20px 0;
+}
+
+.breakdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.breakdown-header strong {
+    font-size: 20px;
+}
+
+.breakdown-item p {
+    margin: 8px 0 0;
+}
+
+/* =========================================
+   PROGRESS BARS
+   ========================================= */
+
+.progress,
+.progress-bar,
+.spending-progress {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* =========================================
+   IPHONE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    main {
+        padding: 18px 14px 50px;
+    }
+
+    section {
+        margin-bottom: 18px;
+    }
+
+    .quick-actions {
+        gap: 8px;
+    }
+
+    .quick-actions button {
+        min-height: 110px;
+        padding: 12px 7px;
+        font-size: 15px;
+    }
+
+    .summary-grid {
+        gap: 12px;
+    }
+
+    .summary-card {
+        padding: 20px 16px;
+    }
+
+    .transaction {
+        align-items: flex-start;
+    }
+
+    .transaction-actions {
+        flex-direction: column;
+    }
+
+    h2 {
+        margin-bottom: 18px;
+    }
+}
+
+/* =========================================
+   IPAD
+   ========================================= */
+
+@media (min-width: 601px) and (max-width: 1100px) {
+
+    main {
+        padding: 30px 30px 70px;
+    }
+
+    section {
+        margin-bottom: 28px;
+    }
+
+    .quick-actions {
+        gap: 18px;
+    }
+}
+
+/* =========================================
+   PREVENT HORIZONTAL SCROLL
+   ========================================= */
+
+img,
+svg,
+canvas,
+iframe {
+    max-width: 100%;
+}
+
+table {
+    width: 100%;
+    max-width: 100%;
+}
+
+pre,
+code {
+    max-width: 100%;
+    overflow-x: auto;
+}
