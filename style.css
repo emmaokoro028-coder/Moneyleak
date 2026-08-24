@@ -1,7 +1,8 @@
-/* =========================================
-   MONEYLEAK — CLEAN RESPONSIVE DASHBOARD
-   Mobile + iPhone + iPad + Desktop
-   ========================================= */
+/* =========================================================
+   MONEY LEAK
+   CLEAN RESPONSIVE DESIGN
+   iPHONE + iPAD + DESKTOP
+   ========================================================= */
 
 * {
     box-sizing: border-box;
@@ -12,408 +13,100 @@
 html {
     width: 100%;
     min-height: 100%;
+    overflow-x: hidden;
     scroll-behavior: smooth;
 }
 
 body {
     width: 100%;
     min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-        "SF Pro Text", "Segoe UI", Arial, sans-serif;
-
-    background: #f4f7f5;
-    color: #163c2f;
-
-    line-height: 1.5;
     overflow-x: hidden;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background: #f4f8f6;
+    color: #173b2d;
+    line-height: 1.5;
 }
 
-/* =========================================
-   MAIN PAGE
-   ========================================= */
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+header {
+    width: 100%;
+    padding: 55px 20px 50px;
+    text-align: center;
+
+    background: linear-gradient(
+        135deg,
+        #123d2d,
+        #1d6048
+    );
+
+    color: white;
+}
+
+header h1 {
+    margin: 0 0 10px;
+
+    font-size: clamp(38px, 8vw, 64px);
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: -2px;
+}
+
+header p {
+    margin: 0;
+    color: rgba(255,255,255,0.82);
+    font-size: clamp(16px, 3vw, 22px);
+}
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
 
 main {
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 24px 20px 60px;
+
+    padding:
+        28px
+        max(20px, env(safe-area-inset-right))
+        70px
+        max(20px, env(safe-area-inset-left));
 }
 
-/* =========================================
+/* =========================================================
    GENERAL SECTIONS
-   ========================================= */
+   ========================================================= */
 
 section {
     width: 100%;
-    margin: 0 0 24px;
+    margin-bottom: 24px;
 }
 
 section > h2 {
-    margin-bottom: 16px;
-    color: #163c2f;
-    font-size: clamp(1.35rem, 3vw, 2rem);
-    font-weight: 800;
-    letter-spacing: -0.4px;
-}
-
-/* =========================================
-   CARDS
-   ========================================= */
-
-.card,
-.dashboard-card,
-.money-card,
-.health-card,
-.savings-card,
-.transaction-card,
-.breakdown-section,
-.chart-section,
-.leak-section,
-.savings-section {
-    background: #ffffff;
-    border: 1px solid #e1e8e4;
-    border-radius: 24px;
-    box-shadow: 0 8px 30px rgba(20, 60, 45, 0.07);
-}
-
-/* =========================================
-   DASHBOARD
-   ========================================= */
-
-.dashboard,
-.dashboard-section,
-.summary-section {
-    width: 100%;
-}
-
-.dashboard-cards,
-.summary-cards,
-.money-cards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-}
-
-.dashboard-card,
-.money-card {
-    padding: 24px;
-    min-width: 0;
-}
-
-.dashboard-card span,
-.money-card span {
-    display: block;
-    margin-bottom: 8px;
-    color: #718078;
-    font-size: 0.95rem;
-    font-weight: 600;
-}
-
-.dashboard-card strong,
-.money-card strong {
-    display: block;
-    color: #163c2f;
-    font-size: clamp(1.4rem, 4vw, 2rem);
-    font-weight: 800;
-    overflow-wrap: anywhere;
-}
-
-/* =========================================
-   FORMS
-   ========================================= */
-
-form {
-    width: 100%;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    min-height: 52px;
-    padding: 14px 16px;
-
-    border: 1px solid #d6dfda;
-    border-radius: 14px;
-
-    background: #ffffff;
-    color: #163c2f;
-
-    font-family: inherit;
-    font-size: 16px;
-
-    outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    border-color: #3fa463;
-    box-shadow: 0 0 0 3px rgba(63, 164, 99, 0.12);
-}
-
-button {
-    min-height: 52px;
-    padding: 13px 20px;
-
-    border: none;
-    border-radius: 14px;
-
-    background: #164535;
-    color: #ffffff;
-
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: 700;
-
-    cursor: pointer;
-    transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-button:hover {
-    opacity: 0.92;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-/* =========================================
-   MONEY HEALTH
-   ========================================= */
-
-.health-section {
-    width: 100%;
-}
-
-.health-card {
-    padding: 24px;
-}
-
-.health-score {
-    font-size: clamp(2rem, 7vw, 3.5rem);
-    font-weight: 800;
-    color: #163c2f;
-}
-
-.health-fill,
-.progress-fill {
-    width: 100%;
-    height: 12px;
-    margin-top: 14px;
-
-    background: #e5e9e7;
-    border-radius: 999px;
-    overflow: hidden;
-}
-
-.health-fill > *,
-.progress-fill > * {
-    height: 100%;
-    border-radius: inherit;
-    background: #50a967;
-}
-
-/* =========================================
-   SAVINGS GOAL
-   ========================================= */
-
-.savings-section {
-    padding: 28px;
-}
-
-.savings-section h2 {
     margin-bottom: 20px;
-}
 
-.savings-goal {
-    width: 100%;
-}
-
-.savings-result {
-    margin-top: 18px;
-}
-
-.savings-result h3 {
-    margin-bottom: 6px;
-    font-size: 1.3rem;
-}
-
-#savedAmount,
-#targetAmount,
-#remainingAmount {
+    color: #173b2d;
+    font-size: clamp(25px, 5vw, 36px);
+    line-height: 1.15;
     font-weight: 800;
+    letter-spacing: -0.8px;
 }
-
-/* =========================================
-   MONEY LEAK
-   ========================================= */
-
-.leak-section {
-    padding: 28px;
-}
-
-#leakMessage {
-    width: 100%;
-}
-
-#leakMessage p {
-    margin: 0;
-    color: #69766f;
-    font-size: 1rem;
-}
-
-#leakMessage strong {
-    color: #163c2f;
-}
-
-/* =========================================
-   SPENDING CHART
-   ========================================= */
-
-.chart-section {
-    padding: 28px;
-}
-
-.spending-chart {
-    width: 100%;
-    min-height: 220px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-}
-
-.spending-chart p {
-    color: #78847e;
-    text-align: center;
-}
-
-/* =========================================
-   SPENDING BREAKDOWN
-   ========================================= */
-
-.breakdown-section {
-    padding: 28px;
-}
-
-.breakdown-section h2 {
-    margin-bottom: 22px;
-}
-
-/* Container created by app.js */
-#spendingBreakdown {
-    width: 100%;
-}
-
-/* Each category */
-.breakdown-item {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 22px;
-
-    background: #ffffff;
-    border: 1px solid #e1e7e3;
-    border-radius: 20px;
-
-    box-shadow: 0 4px 18px rgba(20, 60, 45, 0.05);
-}
-
-.breakdown-item:last-child {
-    margin-bottom: 0;
-}
-
-/* Header containing category + amount */
-.breakdown-header {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-
-    margin-bottom: 14px;
-}
-
-.breakdown-header strong:first-child {
-    color: #163c2f;
-    font-size: clamp(1.05rem, 3vw, 1.25rem);
-    font-weight: 800;
-}
-
-.breakdown-header strong:last-child {
-    color: #163c2f;
-    font-size: clamp(1rem, 3vw, 1.2rem);
-    font-weight: 800;
-    text-align: right;
-    white-space: nowrap;
-}
-
-/* Progress bar */
-.breakdown-progress {
-    width: 100%;
-    height: 12px;
-
-    margin: 8px 0 10px;
-
-    background: #e5e9e7;
-    border-radius: 999px;
-    overflow: hidden;
-}
-
-.breakdown-progress-bar {
-    height: 100%;
-    border-radius: inherit;
-    background: #50a967;
-}
-
-/* Percentage */
-.breakdown-percentage {
-    color: #718078;
-    font-size: 0.95rem;
-    font-weight: 600;
-}
-
-/* =========================================
-   TRANSACTIONS
-   ========================================= */
-
-.transactions-section {
-    width: 100%;
-}
-
-.transactions {
-    width: 100%;
-}
-
-.transaction {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 16px;
-
-    padding: 18px 20px;
-    margin-bottom: 12px;
-
-    background: #ffffff;
-    border: 1px solid #e1e8e4;
-    border-radius: 18px;
-}
-
-.transaction:last-child {
-    margin-bottom: 0;
-}
-
-/* =========================================
-   TEXT
-   ========================================= */
 
 p {
-    color: #69766f;
+    color: #68766f;
+    line-height: 1.55;
 }
 
 h1,
@@ -423,581 +116,234 @@ h4 {
     line-height: 1.2;
 }
 
-/* =========================================
-   DIVIDERS
-   ========================================= */
-
-hr {
-    border: 0;
-    border-top: 1px solid #e1e7e3;
-    margin: 24px 0;
-}
-
-/* =========================================
-   EMPTY STATES
-   ========================================= */
-
-#spendingBreakdown > p,
-#spendingChart > p,
-#leakMessage > p {
-    padding: 20px 0;
-    color: #7b8781;
-    text-align: center;
-}
-
-/* =========================================
-   IMPORTANT:
-   MONTHLY OVERVIEW MUST STAY HIDDEN
-   ========================================= */
-
-.monthly-section,
-#monthlyOverview,
-.monthly-overview {
-    display: none !important;
-}
-
-/* =========================================
-   TABLET / iPAD
-   ========================================= */
-
-@media (min-width: 600px) and (max-width: 1100px) {
-
-    main {
-        max-width: 900px;
-        padding: 32px 28px 70px;
-    }
-
-    section {
-        margin-bottom: 28px;
-    }
-
-    .dashboard-cards,
-    .summary-cards,
-    .money-cards {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 18px;
-    }
-
-    .dashboard-card,
-    .money-card,
-    .health-card,
-    .savings-section,
-    .leak-section,
-    .chart-section,
-    .breakdown-section {
-        padding: 28px;
-    }
-
-    .breakdown-item {
-        padding: 24px;
-    }
-}
-
-/* =========================================
-   iPHONE / SMALL SCREENS
-   ========================================= */
-
-@media (max-width: 599px) {
-
-    body {
-        font-size: 16px;
-    }
-
-    main {
-        width: 100%;
-        padding: 18px 14px 50px;
-    }
-
-    section {
-        margin-bottom: 18px;
-    }
-
-    section > h2 {
-        margin-bottom: 12px;
-        font-size: 1.35rem;
-    }
-
-    /* Stack dashboard cards */
-    .dashboard-cards,
-    .summary-cards,
-    .money-cards {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .dashboard-card,
-    .money-card {
-        padding: 20px;
-    }
-
-    .health-card,
-    .savings-section,
-    .leak-section,
-    .chart-section,
-    .breakdown-section {
-        padding: 20px;
-        border-radius: 20px;
-    }
-
-    /* Breakdown */
-    .breakdown-item {
-        padding: 18px;
-        border-radius: 18px;
-        margin-bottom: 14px;
-    }
-
-    .breakdown-header {
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .breakdown-header strong:first-child {
-        font-size: 1.05rem;
-    }
-
-    .breakdown-header strong:last-child {
-        font-size: 1rem;
-    }
-
-    /* Buttons */
-    button {
-        width: 100%;
-    }
-
-    /* Transactions */
-    .transaction {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    /* Inputs */
-    input,
-    select,
-    textarea {
-        min-height: 50px;
-    }
-
-    /* Chart */
-    .spending-chart {
-        min-height: 180px;
-        padding: 12px;
-    }
-}
-
-/* =========================================
-   VERY SMALL PHONES
-   ========================================= */
-
-@media (max-width: 380px) {
-
-    main {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .health-card,
-    .savings-section,
-    .leak-section,
-    .chart-section,
-    .breakdown-section {
-        padding: 16px;
-    }
-
-    .breakdown-item {
-        padding: 15px;
-    }
-
-    .breakdown-header {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .breakdown-header strong:last-child {
-        text-align: left;
-    }
-}
-
-/* =========================================
-   SAFE AREA FOR iPHONE
-   ========================================= */
-
-@supports (padding: max(0px)) {
-    main {
-        padding-left: max(14px, env(safe-area-inset-left));
-        padding-right: max(14px, env(safe-area-inset-right));
-        padding-bottom: max(50px, env(safe-area-inset-bottom));
-    }
-}
-/* =========================================
-   MOBILE + IPAD FINAL LAYOUT
-   ========================================= */
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    width: 100%;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-    background: #f4f8f6;
-    color: #173b2d;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-        "SF Pro Text", Arial, sans-serif;
-}
-
-/* Main page container */
-main {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px 20px 60px;
-}
-
-/* All major sections */
-section {
-    width: 100%;
-    margin: 0 0 24px;
-}
-
-/* Cards */
-section,
-.card {
-    border-radius: 26px;
-}
-
-/* Headings */
-h1 {
-    font-size: clamp(34px, 8vw, 58px);
-    line-height: 1.05;
-    margin: 0 0 12px;
-}
-
-h2 {
-    font-size: clamp(25px, 6vw, 38px);
-    line-height: 1.15;
-    margin: 0 0 22px;
-}
-
-h3 {
-    font-size: 21px;
-    line-height: 1.2;
-}
-
-/* Paragraphs */
-p {
-    line-height: 1.55;
-}
-
-/* =========================================
+/* =========================================================
    QUICK ACTIONS
-   ========================================= */
+   ========================================================= */
 
 .quick-actions {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
 }
 
-.quick-actions button {
-    min-width: 0;
-    min-height: 120px;
-    padding: 16px 10px;
-    border-radius: 24px;
-    font-size: 17px;
-    font-weight: 700;
-    white-space: normal;
-}
-
-/* =========================================
-   BALANCE
-   ========================================= */
-
-.balance-card {
+.quick-action-grid {
     width: 100%;
-    min-height: 190px;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.quick-action {
+    min-width: 0;
+    min-height: 135px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    padding: 20px 14px;
+
+    border-radius: 24px;
+
+    background: #123d2d !important;
+    color: white !important;
+
     text-align: center;
-    padding: 30px 20px;
+    text-decoration: none;
+
+    box-shadow:
+        0 10px 25px rgba(18,61,45,0.15);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.balance-card strong,
-#balance {
-    font-size: clamp(38px, 10vw, 62px);
+.quick-action:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 15px 30px rgba(18,61,45,0.22);
 }
 
-/* =========================================
-   MONEY HEALTH
-   ========================================= */
+.quick-action:active {
+    transform: scale(0.98);
+}
 
-.health-card {
+.quick-action-icon {
+    display: block;
+    margin-bottom: 10px;
+
+    font-size: 30px;
+    line-height: 1;
+}
+
+.quick-action strong {
+    color: white !important;
+    font-size: 17px;
+    line-height: 1.2;
+}
+
+/* =========================================================
+   BALANCE
+   ========================================================= */
+
+.balance-card {
     width: 100%;
-    padding: 28px;
+    min-height: 200px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 35px 20px;
+
+    border-radius: 28px;
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(77,155,113,0.5),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #123d2d,
+            #1d654b
+        );
+
+    color: white;
+
+    text-align: center;
+
+    box-shadow:
+        0 12px 35px rgba(18,61,45,0.15);
 }
 
-.health-card p {
+.balance-card p {
+    margin-bottom: 8px;
+    color: rgba(255,255,255,0.8);
     font-size: 18px;
 }
 
-/* =========================================
-   INCOME + EXPENSES
-   ========================================= */
+.balance-card h2 {
+    margin: 0;
 
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-    width: 100%;
+    color: white;
+
+    font-size: clamp(42px, 10vw, 68px);
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: -2px;
 }
 
-.summary-card {
-    min-width: 0;
-    padding: 26px;
-    border-radius: 24px;
+/* =========================================================
+   MONEY HEALTH
+   ========================================================= */
+
+.health-card {
+    width: 100%;
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e8e3;
+    border-radius: 26px;
+
+    box-shadow:
+        0 8px 30px rgba(20,60,45,0.07);
 }
 
-/* =========================================
-   FORMS
-   ========================================= */
-
-input,
-select,
-textarea {
+.health-header {
     width: 100%;
-    max-width: 100%;
-    min-height: 62px;
-    padding: 15px 18px;
-    border-radius: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.health-label {
+    margin-bottom: 5px;
+
+    color: #718078;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.health-header h2 {
+    margin: 0;
+
+    color: #173b2d;
+    font-size: clamp(38px, 8vw, 54px);
+    font-weight: 850;
+}
+
+.health-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #e9faef;
+
+    font-size: 30px;
+}
+
+.health-bar {
+    width: 100%;
+    height: 13px;
+
+    margin: 22px 0 18px;
+
+    overflow: hidden;
+
+    background: #e5eae7;
+    border-radius: 999px;
+}
+
+.health-fill {
+    width: 0%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        #24c76b,
+        #50a967
+    );
+
+    border-radius: inherit;
+
+    transition: width 0.4s ease;
+}
+
+#healthMessage {
+    margin-bottom: 8px;
+
+    color: #52615a;
+    font-size: 18px;
+}
+
+#healthExplanation {
+    color: #6e7b75;
     font-size: 17px;
 }
 
-button {
-    max-width: 100%;
-}
+/* =========================================================
+   INCOME + EXPENSES
+   ========================================================= */
 
-/* =========================================
-   RECENT TRANSACTIONS
-   ========================================= */
-
-.transaction {
+.summary {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 20px 0;
-    border-bottom: 1px solid #dce5e0;
-}
 
-.transaction:last-child {
-    border-bottom: none;
-}
-
-.transaction-info {
-    min-width: 0;
-    flex: 1;
-}
-
-.transaction-actions {
-    display: flex;
-    gap: 8px;
-    flex-shrink: 0;
-}
-
-.transaction-actions button {
-    padding: 10px 15px;
-    border-radius: 12px;
-}
-
-/* =========================================
-   SAVINGS GOAL
-   ========================================= */
-
-.savings-section {
-    width: 100%;
-}
-
-.savings-section input {
-    margin-bottom: 12px;
-}
-
-.savings-section button {
-    width: 100%;
-    min-height: 58px;
-    margin-top: 0;
-}
-
-/* =========================================
-   MONEY LEAK
-   ========================================= */
-
-.leak-section {
-    width: 100%;
-}
-
-#leakMessage {
-    width: 100%;
-}
-
-#leakMessage p {
-    margin: 10px 0;
-}
-
-/* =========================================
-   SPENDING THIS MONTH
-   ========================================= */
-
-.chart-section {
-    width: 100%;
-    overflow: hidden;
-}
-
-#spendingChart {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-/* =========================================
-   SPENDING BREAKDOWN
-   ========================================= */
-
-.breakdown-section {
-    width: 100%;
-    overflow: hidden;
-}
-
-#spendingBreakdown {
-    width: 100%;
-    max-width: 100%;
-}
-
-.breakdown-item {
-    width: 100%;
-    padding: 20px 0;
-}
-
-.breakdown-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.breakdown-header strong {
-    font-size: 20px;
-}
-
-.breakdown-item p {
-    margin: 8px 0 0;
-}
-
-/* =========================================
-   PROGRESS BARS
-   ========================================= */
-
-.progress,
-.progress-bar,
-.spending-progress {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-/* =========================================
-   IPHONE
-   ========================================= */
-
-@media (max-width: 600px) {
-
-    main {
-        padding: 18px 14px 50px;
-    }
-
-    section {
-        margin-bottom: 18px;
-    }
-
-    .quick-actions {
-        gap: 8px;
-    }
-
-    .quick-actions button {
-        min-height: 110px;
-        padding: 12px 7px;
-        font-size: 15px;
-    }
-
-    .summary-grid {
-        gap: 12px;
-    }
-
-    .summary-card {
-        padding: 20px 16px;
-    }
-
-    .transaction {
-        align-items: flex-start;
-    }
-
-    .transaction-actions {
-        flex-direction: column;
-    }
-
-    h2 {
-        margin-bottom: 18px;
-    }
-}
-
-/* =========================================
-   IPAD
-   ========================================= */
-
-@media (min-width: 601px) and (max-width: 1100px) {
-
-    main {
-        padding: 30px 30px 70px;
-    }
-
-    section {
-        margin-bottom: 28px;
-    }
-
-    .quick-actions {
-        gap: 18px;
-    }
-}
-
-/* =========================================
-   PREVENT HORIZONTAL SCROLL
-   ========================================= */
-
-img,
-svg,
-canvas,
-iframe {
-    max-width: 100%;
-}
-
-table {
-    width: 100%;
-    max-width: 100%;
-}
-
-pre,
-code {
-    max-width: 100%;
-    overflow-x: auto;
-}
+    display: grid;
+    grid-template-columns: repeat(
