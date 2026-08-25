@@ -1127,3 +1127,89 @@ select:focus-visible {
     font-size: 28px;
   }
 }
+/* =========================================================
+   PREMIUM SAVINGS GOAL DESIGN
+   ========================================================= */
+
+.savings-section {
+  background: #ffffff;
+  border: 1px solid #dfe8e3;
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.savings-section h2 {
+  margin-bottom: 24px;
+}
+
+.savings-section input {
+  display: block;
+  width: 100%;
+  min-height: 58px;
+  margin-bottom: 14px;
+  padding: 0 18px;
+  border: 1px solid #d6e2dc;
+  border-radius: 16px;
+  background: #fbfdfc;
+  font-size: 17px;
+}
+
+.savings-section input:focus {
+  outline: none;
+  border-color: #2f9e68;
+  box-shadow: 0 0 0 4px rgba(47, 158, 104, 0.10);
+}
+
+.savings-section button {
+  width: 100%;
+  min-height: 58px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 16px;
+  background: #164d39;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+
+.savings-section button:hover {
+  background: #206b4d;
+  transform: translateY(-2px);
+}
+
+.savings-section button:last-of-type {
+  background: #edf3ef;
+  color: #355848;
+}
+
+.savings-progress {
+  margin-top: 24px;
+  padding: 22px;
+  background: linear-gradient(135deg, #f7fbf8, #eef7f1);
+  border: 1px solid #d9e7df;
+  border-radius: 20px;
+}
+
+.savings-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.savings-progress-header strong {
+  color: #173b2d;
+}
+
+@media (max-width: 600px) {
+  .savings-section {
+    padding: 22px;
+  }
+
+  .savings-section h2 {
+    font-size: 32px;
+  }
+}
