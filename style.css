@@ -1,7 +1,7 @@
 /* =========================================================
    MONEY LEAK
    CLEAN RESPONSIVE DESIGN
-   iPHONE + iPAD + DESKTOP
+   iPHONE • iPAD • DESKTOP
    ========================================================= */
 
 * {
@@ -11,9 +11,6 @@
 }
 
 html {
-    width: 100%;
-    min-height: 100%;
-    overflow-x: hidden;
     scroll-behavior: smooth;
 }
 
@@ -42,47 +39,41 @@ body {
 
 header {
     width: 100%;
-    padding: 55px 20px 50px;
+    padding: 65px 20px 70px;
     text-align: center;
 
-    background: linear-gradient(
-        135deg,
-        #123d2d,
-        #1d6048
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #103f2f,
+            #18563f
+        );
 
     color: white;
 }
 
 header h1 {
-    margin: 0 0 10px;
-
-    font-size: clamp(38px, 8vw, 64px);
+    margin: 0 0 12px;
+    font-size: clamp(42px, 9vw, 76px);
     line-height: 1;
-    font-weight: 850;
+    font-weight: 900;
     letter-spacing: -2px;
 }
 
 header p {
-    margin: 0;
-    color: rgba(255,255,255,0.82);
-    font-size: clamp(16px, 3vw, 22px);
+    font-size: clamp(18px, 4vw, 28px);
+    opacity: 0.92;
 }
 
 /* =========================================================
-   MAIN CONTAINER
+   MAIN
    ========================================================= */
 
 main {
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-
-    padding:
-        28px
-        max(20px, env(safe-area-inset-right))
-        70px
-        max(20px, env(safe-area-inset-left));
+    padding: 35px 20px 80px;
 }
 
 /* =========================================================
@@ -91,29 +82,15 @@ main {
 
 section {
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 }
 
-section > h2 {
+section h2 {
     margin-bottom: 20px;
-
     color: #173b2d;
-    font-size: clamp(25px, 5vw, 36px);
+    font-size: clamp(28px, 5vw, 40px);
     line-height: 1.15;
-    font-weight: 800;
-    letter-spacing: -0.8px;
-}
-
-p {
-    color: #68766f;
-    line-height: 1.55;
-}
-
-h1,
-h2,
-h3,
-h4 {
-    line-height: 1.2;
+    font-weight: 850;
 }
 
 /* =========================================================
@@ -121,38 +98,34 @@ h4 {
    ========================================================= */
 
 .quick-actions {
-    width: 100%;
+    padding: 5px 0;
 }
 
 .quick-action-grid {
-    width: 100%;
-
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 }
 
 .quick-action {
-    min-width: 0;
-    min-height: 135px;
+    min-height: 165px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    padding: 20px 14px;
+    padding: 20px;
 
-    border-radius: 24px;
+    background: #0f4936;
+    color: white;
 
-    background: #123d2d !important;
-    color: white !important;
+    border-radius: 28px;
 
-    text-align: center;
     text-decoration: none;
 
     box-shadow:
-        0 10px 25px rgba(18,61,45,0.15);
+        0 10px 25px rgba(20, 60, 45, 0.12);
 
     transition:
         transform 0.2s ease,
@@ -160,10 +133,10 @@ h4 {
 }
 
 .quick-action:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 
     box-shadow:
-        0 15px 30px rgba(18,61,45,0.22);
+        0 15px 30px rgba(20, 60, 45, 0.18);
 }
 
 .quick-action:active {
@@ -172,16 +145,14 @@ h4 {
 
 .quick-action-icon {
     display: block;
-    margin-bottom: 10px;
-
-    font-size: 30px;
+    margin-bottom: 12px;
+    font-size: 42px;
     line-height: 1;
 }
 
 .quick-action strong {
-    color: white !important;
-    font-size: 17px;
-    line-height: 1.2;
+    font-size: 22px;
+    text-align: center;
 }
 
 /* =========================================================
@@ -189,53 +160,47 @@ h4 {
    ========================================================= */
 
 .balance-card {
-    width: 100%;
-    min-height: 200px;
+    min-height: 260px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    padding: 35px 20px;
+    padding: 35px;
 
-    border-radius: 28px;
+    border-radius: 30px;
 
     background:
         radial-gradient(
-            circle at 85% 20%,
-            rgba(77,155,113,0.5),
-            transparent 35%
+            circle at 85% 15%,
+            rgba(255,255,255,0.12),
+            transparent 30%
         ),
         linear-gradient(
             135deg,
-            #123d2d,
-            #1d654b
+            #0d4633,
+            #287d5b
         );
 
     color: white;
 
-    text-align: center;
-
     box-shadow:
-        0 12px 35px rgba(18,61,45,0.15);
+        0 12px 30px rgba(20, 60, 45, 0.14);
 }
 
 .balance-card p {
-    margin-bottom: 8px;
-    color: rgba(255,255,255,0.8);
-    font-size: 18px;
+    margin-bottom: 10px;
+    font-size: 22px;
+    opacity: 0.9;
 }
 
 .balance-card h2 {
     margin: 0;
-
     color: white;
-
-    font-size: clamp(42px, 10vw, 68px);
+    font-size: clamp(48px, 10vw, 78px);
+    font-weight: 900;
     line-height: 1;
-    font-weight: 850;
-    letter-spacing: -2px;
 }
 
 /* =========================================================
@@ -244,47 +209,39 @@ h4 {
 
 .health-card {
     width: 100%;
-
     padding: 30px;
 
-    background: #ffffff;
+    background: white;
 
-    border: 1px solid #e0e8e3;
-    border-radius: 26px;
+    border: 1px solid #dfe8e3;
+    border-radius: 28px;
 
     box-shadow:
-        0 8px 30px rgba(20,60,45,0.07);
+        0 10px 30px rgba(20, 60, 45, 0.07);
 }
 
 .health-header {
-    width: 100%;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 20px;
 }
 
 .health-label {
     margin-bottom: 5px;
-
-    color: #718078;
-    font-size: 18px;
-    font-weight: 600;
+    color: #687a72;
+    font-size: 23px;
 }
 
 .health-header h2 {
     margin: 0;
-
-    color: #173b2d;
-    font-size: clamp(38px, 8vw, 54px);
-    font-weight: 850;
+    font-size: clamp(48px, 10vw, 68px);
+    font-weight: 900;
 }
 
 .health-icon {
-    width: 64px;
-    height: 64px;
+    width: 82px;
+    height: 82px;
 
     display: flex;
     align-items: center;
@@ -292,34 +249,34 @@ h4 {
 
     flex-shrink: 0;
 
+    background: #e9f8ef;
     border-radius: 50%;
 
-    background: #e9faef;
-
-    font-size: 30px;
+    font-size: 40px;
 }
 
 .health-bar {
     width: 100%;
-    height: 13px;
+    height: 18px;
 
-    margin: 22px 0 18px;
+    margin: 25px 0;
 
     overflow: hidden;
 
-    background: #e5eae7;
+    background: #e3eae6;
     border-radius: 999px;
 }
 
 .health-fill {
-    width: 0%;
+    width: 50%;
     height: 100%;
 
-    background: linear-gradient(
-        90deg,
-        #24c76b,
-        #50a967
-    );
+    background:
+        linear-gradient(
+            90deg,
+            #42bf68,
+            #2f9f57
+        );
 
     border-radius: inherit;
 
@@ -327,15 +284,14 @@ h4 {
 }
 
 #healthMessage {
-    margin-bottom: 8px;
-
-    color: #52615a;
-    font-size: 18px;
+    margin-bottom: 10px;
+    color: #53665e;
+    font-size: 22px;
 }
 
 #healthExplanation {
-    color: #6e7b75;
-    font-size: 17px;
+    color: #71817a;
+    font-size: 19px;
 }
 
 /* =========================================================
@@ -343,7 +299,757 @@ h4 {
    ========================================================= */
 
 .summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.summary > div {
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid #dfe8e3;
+    border-radius: 24px;
+
+    box-shadow:
+        0 8px 25px rgba(20, 60, 45, 0.06);
+}
+
+.summary p {
+    margin-bottom: 5px;
+    color: #71817a;
+    font-size: 20px;
+}
+
+.summary h3 {
+    color: #173b2d;
+    font-size: clamp(28px, 6vw, 42px);
+    font-weight: 850;
+}
+
+/* =========================================================
+   ADD TRANSACTION
+   ========================================================= */
+
+.add-section {
+    padding: 30px;
+
+    background: white;
+
+    border: 1px solid #dfe8e3;
+    border-radius: 28px;
+
+    box-shadow:
+        0 10px 30px rgba(20, 60, 45, 0.07);
+}
+
+.add-section h2 {
+    margin-bottom: 22px;
+}
+
+.add-section input,
+.add-section select,
+.savings-section input {
+    width: 100%;
+    min-height: 60px;
+
+    margin-bottom: 14px;
+    padding: 14px 18px;
+
+    background: white;
+    color: #173b2d;
+
+    border: 1px solid #d6dfda;
+    border-radius: 18px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 18px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.add-section input:focus,
+.add-section select:focus,
+.savings-section input:focus {
+    border-color: #3fa463;
+
+    box-shadow:
+        0 0 0 4px rgba(63, 164, 99, 0.12);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button {
+    width: 100%;
+    min-height: 58px;
+
+    padding: 14px 20px;
+
+    border: none;
+    border-radius: 17px;
+
+    background: #164f3a;
+    color: white;
+
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+button:hover {
+    background: #0f402f;
+
+    box-shadow:
+        0 8px 20px rgba(20, 60, 45, 0.12);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* =========================================================
+   RECENT TRANSACTIONS
+   ========================================================= */
+
+.transactions {
+    padding: 30px;
+
+    background: white;
+
+    border: 1px solid #dfe8e3;
+    border-radius: 28px;
+
+    box-shadow:
+        0 10px 30px rgba(20, 60, 45, 0.07);
+}
+
+#transactionList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.transaction {
     width: 100%;
 
-    display: grid;
-    grid-template-columns: repeat(
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 20px;
+
+    background: #f8faf9;
+
+    border: 1px solid #e0e8e4;
+    border-radius: 20px;
+}
+
+.transaction-info {
+    min-width: 0;
+}
+
+.transaction strong {
+    display: block;
+    margin-bottom: 4px;
+
+    color: #173b2d;
+    font-size: 21px;
+}
+
+.transaction small {
+    color: #728079;
+    font-size: 15px;
+}
+
+.transaction-income {
+    color: #26834c !important;
+}
+
+.transaction-expense {
+    color: #c24d4d !important;
+}
+
+.transaction-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.edit-transaction,
+.delete-transaction {
+    width: auto;
+    min-height: 44px;
+
+    padding: 9px 15px;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+}
+
+.edit-transaction {
+    background: #dff4e5;
+    color: #277347;
+}
+
+.delete-transaction {
+    background: #f9dddd;
+    color: #b43b3b;
+}
+
+/* =========================================================
+   SAVINGS GOAL
+   ========================================================= */
+
+.savings-section {
+    padding: 30px;
+
+    background: white;
+
+    border-left: 8px solid #d2ae32;
+    border-radius: 28px;
+
+    box-shadow:
+        0 10px 30px rgba(20, 60, 45, 0.07);
+}
+
+.savings-inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+.savings-section button {
+    margin-bottom: 3px;
+}
+
+.reset-button {
+    background: #173b2d;
+}
+
+.savings-result {
+    margin-top: 20px;
+}
+
+.savings-progress {
+    margin-top: 24px;
+    padding: 24px;
+
+    background: #f7faf8;
+
+    border: 1px solid #dfe8e3;
+    border-radius: 22px;
+}
+
+.savings-progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 18px;
+
+    font-size: 18px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 16px;
+
+    margin-bottom: 18px;
+
+    overflow: hidden;
+
+    background: #e4ebe7;
+    border-radius: 999px;
+}
+
+.progress-fill {
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #36b764,
+            #19864b
+        );
+
+    border-radius: inherit;
+
+    transition: width 0.4s ease;
+}
+
+.savings-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+
+    color: #53665e;
+    font-size: 18px;
+}
+
+.savings-stats strong {
+    color: #173b2d;
+}
+
+#remainingAmount {
+    margin-top: 12px;
+    color: #66756f;
+    font-size: 18px;
+}
+
+/* =========================================================
+   MONEY LEAK
+   ========================================================= */
+
+.leak-section {
+    padding: 30px;
+
+    background: white;
+
+    border-left: 8px solid #c94d4d;
+    border-radius: 28px;
+
+    box-shadow:
+        0 10px 30px rgba(20, 60, 45, 0.07);
+}
+
+.leak-section h2 {
+    color: #173b2d;
+}
+
+#leakMessage {
+    color: #566760;
+    font-size: 20px;
+}
+
+#leakMessage strong {
+    color: #173b2d;
+}
+
+.leak-saving-tip {
+    margin-top: 20px;
+    padding-top: 20px;
+
+    border-top: 1px solid #ddd;
+
+    font-size: 19px;
+}
+
+/* =========================================================
+   SPENDING THIS MONTH
+   ========================================================= */
+
+.chart-section {
+    padding: 30px;
+
+    background: white;
+
+    border-radius: 28px;
+
+    border: 1px solid #dfe8e3;
+
+    box-shadow:
+        0 10px 30px rgba(20, 60, 45, 0.07);
+}
+
+.spending-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.spending-item {
+    padding: 20px;
+
+    background: #f8faf9;
+
+    border-radius: 20px;
+
+    border: 1px solid #e0e8e4;
+}
+
+.spending-item-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 10px;
+}
+
+.spending-item-header strong {
+    font-size: 20px;
+}
+
+.spending-bar {
+    width: 100%;
+    height: 15px;
+
+    overflow: hidden;
+
+    background: #e4ebe7;
+    border-radius: 999px;
+}
+
+.spending-bar-fill {
+    height: 100%;
+
+    background: #4eac69;
+
+    border-radius: inherit;
+}
+
+.spending-percentage {
+    margin-top: 8px;
+    color: #718079;
+}
+
+/* =========================================================
+   SPENDING BREAKDOWN
+   ========================================================= */
+
+.breakdown-section {
+    padding: 30px;
+
+    background: white;
+
+    border-radius: 28px;
+
+    border: 1px solid #dfe8e3;
+
+    box-shadow:
+        0 10px 30px rgba(20, 60, 45, 0.07);
+}
+
+#spendingBreakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.breakdown-item {
+    padding: 22px;
+
+    background: #f8faf9;
+
+    border: 1px solid #e0e8e4;
+    border-radius: 20px;
+}
+
+.breakdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 10px;
+}
+
+.breakdown-header strong {
+    font-size: 21px;
+}
+
+.breakdown-percentage {
+    color: #687a72;
+    font-size: 17px;
+}
+
+.breakdown-bar {
+    width: 100%;
+    height: 15px;
+
+    overflow: hidden;
+
+    background: #e3eae6;
+    border-radius: 999px;
+}
+
+.breakdown-bar-fill {
+    height: 100%;
+    background: #4eac69;
+    border-radius: inherit;
+}
+
+.total-expenses {
+    margin-top: 20px;
+    padding-top: 20px;
+
+    border-top: 2px solid #d8e1dc;
+
+    font-size: 22px;
+    font-weight: 850;
+}
+
+/* =========================================================
+   EMPTY STATES
+   ========================================================= */
+
+.empty-state {
+    padding: 25px;
+
+    text-align: center;
+
+    color: #73817b;
+
+    background: #f8faf9;
+
+    border-radius: 18px;
+}
+
+/* =========================================================
+   MOBILE — iPHONE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 48px 18px 55px;
+    }
+
+    header h1 {
+        font-size: 48px;
+        letter-spacing: -1.5px;
+    }
+
+    header p {
+        font-size: 18px;
+    }
+
+    main {
+        padding: 25px 14px 60px;
+    }
+
+    section {
+        margin-bottom: 22px;
+    }
+
+    section h2 {
+        font-size: 30px;
+    }
+
+    .quick-action-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .quick-action {
+        min-height: 150px;
+        padding: 12px 7px;
+        border-radius: 22px;
+    }
+
+    .quick-action-icon {
+        font-size: 34px;
+    }
+
+    .quick-action strong {
+        font-size: 17px;
+    }
+
+    .balance-card {
+        min-height: 210px;
+        padding: 25px 15px;
+        border-radius: 25px;
+    }
+
+    .balance-card p {
+        font-size: 19px;
+    }
+
+    .balance-card h2 {
+        font-size: 52px;
+    }
+
+    .health-card,
+    .add-section,
+    .transactions,
+    .savings-section,
+    .leak-section,
+    .chart-section,
+    .breakdown-section {
+        padding: 22px;
+        border-radius: 24px;
+    }
+
+    .health-header h2 {
+        font-size: 48px;
+    }
+
+    .health-label {
+        font-size: 20px;
+    }
+
+    .health-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 32px;
+    }
+
+    #healthMessage {
+        font-size: 18px;
+    }
+
+    #healthExplanation {
+        font-size: 17px;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .summary > div {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .summary p {
+        font-size: 18px;
+    }
+
+    .summary h3 {
+        font-size: 32px;
+    }
+
+    .transaction {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .transaction-actions {
+        width: 100%;
+    }
+
+    .edit-transaction,
+    .delete-transaction {
+        flex: 1;
+    }
+
+    .savings-progress-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .savings-stats {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .breakdown-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .spending-item-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* =========================================================
+   SMALL iPHONE
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+    main {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    header h1 {
+        font-size: 42px;
+    }
+
+    .quick-action-grid {
+        gap: 7px;
+    }
+
+    .quick-action {
+        min-height: 135px;
+        border-radius: 19px;
+    }
+
+    .quick-action-icon {
+        font-size: 29px;
+    }
+
+    .quick-action strong {
+        font-size: 15px;
+    }
+
+    .balance-card h2 {
+        font-size: 46px;
+    }
+
+    .health-header h2 {
+        font-size: 43px;
+    }
+}
+
+/* =========================================================
+   iPAD
+   ========================================================= */
+
+@media (min-width: 701px) and (max-width: 1100px) {
+
+    main {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .quick-action {
+        min-height: 175px;
+    }
+
+    .quick-action strong {
+        font-size: 21px;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid #58b979;
+    outline-offset: 3px;
+}
+
+/* =========================================================
+   REDUCE MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}
