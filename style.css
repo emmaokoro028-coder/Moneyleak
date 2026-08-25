@@ -1213,3 +1213,168 @@ select:focus-visible {
     font-size: 32px;
   }
 }
+/* =========================================================
+   STEP 3 — PREMIUM TRANSACTION CARDS
+   ========================================================= */
+
+.transactions {
+  background: #ffffff;
+  border: 1px solid #dfe8e3;
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.transactions h2 {
+  margin-bottom: 24px;
+}
+
+/* Each transaction */
+
+.transaction {
+  width: 100%;
+  min-height: 82px;
+  margin-bottom: 14px;
+  padding: 18px 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  background: #f8fbf9;
+  border: 1px solid #dce7e1;
+  border-radius: 18px;
+
+  transition: transform 0.2s ease,
+              box-shadow 0.2s ease,
+              border-color 0.2s ease;
+}
+
+.transaction:hover {
+  transform: translateY(-2px);
+  border-color: #bcd7ca;
+  box-shadow: 0 8px 20px rgba(20, 60, 45, 0.08);
+}
+
+/* Transaction information */
+
+.transaction-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.transaction-info strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #173b2d;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.transaction-info small {
+  color: #718078;
+  font-size: 13px;
+}
+
+/* Amount */
+
+.transaction-amount {
+  font-size: 17px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Income */
+
+.transaction.income .transaction-amount {
+  color: #18804b;
+}
+
+/* Expense */
+
+.transaction.expense .transaction-amount {
+  color: #b44747;
+}
+
+/* Buttons */
+
+.transaction-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transaction-actions button {
+  min-height: 42px;
+  padding: 0 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.transaction-actions button:hover {
+  transform: translateY(-1px);
+}
+
+/* Edit */
+
+.transaction-actions .edit-transaction {
+  background: #e5f2eb;
+  color: #225a42;
+}
+
+/* Delete */
+
+.transaction-actions .delete-transaction {
+  background: #fae9e9;
+  color: #a33f3f;
+}
+
+/* Empty state */
+
+.transactions-empty {
+  padding: 35px 20px;
+  text-align: center;
+  color: #78857e;
+  background: #f7faf8;
+  border: 1px dashed #cbd9d2;
+  border-radius: 18px;
+}
+
+/* =========================================================
+   MOBILE TRANSACTIONS
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .transactions {
+    padding: 22px;
+  }
+
+  .transaction {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 18px;
+  }
+
+  .transaction-info {
+    width: 100%;
+  }
+
+  .transaction-amount {
+    order: 2;
+  }
+
+  .transaction-actions {
+    order: 3;
+    width: 100%;
+  }
+
+  .transaction-actions button {
+    flex: 1;
+  }
+}
