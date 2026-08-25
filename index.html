@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>MoneyLeak</title>
 
     <link rel="stylesheet" href="style.css">
@@ -24,17 +23,20 @@
 
         <div class="quick-action-grid">
 
-            <a href="#addTransaction" class="quick-action">
+            <a href="#add-section"
+               class="quick-action">
                 <span class="quick-action-icon">＋</span>
                 <strong>Add Income</strong>
             </a>
 
-            <a href="#addTransaction" class="quick-action">
+            <a href="#add-section"
+               class="quick-action">
                 <span class="quick-action-icon">💸</span>
                 <strong>Add Expense</strong>
             </a>
 
-            <a href="#savingsGoal" class="quick-action">
+            <a href="#savings-section"
+               class="quick-action">
                 <span class="quick-action-icon">🎯</span>
                 <strong>Savings Goal</strong>
             </a>
@@ -45,8 +47,11 @@
 
     <!-- BALANCE -->
     <section class="balance-card">
+
         <p>Total Balance</p>
-        <h2 id="totalBalance">₦0</h2>
+
+        <h2 id="balance">₦0</h2>
+
     </section>
 
 
@@ -56,24 +61,40 @@
         <div class="health-header">
 
             <div>
-                <div class="health-label">Money Health</div>
-                <h2 id="healthScore">50 / 100</h2>
+
+                <p class="health-label">
+                    Money Health
+                </p>
+
+                <h2 id="healthScore">
+                    0 / 100
+                </h2>
+
             </div>
 
-            <div class="health-icon">🟡</div>
+            <div id="healthIcon"
+                 class="health-icon">
+                💚
+            </div>
 
         </div>
+
 
         <div class="health-bar">
-            <div class="health-fill" id="healthFill"></div>
+
+            <div id="healthFill"
+                 class="health-fill">
+            </div>
+
         </div>
 
+
         <p id="healthMessage">
-            You're doing okay, but there is room to improve.
+            Add some transactions to calculate your Money Health.
         </p>
 
         <p id="healthExplanation">
-            Your Money Health score is 50/100 because you spend 80% of your income.
+            Your score is based on how much of your income you spend.
         </p>
 
     </section>
@@ -83,22 +104,37 @@
     <section class="summary">
 
         <div>
+
             <p>Income</p>
-            <h3 id="totalIncome">₦0</h3>
+
+            <h3 id="income">
+                ₦0
+            </h3>
+
         </div>
 
+
         <div>
+
             <p>Expenses</p>
-            <h3 id="totalExpenses">₦0</h3>
+
+            <h3 id="expenses">
+                ₦0
+            </h3>
+
         </div>
 
     </section>
 
 
     <!-- ADD TRANSACTION -->
-    <section class="add-section" id="addTransaction">
+    <section class="add-section"
+             id="add-section">
 
-        <h2>Add Transaction</h2>
+        <h2>
+            Add Transaction
+        </h2>
+
 
         <input
             type="number"
@@ -106,10 +142,19 @@
             placeholder="Amount (₦)"
         >
 
+
         <select id="type">
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
+
+            <option value="income">
+                Income
+            </option>
+
+            <option value="expense">
+                Expense
+            </option>
+
         </select>
+
 
         <input
             type="text"
@@ -117,8 +162,13 @@
             placeholder="Category e.g. Food"
         >
 
-        <button id="addTransactionBtn">
+
+        <button
+            type="button"
+            onclick="addTransaction()">
+
             Add Transaction
+
         </button>
 
     </section>
@@ -127,68 +177,141 @@
     <!-- RECENT TRANSACTIONS -->
     <section class="transactions">
 
-        <h2>Recent Transactions</h2>
+        <h2>
+            Recent Transactions
+        </h2>
 
-        <div id="transactionList"></div>
+
+        <div id="transactionList">
+
+            <p>
+                No transactions yet.
+            </p>
+
+        </div>
 
     </section>
 
 
     <!-- SAVINGS GOAL -->
-    <section class="savings-section" id="savingsGoal">
+    <section class="savings-section"
+             id="savings-section">
 
-        <h2>🎯 Savings Goal</h2>
+        <h2>
+            🎯 Savings Goal
+        </h2>
+
 
         <div class="savings-inputs">
 
             <input
                 type="number"
-                id="goalAmount"
+                id="savingsGoal"
                 placeholder="Goal amount (₦)"
+                min="0"
             >
+
 
             <input
                 type="number"
-                id="savedAmount"
+                id="currentSavings"
                 placeholder="Already saved (₦)"
+                min="0"
             >
+
 
             <input
                 type="number"
                 id="goalWeeks"
                 placeholder="How many weeks?"
+                min="1"
             >
 
-            <button id="calculateGoal">
+
+            <button
+                type="button"
+                onclick="calculateSavingsGoal()">
+
                 Calculate My Goal
+
             </button>
 
-            <button id="updateSavingsGoal">
+
+            <button
+                type="button"
+                onclick="updateSavingsGoal()">
+
                 Update Savings Goal
+
             </button>
 
-            <button id="resetSavingsGoal">
+
+            <button
+                type="button"
+                onclick="resetSavingsGoal()"
+                class="reset-button">
+
                 Reset Savings Goal
+
             </button>
 
         </div>
 
 
-        <div class="savings-progress">
+        <div
+            id="savingsResult"
+            class="savings-result">
+        </div>
+
+
+        <!-- SAVINGS PROGRESS -->
+        <div
+            id="savingsProgress"
+            class="savings-progress">
 
             <div class="savings-progress-header">
-                <strong>💰 Savings Progress</strong>
-                <strong id="savingsPercent">0% saved</strong>
+
+                <strong>
+                    💰 Savings Progress
+                </strong>
+
+                <strong id="progressText">
+                    0% saved
+                </strong>
+
             </div>
+
 
             <div class="progress-bar">
-                <div class="progress-fill" id="savingsFill"></div>
+
+                <div
+                    id="progressFill"
+                    class="progress-fill"
+                    style="width: 0%;">
+                </div>
+
             </div>
 
+
             <div class="savings-stats">
-                <span>Saved: <strong id="savedDisplay">₦0</strong></span>
-                <span>Target: <strong id="targetDisplay">₦0</strong></span>
+
+                <span>
+                    Saved:
+                    <strong id="savedAmount">
+                        ₦0
+                    </strong>
+                </span>
+
+
+                <span>
+                    Target:
+                    <strong id="targetAmount">
+                        ₦0
+                    </strong>
+                </span>
+
             </div>
+
 
             <p id="remainingAmount">
                 Enter your goal to start tracking.
@@ -196,18 +319,23 @@
 
         </div>
 
-        <div class="savings-result" id="savingsResult"></div>
-
     </section>
 
 
     <!-- MONEY LEAK -->
     <section class="leak-section">
 
-        <h2>🚨 Money Leak</h2>
+        <h2>
+            🚨 Money Leak
+        </h2>
+
 
         <div id="leakMessage">
-            <p>Your biggest money leak will appear here.</p>
+
+            <p>
+                Add some expenses and MoneyLeak will find where your money is going.
+            </p>
+
         </div>
 
     </section>
@@ -216,9 +344,20 @@
     <!-- SPENDING THIS MONTH -->
     <section class="chart-section">
 
-        <h2>📈 Spending This Month</h2>
+        <h2>
+            📈 Spending This Month
+        </h2>
 
-        <div id="spendingChart"></div>
+
+        <div
+            id="spendingChart"
+            class="spending-chart">
+
+            <p>
+                No spending data yet.
+            </p>
+
+        </div>
 
     </section>
 
@@ -226,15 +365,25 @@
     <!-- SPENDING BREAKDOWN -->
     <section class="breakdown-section">
 
-        <h2>📊 Spending Breakdown</h2>
+        <h2>
+            📊 Spending Breakdown
+        </h2>
 
-        <div id="spendingBreakdown"></div>
+
+        <div id="spendingBreakdown">
+
+            <p>
+                Add some expenses to see your spending breakdown.
+            </p>
+
+        </div>
 
     </section>
 
 </main>
 
 
+<!-- JAVASCRIPT -->
 <script src="app.js"></script>
 
 </body>
