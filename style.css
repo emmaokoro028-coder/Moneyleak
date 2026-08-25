@@ -1378,3 +1378,228 @@ select:focus-visible {
     flex: 1;
   }
 }
+/* =========================================================
+   STEP 4 — MONEY LEAK & SPENDING ANALYTICS
+   ========================================================= */
+
+/* MONEY LEAK */
+
+.leak-section {
+  width: 100%;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #dfe8e3;
+  border-left: 6px solid #d94d4d;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.leak-section h2 {
+  margin-bottom: 22px;
+}
+
+.leak-message {
+  padding: 20px;
+  background: #fff8f8;
+  border: 1px solid #f0d8d8;
+  border-radius: 18px;
+}
+
+.leak-message strong {
+  color: #173b2d;
+}
+
+.leak-message p {
+  margin: 8px 0;
+}
+
+.leak-saving {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid #e3cccc;
+  color: #52625a;
+}
+
+.leak-saving strong {
+  color: #173b2d;
+}
+
+
+/* =========================================================
+   SPENDING THIS MONTH
+   ========================================================= */
+
+.chart-section {
+  width: 100%;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #dfe8e3;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.chart-section h2 {
+  margin-bottom: 24px;
+}
+
+/* Spending summary */
+
+.spending-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.spending-summary > div {
+  padding: 18px;
+  background: #f7faf8;
+  border: 1px solid #dfe8e3;
+  border-radius: 18px;
+}
+
+.spending-summary strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #173b2d;
+  font-size: 18px;
+}
+
+/* Progress bars */
+
+.spending-bar {
+  width: 100%;
+  height: 12px;
+  margin-top: 12px;
+  overflow: hidden;
+  background: #e5ece8;
+  border-radius: 999px;
+}
+
+.spending-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(
+    90deg,
+    #35bd70,
+    #1b7e51
+  );
+  border-radius: inherit;
+  transition: width 0.5s ease;
+}
+
+
+/* =========================================================
+   SPENDING INSIGHT
+   ========================================================= */
+
+.spending-insight {
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(
+    135deg,
+    #f1f8f4,
+    #e7f3ec
+  );
+  border: 1px solid #cfe3d7;
+  border-radius: 18px;
+}
+
+.spending-insight strong {
+  color: #173b2d;
+}
+
+
+/* =========================================================
+   SPENDING BREAKDOWN
+   ========================================================= */
+
+.breakdown-section {
+  width: 100%;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #dfe8e3;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.breakdown-section h2 {
+  margin-bottom: 24px;
+}
+
+#spendingBreakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#spendingBreakdown > div {
+  padding: 18px;
+  background: #f7faf8;
+  border: 1px solid #dce7e1;
+  border-radius: 18px;
+}
+
+#spendingBreakdown strong {
+  color: #173b2d;
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   ANALYTICS RESPONSIVE LAYOUT
+   ========================================================= */
+
+@media (min-width: 801px) {
+
+  .leak-section {
+    grid-column: 7 / -1;
+  }
+
+  .chart-section {
+    grid-column: 1 / 7;
+  }
+
+  .breakdown-section {
+    grid-column: 7 / -1;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .leak-section,
+  .chart-section,
+  .breakdown-section {
+    grid-column: 1 / -1;
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  .leak-section {
+    border-left-width: 5px;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .leak-section,
+  .chart-section,
+  .breakdown-section {
+    padding: 20px;
+  }
+
+  .leak-section h2,
+  .chart-section h2,
+  .breakdown-section h2 {
+    font-size: 28px;
+  }
+}
