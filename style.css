@@ -1,0 +1,916 @@
+/* =========================================================
+   MONEY LEAK — PROFESSIONAL DASHBOARD
+   Responsive: iPhone • iPad • Desktop
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "Segoe UI",
+    Arial,
+    sans-serif;
+  background: #f4f8f6;
+  color: #173b2d;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+header {
+  width: 100%;
+  padding: 64px 24px 58px;
+  text-align: center;
+  color: white;
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(74, 170, 120, 0.35),
+      transparent 35%
+    ),
+    linear-gradient(135deg, #0d3829, #196044);
+}
+
+header h1 {
+  margin-bottom: 12px;
+  font-size: clamp(42px, 8vw, 72px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -3px;
+}
+
+header p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(16px, 2.5vw, 21px);
+}
+
+/* =========================================================
+   MAIN DASHBOARD GRID
+   ========================================================= */
+
+main {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 34px 0 80px;
+
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+section {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+section > h2 {
+  margin-bottom: 18px;
+  color: #173b2d;
+  font-size: clamp(25px, 4vw, 34px);
+  line-height: 1.15;
+  font-weight: 850;
+  letter-spacing: -1px;
+}
+
+p {
+  color: #697871;
+}
+
+/* =========================================================
+   DESKTOP SECTION ARRANGEMENT
+   ========================================================= */
+
+.quick-actions {
+  grid-column: 1 / -1;
+}
+
+.balance-card {
+  grid-column: 1 / -1;
+}
+
+.health-card {
+  grid-column: 1 / 9;
+}
+
+.summary {
+  grid-column: 9 / -1;
+}
+
+.add-section {
+  grid-column: 1 / 7;
+}
+
+.transactions {
+  grid-column: 7 / -1;
+}
+
+.savings-section {
+  grid-column: 1 / 7;
+}
+
+.leak-section {
+  grid-column: 7 / -1;
+}
+
+.spending-section {
+  grid-column: 1 / 7;
+}
+
+.spending-breakdown {
+  grid-column: 7 / -1;
+}
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.quick-action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.quick-action {
+  min-height: 145px;
+  padding: 24px 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 24px;
+  background: #103f2e !important;
+  color: white !important;
+  text-align: center;
+  text-decoration: none;
+
+  box-shadow: 0 12px 30px rgba(16, 63, 46, 0.13);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.quick-action:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 35px rgba(16, 63, 46, 0.2);
+}
+
+.quick-action:active {
+  transform: scale(0.98);
+}
+
+.quick-action-icon {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.quick-action strong {
+  color: white !important;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+/* =========================================================
+   BALANCE
+   ========================================================= */
+
+.balance-card {
+  min-height: 230px;
+  padding: 45px 25px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 30px;
+
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(76, 180, 126, 0.5),
+      transparent 35%
+    ),
+    linear-gradient(135deg, #103f2e, #247b59);
+
+  color: white;
+  text-align: center;
+
+  box-shadow: 0 18px 40px rgba(16, 63, 46, 0.15);
+}
+
+.balance-card p {
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 19px;
+}
+
+.balance-card h2 {
+  margin: 0;
+  color: white;
+  font-size: clamp(48px, 10vw, 76px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -3px;
+}
+
+/* =========================================================
+   MONEY HEALTH
+   ========================================================= */
+
+.health-card {
+  padding: 30px;
+  background: white;
+  border: 1px solid #dfe8e3;
+  border-radius: 26px;
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.health-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.health-label {
+  margin-bottom: 5px;
+  color: #738079;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.health-header h2 {
+  margin: 0;
+  color: #173b2d;
+  font-size: clamp(42px, 7vw, 58px);
+  font-weight: 900;
+}
+
+.health-icon {
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #e9f8ef;
+  font-size: 32px;
+}
+
+.health-bar {
+  width: 100%;
+  height: 14px;
+  margin: 24px 0 18px;
+
+  overflow: hidden;
+
+  background: #e4ebe7;
+  border-radius: 999px;
+}
+
+.health-fill {
+  width: 0%;
+  height: 100%;
+
+  background: linear-gradient(90deg, #32c66d, #5aaa70);
+
+  border-radius: inherit;
+  transition: width 0.4s ease;
+}
+
+#healthMessage {
+  margin-bottom: 8px;
+  color: #52625a;
+  font-size: 18px;
+}
+
+#healthExplanation {
+  color: #738079;
+  font-size: 16px;
+}
+
+/* =========================================================
+   INCOME / EXPENSE SUMMARY
+   ========================================================= */
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.summary > div {
+  min-height: 125px;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: white;
+  border: 1px solid #dfe8e3;
+  border-radius: 22px;
+
+  box-shadow: 0 8px 25px rgba(20, 60, 45, 0.05);
+}
+
+.summary p {
+  margin-bottom: 5px;
+  color: #718078;
+  font-size: 16px;
+}
+
+.summary h3 {
+  color: #173b2d;
+  font-size: clamp(27px, 4vw, 38px);
+  font-weight: 850;
+}
+
+/* =========================================================
+   ADD TRANSACTION
+   ========================================================= */
+
+.add-section {
+  padding: 28px;
+
+  background: white;
+  border: 1px solid #dfe8e3;
+  border-radius: 26px;
+
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.add-section input,
+.add-section select {
+  width: 100%;
+  min-height: 58px;
+  margin-bottom: 12px;
+  padding: 0 17px;
+
+  border: 1px solid #d5e0da;
+  border-radius: 16px;
+
+  background: #f9fbfa;
+  color: #173b2d;
+
+  font: inherit;
+  font-size: 16px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.add-section input:focus,
+.add-section select:focus {
+  border-color: #3b8b68;
+  box-shadow: 0 0 0 4px rgba(59, 139, 104, 0.12);
+}
+
+button {
+  min-height: 56px;
+  padding: 13px 20px;
+
+  border: 0;
+  border-radius: 15px;
+
+  background: #103f2e;
+  color: white;
+
+  font: inherit;
+  font-weight: 750;
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+button:hover {
+  background: #195b42;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.add-section button {
+  width: 100%;
+}
+
+/* =========================================================
+   TRANSACTIONS
+   ========================================================= */
+
+.transactions {
+  padding: 28px;
+
+  background: white;
+  border: 1px solid #dfe8e3;
+  border-radius: 26px;
+
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+#transactionList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.transaction {
+  width: 100%;
+  min-height: 78px;
+  padding: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  background: #f8faf9;
+  border: 1px solid #e0e8e4;
+  border-radius: 17px;
+}
+
+.transaction-info {
+  min-width: 0;
+}
+
+.transaction strong {
+  color: #173b2d;
+  font-size: 17px;
+}
+
+.transaction small {
+  color: #78847e;
+}
+
+.transaction-amount {
+  white-space: nowrap;
+  font-weight: 800;
+}
+
+.edit-transaction,
+.delete-transaction {
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 11px;
+  font-size: 13px;
+}
+
+.edit-transaction {
+  background: #e4f1ea;
+  color: #174c38;
+}
+
+.delete-transaction {
+  background: #fbe9e9;
+  color: #a43f3f;
+}
+
+/* Catch the existing dynamically generated buttons too */
+
+#transactionList button {
+  min-height: 40px;
+  padding: 8px 13px;
+  border-radius: 11px;
+  font-size: 13px;
+}
+
+#transactionList .edit-transaction {
+  background: #e4f1ea;
+  color: #174c38;
+}
+
+#transactionList .delete-transaction {
+  background: #fbe9e9;
+  color: #a43f3f;
+}
+
+/* =========================================================
+   SAVINGS GOAL
+   ========================================================= */
+
+.savings-section {
+  padding: 28px;
+
+  background: white;
+  border: 1px solid #dfe8e3;
+  border-radius: 26px;
+
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.savings-inputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.savings-inputs input {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 16px;
+
+  border: 1px solid #d5e0da;
+  border-radius: 15px;
+
+  background: #f9fbfa;
+  color: #173b2d;
+
+  font: inherit;
+  font-size: 16px;
+  outline: none;
+}
+
+.savings-inputs input:focus {
+  border-color: #3b8b68;
+  box-shadow: 0 0 0 4px rgba(59, 139, 104, 0.12);
+}
+
+.savings-inputs button {
+  width: 100%;
+}
+
+.savings-inputs .reset-button {
+  background: #edf2ef;
+  color: #355346;
+}
+
+.savings-result,
+.savings-progress,
+.savings-plan {
+  margin-top: 18px;
+  padding: 20px;
+
+  background: #f6faf7;
+  border: 1px solid #dce8e1;
+  border-radius: 18px;
+}
+
+.savings-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.savings-progress-bar {
+  width: 100%;
+  height: 13px;
+  margin-top: 12px;
+
+  overflow: hidden;
+
+  background: #e3ebe6;
+  border-radius: 999px;
+}
+
+.savings-progress-fill {
+  height: 100%;
+  width: 0%;
+
+  background: linear-gradient(90deg, #36bd70, #1c8052);
+
+  border-radius: inherit;
+  transition: width 0.4s ease;
+}
+
+/* =========================================================
+   MONEY LEAK
+   ========================================================= */
+
+.leak-section {
+  padding: 28px;
+
+  background: white;
+  border: 1px solid #dfe8e3;
+  border-left: 5px solid #d94d4d;
+  border-radius: 26px;
+
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.leak-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#leakMessage {
+  margin-top: 8px;
+  color: #697871;
+  font-size: 17px;
+}
+
+#leakMessage strong {
+  color: #173b2d;
+}
+
+#leakAmount {
+  margin-top: 8px;
+  color: #173b2d;
+  font-size: 30px;
+  font-weight: 850;
+}
+
+#leakAdvice {
+  margin-top: 16px;
+  padding-top: 16px;
+
+  border-top: 1px solid #dfe5e1;
+  color: #68766f;
+}
+
+/* =========================================================
+   SPENDING THIS MONTH
+   ========================================================= */
+
+.spending-section {
+  padding: 28px;
+
+  background: white;
+  border: 1px solid #dfe8e3;
+  border-radius: 26px;
+
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.spending-section h2 {
+  margin-bottom: 20px;
+}
+
+.spending-section > div {
+  padding: 15px 0;
+  border-bottom: 1px solid #e6ece8;
+}
+
+.spending-section > div:last-child {
+  border-bottom: 0;
+}
+
+/* =========================================================
+   SPENDING BREAKDOWN
+   ========================================================= */
+
+.spending-breakdown {
+  padding: 28px;
+
+  background: white;
+  border: 1px solid #dfe8e3;
+  border-radius: 26px;
+
+  box-shadow: 0 10px 30px rgba(20, 60, 45, 0.06);
+}
+
+.spending-breakdown > div {
+  margin-bottom: 12px;
+  padding: 18px;
+
+  background: #f7faf8;
+  border: 1px solid #e0e8e3;
+  border-radius: 17px;
+}
+
+.spending-breakdown strong {
+  color: #173b2d;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  header {
+    padding: 52px 20px 46px;
+  }
+
+  header h1 {
+    font-size: 48px;
+  }
+
+  main {
+    width: min(100% - 28px, 620px);
+    padding: 24px 0 60px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  section {
+    width: 100%;
+  }
+
+  section > h2 {
+    font-size: 28px;
+  }
+
+  .quick-action-grid {
+    gap: 10px;
+  }
+
+  .quick-action {
+    min-height: 125px;
+    padding: 18px 10px;
+    border-radius: 20px;
+  }
+
+  .quick-action-icon {
+    font-size: 28px;
+  }
+
+  .quick-action strong {
+    font-size: 15px;
+  }
+
+  .balance-card {
+    min-height: 200px;
+    border-radius: 25px;
+  }
+
+  .balance-card h2 {
+    font-size: 50px;
+  }
+
+  .health-card,
+  .add-section,
+  .transactions,
+  .savings-section,
+  .leak-section,
+  .spending-section,
+  .spending-breakdown {
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  .health-header h2 {
+    font-size: 43px;
+  }
+
+  .health-icon {
+    width: 58px;
+    height: 58px;
+    font-size: 27px;
+  }
+
+  .summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .summary > div {
+    min-height: 110px;
+    padding: 18px;
+  }
+
+  .summary h3 {
+    font-size: 25px;
+  }
+
+  .transaction {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  main {
+    width: calc(100% - 24px);
+  }
+
+  header {
+    padding: 46px 16px 40px;
+  }
+
+  header h1 {
+    font-size: 43px;
+    letter-spacing: -2px;
+  }
+
+  header p {
+    font-size: 16px;
+  }
+
+  .quick-action-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .quick-action {
+    min-height: 115px;
+    padding: 14px 7px;
+  }
+
+  .quick-action-icon {
+    margin-bottom: 8px;
+    font-size: 25px;
+  }
+
+  .quick-action strong {
+    font-size: 13px;
+  }
+
+  .balance-card {
+    min-height: 180px;
+  }
+
+  .balance-card p {
+    font-size: 16px;
+  }
+
+  .balance-card h2 {
+    font-size: 43px;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .summary > div {
+    min-height: 95px;
+  }
+
+  .health-header {
+    align-items: flex-start;
+  }
+
+  .health-header h2 {
+    font-size: 40px;
+  }
+
+  .health-icon {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+
+  .transaction {
+    padding: 14px;
+  }
+
+  #transactionList button {
+    min-height: 38px;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(46, 139, 96, 0.35);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   SAFE AREA FOR iPHONE
+   ========================================================= */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  main {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom));
+  }
+}
