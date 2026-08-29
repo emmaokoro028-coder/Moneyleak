@@ -750,7 +750,7 @@ window.addEventListener("DOMContentLoaded", function () {
 }
 
 });
-function calculateSavingsGoal() {
+function calculateSavingsGoalPage() {
     const target = Number(document.getElementById("savingsTarget").value);
     const saved = Number(document.getElementById("alreadySaved").value);
     const days = Number(document.getElementById("savingsDays").value);
