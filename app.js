@@ -426,11 +426,10 @@ function calculateSavingsGoal() {
         alert("Please enter how many weeks you have.");
         return;
     }
-
-    const remaining = goal - saved;
-    const percentage = Math.min((saved / goal) * 100, 100);
-    const weeklyAmount = remaining / weeks;
-    const dailyAmount = weeklyAmount / 7;
+const remaining = goal - saved;
+const percentage = Math.min((saved / goal) * 100, 100);
+const dailyAmount = remaining / weeks;
+const weeklyAmount = dailyAmount * 7;
 
     const formatSavingsMoney = function(amount) {
         return "₦" + Math.round(amount).toLocaleString("en-NG");
