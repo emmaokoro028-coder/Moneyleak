@@ -1,90 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Savings Goal | MoneyLeak</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings Goal | MoneyLeak</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-    <h1>MoneyLeak</h1>
-    <p>Build your savings goal</p>
+  <h1>MoneyLeak</h1>
+  <p>Build your savings goal</p>
 </header>
 
 <main>
 
-    <section class="form-section">
+  <section class="form-section">
 
-        <h2>🎯 Savings Goal</h2>
+    <h2>🎯 Savings Goal</h2>
 
-        <input
-            type="number"
-            id="savingsTarget"
-            placeholder="Savings target (₦)"
-        >
+    <input
+      type="number"
+      id="savingsTarget"
+      placeholder="Savings target (₦)"
+    >
 
-        <input
-            type="number"
-            id="savingsSaved"
-            placeholder="Already saved (₦)"
-        >
+    <input
+      type="number"
+      id="savingsSaved"
+      placeholder="Already saved (₦)"
+    >
 
-        <input
-            type="number"
-            id="savingsDays"
-            placeholder="Number of days"
-        >
+    <input
+      type="number"
+      id="savingsDays"
+      placeholder="Number of days"
+    >
 
-        <button onclick="calculateGoal()">
-            Calculate My Goal
-        </button>
+    <button type="button" onclick="calculateGoal()">
+      Calculate My Goal
+    </button>
 
-        <div id="goalResult"></div>
-        <button type="button" onclick="saveSavingsGoal()">
-            💾 Save Goal
-        </button>
-        <a href="index.html" class="back-link">
-            ← Back to Dashboard
-        </a>
+    <div id="goalResult"></div>
 
-    </section>
+    <button type="button" onclick="saveSavingsGoal()">
+      💾 Save Goal
+    </button>
+
+    <button type="button" onclick="resetSavingsGoal()">
+      Reset Savings Goal
+    </button>
+
+    <a href="index.html" class="back-link">
+      ← Back to Dashboard
+    </a>
+
+  </section>
 
 </main>
 
 <script>
+
 function calculateGoal() {
 
-    const target = Number(
-        document.getElementById("savingsTarget").value
-    );
+  const target = Number(
+    document.getElementById("savingsTarget").value
+  );
 
-    const saved = Number(
-        document.getElementById("savingsSaved").value
-    );
+  const saved = Number(
+    document.getElementById("savingsSaved").value
+  );
 
-    const days = Number(
-        document.getElementById("savingsDays").value
-    );
+  const days = Number(
+    document.getElementById("savingsDays").value
+  );
 
-    if (!target || days <= 0) {
-        alert("Please enter your target and number of days.");
-        return;
-    }
+  if (!target || target <= 0 || days <= 0) {
+    alert("Please enter your savings target and number of days.");
+    return;
+  }
 
-    const remaining = Math.max(target - saved, 0);
-    const daily = remaining / days;
-    const weekly = daily * 7;
+  const remaining = Math.max(target - saved, 0);
 
-    document.getElementById("goalResult").innerHTML = `
-        <h3>Your Savings Plan</h3>
-        <p>You still need <strong>₦${remaining.toLocaleString()}</strong>.</p>
-        <p>Save approximately <strong>₦${Math.round(weekly).toLocaleString()}</strong> per week.</p>
-        <p>That's about <strong>₦${Math.round(daily).toLocaleString()}</strong> per day.</p>
-    `;
+  const daily = remaining / days;
+  const weekly = daily * 7;
+
+  document.getElementById("goalResult").innerHTML = `
+    <h3>Your Savings Plan</h3>
+    <p>You still need <strong>₦${remaining.toLocaleString()}</strong>.</p>
+    <p>Save approximately <strong>₦${Math.round(weekly).toLocaleString()}</strong> per week.</p>
+    <p>That's about <strong>₦${Math.round(daily).toLocaleString()}</strong> per day.</p>
+  `;
 }
+
+function saveSavingsGoal() {
+
+  const target = document.getElementById("savingsTarget").value;
+  const saved = document.getElementById("savingsSaved").value;
+  const days = document.getElementById("savingsDays").value;
+
+  localStorage.setItem("savingsTarget", target);
+  localStorage.setItem("savingsSaved", saved);
+  localStorage.setItem("savingsDays", days);
+
+  alert("Savings goal saved!");
+}
+
+function resetSavingsGoal() {
+
+  document.getElementById("savingsTarget").value = "";
+  document.getElementById("savingsSaved").value = "";
+  document.getElementById("savingsDays").value = "";
+
+  document.getElementById("goalResult").innerHTML = "";
+
+  localStorage.removeItem("savingsTarget");
+  localStorage.removeItem("savingsSaved");
+  localStorage.removeItem("savingsDays");
+}
+
 </script>
 
 </body>
