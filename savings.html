@@ -9,118 +9,268 @@
 
 <body>
 
-<header>
-  <h1>MoneyLeak</h1>
-  <p>Build your savings goal</p>
-</header>
+  <header>
+    <h1>MoneyLeak</h1>
+    <p>Build your savings goal</p>
+  </header>
 
-<main>
+  <main>
 
-  <section class="form-section">
+    <section class="form-section">
 
-    <h2>🎯 Savings Goal</h2>
+      <h2>🎯 Savings Goal</h2>
 
-    <input
-      type="number"
-      id="savingsTarget"
-      placeholder="Savings target (₦)"
-    >
+      <label for="savingsTarget">Savings Target (₦)</label>
+      <input
+        type="number"
+        id="savingsTarget"
+        min="0"
+        placeholder="Enter your savings target"
+      >
 
-    <input
-      type="number"
-      id="savingsSaved"
-      placeholder="Already saved (₦)"
-    >
+      <label for="savingsSaved">Already Saved (₦)</label>
+      <input
+        type="number"
+        id="savingsSaved"
+        min="0"
+        placeholder="Enter amount already saved"
+      >
 
-    <input
-      type="number"
-      id="savingsDays"
-      placeholder="Number of days"
-    >
+      <label for="savingsDays">Number of Days</label>
+      <input
+        type="number"
+        id="savingsDays"
+        min="1"
+        placeholder="Enter number of days"
+      >
 
-    <button type="button" onclick="calculateGoal()">
-      Calculate My Goal
-    </button>
+      <button type="button" onclick="calculateGoal()">
+        Calculate My Goal
+      </button>
 
-    <div id="goalResult"></div>
+      <div id="goalResult"></div>
 
-    <button type="button" onclick="saveSavingsGoal()">
-      💾 Save Goal
-    </button>
+      <button type="button" onclick="saveSavingsGoal()">
+        💾 Save Goal
+      </button>
 
-    <button type="button" onclick="resetSavingsGoal()">
-      Reset Savings Goal
-    </button>
+      <button type="button" onclick="resetSavingsGoal()">
+        Reset Savings Goal
+      </button>
 
-    <a href="index.html" class="back-link">
-      ← Back to Dashboard
-    </a>
+      <div id="saveMessage"></div>
 
-  </section>
+      <div class="savings-progress">
 
-</main>
+        <div class="progress-header">
+          <strong>💰 Savings Progress</strong>
+          <strong id="progressPercent">0% saved</strong>
+        </div>
 
-<script>
+        <div class="progress-bar">
+          <div id="progressFill"></div>
+        </div>
 
-function calculateGoal() {
+        <div class="progress-details">
+          <span>Saved: <strong id="progressSaved">₦0</strong></span>
+          <span>Target: <strong id="progressTarget">₦0</strong></span>
+        </div>
 
-  const target = Number(
-    document.getElementById("savingsTarget").value
-  );
+        <p id="progressMessage">
+          Enter your goal to start tracking.
+        </p>
 
-  const saved = Number(
-    document.getElementById("savingsSaved").value
-  );
+      </div>
 
-  const days = Number(
-    document.getElementById("savingsDays").value
-  );
+      <a href="index.html" class="back-link">
+        ← Back to Dashboard
+      </a>
 
-  if (!target || target <= 0 || days <= 0) {
-    alert("Please enter your savings target and number of days.");
-    return;
-  }
+    </section>
 
-  const remaining = Math.max(target - saved, 0);
+  </main>
 
-  const daily = remaining / days;
-  const weekly = daily * 7;
+  <script>
 
-  document.getElementById("goalResult").innerHTML = `
-    <h3>Your Savings Plan</h3>
-    <p>You still need <strong>₦${remaining.toLocaleString()}</strong>.</p>
-    <p>Save approximately <strong>₦${Math.round(weekly).toLocaleString()}</strong> per week.</p>
-    <p>That's about <strong>₦${Math.round(daily).toLocaleString()}</strong> per day.</p>
-  `;
-}
+    function calculateGoal() {
 
-function saveSavingsGoal() {
+      const target = Number(
+        document.getElementById("savingsTarget").value
+      );
 
-  const target = document.getElementById("savingsTarget").value;
-  const saved = document.getElementById("savingsSaved").value;
-  const days = document.getElementById("savingsDays").value;
+      const saved = Number(
+        document.getElementById("savingsSaved").value
+      );
 
-  localStorage.setItem("savingsTarget", target);
-  localStorage.setItem("savingsSaved", saved);
-  localStorage.setItem("savingsDays", days);
+      const days = Number(
+        document.getElementById("savingsDays").value
+      );
 
-  alert("Savings goal saved!");
-}
+      if (target <= 0 || days <= 0) {
+        document.getElementById("goalResult").innerHTML =
+          "<p>Please enter a valid savings target and number of days.</p>";
+        return;
+      }
 
-function resetSavingsGoal() {
+      const remaining = Math.max(target - saved, 0);
+      const daily = remaining / days;
+      const weekly = daily * 7;
 
-  document.getElementById("savingsTarget").value = "";
-  document.getElementById("savingsSaved").value = "";
-  document.getElementById("savingsDays").value = "";
+      document.getElementById("goalResult").innerHTML = `
+        <h3>Your Savings Plan</h3>
+        <p>You still need <strong>₦${remaining.toLocaleString()}</strong>.</p>
+        <p>Save approximately <strong>₦${daily.toLocaleString(undefined, {
+          maximumFractionDigits: 2
+        })}</strong> per day.</p>
+        <p>That's approximately <strong>₦${weekly.toLocaleString(undefined, {
+          maximumFractionDigits: 2
+        })}</strong> per week.</p>
+      `;
 
-  document.getElementById("goalResult").innerHTML = "";
+      updateProgress(target, saved);
 
-  localStorage.removeItem("savingsTarget");
-  localStorage.removeItem("savingsSaved");
-  localStorage.removeItem("savingsDays");
-}
+    }
 
-</script>
+
+    function updateProgress(target, saved) {
+
+      const percentage = target > 0
+        ? Math.min((saved / target) * 100, 100)
+        : 0;
+
+      document.getElementById("progressPercent").textContent =
+        `${Math.round(percentage)}% saved`;
+
+      document.getElementById("progressSaved").textContent =
+        `₦${saved.toLocaleString()}`;
+
+      document.getElementById("progressTarget").textContent =
+        `₦${target.toLocaleString()}`;
+
+      document.getElementById("progressFill").style.width =
+        `${percentage}%`;
+
+      if (saved >= target && target > 0) {
+
+        document.getElementById("progressMessage").textContent =
+          "🎉 Congratulations! You've reached your savings goal!";
+
+      } else if (saved > 0) {
+
+        const remaining = target - saved;
+
+        document.getElementById("progressMessage").textContent =
+          `Keep going! You have ₦${remaining.toLocaleString()} left.`;
+
+      } else {
+
+        document.getElementById("progressMessage").textContent =
+          "Enter your goal to start tracking.";
+
+      }
+
+    }
+
+
+    function saveSavingsGoal() {
+
+      const target = Number(
+        document.getElementById("savingsTarget").value
+      );
+
+      const saved = Number(
+        document.getElementById("savingsSaved").value
+      );
+
+      const days = Number(
+        document.getElementById("savingsDays").value
+      );
+
+      if (target <= 0 || days <= 0) {
+
+        document.getElementById("saveMessage").textContent =
+          "Please enter a valid savings goal first.";
+
+        return;
+
+      }
+
+      const goal = {
+        target: target,
+        saved: saved,
+        days: days
+      };
+
+      localStorage.setItem(
+        "moneyLeakSavingsGoal",
+        JSON.stringify(goal)
+      );
+
+      updateProgress(target, saved);
+
+      document.getElementById("saveMessage").textContent =
+        "✅ Savings goal saved successfully.";
+
+    }
+
+
+    function loadSavingsGoal() {
+
+      const storedGoal =
+        localStorage.getItem("moneyLeakSavingsGoal");
+
+      if (!storedGoal) {
+        return;
+      }
+
+      try {
+
+        const goal = JSON.parse(storedGoal);
+
+        document.getElementById("savingsTarget").value =
+          goal.target;
+
+        document.getElementById("savingsSaved").value =
+          goal.saved;
+
+        document.getElementById("savingsDays").value =
+          goal.days;
+
+        updateProgress(goal.target, goal.saved);
+
+      } catch (error) {
+
+        localStorage.removeItem("moneyLeakSavingsGoal");
+
+      }
+
+    }
+
+
+    function resetSavingsGoal() {
+
+      localStorage.removeItem("moneyLeakSavingsGoal");
+
+      document.getElementById("savingsTarget").value = "";
+      document.getElementById("savingsSaved").value = "";
+      document.getElementById("savingsDays").value = "";
+
+      document.getElementById("goalResult").innerHTML = "";
+
+      document.getElementById("saveMessage").textContent =
+        "Savings goal reset.";
+
+      updateProgress(0, 0);
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      loadSavingsGoal
+    );
+
+  </script>
 
 </body>
 </html>
