@@ -392,7 +392,6 @@ detectMoneyLeak();
 updateMoneyHealth();
 updateSpendingBreakdown();
 
-function calculateGoal() {
     const goalInput = document.getElementById("savingsGoal");
     const currentInput = document.getElementById("currentSavings");
     const weeksInput = document.getElementById("goalWeeks");
