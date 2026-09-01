@@ -654,22 +654,36 @@ window.addEventListener("DOMContentLoaded", function () {
 }
 
 });
+
 function calculateSavingsGoalPage() {
     const target = Number(document.getElementById("savingsTarget").value);
     const saved = Number(document.getElementById("alreadySaved").value);
     const days = Number(document.getElementById("savingsDays").value);
 
-    if (target <= 0 || saved < 0 || days <= 0) {
-        alert("Please enter a valid target, saved amount, and number of days.");
+    const result = document.getElementById("savingsResult");
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
+
+    if (!target || target <= 0 || saved < 0 || !days || days <= 0) {
+        alert("Please enter a valid savings target, saved amount, and number of days.");
         return;
     }
 
     if (saved >= target) {
-        document.getElementById("savingsResult").innerHTML = `
+        result.innerHTML = `
             <div class="goal-success">
                 🎉 Congratulations! You've already reached your savings goal.
             </div>
         `;
+
+        if (progressFill) {
+            progressFill.style.width = "100%";
+        }
+
+        if (progressText) {
+            progressText.textContent = "100% saved";
+        }
+
         return;
     }
 
@@ -678,25 +692,25 @@ function calculateSavingsGoalPage() {
     const weekly = daily * 7;
     const progress = (saved / target) * 100;
 
-    document.getElementById("savingsResult").innerHTML = `
+    result.innerHTML = `
         <div class="goal-result">
             <h3>🎯 Your Savings Plan</h3>
 
             <p>
                 You still need
-                <strong>₦${remaining.toLocaleString()}</strong>
+                <strong>₦${remaining.toLocaleString("en-NG")}</strong>
                 to reach your goal.
             </p>
 
             <p>
                 Save approximately
-                <strong>₦${Math.ceil(daily).toLocaleString()}</strong>
+                <strong>₦${Math.ceil(daily).toLocaleString("en-NG")}</strong>
                 per day.
             </p>
 
             <p>
                 That's about
-                <strong>₦${Math.ceil(weekly).toLocaleString()}</strong>
+                <strong>₦${Math.ceil(weekly).toLocaleString("en-NG")}</strong>
                 per week.
             </p>
 
@@ -710,16 +724,24 @@ function calculateSavingsGoalPage() {
         </div>
     `;
 
-    localStorage.setItem("savingsGoal", JSON.stringify({
+    if (progressFill) {
+        progressFill.style.width = `${Math.min(progress, 100)}%`;
+    }
+
+    if (progressText) {
+        progressText.textContent = `${Math.round(progress)}% saved`;
+    }
+
+    localStorage.setItem("moneyLeakSavingsGoalPage", JSON.stringify({
         target,
         saved,
         days,
         remaining,
         daily,
+        weekly,
         progress
     }));
 }
-
 function saveSavingsGoal() {
     const target = Number(document.getElementById("savingsTarget").value);
     const saved = Number(document.getElementById("savingsSaved").value);
