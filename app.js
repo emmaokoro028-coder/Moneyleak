@@ -628,7 +628,7 @@ function resetSavingsGoal() {
     localStorage.setItem("moneyLeakCurrentSavings", currentInput.value);
     localStorage.setItem("moneyLeakGoalWeeks", weeksInput.value);
 
-    calculateSavingsGoal();
+    calculateSavingsGoalPage();
 
     alert("Your savings goal has been updated!");
 }
@@ -650,7 +650,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     if (goal && weeks) {
-    calculateSavingsGoal();
+    calculateSavingsGoalPage();;
 }
 
 });
