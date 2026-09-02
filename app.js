@@ -1,781 +1,1822 @@
-let transactions = JSON.parse(
-    localStorage.getItem("moneyLeakTransactions")
-) || [];
+/* =========================================================
+   MONEYLEAK
+   Main Application JavaScript
+========================================================= */
 
-function formatMoney(amount) {
-    return "₦" + Math.round(amount).toLocaleString("en-NG");
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const TRANSACTIONS_KEY = "moneyLeakTransactions";
+const SAVINGS_KEY = "moneyLeakSavingsGoal";
+
+
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
+
+let transactions = loadTransactions();
+
+let savingsGoal = loadSavingsGoal();
+
+
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
+
+function getElement(id) {
+    return document.getElementById(id);
 }
 
+
+function formatMoney(amount) {
+    const value = Number(amount) || 0;
+
+    return "₦" + value.toLocaleString("en-NG", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    });
+}
+
+
+function escapeHTML(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function getToday() {
+    return new Date().toISOString();
+}
+
+
+/* =========================================================
+   TRANSACTION STORAGE
+========================================================= */
+
+function loadTransactions() {
+
+    try {
+
+        const saved = localStorage.getItem(TRANSACTIONS_KEY);
+
+        if (!saved) {
+            return [];
+        }
+
+        const parsed = JSON.parse(saved);
+
+        return Array.isArray(parsed) ? parsed : [];
+
+    } catch (error) {
+
+        console.error("Could not load transactions:", error);
+
+        return [];
+    }
+}
+
+
 function saveTransactions() {
+
     localStorage.setItem(
-        "moneyLeakTransactions",
+        TRANSACTIONS_KEY,
         JSON.stringify(transactions)
     );
 }
 
+
+/* =========================================================
+   SAVINGS STORAGE
+========================================================= */
+
+function loadSavingsGoal() {
+
+    try {
+
+        const saved = localStorage.getItem(SAVINGS_KEY);
+
+        if (!saved) {
+            return null;
+        }
+
+        const parsed = JSON.parse(saved);
+
+        if (!parsed || typeof parsed !== "object") {
+            return null;
+        }
+
+        return parsed;
+
+    } catch (error) {
+
+        console.error("Could not load savings goal:", error);
+
+        return null;
+    }
+}
+
+
+function saveSavingsGoalToStorage(goal) {
+
+    savingsGoal = goal;
+
+    localStorage.setItem(
+        SAVINGS_KEY,
+        JSON.stringify(goal)
+    );
+}
+
+
+/* =========================================================
+   ADD TRANSACTION
+========================================================= */
+
 function addTransaction() {
-    const amountInput = document.getElementById("amount");
-    const typeInput = document.getElementById("type");
-    const categoryInput = document.getElementById("category");
+
+    const amountInput = getElement("amount");
+    const typeInput = getElement("type");
+    const categoryInput = getElement("category");
+
+    if (!amountInput || !typeInput || !categoryInput) {
+        return;
+    }
 
     const amount = Number(amountInput.value);
     const type = typeInput.value;
     const category = categoryInput.value.trim();
 
+
     if (!amount || amount <= 0) {
+
         alert("Please enter a valid amount.");
+
+        amountInput.focus();
+
         return;
     }
+
+
+    if (type !== "income" && type !== "expense") {
+
+        alert("Please choose Income or Expense.");
+
+        return;
+    }
+
 
     if (!category) {
+
         alert("Please enter a category.");
+
+        categoryInput.focus();
+
         return;
     }
 
+
     const transaction = {
-        id: Date.now(),
+
+        id: Date.now().toString(),
+
         amount: amount,
+
         type: type,
+
         category: category,
-        date: new Date().toISOString()
+
+        date: getToday()
+
     };
 
-    transactions.push(transaction);
+
+    transactions.unshift(transaction);
 
     saveTransactions();
-displayTransactions();
 
-try {
-    updateDashboard();
-} catch (error) {
-    console.error("Dashboard error:", error);
-}
-
-try {
-    detectMoneyLeak();
-} catch (error) {
-    console.error("MoneyLeak error:", error);
-}
-
-try {
-    updateMoneyHealth();
-} catch (error) {
-    console.error("Money Health error:", error);
-}
-
-try {
-    updateSpendingBreakdown();
-} catch (error) {
-    console.error("Spending Breakdown error:", error);
-}
-    
     amountInput.value = "";
     categoryInput.value = "";
+
+    updateDashboard();
+
+    showTransactionSuccess();
+
+    getElement("transactionList")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 }
 
+
+/* =========================================================
+   TRANSACTION SUCCESS
+========================================================= */
+
+function showTransactionSuccess() {
+
+    const button = document.querySelector(
+        "#transactionForm .primary-button"
+    );
+
+    if (!button) {
+        return;
+    }
+
+    const originalText = button.textContent;
+
+    button.textContent = "✓ Added Successfully";
+
+    button.disabled = true;
+
+    setTimeout(() => {
+
+        button.textContent = originalText;
+
+        button.disabled = false;
+
+    }, 1200);
+}
+
+
+/* =========================================================
+   CALCULATE TOTALS
+========================================================= */
+
 function calculateTotals() {
+
     let income = 0;
     let expenses = 0;
 
-    transactions.forEach(function(transaction) {
+
+    transactions.forEach(transaction => {
+
+        const amount = Number(transaction.amount) || 0;
+
         if (transaction.type === "income") {
-            income += transaction.amount;
-        } else {
-            expenses += transaction.amount;
+
+            income += amount;
+
+        } else if (transaction.type === "expense") {
+
+            expenses += amount;
         }
     });
 
+
     return {
-        income: income,
-        expenses: expenses,
+        income,
+        expenses,
         balance: income - expenses
     };
 }
 
+
+/* =========================================================
+   UPDATE DASHBOARD
+========================================================= */
+
 function updateDashboard() {
+
     const totals = calculateTotals();
 
-    document.getElementById("balance").textContent =
-        formatMoney(totals.balance);
 
-    document.getElementById("income").textContent =
-        formatMoney(totals.income);
+    const balanceElement = getElement("balance");
+    const incomeElement = getElement("income");
+    const expensesElement = getElement("expenses");
 
-    document.getElementById("expenses").textContent =
-        formatMoney(totals.expenses);
-    
-    updateMoneyHealth();
+
+    if (balanceElement) {
+
+        balanceElement.textContent =
+            formatMoney(totals.balance);
+    }
+
+
+    if (incomeElement) {
+
+        incomeElement.textContent =
+            formatMoney(totals.income);
+    }
+
+
+    if (expensesElement) {
+
+        expensesElement.textContent =
+            formatMoney(totals.expenses);
+    }
+
+
+    updateMoneyHealth(
+        totals.income,
+        totals.expenses
+    );
+
+
+    displayTransactions();
+
+    detectMoneyLeak();
+
     updateSpendingChart();
+
+    updateSpendingBreakdown();
+
+    updateSavingsProgress();
 }
 
-function updateMoneyHealth() {
-    const totals = calculateTotals();
 
-    const healthScore = document.getElementById("healthScore");
-    const healthFill = document.getElementById("healthFill");
-    const healthMessage = document.getElementById("healthMessage");
-    const healthIcon = document.getElementById("healthIcon");
-    const healthExplanation = document.getElementById("healthExplanation");
-    
+/* =========================================================
+   MONEY HEALTH
+========================================================= */
+
+function updateMoneyHealth(income, expenses) {
+
+    const scoreElement = getElement("healthScore");
+    const fillElement = getElement("healthFill");
+    const messageElement = getElement("healthMessage");
+    const explanationElement = getElement("healthExplanation");
+    const iconElement = getElement("healthIcon");
+
+
     if (
-        !healthScore ||
-        !healthFill ||
-        !healthMessage ||
-        !healthIcon ||
-        !healthExplanation
+        !scoreElement ||
+        !fillElement ||
+        !messageElement ||
+        !explanationElement
     ) {
         return;
     }
-    if (totals.income <= 0) {        
-        healthScore.textContent = "0 / 100";
-        healthFill.style.width = "0%";
-        healthMessage.textContent =
-            "Add some income and transactions to calculate your Money Health.";
-        healthIcon.textContent = "💚";
+
+
+    if (income <= 0) {
+
+        scoreElement.textContent = "0 / 100";
+
+        fillElement.style.width = "0%";
+
+        messageElement.textContent =
+            "Add some income and expenses to calculate your Money Health.";
+
+        explanationElement.textContent =
+            "Your score is based on how much of your income you spend.";
+
+        if (iconElement) {
+            iconElement.textContent = "💚";
+        }
+
         return;
     }
 
-    const spendingRatio = totals.expenses / totals.income;
+
+    const spendingRatio = expenses / income;
 
     let score;
 
+
     if (spendingRatio <= 0.30) {
+
         score = 95;
+
     } else if (spendingRatio <= 0.50) {
+
         score = 85;
+
     } else if (spendingRatio <= 0.70) {
+
         score = 70;
+
     } else if (spendingRatio <= 0.85) {
+
         score = 50;
+
     } else if (spendingRatio <= 1) {
+
         score = 30;
+
     } else {
+
         score = 15;
     }
 
-    healthScore.textContent = `${score} / 100`;
-    healthFill.style.width = `${score}%`;
+
+    scoreElement.textContent = `${score} / 100`;
+
+    fillElement.style.width = `${score}%`;
+
 
     if (score >= 85) {
-        healthMessage.textContent =
-            "Excellent! Your spending is well under control.";
-        healthIcon.textContent = "💚";
-    } else if (score >= 70) {
-        healthMessage.textContent =
-            "Good job! Your finances are looking healthy.";
-        healthIcon.textContent = "🟢";
-    } else if (score >= 50) {
-        healthMessage.textContent =
-            "You're doing okay, but there is room to improve.";
-        healthIcon.textContent = "🟡";
-    } else if (score >= 30) {
-        healthMessage.textContent =
-            "Your spending is getting high. Watch your expenses.";
-        healthIcon.textContent = "🟠";
-    } else {
-        healthMessage.textContent =
-            "Your expenses are very high compared with your income.";
-        healthIcon.textContent = "🔴";
-    } 
-   
-    if (healthExplanation) {
-        healthExplanation.textContent =
-            `Your Money Health score is ${score}/100 because you spend ${Math.round(spendingRatio * 100)}% of your income.`; 
-    } 
-    } 
-    function displayTransactions() { 
-        const list = document.getElementById("transactionList");
 
-    if (transactions.length === 0) {
-        list.innerHTML = "<p>No transactions yet.</p>";
+        messageElement.textContent =
+            "Excellent! Your money habits look healthy.";
+
+        if (iconElement) {
+            iconElement.textContent = "💚";
+        }
+
+    } else if (score >= 70) {
+
+        messageElement.textContent =
+            "Good job. There is still room to improve.";
+
+        if (iconElement) {
+            iconElement.textContent = "🟢";
+        }
+
+    } else if (score >= 50) {
+
+        messageElement.textContent =
+            "Be careful. Your spending is getting high.";
+
+        if (iconElement) {
+            iconElement.textContent = "🟡";
+        }
+
+    } else {
+
+        messageElement.textContent =
+            "Warning: your spending is putting pressure on your income.";
+
+        if (iconElement) {
+            iconElement.textContent = "🔴";
+        }
+    }
+
+
+    explanationElement.textContent =
+        `You spend ${Math.round(spendingRatio * 100)}% of your recorded income.`;
+}
+
+
+/* =========================================================
+   DISPLAY TRANSACTIONS
+========================================================= */
+
+function displayTransactions() {
+
+    const list = getElement("transactionList");
+
+    if (!list) {
         return;
     }
 
-    list.innerHTML = "";
 
-    transactions
-        .slice()
-        .reverse()
-        .forEach(function(transaction) {
+    if (transactions.length === 0) {
 
-            const item = document.createElement("div");
+        list.innerHTML = `
+            <div class="empty-state">
 
-            item.className = "transaction";
+                <div class="empty-state-icon">
+                    💳
+                </div>
 
-            const sign =
-                transaction.type === "income" ? "+" : "-";
+                <h3>
+                    No transactions yet
+                </h3>
 
-            item.innerHTML = `
-    <div class="transaction-info">
-        <strong>${transaction.category}</strong>
-        <small>
-            ${sign}${formatMoney(transaction.amount)}
-        </small>
-    </div>
+                <p>
+                    Add your first income or expense to start tracking your money.
+                </p>
 
-    <div class="transaction-actions">
-        <button
-            class="edit-transaction"
-            onclick="editTransaction(${transaction.id})"
-        >
-            Edit
-        </button>
+            </div>
+        `;
 
-        <button
-            class="delete-transaction"
-            onclick="deleteTransaction(${transaction.id})"
-        >
-            Delete
-        </button>
-    </div>
-`;
+        return;
+    }
 
-            list.appendChild(item);
-        });
+
+    const recentTransactions =
+        transactions.slice(0, 20);
+
+
+    list.innerHTML =
+        recentTransactions.map(transaction => {
+
+            const amount = Number(transaction.amount) || 0;
+
+            const isIncome =
+                transaction.type === "income";
+
+
+            const date = formatTransactionDate(
+                transaction.date
+            );
+
+
+            return `
+                <div class="transaction-item">
+
+                    <div class="transaction-info">
+
+                        <div class="transaction-icon">
+                            ${isIncome ? "↑" : "↓"}
+                        </div>
+
+                        <div class="transaction-details">
+
+                            <div class="transaction-category">
+                                ${escapeHTML(transaction.category)}
+                            </div>
+
+                            <div class="transaction-date">
+                                ${date}
+                            </div>
+
+                            <div class="transaction-actions">
+
+                                <button
+                                    type="button"
+                                    onclick="editTransaction('${transaction.id}')"
+                                >
+                                    Edit
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="delete-button"
+                                    onclick="deleteTransaction('${transaction.id}')"
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="transaction-amount ${
+                            isIncome
+                                ? "transaction-income"
+                                : "transaction-expense"
+                        }"
+                    >
+                        ${isIncome ? "+" : "-"}${formatMoney(amount)}
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
 }
-function editTransaction(id) {
-    const transaction = transactions.find(function (transaction) {
-        return transaction.id === id;
+
+
+/* =========================================================
+   FORMAT TRANSACTION DATE
+========================================================= */
+
+function formatTransactionDate(dateValue) {
+
+    if (!dateValue) {
+        return "Unknown date";
+    }
+
+
+    const date = new Date(dateValue);
+
+
+    if (Number.isNaN(date.getTime())) {
+        return "Unknown date";
+    }
+
+
+    return date.toLocaleDateString("en-NG", {
+
+        day: "numeric",
+
+        month: "short",
+
+        year: "numeric"
     });
+}
 
-    if (!transaction) return;
 
-    const newAmount = prompt(
-        "Enter the new amount:",
-        transaction.amount
-    );
+/* =========================================================
+   EDIT TRANSACTION
+========================================================= */
 
-    if (newAmount === null) return;
+function editTransaction(id) {
+
+    const transaction =
+        transactions.find(item => item.id === id);
+
+
+    if (!transaction) {
+        return;
+    }
+
+
+    const newAmount =
+        prompt(
+            "Enter the new amount:",
+            transaction.amount
+        );
+
+
+    if (newAmount === null) {
+        return;
+    }
+
 
     const amount = Number(newAmount);
 
+
     if (!amount || amount <= 0) {
+
         alert("Please enter a valid amount.");
+
         return;
     }
 
-    const newCategory = prompt(
-        "Enter the new category:",
-        transaction.category
-    );
 
-    if (newCategory === null) return;
+    const newCategory =
+        prompt(
+            "Enter the category:",
+            transaction.category
+        );
 
-    const category = newCategory.trim();
+
+    if (newCategory === null) {
+        return;
+    }
+
+
+    const category =
+        newCategory.trim();
+
 
     if (!category) {
-        alert("Please enter a category.");
+
+        alert("Category cannot be empty.");
+
         return;
     }
+
 
     transaction.amount = amount;
+
     transaction.category = category;
 
+
     saveTransactions();
+
     updateDashboard();
-    displayTransactions();
-    detectMoneyLeak();
-    updateMoneyHealth();
-    updateSpendingBreakdown();
 }
+
+
+/* =========================================================
+   DELETE TRANSACTION
+========================================================= */
+
 function deleteTransaction(id) {
-    const transaction = transactions.find(function (transaction) {
-        return transaction.id === id;
-    });
 
-    if (!transaction) return;
+    const transaction =
+        transactions.find(item => item.id === id);
 
-    const confirmed = confirm(
-        "Are you sure you want to delete this transaction?"
-    );
 
-    if (!confirmed) return;
-
-    transactions = transactions.filter(function (transaction) {
-        return transaction.id !== id;
-    });
-
-    saveTransactions();
-    updateDashboard();
-    displayTransactions();
-    detectMoneyLeak();
-    updateMoneyHealth();
-    updateSpendingBreakdown();
-}
-function detectMoneyLeak() {
-    const leakMessage = document.getElementById("leakMessage");
-
-    const expenses = transactions.filter(function(transaction) {
-        return transaction.type === "expense";
-    });
-
-    if (expenses.length === 0) {
-        leakMessage.innerHTML = `
-            <p>
-                Add some expenses and MoneyLeak will find
-                where your money is going.
-            </p>
-        `;
+    if (!transaction) {
         return;
     }
 
-    const categoryTotals = {};
 
-transactions
-    .filter(function (transaction) {
-        return transaction.type === "expense";
-    })
-    .forEach(function (transaction) {
-        const category = transaction.category.trim();
+    const confirmed =
+        confirm(
+            `Delete ${transaction.category} (${formatMoney(transaction.amount)})?`
+        );
 
-        if (!categoryTotals[category]) {
-            categoryTotals[category] = 0;
-        }
 
-        categoryTotals[category] += transaction.amount;
-    });
-
-    let biggestCategory = "";
-    let biggestAmount = 0;
-
-    for (const category in categoryTotals) {
-
-        if (categoryTotals[category] > biggestAmount) {
-            biggestAmount = categoryTotals[category];
-            biggestCategory = category;
-        }
+    if (!confirmed) {
+        return;
     }
 
-    const displayCategory =
-        biggestCategory.charAt(0).toUpperCase() +
-        biggestCategory.slice(1);
 
-    const potentialMonthlySaving = biggestAmount * 0.20;
-    const potentialYearlySaving = potentialMonthlySaving * 12;
+    transactions =
+        transactions.filter(
+            item => item.id !== id
+        );
+
+
+    saveTransactions();
+
+    updateDashboard();
+}
+
+
+/* =========================================================
+   MONEY LEAK DETECTOR
+========================================================= */
+
+function detectMoneyLeak() {
+
+    const leakMessage =
+        getElement("leakMessage");
+
+
+    if (!leakMessage) {
+        return;
+    }
+
+
+    const expenses =
+        transactions.filter(
+            transaction =>
+                transaction.type === "expense"
+        );
+
+
+    if (expenses.length === 0) {
+
+        leakMessage.innerHTML = `
+            <div class="empty-insight">
+
+                <span>
+                    💡
+                </span>
+
+                <p>
+                    Add some expenses and MoneyLeak will find where your money is going.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const categories = {};
+
+
+    expenses.forEach(transaction => {
+
+        const category =
+            transaction.category.trim() || "Other";
+
+
+        categories[category] =
+            (categories[category] || 0)
+            + Number(transaction.amount);
+    });
+
+
+    const sorted =
+        Object.entries(categories)
+            .sort((a, b) => b[1] - a[1]);
+
+
+    const biggestCategory =
+        sorted[0][0];
+
+    const biggestAmount =
+        sorted[0][1];
+
+
+    const potentialMonthlySaving =
+        biggestAmount * 0.20;
+
+
+    const potentialYearlySaving =
+        potentialMonthlySaving * 12;
+
 
     leakMessage.innerHTML = `
-        <p>
-            🚨 Your biggest money leak is
-            <strong>${displayCategory}</strong>.
-        </p>
+        <div class="leak-card">
 
-        <h3>${formatMoney(biggestAmount)}</h3>
+            <h3>
+                Your biggest money leak is ${escapeHTML(biggestCategory)}
+            </h3>
 
-        <p>
-            That's the category where you've spent
-            the most money so far.
-        </p>
+            <p>
+                You have recorded
+                <strong>${formatMoney(biggestAmount)}</strong>
+                in ${escapeHTML(biggestCategory)} expenses.
+            </p>
 
-        <hr>
+            <p>
+                Cutting this category by just 20% could potentially save:
+            </p>
 
-        <p>
-            💡 If you reduce this spending by 20%:
-        </p>
+            <div class="leak-saving">
 
-        <p>
-            You could save
-            <strong>${formatMoney(potentialMonthlySaving)}</strong>
-            per month.
-        </p>
+                <strong>
+                    ${formatMoney(potentialMonthlySaving)}
+                </strong>
+                per month
 
-        <p>
-            That's approximately
-            <strong>${formatMoney(potentialYearlySaving)}</strong>
-            per year.
-        </p>
+                <br>
+
+                <strong>
+                    ${formatMoney(potentialYearlySaving)}
+                </strong>
+                per year
+
+            </div>
+
+        </div>
     `;
 }
 
-updateDashboard();
-displayTransactions();
-detectMoneyLeak();
-updateMoneyHealth();
-updateSpendingBreakdown();
 
-}
-function updateSpendingBreakdown() {
-    const breakdown = document.getElementById("spendingBreakdown");
+/* =========================================================
+   SPENDING CHART
+========================================================= */
 
-    if (!breakdown) return;
+function updateSpendingChart() {
 
-    const categoryTotals = {};
+    const chart =
+        getElement("spendingChart");
 
-    transactions
-        .filter(function (transaction) {
-            return transaction.type === "expense";
-        })
-        .forEach(function (transaction) {
-            const category = transaction.category.trim();
 
-            if (!category) return;
-
-            if (!categoryTotals[category]) {
-                categoryTotals[category] = 0;
-            }
-
-            categoryTotals[category] += transaction.amount;
-        });
-
-    const categories = Object.keys(categoryTotals);
-
-    if (categories.length === 0) {
-        breakdown.innerHTML =
-            "<p>Add some expenses to see your spending breakdown.</p>";
+    if (!chart) {
         return;
     }
 
-    const totalExpenses = categories.reduce(function (total, category) {
-        return total + categoryTotals[category];
-    }, 0);
 
-    categories.sort(function (a, b) {
-        return categoryTotals[b] - categoryTotals[a];
-    });
+    const expenses =
+        transactions.filter(
+            transaction =>
+                transaction.type === "expense"
+        );
 
-    breakdown.innerHTML = "";
-
-    categories.forEach(function (category) {
-        const amount = categoryTotals[category];
-        const percentage =
-            totalExpenses > 0
-                ? (amount / totalExpenses) * 100
-                : 0;
-
-        const item = document.createElement("div");
-        item.className = "breakdown-item";
-
-        item.innerHTML = `
-            <div class="breakdown-header">
-                <strong>${category}</strong>
-                <strong>${formatMoney(amount)}</strong>
-            </div>
-
-            <div class="breakdown-bar">
-                <div
-                    class="breakdown-fill"
-                    style="width: ${percentage}%"
-                ></div>
-            </div>
-
-            <div class="breakdown-percentage">
-                ${percentage.toFixed(1)}% of expenses
-            </div>
-        `;
-
-        breakdown.appendChild(item);
-    });
-
-    const total = document.createElement("div");
-    total.className = "breakdown-total";
-
-    total.innerHTML = `
-        <strong>Total Expenses</strong>
-        <strong>${formatMoney(totalExpenses)}</strong>
-    `;
-
-    breakdown.appendChild(total);
-}   
-function updateSpendingChart() {
-    const chart = document.getElementById("spendingChart");
-
-    if (!chart) return;
-
-    const expenses = transactions.filter(function (transaction) {
-        return transaction.type === "expense";
-    });
 
     if (expenses.length === 0) {
+
         chart.innerHTML = `
-            <div class="chart-empty">
-                <span>📊</span>
-                <p>No spending data yet.</p>
-                <small>Add an expense to see where your money goes.</small>
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    📊
+                </div>
+
+                <h3>
+                    No spending data yet
+                </h3>
+
+                <p>
+                    Add some expenses to see your spending activity.
+                </p>
+
             </div>
         `;
+
         return;
     }
 
-    const categoryTotals = {};
 
-    expenses.forEach(function (transaction) {
-        const category = transaction.category.trim();
+    const categories = {};
 
-        if (!category) return;
 
-        if (!categoryTotals[category]) {
-            categoryTotals[category] = 0;
-        }
+    expenses.forEach(transaction => {
 
-        categoryTotals[category] += transaction.amount;
+        const category =
+            transaction.category.trim() || "Other";
+
+
+        categories[category] =
+            (categories[category] || 0)
+            + Number(transaction.amount);
     });
 
-    const categories = Object.keys(categoryTotals);
 
-    const totalExpenses = expenses.reduce(function (total, transaction) {
-        return total + transaction.amount;
-    }, 0);
+    const sorted =
+        Object.entries(categories)
+            .sort((a, b) => b[1] - a[1]);
 
-    categories.sort(function (a, b) {
-        return categoryTotals[b] - categoryTotals[a];
-    });
 
-    chart.innerHTML = "";
+    const maximum =
+        sorted[0][1];
 
-    const title = document.createElement("div");
-    title.className = "chart-total";
 
-    title.innerHTML = `
-        <span>Total Spending</span>
-        <strong>${formatMoney(totalExpenses)}</strong>
-    `;
+    chart.innerHTML =
+        sorted.map(([category, amount]) => {
 
-    chart.appendChild(title);
+            const percentage =
+                maximum > 0
+                    ? (amount / maximum) * 100
+                    : 0;
 
-    categories.forEach(function (category) {
-        const amount = categoryTotals[category];
 
-        const percentage =
-            totalExpenses > 0
-                ? (amount / totalExpenses) * 100
-                : 0;
+            return `
+                <div class="chart-item">
 
-        const item = document.createElement("div");
-        item.className = "chart-item";
+                    <div class="chart-item-header">
 
-        item.innerHTML = `
-            <div class="chart-header">
-                <strong>${category}</strong>
-                <strong>${formatMoney(amount)}</strong>
-            </div>
+                        <span>
+                            ${escapeHTML(category)}
+                        </span>
 
-            <div class="chart-bar">
-                <div
-                    class="chart-fill"
-                    style="width: ${percentage}%"
-                ></div>
-            </div>
+                        <span>
+                            ${formatMoney(amount)}
+                        </span>
 
-            <div class="chart-footer">
-                <span>${percentage.toFixed(1)}% of spending</span>
+                    </div>
+
+                    <div class="chart-bar">
+
+                        <div
+                            class="chart-fill"
+                            style="width: ${percentage}%"
+                        ></div>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+/* =========================================================
+   SPENDING BREAKDOWN
+========================================================= */
+
+function updateSpendingBreakdown() {
+
+    const breakdown =
+        getElement("spendingBreakdown");
+
+
+    if (!breakdown) {
+        return;
+    }
+
+
+    const expenses =
+        transactions.filter(
+            transaction =>
+                transaction.type === "expense"
+        );
+
+
+    if (expenses.length === 0) {
+
+        breakdown.innerHTML = `
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    🧾
+                </div>
+
+                <h3>
+                    Nothing to break down yet
+                </h3>
+
+                <p>
+                    Your spending categories will appear here after you add expenses.
+                </p>
+
             </div>
         `;
 
-        chart.appendChild(item);
+        return;
+    }
+
+
+    const categories = {};
+
+
+    expenses.forEach(transaction => {
+
+        const category =
+            transaction.category.trim() || "Other";
+
+
+        categories[category] =
+            (categories[category] || 0)
+            + Number(transaction.amount);
     });
 
-    const insight = document.createElement("div");
-    insight.className = "chart-insight";
 
-    const topCategory = categories[0];
-    const topAmount = categoryTotals[topCategory];
-    const topPercentage =
-        totalExpenses > 0
-            ? (topAmount / totalExpenses) * 100
-            : 0;
+    const sorted =
+        Object.entries(categories)
+            .sort((a, b) => b[1] - a[1]);
 
-    insight.innerHTML = `
-        <strong>💡 Spending Insight</strong>
-        <p>
-            Your biggest expense category is
-            <strong>${topCategory}</strong>,
-            accounting for ${topPercentage.toFixed(1)}% of your spending.
-        </p>
-    `;
 
-    chart.appendChild(insight);
+    const total =
+        sorted.reduce(
+            (sum, [, amount]) => sum + amount,
+            0
+        );
+
+
+    breakdown.innerHTML =
+        sorted.map(([category, amount]) => {
+
+            const percentage =
+                total > 0
+                    ? (amount / total) * 100
+                    : 0;
+
+
+            return `
+                <div class="breakdown-item">
+
+                    <div class="breakdown-header">
+
+                        <span>
+                            ${escapeHTML(category)}
+                        </span>
+
+                        <span>
+                            ${formatMoney(amount)}
+                            · ${Math.round(percentage)}%
+                        </span>
+
+                    </div>
+
+                    <div class="breakdown-bar">
+
+                        <div
+                            class="breakdown-fill"
+                            style="width: ${percentage}%"
+                        ></div>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
 }
 
-updateSpendingChart();
-function resetSavingsGoal() {
-    localStorage.removeItem("moneyLeakSavingsGoal");
-    localStorage.removeItem("moneyLeakCurrentSavings");
-    localStorage.removeItem("moneyLeakGoalWeeks");
 
-    document.getElementById("savingsGoal").value = "";
-    document.getElementById("currentSavings").value = "";
-    document.getElementById("goalWeeks").value = "";
+/* =========================================================
+   SAVINGS GOAL — CALCULATE
+========================================================= */
 
-    document.getElementById("savingsResult").innerHTML = "";
-    document.getElementById("progressText").textContent = "0% saved";
-    document.getElementById("progressFill").style.width = "0%";
+function calculateSavingsGoal() {
 
-    }    
-    function updateSavingsGoal() {
-    const goalInput = document.getElementById("savingsGoal");
-    const currentInput = document.getElementById("currentSavings");
-    const weeksInput = document.getElementById("goalWeeks");
+    const goalInput =
+        getElement("savingsGoal");
 
-    const goal = Number(goalInput.value);
-    const saved = Number(currentInput.value);
-    const weeks = Number(weeksInput.value);
+    const savedInput =
+        getElement("currentSavings");
+
+    const weeksInput =
+        getElement("goalWeeks");
+
+
+    if (
+        !goalInput ||
+        !savedInput ||
+        !weeksInput
+    ) {
+        return;
+    }
+
+
+    const goal =
+        Number(goalInput.value);
+
+    const saved =
+        Number(savedInput.value);
+
+    const weeks =
+        Number(weeksInput.value);
+
 
     if (!goal || goal <= 0) {
-        alert("Please enter a valid savings goal.");
+
+        alert("Please enter a valid savings target.");
+
+        goalInput.focus();
+
         return;
     }
 
-    if (saved < 0 || saved > goal) {
-        alert("Your saved amount must be between ₦0 and your goal.");
+
+    if (saved < 0) {
+
+        alert("Already saved cannot be negative.");
+
+        savedInput.focus();
+
         return;
     }
+
+
+    if (saved > goal) {
+
+        alert("Already saved cannot be greater than your target.");
+
+        savedInput.focus();
+
+        return;
+    }
+
 
     if (!weeks || weeks <= 0) {
+
         alert("Please enter how many weeks you have.");
+
+        weeksInput.focus();
+
         return;
     }
 
-    localStorage.setItem("moneyLeakSavingsGoal", goalInput.value);
-    localStorage.setItem("moneyLeakCurrentSavings", currentInput.value);
-    localStorage.setItem("moneyLeakGoalWeeks", weeksInput.value);
 
-    calculateSavingsGoalPage();
-
-    alert("Your savings goal has been updated!");
-}
-window.addEventListener("DOMContentLoaded", function () {
-    const goal = localStorage.getItem("moneyLeakSavingsGoal");
-    const saved = localStorage.getItem("moneyLeakCurrentSavings");
-    const weeks = localStorage.getItem("moneyLeakGoalWeeks");
-
-    if (goal) {
-        document.getElementById("savingsGoal").value = goal;
-    }
-
-    if (saved) {
-        document.getElementById("currentSavings").value = saved;
-    }
-
-    if (weeks) {
-        document.getElementById("goalWeeks").value = weeks;
-    }
-
-    if (goal && weeks) {
-    calculateSavingsGoalPage();;
+    renderSavingsPlan(
+        goal,
+        saved,
+        weeks
+    );
 }
 
-});
 
-function calculateSavingsGoalPage() {
-    const target = Number(document.getElementById("savingsTarget").value);
-    const saved = Number(document.getElementById("alreadySaved").value);
-    const days = Number(document.getElementById("savingsDays").value);
+/* =========================================================
+   RENDER SAVINGS PLAN
+========================================================= */
 
-    const result = document.getElementById("savingsResult");
-    const progressFill = document.getElementById("progressFill");
-    const progressText = document.getElementById("progressText");
+function renderSavingsPlan(
+    goal,
+    saved,
+    weeks
+) {
 
-    if (!target || target <= 0 || saved < 0 || !days || days <= 0) {
-        alert("Please enter a valid savings target, saved amount, and number of days.");
+    const result =
+        getElement("savingsResult");
+
+
+    if (!result) {
         return;
     }
 
-    if (saved >= target) {
-        result.innerHTML = `
-            <div class="goal-success">
-                🎉 Congratulations! You've already reached your savings goal.
-            </div>
-        `;
 
-        if (progressFill) {
-            progressFill.style.width = "100%";
-        }
+    const remaining =
+        Math.max(goal - saved, 0);
 
-        if (progressText) {
-            progressText.textContent = "100% saved";
-        }
 
-        return;
-    }
+    const weekly =
+        remaining / weeks;
 
-    const remaining = target - saved;
-    const daily = remaining / days;
-    const weekly = daily * 7;
-    const progress = (saved / target) * 100;
+
+    const daily =
+        weekly / 7;
+
+
+    const progress =
+        Math.min(
+            (saved / goal) * 100,
+            100
+        );
+
+
+    const targetDate =
+        new Date();
+
+
+    targetDate.setDate(
+        targetDate.getDate() + (weeks * 7)
+    );
+
 
     result.innerHTML = `
         <div class="goal-result">
-            <h3>🎯 Your Savings Plan</h3>
+
+            <h3>
+                🎯 Your Savings Plan
+            </h3>
 
             <p>
                 You still need
-                <strong>₦${remaining.toLocaleString("en-NG")}</strong>
+                <strong>${formatMoney(remaining)}</strong>
                 to reach your goal.
             </p>
 
             <p>
                 Save approximately
-                <strong>₦${Math.ceil(daily).toLocaleString("en-NG")}</strong>
-                per day.
+                <strong>${formatMoney(Math.ceil(weekly))}</strong>
+                per week.
             </p>
 
             <p>
                 That's about
-                <strong>₦${Math.ceil(weekly).toLocaleString("en-NG")}</strong>
-                per week.
+                <strong>${formatMoney(Math.ceil(daily))}</strong>
+                per day.
             </p>
 
-            <div class="goal-progress">
-                <div style="width: ${Math.min(progress, 100)}%"></div>
+            <div class="goal-progress-bar">
+
+                <div
+                    style="width: ${progress}%"
+                ></div>
+
             </div>
 
-            <p class="progress-text">
-                ${Math.round(progress)}% saved
+            <p>
+                <strong>${Math.round(progress)}% saved</strong>
             </p>
+
+            <p>
+                📅 Target date:
+                <strong>
+                    ${targetDate.toLocaleDateString("en-NG", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    })}
+                </strong>
+            </p>
+
         </div>
     `;
 
-    if (progressFill) {
-        progressFill.style.width = `${Math.min(progress, 100)}%`;
+
+    updateSavingsDisplay(
+        goal,
+        saved
+    );
+}
+
+
+/* =========================================================
+   UPDATE SAVINGS GOAL
+========================================================= */
+
+function updateSavingsGoal() {
+
+    const goalInput =
+        getElement("savingsGoal");
+
+    const savedInput =
+        getElement("currentSavings");
+
+    const weeksInput =
+        getElement("goalWeeks");
+
+
+    if (
+        !goalInput ||
+        !savedInput ||
+        !weeksInput
+    ) {
+        return;
     }
+
+
+    const goal =
+        Number(goalInput.value);
+
+    const saved =
+        Number(savedInput.value);
+
+    const weeks =
+        Number(weeksInput.value);
+
+
+    if (!goal || goal <= 0) {
+
+        alert("Please enter a valid savings target.");
+
+        return;
+    }
+
+
+    if (saved < 0 || saved > goal) {
+
+        alert("Please make sure your saved amount is between ₦0 and your target.");
+
+        return;
+    }
+
+
+    if (!weeks || weeks <= 0) {
+
+        alert("Please enter a valid number of weeks.");
+
+        return;
+    }
+
+
+    const goalData = {
+
+        target: goal,
+
+        saved: saved,
+
+        weeks: weeks,
+
+        updatedAt: getToday()
+    };
+
+
+    saveSavingsGoalToStorage(
+        goalData
+    );
+
+
+    renderSavingsPlan(
+        goal,
+        saved,
+        weeks
+    );
+
+
+    updateSavingsProgress();
+
+
+    alert("Savings goal updated successfully! 🎯");
+}
+
+
+/* =========================================================
+   SAVE SAVINGS GOAL
+   Kept as a public function for future savings.html
+========================================================= */
+
+function saveSavingsGoal() {
+
+    updateSavingsGoal();
+}
+
+
+/* =========================================================
+   RESET SAVINGS GOAL
+========================================================= */
+
+function resetSavingsGoal() {
+
+    const hasGoal =
+        localStorage.getItem(SAVINGS_KEY);
+
+
+    if (!hasGoal) {
+
+        resetSavingsDisplay();
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to reset your savings goal?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    localStorage.removeItem(
+        SAVINGS_KEY
+    );
+
+
+    savingsGoal = null;
+
+
+    const goalInput =
+        getElement("savingsGoal");
+
+    const savedInput =
+        getElement("currentSavings");
+
+    const weeksInput =
+        getElement("goalWeeks");
+
+    const result =
+        getElement("savingsResult");
+
+
+    if (goalInput) {
+        goalInput.value = "";
+    }
+
+    if (savedInput) {
+        savedInput.value = "";
+    }
+
+    if (weeksInput) {
+        weeksInput.value = "";
+    }
+
+    if (result) {
+        result.innerHTML = "";
+    }
+
+
+    resetSavingsDisplay();
+
+    alert("Savings goal reset.");
+}
+
+
+/* =========================================================
+   UPDATE SAVINGS PROGRESS
+========================================================= */
+
+function updateSavingsProgress() {
+
+    if (!savingsGoal) {
+
+        resetSavingsDisplay();
+
+        return;
+    }
+
+
+    const goal =
+        Number(savingsGoal.target);
+
+    const saved =
+        Number(savingsGoal.saved);
+
+
+    if (!goal || goal <= 0) {
+
+        resetSavingsDisplay();
+
+        return;
+    }
+
+
+    updateSavingsDisplay(
+        goal,
+        saved
+    );
+}
+
+
+/* =========================================================
+   UPDATE SAVINGS DISPLAY
+========================================================= */
+
+function updateSavingsDisplay(
+    goal,
+    saved
+) {
+
+    const progressFill =
+        getElement("progressFill");
+
+    const progressText =
+        getElement("progressText");
+
+    const savedAmount =
+        getElement("savedAmount");
+
+    const targetAmount =
+        getElement("targetAmount");
+
+    const remainingAmount =
+        getElement("remainingAmount");
+
+
+    const percentage =
+        Math.min(
+            Math.max((saved / goal) * 100, 0),
+            100
+        );
+
+
+    const remaining =
+        Math.max(goal - saved, 0);
+
+
+    if (progressFill) {
+
+        progressFill.style.width =
+            `${percentage}%`;
+    }
+
 
     if (progressText) {
-        progressText.textContent = `${Math.round(progress)}% saved`;
+
+        progressText.textContent =
+            `${Math.round(percentage)}% saved`;
     }
 
-    localStorage.setItem("moneyLeakSavingsGoalPage", JSON.stringify({
-        target,
-        saved,
-        days,
-        remaining,
-        daily,
-        weekly,
-        progress
-    }));
-}
-function saveSavingsGoal() {
-    const target = Number(document.getElementById("savingsTarget").value);
-    const saved = Number(document.getElementById("savingsSaved").value);
-    const days = Number(document.getElementById("savingsDays").value);
 
-    localStorage.setItem("moneyLeakSavingsGoal", JSON.stringify({
-        target,
-        saved,
-        days
-    }));
+    if (savedAmount) {
 
-    alert("Savings goal saved successfully! 🎯");
+        savedAmount.textContent =
+            formatMoney(saved);
+    }
+
+
+    if (targetAmount) {
+
+        targetAmount.textContent =
+            formatMoney(goal);
+    }
+
+
+    if (remainingAmount) {
+
+        if (remaining === 0) {
+
+            remainingAmount.textContent =
+                "🎉 Congratulations! You reached your savings goal.";
+
+        } else {
+
+            remainingAmount.textContent =
+                `You have ${formatMoney(remaining)} left to reach your goal.`;
+        }
+    }
 }
+
+
+/* =========================================================
+   RESET SAVINGS DISPLAY
+========================================================= */
+
+function resetSavingsDisplay() {
+
+    const progressFill =
+        getElement("progressFill");
+
+    const progressText =
+        getElement("progressText");
+
+    const savedAmount =
+        getElement("savedAmount");
+
+    const targetAmount =
+        getElement("targetAmount");
+
+    const remainingAmount =
+        getElement("remainingAmount");
+
+
+    if (progressFill) {
+        progressFill.style.width = "0%";
+    }
+
+
+    if (progressText) {
+        progressText.textContent = "0% saved";
+    }
+
+
+    if (savedAmount) {
+        savedAmount.textContent = formatMoney(0);
+    }
+
+
+    if (targetAmount) {
+        targetAmount.textContent = formatMoney(0);
+    }
+
+
+    if (remainingAmount) {
+        remainingAmount.textContent =
+            "Enter your goal to start tracking.";
+    }
+}
+
+
+/* =========================================================
+   LOAD SAVINGS GOAL INTO FORM
+========================================================= */
+
 function loadSavedSavingsGoal() {
-    const savedGoal = localStorage.getItem("moneyLeakSavingsGoal");
 
-    if (!savedGoal) return;
-
-    const goal = JSON.parse(savedGoal);
-
-    const goalInput = document.getElementById("savingsGoal");
-    const savingsInput = document.getElementById("currentSavings");
-    const weeksInput = document.getElementById("goalWeeks");
-
-    if (goalInput) goalInput.value = goal.target || "";
-    if (savingsInput) savingsInput.value = goal.saved || "";
-
-    if (weeksInput && goal.days) {
-        weeksInput.value = Math.ceil(goal.days / 7);
+    if (!savingsGoal) {
+        return;
     }
 
-    if (typeof calculateSavingsGoal === "function") {
-        calculateSavingsGoal();
+
+    const goalInput =
+        getElement("savingsGoal");
+
+    const savedInput =
+        getElement("currentSavings");
+
+    const weeksInput =
+        getElement("goalWeeks");
+
+
+    if (goalInput) {
+        goalInput.value =
+            savingsGoal.target || "";
+    }
+
+
+    if (savedInput) {
+        savedInput.value =
+            savingsGoal.saved || 0;
+    }
+
+
+    if (weeksInput) {
+        weeksInput.value =
+            savingsGoal.weeks || "";
+    }
+
+
+    if (
+        savingsGoal.target &&
+        savingsGoal.weeks
+    ) {
+
+        renderSavingsPlan(
+            Number(savingsGoal.target),
+            Number(savingsGoal.saved || 0),
+            Number(savingsGoal.weeks)
+        );
     }
 }
 
-loadSavedSavingsGoal();
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+function setupQuickActions() {
+
+    const actions =
+        document.querySelectorAll(
+            ".quick-action[data-transaction-type]"
+        );
+
+
+    actions.forEach(action => {
+
+        action.addEventListener(
+            "click",
+            function() {
+
+                const type =
+                    this.dataset.transactionType;
+
+
+                const typeInput =
+                    getElement("type");
+
+
+                if (typeInput && type) {
+
+                    typeInput.value = type;
+                }
+            }
+        );
+    });
+}
+
+
+/* =========================================================
+   TRANSACTION FORM
+========================================================= */
+
+function setupTransactionForm() {
+
+    const form =
+        getElement("transactionForm");
+
+
+    if (!form) {
+        return;
+    }
+
+
+    form.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            addTransaction();
+        }
+    );
+}
+
+
+/* =========================================================
+   SAVINGS BUTTONS
+========================================================= */
+
+function setupSavingsButtons() {
+
+    const calculateButton =
+        getElement("calculateSavingsButton");
+
+    const updateButton =
+        getElement("updateSavingsButton");
+
+    const resetButton =
+        getElement("resetSavingsButton");
+
+
+    if (calculateButton) {
+
+        calculateButton.addEventListener(
+            "click",
+            calculateSavingsGoal
+        );
+    }
+
+
+    if (updateButton) {
+
+        updateButton.addEventListener(
+            "click",
+            updateSavingsGoal
+        );
+    }
+
+
+    if (resetButton) {
+
+        resetButton.addEventListener(
+            "click",
+            resetSavingsGoal
+        );
+    }
+}
+
+
+/* =========================================================
+   ENTER KEY SUPPORT
+========================================================= */
+
+function setupEnterKeySupport() {
+
+    const savingsInputs =
+        document.querySelectorAll(
+            "#savingsGoal, #currentSavings, #goalWeeks"
+        );
+
+
+    savingsInputs.forEach(input => {
+
+        input.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    calculateSavingsGoal();
+                }
+            }
+        );
+    });
+}
+
+
+/* =========================================================
+   INITIALIZE APP
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        setupTransactionForm();
+
+        setupQuickActions();
+
+        setupSavingsButtons();
+
+        setupEnterKeySupport();
+
+        loadSavedSavingsGoal();
+
+        updateDashboard();
+
+    }
+);
+
+
+/* =========================================================
+   BACKWARD COMPATIBILITY
+========================================================= */
+
+/*
+   These functions make the new system easier to use
+   from other MoneyLeak pages.
+*/
+
+window.addTransaction =
+    addTransaction;
+
+window.editTransaction =
+    editTransaction;
+
+window.deleteTransaction =
+    deleteTransaction;
+
+window.calculateSavingsGoal =
+    calculateSavingsGoal;
+
+window.updateSavingsGoal =
+    updateSavingsGoal;
+
+window.saveSavingsGoal =
+    saveSavingsGoal;
+
+window.resetSavingsGoal =
+    resetSavingsGoal;
+
+window.loadSavedSavingsGoal =
+    loadSavedSavingsGoal;
