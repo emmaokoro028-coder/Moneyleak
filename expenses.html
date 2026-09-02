@@ -3,67 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Add and manage your expenses with MoneyLeak.">
+
     <title>Add Expense | MoneyLeak</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-    <h1>MoneyLeak</h1>
-    <p>Add your expense</p>
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="site-header">
+
+    <nav class="navbar">
+
+        <a href="index.html" class="brand">
+            <span class="brand-mark">M</span>
+            <span>MoneyLeak</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="index.html#transactions">Transactions</a>
+            <a href="index.html#savings-section">Savings</a>
+            <a href="index.html#insights">Insights</a>
+        </div>
+
+        <a href="index.html#add-section" class="nav-button">
+            Dashboard
+        </a>
+
+    </nav>
+
+
+    <div class="hero-content">
+
+        <span class="hero-badge">
+            EXPENSES
+        </span>
+
+        <h1>
+            Know where your money goes.
+        </h1>
+
+        <p>
+            Record your spending and discover your biggest money leaks.
+        </p>
+
+    </div>
+
 </header>
+
+
+<!-- =========================
+     MAIN
+========================= -->
 
 <main>
 
-    <section class="form-section">
+    <!-- =========================
+         ADD EXPENSE
+    ========================= -->
 
-        <h2>💸 Add Expense</h2>
+    <section class="add-section">
 
-        <input
-            type="number"
-            id="expenseAmount"
-            placeholder="Amount (₦)"
-        >
+        <div class="section-heading">
 
-        <input
-            type="text"
-            id="expenseCategory"
-            placeholder="Category e.g. Food"
-        >
+            <div>
 
-        <button onclick="addExpense()">
-            Add Expense
-        </button>
+                <span class="section-eyebrow">
+                    MONEY OUT
+                </span>
 
-        <a href="index.html" class="back-link">
-            ← Back to Dashboard
-        </a>
+                <h2>
+                    Add Expense
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <form id="expenseForm">
+
+            <!-- AMOUNT -->
+
+            <div class="form-group">
+
+                <label for="expenseAmount">
+                    Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="expenseAmount"
+                    placeholder="e.g. 10000"
+                    min="0"
+                    step="0.01"
+                    inputmode="decimal"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="form-group">
+
+                <label for="expenseCategory">
+                    Expense Category
+                </label>
+
+                <input
+                    type="text"
+                    id="expenseCategory"
+                    placeholder="e.g. Food, Transport, Shopping"
+                    maxlength="50"
+                    required
+                >
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                + Add Expense
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- =========================
+         SMART INSIGHT
+    ========================= -->
+
+    <section class="leak-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    SMART HABIT
+                </span>
+
+                <h2>
+                    🚨 Why track expenses?
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="leak-card">
+
+            <h3>
+                Small expenses can become big leaks.
+            </h3>
+
+            <p>
+                MoneyLeak groups your expenses by category so you can quickly see where most of your money is going.
+            </p>
+
+            <p>
+                The more accurate your records are, the better your Money Leak insights will become.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
+    <section class="quick-actions">
+
+        <div class="quick-action-grid">
+
+            <a
+                href="index.html"
+                class="quick-action"
+            >
+
+                <span class="quick-action-icon">
+                    ←
+                </span>
+
+                <strong>
+                    Dashboard
+                </strong>
+
+                <small>
+                    Return to your overview
+                </small>
+
+            </a>
+
+
+            <a
+                href="income.html"
+                class="quick-action"
+            >
+
+                <span class="quick-action-icon">
+                    ↑
+                </span>
+
+                <strong>
+                    Add Income
+                </strong>
+
+                <small>
+                    Record money coming in
+                </small>
+
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="quick-action"
+            >
+
+                <span class="quick-action-icon">
+                    🎯
+                </span>
+
+                <strong>
+                    Savings Goal
+                </strong>
+
+                <small>
+                    Plan your savings
+                </small>
+
+            </a>
+
+        </div>
 
     </section>
 
 </main>
 
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script src="app.js"></script>
+
+
 <script>
-function addExpense() {
 
-    const amount = Number(
-        document.getElementById("expenseAmount").value
-    );
+document.addEventListener("DOMContentLoaded", function () {
 
-    const category =
-        document.getElementById("expenseCategory").value;
+    const form =
+        document.getElementById("expenseForm");
 
-    if (!amount || !category) {
-        alert("Please enter an amount and category.");
+    const amountInput =
+        document.getElementById("expenseAmount");
+
+    const categoryInput =
+        document.getElementById("expenseCategory");
+
+
+    if (!form) {
         return;
     }
 
-    alert("Expense added successfully!");
 
-    document.getElementById("expenseAmount").value = "";
-    document.getElementById("expenseCategory").value = "";
-}
+    form.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+
+        const amount =
+            Number(amountInput.value);
+
+        const category =
+            categoryInput.value.trim();
+
+
+        if (!amount || amount <= 0) {
+
+            alert("Please enter a valid expense amount.");
+
+            amountInput.focus();
+
+            return;
+        }
+
+
+        if (!category) {
+
+            alert("Please enter an expense category.");
+
+            categoryInput.focus();
+
+            return;
+        }
+
+
+        const existingTransactions =
+            JSON.parse(
+                localStorage.getItem("moneyLeakTransactions")
+            ) || [];
+
+
+        existingTransactions.unshift({
+
+            id: Date.now().toString(),
+
+            amount: amount,
+
+            type: "expense",
+
+            category: category,
+
+            date: new Date().toISOString()
+
+        });
+
+
+        localStorage.setItem(
+            "moneyLeakTransactions",
+            JSON.stringify(existingTransactions)
+        );
+
+
+        amountInput.value = "";
+
+        categoryInput.value = "";
+
+
+        alert("Expense added successfully! 💸");
+
+
+        window.location.href =
+            "index.html#transactions";
+
+    });
+
+});
+
 </script>
 
 </body>
