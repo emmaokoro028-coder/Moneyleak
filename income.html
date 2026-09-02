@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Add and manage your income with MoneyLeak.">
+
     <title>Add Income | MoneyLeak</title>
 
     <link rel="stylesheet" href="style.css">
@@ -11,111 +14,338 @@
 
 <body>
 
-<header>
-    <h1>MoneyLeak</h1>
-    <p>Track your income and stay in control.</p>
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="site-header">
+
+    <nav class="navbar">
+
+        <a href="index.html" class="brand">
+            <span class="brand-mark">M</span>
+            <span>MoneyLeak</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="index.html#transactions">Transactions</a>
+            <a href="index.html#savings-section">Savings</a>
+            <a href="index.html#insights">Insights</a>
+        </div>
+
+        <a href="index.html#add-section" class="nav-button">
+            Dashboard
+        </a>
+
+    </nav>
+
+
+    <div class="hero-content">
+
+        <span class="hero-badge">
+            INCOME
+        </span>
+
+        <h1>
+            Add money coming in.
+        </h1>
+
+        <p>
+            Keep your income records organized and up to date.
+        </p>
+
+    </div>
+
 </header>
+
+
+<!-- =========================
+     MAIN
+========================= -->
 
 <main>
 
-    <section class="form-section">
+    <section class="add-section">
 
-        <div class="page-icon">💰</div>
+        <div class="section-heading">
 
-        <h2>Add Income</h2>
+            <div>
 
-        <p class="form-description">
-            Record money you've received so your balance stays accurate.
+                <span class="section-eyebrow">
+                    MONEY IN
+                </span>
+
+                <h2>
+                    Add Income
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <form id="incomeForm">
+
+            <!-- AMOUNT -->
+
+            <div class="form-group">
+
+                <label for="incomeAmount">
+                    Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="incomeAmount"
+                    placeholder="e.g. 50000"
+                    min="0"
+                    step="0.01"
+                    inputmode="decimal"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="form-group">
+
+                <label for="incomeCategory">
+                    Income Source
+                </label>
+
+                <input
+                    type="text"
+                    id="incomeCategory"
+                    placeholder="e.g. Salary, Business, Freelance"
+                    maxlength="50"
+                    required
+                >
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                + Add Income
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- =========================
+         INFO CARD
+    ========================= -->
+
+    <section class="health-card">
+
+        <div class="health-header">
+
+            <div>
+
+                <p class="health-label">
+                    Why track income?
+                </p>
+
+                <h2>
+                    Know what you have.
+                </h2>
+
+            </div>
+
+            <div class="health-icon">
+                💰
+            </div>
+
+        </div>
+
+        <p id="incomeInfoMessage">
+            Recording every source of income helps MoneyLeak calculate your balance and Money Health accurately.
         </p>
 
-        <label for="incomeAmount">Amount</label>
+    </section>
 
-        <input
-            type="number"
-            id="incomeAmount"
-            placeholder="₦0"
-        >
 
-        <label for="incomeCategory">Category</label>
+    <!-- =========================
+         BACK TO DASHBOARD
+    ========================= -->
 
-        <select id="incomeCategory">
+    <section class="quick-actions">
 
-            <option value="">Select category</option>
+        <div class="quick-action-grid">
 
-            <option value="Salary">Salary</option>
-            <option value="Business">Business</option>
-            <option value="Freelance">Freelance</option>
-            <option value="Gift">Gift</option>
-            <option value="Investment">Investment</option>
-            <option value="Other">Other</option>
+            <a
+                href="index.html"
+                class="quick-action"
+            >
 
-        </select>
+                <span class="quick-action-icon">
+                    ←
+                </span>
 
-        <label for="incomeNote">Note</label>
+                <strong>
+                    Dashboard
+                </strong>
 
-        <input
-            type="text"
-            id="incomeNote"
-            placeholder="e.g. August salary"
-        >
+                <small>
+                    Return to your overview
+                </small>
 
-        <button onclick="addIncome()">
-            Add Income
-        </button>
+            </a>
 
-        <a href="index.html" class="back-link">
-            ← Back to Dashboard
-        </a>
+
+            <a
+                href="expenses.html"
+                class="quick-action"
+            >
+
+                <span class="quick-action-icon">
+                    💸
+                </span>
+
+                <strong>
+                    Add Expense
+                </strong>
+
+                <small>
+                    Record money going out
+                </small>
+
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="quick-action"
+            >
+
+                <span class="quick-action-icon">
+                    🎯
+                </span>
+
+                <strong>
+                    Savings Goal
+                </strong>
+
+                <small>
+                    Plan your savings
+                </small>
+
+            </a>
+
+        </div>
 
     </section>
 
 </main>
 
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script src="app.js"></script>
+
+
 <script>
 
-function addIncome() {
+document.addEventListener("DOMContentLoaded", function () {
 
-    const amount = Number(
-        document.getElementById("incomeAmount").value
-    );
+    const form = document.getElementById("incomeForm");
 
-    const category =
-        document.getElementById("incomeCategory").value;
+    const amountInput =
+        document.getElementById("incomeAmount");
 
-    const note =
-        document.getElementById("incomeNote").value;
+    const categoryInput =
+        document.getElementById("incomeCategory");
 
-    if (!amount || amount <= 0) {
-        alert("Please enter a valid income amount.");
+
+    if (!form) {
         return;
     }
 
-    if (!category) {
-        alert("Please select an income category.");
-        return;
-    }
 
-    const income = {
-        amount: amount,
-        category: category,
-        note: note,
-        date: new Date().toISOString()
-    };
+    form.addEventListener("submit", function (event) {
 
-    const incomes =
-        JSON.parse(localStorage.getItem("moneyLeakIncomes")) || [];
+        event.preventDefault();
 
-    incomes.push(income);
 
-    localStorage.setItem(
-        "moneyLeakIncomes",
-        JSON.stringify(incomes)
-    );
+        const amount =
+            Number(amountInput.value);
 
-    alert("Income added successfully!");
+        const category =
+            categoryInput.value.trim();
 
-    window.location.href = "index.html";
-}
+
+        if (!amount || amount <= 0) {
+
+            alert("Please enter a valid income amount.");
+
+            amountInput.focus();
+
+            return;
+        }
+
+
+        if (!category) {
+
+            alert("Please enter where the income came from.");
+
+            categoryInput.focus();
+
+            return;
+        }
+
+
+        const existingTransactions =
+            JSON.parse(
+                localStorage.getItem("moneyLeakTransactions")
+            ) || [];
+
+
+        existingTransactions.unshift({
+
+            id: Date.now().toString(),
+
+            amount: amount,
+
+            type: "income",
+
+            category: category,
+
+            date: new Date().toISOString()
+
+        });
+
+
+        localStorage.setItem(
+            "moneyLeakTransactions",
+            JSON.stringify(existingTransactions)
+        );
+
+
+        amountInput.value = "";
+
+        categoryInput.value = "";
+
+
+        alert("Income added successfully! 💰");
+
+
+        window.location.href =
+            "index.html#transactions";
+
+    });
+
+});
 
 </script>
 
