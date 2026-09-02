@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoneyLeak</title>
+
+    <meta name="description"
+          content="MoneyLeak helps you track income, expenses, savings and spending habits.">
+
+    <title>MoneyLeak | Personal Finance</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header class="site-header">
 
     <nav class="navbar">
 
-        <a href="#" class="brand">
+        <a href="#dashboard" class="brand">
             <span class="brand-mark">M</span>
             <span>MoneyLeak</span>
         </a>
@@ -32,11 +40,16 @@
 
     </nav>
 
+
     <div class="hero-content">
 
-        <span class="hero-badge">PERSONAL FINANCE</span>
+        <span class="hero-badge">
+            PERSONAL FINANCE
+        </span>
 
-        <h1>See where your money goes.</h1>
+        <h1>
+            See where your money goes.
+        </h1>
 
         <p>
             Stop the leaks. Build better money habits.
@@ -46,50 +59,137 @@
 
 </header>
 
+
+<!-- =========================
+     MAIN DASHBOARD
+========================= -->
+
 <main id="dashboard">
 
-    <!-- QUICK ACTIONS -->
+
+    <!-- =========================
+         QUICK ACTIONS
+    ========================= -->
+
     <section class="quick-actions">
-        <h2>Quick Actions</h2>
+
+        <div class="section-heading">
+            <div>
+                <span class="section-eyebrow">GET STARTED</span>
+                <h2>Quick Actions</h2>
+            </div>
+        </div>
+
 
         <div class="quick-action-grid">
 
-            <a href="#add-section"
+            <a
+                href="#add-section"
                 class="quick-action"
-                onclick="document.getElementById('type').value='income';">
-                <span class="quick-action-icon">＋</span>
-                <strong>Add Income</strong>
+                data-transaction-type="income"
+            >
+
+                <span class="quick-action-icon">
+                    ＋
+                </span>
+
+                <strong>
+                    Add Income
+                </strong>
+
+                <small>
+                    Record money in
+                </small>
+
             </a>
 
-            <a href="#add-section"
+
+            <a
+                href="#add-section"
                 class="quick-action"
-                onclick="document.getElementById('type').value='expense';">
-                <span class="quick-action-icon">💸</span>
-                <strong>Add Expense</strong>
+                data-transaction-type="expense"
+            >
+
+                <span class="quick-action-icon">
+                    💸
+                </span>
+
+                <strong>
+                    Add Expense
+                </strong>
+
+                <small>
+                    Record money out
+                </small>
+
             </a>
 
-            <a href="#savings-section"
-               class="quick-action">
-                <span class="quick-action-icon">🎯</span>
-                <strong>Savings Goal</strong>
+
+            <a
+                href="#savings-section"
+                class="quick-action"
+            >
+
+                <span class="quick-action-icon">
+                    🎯
+                </span>
+
+                <strong>
+                    Savings Goal
+                </strong>
+
+                <small>
+                    Plan your target
+                </small>
+
             </a>
 
         </div>
+
     </section>
 
 
-    <!-- BALANCE -->
+
+    <!-- =========================
+         BALANCE
+    ========================= -->
+
     <section class="balance-card">
 
-        <p>Total Balance</p>
+        <div class="balance-top">
 
-        <h2 id="balance">₦0</h2>
+            <div>
+                <p class="balance-label">
+                    Total Balance
+                </p>
+
+                <h2 id="balance">
+                    ₦0
+                </h2>
+            </div>
+
+            <span class="balance-icon">
+                ₦
+            </span>
+
+        </div>
+
+        <p class="balance-note">
+            Income minus your recorded expenses
+        </p>
 
     </section>
 
 
-    <!-- MONEY HEALTH -->
-    <section class="health-card" id="health">
+
+    <!-- =========================
+         MONEY HEALTH
+    ========================= -->
+
+    <section
+        class="health-card"
+        id="health"
+    >
 
         <div class="health-header">
 
@@ -105,8 +205,11 @@
 
             </div>
 
-            <div id="healthIcon"
-                 class="health-icon">
+            <div
+                id="healthIcon"
+                class="health-icon"
+                aria-label="Money health status"
+            >
                 💚
             </div>
 
@@ -115,9 +218,11 @@
 
         <div class="health-bar">
 
-            <div id="healthFill"
-                 class="health-fill">
-            </div>
+            <div
+                id="healthFill"
+                class="health-fill"
+                style="width: 0%;"
+            ></div>
 
         </div>
 
@@ -126,6 +231,7 @@
             Add some transactions to calculate your Money Health.
         </p>
 
+
         <p id="healthExplanation">
             Your score is based on how much of your income you spend.
         </p>
@@ -133,170 +239,335 @@
     </section>
 
 
-    <!-- INCOME + EXPENSES -->
+
+    <!-- =========================
+         INCOME / EXPENSE SUMMARY
+    ========================= -->
+
     <section class="summary">
 
-        <div>
+        <div class="summary-card income-summary">
 
-            <p>Income</p>
+            <span class="summary-icon">
+                ↑
+            </span>
 
-            <h3 id="income">
-                ₦0
-            </h3>
+            <div>
+
+                <p>
+                    Income
+                </p>
+
+                <h3 id="income">
+                    ₦0
+                </h3>
+
+            </div>
 
         </div>
 
 
-        <div>
+        <div class="summary-card expense-summary">
 
-            <p>Expenses</p>
+            <span class="summary-icon">
+                ↓
+            </span>
 
-            <h3 id="expenses">
-                ₦0
-            </h3>
+            <div>
+
+                <p>
+                    Expenses
+                </p>
+
+                <h3 id="expenses">
+                    ₦0
+                </h3>
+
+            </div>
 
         </div>
 
     </section>
 
 
-    <!-- ADD TRANSACTION -->
-    <section class="add-section"
-             id="add-section">
 
-        <h2>
-            Add Transaction
-        </h2>
+    <!-- =========================
+         ADD TRANSACTION
+    ========================= -->
+
+    <section
+        class="add-section"
+        id="add-section"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    TRACK YOUR MONEY
+                </span>
+
+                <h2>
+                    Add Transaction
+                </h2>
+
+            </div>
+
+        </div>
 
 
-        <input
-            type="number"
-            id="amount"
-            placeholder="Amount (₦)"
+        <form id="transactionForm">
+
+            <div class="form-group">
+
+                <label for="amount">
+                    Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="e.g. 50000"
+                    min="0"
+                    step="0.01"
+                    inputmode="decimal"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="type">
+                    Transaction Type
+                </label>
+
+                <select id="type">
+
+                    <option value="income">
+                        Income
+                    </option>
+
+                    <option value="expense">
+                        Expense
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="category">
+                    Category
+                </label>
+
+                <input
+                    type="text"
+                    id="category"
+                    placeholder="e.g. Food, Salary, Transport"
+                    maxlength="50"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Add Transaction
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =========================
+         RECENT TRANSACTIONS
+    ========================= -->
+
+    <section
+        class="transactions"
+        id="transactions"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    ACTIVITY
+                </span>
+
+                <h2>
+                    Recent Transactions
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="transactionList"
+            class="transaction-list"
         >
 
+            <div class="empty-state">
 
-        <select id="type">
+                <div class="empty-state-icon">
+                    💳
+                </div>
 
-            <option value="income">
-                Income
-            </option>
+                <h3>
+                    No transactions yet
+                </h3>
 
-            <option value="expense">
-                Expense
-            </option>
+                <p>
+                    Add your first income or expense to start tracking your money.
+                </p>
 
-        </select>
-
-
-        <input
-            type="text"
-            id="category"
-            placeholder="Category e.g. Food"
-        >
-
-
-        <button
-            type="button"
-            onclick="addTransaction()">
-
-            Add Transaction
-
-        </button>
-
-    </section>
-
-
-    <!-- RECENT TRANSACTIONS -->
-    <section class="transactions" id="transactions">
-
-        <h2>
-            Recent Transactions
-        </h2>
-
-
-        <div id="transactionList">
+            </div>
 
         </div>
 
     </section>
 
 
-    <!-- SAVINGS GOAL -->
-    <section class="savings-section"
-             id="savings-section">
 
-        <h2>
-            🎯 Savings Goal
-        </h2>
+    <!-- =========================
+         SAVINGS GOAL
+    ========================= -->
+
+    <section
+        class="savings-section"
+        id="savings-section"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    PLAN AHEAD
+                </span>
+
+                <h2>
+                    🎯 Savings Goal
+                </h2>
+
+            </div>
+
+        </div>
 
 
         <div class="savings-inputs">
 
-            <input
-                type="number"
-                id="savingsGoal"
-                placeholder="Goal amount (₦)"
-                min="0"
-            >
+
+            <div class="form-group">
+
+                <label for="savingsGoal">
+                    Target Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="savingsGoal"
+                    placeholder="e.g. 500000"
+                    min="1"
+                    step="1"
+                    inputmode="decimal"
+                >
+
+            </div>
 
 
-            <input
-                type="number"
-                id="currentSavings"
-                placeholder="Already saved (₦)"
-                min="0"
-            >
+            <div class="form-group">
+
+                <label for="currentSavings">
+                    Already Saved
+                </label>
+
+                <input
+                    type="number"
+                    id="currentSavings"
+                    placeholder="e.g. 100000"
+                    min="0"
+                    step="1"
+                    inputmode="decimal"
+                >
+
+            </div>
 
 
-            <input
-                type="number"
-                id="goalWeeks"
-                placeholder="How many weeks?"
-                min="1"
-            >
+            <div class="form-group">
+
+                <label for="goalWeeks">
+                    Time to Reach Goal
+                </label>
+
+                <input
+                    type="number"
+                    id="goalWeeks"
+                    placeholder="Number of weeks"
+                    min="1"
+                    step="1"
+                    inputmode="numeric"
+                >
+
+            </div>
 
 
             <button
                 type="button"
-                onclick="calculateSavingsGoal()">
-
+                id="calculateSavingsButton"
+                class="primary-button"
+            >
                 Calculate My Goal
-
             </button>
 
 
             <button
                 type="button"
-                onclick="updateSavingsGoal()">
-
+                id="updateSavingsButton"
+                class="secondary-button"
+            >
                 Update Savings Goal
-
             </button>
 
 
             <button
                 type="button"
-                onclick="resetSavingsGoal()"
-                class="reset-button">
-
+                id="resetSavingsButton"
+                class="reset-button"
+            >
                 Reset Savings Goal
-
             </button>
 
         </div>
 
+
+        <!-- SAVINGS RESULT -->
 
         <div
             id="savingsResult"
-            class="savings-result">
-        </div>
+            class="savings-result"
+        ></div>
 
 
         <!-- SAVINGS PROGRESS -->
+
         <div
             id="savingsProgress"
-            class="savings-progress">
+            class="savings-progress"
+        >
 
             <div class="savings-progress-header">
 
@@ -316,8 +587,8 @@
                 <div
                     id="progressFill"
                     class="progress-fill"
-                    style="width: 0%;">
-                </div>
+                    style="width: 0%;"
+                ></div>
 
             </div>
 
@@ -351,59 +622,149 @@
     </section>
 
 
-    <!-- MONEY LEAK -->
-    <section class="leak-section" id="insights">
 
-        <h2>
-            🚨 Money Leak
-        </h2>
+    <!-- =========================
+         MONEY LEAK INSIGHT
+    ========================= -->
+
+    <section
+        class="leak-section"
+        id="insights"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    SMART INSIGHT
+                </span>
+
+                <h2>
+                    🚨 Money Leak
+                </h2>
+
+            </div>
+
+        </div>
 
 
         <div id="leakMessage">
 
-            <p>
-                Add some expenses and MoneyLeak will find where your money is going.
-            </p>
+            <div class="empty-insight">
+
+                <span>
+                    💡
+                </span>
+
+                <p>
+                    Add some expenses and MoneyLeak will find where your money is going.
+                </p>
+
+            </div>
 
         </div>
 
     </section>
 
 
-    <!-- SPENDING THIS MONTH -->
-    <section class="chart-section" id="spending">
 
-        <h2>
-            📈 Spending This Month
-        </h2>
+    <!-- =========================
+         SPENDING THIS MONTH
+    ========================= -->
+
+    <section
+        class="chart-section"
+        id="spending"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    SPENDING
+                </span>
+
+                <h2>
+                    📈 Spending This Month
+                </h2>
+
+            </div>
+
+        </div>
 
 
         <div
             id="spendingChart"
-            class="spending-chart">
+            class="spending-chart"
+        >
 
-            <p>
-                No spending data yet.
-            </p>
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    📊
+                </div>
+
+                <h3>
+                    No spending data yet
+                </h3>
+
+                <p>
+                    Add some expenses to see your spending activity.
+                </p>
+
+            </div>
 
         </div>
 
     </section>
 
 
-    <!-- SPENDING BREAKDOWN -->
-    <section class="breakdown-section" id="breakdown">
 
-        <h2>
-            📊 Spending Breakdown
-        </h2>
+    <!-- =========================
+         SPENDING BREAKDOWN
+    ========================= -->
+
+    <section
+        class="breakdown-section"
+        id="breakdown"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-eyebrow">
+                    CATEGORIES
+                </span>
+
+                <h2>
+                    📊 Spending Breakdown
+                </h2>
+
+            </div>
+
+        </div>
 
 
         <div id="spendingBreakdown">
 
-            <p>
-                Add some expenses to see your spending breakdown.
-            </p>
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    🧾
+                </div>
+
+                <h3>
+                    Nothing to break down yet
+                </h3>
+
+                <p>
+                    Your spending categories will appear here after you add expenses.
+                </p>
+
+            </div>
 
         </div>
 
@@ -412,7 +773,11 @@
 </main>
 
 
-<!-- JAVASCRIPT -->
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
 <script src="app.js"></script>
 
 </body>
