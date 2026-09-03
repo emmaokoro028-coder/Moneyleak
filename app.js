@@ -203,7 +203,7 @@ function addTransaction() {
     categoryInput.value = "";
 
     updateDashboard();
-
+    updateBudgetDisplay();
     showTransactionSuccess();
 
     getElement("transactionList")?.scrollIntoView({
