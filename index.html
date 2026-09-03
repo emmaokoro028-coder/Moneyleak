@@ -65,7 +65,208 @@
 ========================= -->
 
 <main id="dashboard">
+    
+<!-- =========================
+     DASHBOARD OVERVIEW 2.0
+========================= -->
 
+<section class="dashboard-overview">
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-eyebrow">
+                YOUR MONEY
+            </span>
+
+            <h2>
+                Financial Overview
+            </h2>
+
+            <p>
+                A quick look at where your money stands right now.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="overview-grid">
+
+        <div class="overview-card balance-card">
+
+            <div class="overview-card-top">
+                <span class="overview-icon">💰</span>
+                <span class="overview-label">NET BALANCE</span>
+            </div>
+
+            <strong
+                id="overviewBalance"
+                class="overview-value"
+            >
+                ₦0
+            </strong>
+
+            <span
+                id="overviewBalanceStatus"
+                class="overview-status"
+            >
+                Starting balance
+            </span>
+
+        </div>
+
+
+        <div class="overview-card income-card">
+
+            <div class="overview-card-top">
+                <span class="overview-icon">📈</span>
+                <span class="overview-label">INCOME</span>
+            </div>
+
+            <strong
+                id="overviewIncome"
+                class="overview-value"
+            >
+                ₦0
+            </strong>
+
+            <span class="overview-status">
+                Total recorded income
+            </span>
+
+        </div>
+
+
+        <div class="overview-card expense-card">
+
+            <div class="overview-card-top">
+                <span class="overview-icon">📉</span>
+                <span class="overview-label">EXPENSES</span>
+            </div>
+
+            <strong
+                id="overviewExpenses"
+                class="overview-value"
+            >
+                ₦0
+            </strong>
+
+            <span class="overview-status">
+                Total recorded spending
+            </span>
+
+        </div>
+
+
+        <div class="overview-card savings-card">
+
+            <div class="overview-card-top">
+                <span class="overview-icon">💵</span>
+                <span class="overview-label">SAVINGS RATE</span>
+            </div>
+
+            <strong
+                id="overviewSavingsRate"
+                class="overview-value"
+            >
+                0%
+            </strong>
+
+            <span
+                id="overviewSavingsStatus"
+                class="overview-status"
+            >
+                Start saving
+            </span>
+
+        </div>
+
+
+        <div class="overview-card goal-card">
+
+            <div class="overview-card-top">
+                <span class="overview-icon">🎯</span>
+                <span class="overview-label">SAVINGS GOAL</span>
+            </div>
+
+            <strong
+                id="overviewGoalProgress"
+                class="overview-value"
+            >
+                0%
+            </strong>
+
+            <div class="overview-mini-progress">
+
+                <div
+                    id="overviewGoalFill"
+                    class="overview-mini-progress-fill"
+                ></div>
+
+            </div>
+
+            <span
+                id="overviewGoalStatus"
+                class="overview-status"
+            >
+                No goal set
+            </span>
+
+        </div>
+
+
+        <div class="overview-card health-overview-card">
+
+            <div class="overview-card-top">
+                <span class="overview-icon">🧠</span>
+                <span class="overview-label">FINANCIAL HEALTH</span>
+            </div>
+
+            <strong
+                id="overviewHealthScore"
+                class="overview-value"
+            >
+                0/100
+            </strong>
+
+            <span
+                id="overviewHealthStatus"
+                class="overview-status"
+            >
+                Add financial activity
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="overviewInsight"
+        class="overview-insight"
+    >
+
+        <span class="overview-insight-icon">
+            💡
+        </span>
+
+        <div>
+
+            <strong>
+                MoneyLeak Insight
+            </strong>
+
+            <p id="overviewInsightText">
+                Add your income and expenses to receive a personalized financial insight.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 
     <!-- =========================
          QUICK ACTIONS
