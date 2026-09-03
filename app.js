@@ -2191,3 +2191,354 @@ window.updateBudgetDisplay =
 
 window.setupBudgetSystem =
     setupBudgetSystem;
+/* =========================
+   CATEGORY BUDGET SYSTEM
+========================= */
+
+const CATEGORY_BUDGET_STORAGE_KEY = "moneyLeakCategoryBudgets";
+
+const categoryBudgetFields = {
+    Food: "budgetFood",
+    Transport: "budgetTransport",
+    Bills: "budgetBills",
+    Shopping: "budgetShopping",
+    Entertainment: "budgetEntertainment",
+    Health: "budgetHealth",
+    Education: "budgetEducation",
+    Other: "budgetOther"
+};
+
+
+function loadCategoryBudgets() {
+
+    const saved =
+        localStorage.getItem(CATEGORY_BUDGET_STORAGE_KEY);
+
+    if (!saved) {
+        return {};
+    }
+
+    try {
+
+        const parsed = JSON.parse(saved);
+
+        return parsed && typeof parsed === "object"
+            ? parsed
+            : {};
+
+    } catch (error) {
+
+        return {};
+    }
+}
+
+
+let categoryBudgets = loadCategoryBudgets();
+
+
+function saveCategoryBudgets() {
+
+    localStorage.setItem(
+        CATEGORY_BUDGET_STORAGE_KEY,
+        JSON.stringify(categoryBudgets)
+    );
+}
+
+
+function normalizeCategory(category) {
+
+    return String(category || "")
+        .trim()
+        .toLowerCase();
+}
+
+
+function getCategorySpending(category) {
+
+    const targetCategory =
+        normalizeCategory(category);
+
+    return transactions
+        .filter(transaction => {
+
+            if (transaction.type !== "expense") {
+                return false;
+            }
+
+            const transactionDate =
+                new Date(transaction.date);
+
+            const now = new Date();
+
+            const sameMonth =
+                transactionDate.getMonth() === now.getMonth() &&
+                transactionDate.getFullYear() === now.getFullYear();
+
+            return (
+                sameMonth &&
+                normalizeCategory(transaction.category) === targetCategory
+            );
+        })
+        .reduce(
+            (total, transaction) =>
+                total + Number(transaction.amount || 0),
+            0
+        );
+}
+
+
+function getCategoryBudgetAmount(category) {
+
+    return Number(
+        categoryBudgets[category] || 0
+    );
+}
+
+
+function updateCategoryBudgetDisplay() {
+
+    const results =
+        document.getElementById(
+            "categoryBudgetResults"
+        );
+
+    if (!results) {
+        return;
+    }
+
+
+    const activeCategories =
+        Object.keys(categoryBudgetFields)
+            .filter(category =>
+                getCategoryBudgetAmount(category) > 0
+            );
+
+
+    if (activeCategories.length === 0) {
+
+        results.innerHTML = `
+            <div class="category-budget-empty">
+
+                Set a limit for one or more categories
+                to start tracking your spending.
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    results.innerHTML =
+        activeCategories.map(category => {
+
+            const budget =
+                getCategoryBudgetAmount(category);
+
+            const spent =
+                getCategorySpending(category);
+
+            const remaining =
+                budget - spent;
+
+            const percentage =
+                (spent / budget) * 100;
+
+            const progress =
+                Math.max(
+                    0,
+                    Math.min(percentage, 100)
+                );
+
+
+            let statusClass = "safe";
+            let statusText = "On Track";
+
+
+            if (percentage >= 100) {
+
+                statusClass = "danger";
+                statusText = "Over Budget";
+
+            } else if (percentage >= 80) {
+
+                statusClass = "warning";
+                statusText = "Almost at Limit";
+            }
+
+
+            return `
+
+                <div class="category-budget-card">
+
+                    <div class="category-budget-card-header">
+
+                        <h3 class="category-budget-card-title">
+                            ${category}
+                        </h3>
+
+                        <span class="category-budget-card-status ${statusClass}">
+                            ${statusText}
+                        </span>
+
+                    </div>
+
+
+                    <div class="category-budget-progress">
+
+                        <div
+                            class="category-budget-progress-fill ${statusClass}"
+                            style="width: ${progress}%"
+                        ></div>
+
+                    </div>
+
+
+                    <div class="category-budget-card-stats">
+
+                        <span>
+                            Spent:
+                            <strong>
+                                ${formatMoney(spent)}
+                            </strong>
+                        </span>
+
+                        <span>
+                            Limit:
+                            <strong>
+                                ${formatMoney(budget)}
+                            </strong>
+                        </span>
+
+                        <span>
+                            Remaining:
+                            <strong>
+                                ${formatMoney(Math.max(remaining, 0))}
+                            </strong>
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+}
+
+
+function setupCategoryBudgetSystem() {
+
+    const saveButton =
+        document.getElementById(
+            "saveCategoryBudgetsButton"
+        );
+
+    if (!saveButton) {
+        return;
+    }
+
+
+    Object.entries(categoryBudgetFields)
+        .forEach(([category, inputId]) => {
+
+            const input =
+                document.getElementById(inputId);
+
+            if (!input) {
+                return;
+            }
+
+            const savedValue =
+                getCategoryBudgetAmount(category);
+
+            if (savedValue > 0) {
+                input.value = savedValue;
+            }
+
+        });
+
+
+    saveButton.addEventListener(
+        "click",
+        function () {
+
+            const newBudgets = {};
+
+
+            Object.entries(categoryBudgetFields)
+                .forEach(([category, inputId]) => {
+
+                    const input =
+                        document.getElementById(inputId);
+
+                    if (!input) {
+                        return;
+                    }
+
+                    const value =
+                        Number(input.value);
+
+
+                    if (
+                        Number.isFinite(value) &&
+                        value > 0
+                    ) {
+
+                        newBudgets[category] = value;
+
+                    }
+
+                });
+
+
+            categoryBudgets = newBudgets;
+
+            saveCategoryBudgets();
+
+            updateCategoryBudgetDisplay();
+
+            alert(
+                "Your category budgets have been saved."
+            );
+        }
+    );
+
+
+    updateCategoryBudgetDisplay();
+}
+
+
+/* =========================
+   UPDATE CATEGORY BUDGETS
+========================= */
+
+function refreshCategoryBudgets() {
+
+    updateCategoryBudgetDisplay();
+}
+
+
+/* =========================
+   INITIALIZE CATEGORY BUDGETS
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        setupCategoryBudgetSystem();
+
+        updateCategoryBudgetDisplay();
+
+    }
+);
+
+
+/* Make category budget functions available */
+
+window.updateCategoryBudgetDisplay =
+    updateCategoryBudgetDisplay;
+
+window.refreshCategoryBudgets =
+    refreshCategoryBudgets;
