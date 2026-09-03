@@ -3117,3 +3117,230 @@ button:disabled {
     }
 
 }
+/* =========================================================
+   DASHBOARD OVERVIEW 2.0
+========================================================= */
+
+.dashboard-overview {
+    margin: 0 0 32px;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #e5ebe7;
+    border-radius: 24px;
+    box-shadow: 0 12px 35px rgba(18, 67, 47, 0.07);
+}
+
+.dashboard-overview .section-heading {
+    margin-bottom: 24px;
+}
+
+.dashboard-overview .section-heading h2 {
+    margin: 4px 0 8px;
+    font-size: 28px;
+    line-height: 1.2;
+    color: #163f2e;
+}
+
+.dashboard-overview .section-heading p {
+    margin: 0;
+    color: #6b7c73;
+    font-size: 15px;
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.overview-card {
+    position: relative;
+    min-height: 155px;
+    padding: 22px;
+    border: 1px solid #e6ece8;
+    border-radius: 18px;
+    background: #fbfdfc;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.overview-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(18, 67, 47, 0.08);
+    border-color: #d4e2da;
+}
+
+.overview-card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.overview-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: #edf7f1;
+    font-size: 19px;
+}
+
+.overview-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #718078;
+}
+
+.overview-value {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 29px;
+    line-height: 1.1;
+    font-weight: 800;
+    color: #153f2d;
+    word-break: break-word;
+}
+
+.overview-status {
+    display: block;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #718078;
+}
+
+.balance-card {
+    background: linear-gradient(135deg, #f0faf4, #ffffff);
+}
+
+.income-card {
+    background: linear-gradient(135deg, #f2fbf6, #ffffff);
+}
+
+.expense-card {
+    background: linear-gradient(135deg, #fff8f7, #ffffff);
+}
+
+.savings-card {
+    background: linear-gradient(135deg, #f5fbf8, #ffffff);
+}
+
+.goal-card {
+    background: linear-gradient(135deg, #f8fbf9, #ffffff);
+}
+
+.health-overview-card {
+    background: linear-gradient(135deg, #f4faf7, #ffffff);
+}
+
+.overview-mini-progress {
+    width: 100%;
+    height: 8px;
+    margin: 13px 0 9px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e5eee9;
+}
+
+.overview-mini-progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: #218c5a;
+    transition: width 0.4s ease;
+}
+
+.overview-insight {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-top: 20px;
+    padding: 18px 20px;
+    border: 1px solid #dcebe2;
+    border-radius: 17px;
+    background: #f5faf7;
+}
+
+.overview-insight-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #e4f4eb;
+    font-size: 20px;
+}
+
+.overview-insight strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #174a34;
+    font-size: 15px;
+}
+
+.overview-insight p {
+    margin: 0;
+    color: #65776e;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   DASHBOARD OVERVIEW RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .dashboard-overview {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .dashboard-overview .section-heading h2 {
+        font-size: 23px;
+    }
+
+    .overview-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .overview-card {
+        min-height: auto;
+        padding: 19px;
+    }
+
+    .overview-value {
+        font-size: 26px;
+    }
+
+    .overview-insight {
+        padding: 16px;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .overview-card,
+    .overview-mini-progress-fill {
+        transition: none;
+    }
+
+}
