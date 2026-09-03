@@ -204,6 +204,7 @@ function addTransaction() {
 
     updateDashboard();
     updateBudgetDisplay();
+    refreshCategoryBudgets();
     showTransactionSuccess();
 
     getElement("transactionList")?.scrollIntoView({
@@ -668,6 +669,8 @@ function editTransaction(id) {
     updateDashboard();
 
     updateBudgetDisplay();
+
+    refreshCategoryBudgets();
 }
 
 
