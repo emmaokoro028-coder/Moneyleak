@@ -182,61 +182,177 @@
 
 
 
-    <!-- =========================
-         MONEY HEALTH
-    ========================= -->
+ <!-- =========================
+     FINANCIAL HEALTH SCORE
+========================= -->
 
-    <section
-        class="health-card"
-        id="health"
-    >
+<section class="health-section" id="financial-health">
 
-        <div class="health-header">
+    <div class="section-heading">
 
-            <div>
+        <div>
 
-                <p class="health-label">
-                    Money Health
-                </p>
+            <span class="section-eyebrow">
+                YOUR FINANCIAL WELLNESS
+            </span>
 
-                <h2 id="healthScore">
-                    0 / 100
-                </h2>
+            <h2>
+                💚 Financial Health
+            </h2>
 
-            </div>
+            <p>
+                A smarter view of how healthy your money habits are.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="health-dashboard">
+
+        <div class="health-score-card">
 
             <div
-                id="healthIcon"
                 class="health-icon"
-                aria-label="Money health status"
+                id="healthIcon"
             >
                 💚
             </div>
 
+            <div class="health-score-content">
+
+                <span class="health-label">
+                    Financial Health Score
+                </span>
+
+                <strong id="healthScore">
+                    0
+                </strong>
+
+                <span class="health-out-of">
+                    / 100
+                </span>
+
+            </div>
+
+            <div class="health-progress">
+
+                <div
+                    id="healthFill"
+                    class="health-progress-fill"
+                    style="width: 0%;"
+                ></div>
+
+            </div>
+
+            <h3 id="healthMessage">
+                Add your financial activity
+            </h3>
+
+            <p id="healthExplanation">
+                Add income and expenses to see your financial health.
+            </p>
+
         </div>
 
 
-        <div class="health-bar">
+        <div class="health-factors">
 
-            <div
-                id="healthFill"
-                class="health-fill"
-                style="width: 0%;"
-            ></div>
+            <div class="health-factor">
+
+                <div class="health-factor-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <span>
+                        Income vs Spending
+                    </span>
+
+                    <strong id="healthIncomeFactor">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="health-factor">
+
+                <div class="health-factor-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <span>
+                        Budget Usage
+                    </span>
+
+                    <strong id="healthBudgetFactor">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="health-factor">
+
+                <div class="health-factor-icon">
+                    🎯
+                </div>
+
+                <div>
+
+                    <span>
+                        Savings Progress
+                    </span>
+
+                    <strong id="healthSavingsFactor">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="health-factor">
+
+                <div class="health-factor-icon">
+                    🔄
+                </div>
+
+                <div>
+
+                    <span>
+                        Recurring Expenses
+                    </span>
+
+                    <strong id="healthRecurringFactor">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
 
         </div>
 
+    </div>
 
-        <p id="healthMessage">
-            Add some transactions to calculate your Money Health.
-        </p>
+    <div
+        id="healthInsight"
+        class="health-insight"
+    >
+        💡 Your personalized financial insight will appear here.
+    </div>
 
-
-        <p id="healthExplanation">
-            Your score is based on how much of your income you spend.
-        </p>
-
-    </section>
+</section>
 
 
 
