@@ -1452,5 +1452,39 @@
 
   </script>
 
+<script>
+(() => {
+  const overlay = document.getElementById("searchOverlay");
+  const closeButton = document.getElementById("searchClose");
+
+  function closeSearch() {
+    if (!overlay) return;
+
+    overlay.classList.remove("open");
+    overlay.classList.remove("active");
+    overlay.style.display = "none";
+    overlay.setAttribute("aria-hidden", "true");
+  }
+
+  if (closeButton) {
+    closeButton.addEventListener("click", closeSearch);
+  }
+
+  if (overlay) {
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) {
+        closeSearch();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeSearch();
+    }
+  });
+})();
+</script>
+  
 </body>
 </html>
