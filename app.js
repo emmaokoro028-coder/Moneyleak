@@ -711,6 +711,8 @@ function deleteTransaction(id) {
     updateDashboard();
 
     updateBudgetDisplay();
+
+    refreshCategoryBudgets();
 }
 
 
