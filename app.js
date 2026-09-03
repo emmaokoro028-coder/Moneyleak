@@ -1,1020 +1,544 @@
 /* =========================================================
-   MONEYLEAK — MAIN APPLICATION
-   Complete application JavaScript
+   MONEYLEAK
+   PERSONAL FINANCE OS
+   APPLICATION ENGINE
 ========================================================= */
 
+(() => {
 
-/* =========================================================
-   STORAGE KEYS
-========================================================= */
-
-const TRANSACTIONS_STORAGE_KEY =
-    "moneyLeakTransactions";
-
-const SAVINGS_STORAGE_KEY =
-    "moneyLeakSavingsGoal";
-
-const BUDGET_STORAGE_KEY =
-    "moneyLeakMonthlyBudget";
-
-const CATEGORY_BUDGET_STORAGE_KEY =
-    "moneyLeakCategoryBudgets";
-
-const RECURRING_STORAGE_KEY =
-    "moneyLeakRecurringTransactions";
+    "use strict";
 
 
-/* =========================================================
-   GLOBAL DATA
-========================================================= */
+    /* =====================================================
+       CONFIGURATION
+    ====================================================== */
 
-let transactions =
-    loadTransactions();
+    const STORAGE = {
 
-let savingsGoal =
-    loadSavingsGoal();
+        transactions:
+            "moneyLeakTransactions",
 
-let monthlyBudget =
-    loadMonthlyBudget();
+        savingsGoal:
+            "moneyLeakSavingsGoal",
 
-let categoryBudgets =
-    loadCategoryBudgets();
+        savingsGoals:
+            "moneyLeakSavingsGoals",
 
-let recurringTransactions =
-    loadRecurringTransactions();
+        monthlyBudget:
+            "moneyLeakMonthlyBudget",
 
+        categoryBudgets:
+            "moneyLeakCategoryBudgets",
 
-/* =========================================================
-   CATEGORY CONFIGURATION
-========================================================= */
+        recurring:
+            "moneyLeakRecurringTransactions",
 
-const categoryBudgetFields = {
+        settings:
+            "moneyLeakSettings",
 
-    Food:
-        "budgetFood",
+        alerts:
+            "moneyLeakAlerts",
 
-    Transport:
-        "budgetTransport",
+        initialized:
+            "moneyLeakInitialized"
 
-    Bills:
-        "budgetBills",
-
-    Shopping:
-        "budgetShopping",
-
-    Entertainment:
-        "budgetEntertainment",
-
-    Health:
-        "budgetHealth",
-
-    Education:
-        "budgetEducation",
-
-    Other:
-        "budgetOther"
-
-};
+    };
 
 
-/* =========================================================
-   BASIC HELPERS
-========================================================= */
+    const DEFAULT_SETTINGS = {
 
-function getElement(id) {
+        currency: "NGN",
 
-    return document.getElementById(id);
+        currencySymbol: "₦",
 
-}
+        name: "My Money",
+
+        theme: "light",
+
+        notifications: true,
+
+        compactNumbers: false
+
+    };
 
 
-function formatMoney(amount) {
+    const CATEGORIES = [
 
-    const value =
-        Number(amount) || 0;
+        "Food",
 
-    return "₦" +
-        value.toLocaleString(
-            "en-NG",
-            {
-                maximumFractionDigits: 0
+        "Transport",
+
+        "Shopping",
+
+        "Bills",
+
+        "Housing",
+
+        "Health",
+
+        "Education",
+
+        "Entertainment",
+
+        "Subscriptions",
+
+        "Family",
+
+        "Travel",
+
+        "Utilities",
+
+        "Business",
+
+        "Savings",
+
+        "Other"
+
+    ];
+
+
+    /* =====================================================
+       SAFE STORAGE
+    ====================================================== */
+
+    function readStorage(key, fallback) {
+
+        try {
+
+            const value =
+                localStorage.getItem(key);
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+
+                return fallback;
+
             }
-        );
 
-}
+            return JSON.parse(value);
 
+        } catch (error) {
 
-function escapeHTML(value) {
+            console.warn(
+                "MoneyLeak storage read error:",
+                key,
+                error
+            );
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+            return fallback;
 
-}
-
-
-function getToday() {
-
-    return new Date()
-        .toISOString()
-        .split("T")[0];
-
-}
-
-
-function getCurrentMonthKey() {
-
-    const date =
-        new Date();
-
-    return (
-        date.getFullYear() +
-        "-" +
-        String(
-            date.getMonth() + 1
-        ).padStart(2, "0")
-    );
-
-}
-
-
-/* =========================================================
-   TRANSACTIONS
-========================================================= */
-
-function loadTransactions() {
-
-    const saved =
-        localStorage.getItem(
-            TRANSACTIONS_STORAGE_KEY
-        );
-
-    if (!saved) {
-        return [];
-    }
-
-    try {
-
-        const parsed =
-            JSON.parse(saved);
-
-        return Array.isArray(parsed)
-            ? parsed
-            : [];
-
-    } catch (error) {
-
-        console.error(
-            "Could not load transactions:",
-            error
-        );
-
-        return [];
-    }
-
-}
-
-
-function saveTransactions() {
-
-    localStorage.setItem(
-        TRANSACTIONS_STORAGE_KEY,
-        JSON.stringify(transactions)
-    );
-
-}
-
-
-/* =========================================================
-   ADD TRANSACTION
-========================================================= */
-
-function addTransaction() {
-
-    const amountInput =
-        getElement("amount");
-
-    const typeInput =
-        getElement("type");
-
-    const categoryInput =
-        getElement("category");
-
-    if (
-        !amountInput ||
-        !typeInput ||
-        !categoryInput
-    ) {
-
-        return;
+        }
 
     }
 
 
-    const amount =
-        Number(
-            amountInput.value
-        );
+    function writeStorage(key, value) {
 
-    const type =
-        typeInput.value;
+        try {
 
-    const category =
-        categoryInput.value;
+            localStorage.setItem(
+                key,
+                JSON.stringify(value)
+            );
 
+            return true;
 
-    if (
-        !Number.isFinite(amount) ||
-        amount <= 0
-    ) {
+        } catch (error) {
 
-        alert(
-            "Please enter a valid amount."
-        );
+            console.error(
+                "MoneyLeak storage write error:",
+                key,
+                error
+            );
 
-        amountInput.focus();
+            return false;
 
-        return;
+        }
+
     }
 
 
-    if (
-        type !== "income" &&
-        type !== "expense"
-    ) {
+    /* =====================================================
+       SETTINGS
+    ====================================================== */
 
-        alert(
-            "Please select income or expense."
-        );
+    function getSettings() {
 
-        return;
+        const stored =
+            readStorage(
+                STORAGE.settings,
+                {}
+            );
+
+        return {
+            ...DEFAULT_SETTINGS,
+            ...(stored || {})
+        };
+
     }
 
 
-    const transaction = {
+    let settings =
+        getSettings();
 
-        id:
-            Date.now().toString() +
-            Math.random()
-                .toString(36)
-                .substring(2, 7),
 
-        amount:
-            amount,
+    function saveSettings(newSettings) {
 
-        type:
+        settings = {
+            ...settings,
+            ...newSettings
+        };
+
+        writeStorage(
+            STORAGE.settings,
+            settings
+        );
+
+        applySettings();
+
+    }
+
+
+    function applySettings() {
+
+        document.documentElement.dataset.theme =
+            settings.theme || "light";
+
+        document.body.classList.toggle(
+            "dark-mode",
+            settings.theme === "dark"
+        );
+
+        document.title =
+            "MoneyLeak — Personal Finance OS";
+
+    }
+
+
+    /* =====================================================
+       TRANSACTIONS
+    ====================================================== */
+
+    function normalizeTransaction(transaction) {
+
+        if (!transaction) {
+            return null;
+        }
+
+        const amount =
+            Number(
+                transaction.amount
+            ) || 0;
+
+        let type =
+            String(
+                transaction.type || ""
+            ).toLowerCase().trim();
+
+        if (
+            type !== "income" &&
+            type !== "expense"
+        ) {
+
+            return null;
+
+        }
+
+        return {
+
+            id:
+                String(
+                    transaction.id ||
+                    Date.now() +
+                    Math.random()
+                ),
+
+            amount:
+                Math.abs(amount),
+
             type,
 
-        category:
-            category || "Other",
+            category:
+                transaction.category ||
+                "Other",
 
-        date:
-            new Date().toISOString()
+            description:
+                transaction.description ||
+                transaction.name ||
+                transaction.title ||
+                transaction.category ||
+                "Transaction",
 
-    };
+            date:
+                transaction.date ||
+                transaction.createdAt ||
+                new Date().toISOString(),
 
+            note:
+                transaction.note ||
+                "",
 
-    transactions.unshift(
-        transaction
-    );
+            account:
+                transaction.account ||
+                "Cash",
 
+            createdAt:
+                transaction.createdAt ||
+                new Date().toISOString()
 
-    saveTransactions();
+        };
 
-    amountInput.value = "";
-
-    updateDashboard();
-
-    updateBudgetDisplay();
-
-    refreshCategoryBudgets();
-
-    updateSpendingAnalytics();
-
-    showTransactionSuccess();
-
-}
-
-
-function showTransactionSuccess() {
-
-    const form =
-        getElement(
-            "transactionForm"
-        );
-
-    if (!form) {
-        return;
     }
 
 
-    let message =
-        getElement(
-            "transactionSuccess"
-        );
+    function loadTransactions() {
 
-
-    if (!message) {
-
-        message =
-            document.createElement(
-                "div"
+        const stored =
+            readStorage(
+                STORAGE.transactions,
+                []
             );
 
-        message.id =
-            "transactionSuccess";
+        if (!Array.isArray(stored)) {
+            return [];
+        }
 
-        message.style.marginTop =
-            "12px";
+        return stored
+            .map(normalizeTransaction)
+            .filter(Boolean);
 
-        message.style.padding =
-            "10px 14px";
-
-        message.style.borderRadius =
-            "10px";
-
-        message.style.background =
-            "#e9f8ef";
-
-        message.style.color =
-            "#11643d";
-
-        message.style.fontWeight =
-            "700";
-
-        form.appendChild(
-            message
-        );
     }
 
 
-    message.textContent =
-        "✓ Transaction added successfully.";
-
-    setTimeout(
-        function () {
-
-            if (message) {
-                message.textContent = "";
-            }
-
-        },
-        2500
-    );
-
-}
+    let transactions =
+        loadTransactions();
 
 
-/* =========================================================
-   TOTALS
-========================================================= */
+    function saveTransactions() {
 
-function calculateTotals() {
+        writeStorage(
+            STORAGE.transactions,
+            transactions
+        );
 
-    let income = 0;
-
-    let expenses = 0;
-
-
-    transactions.forEach(
-        transaction => {
-
-            const amount =
-                Number(
-                    transaction.amount
-                ) || 0;
+    }
 
 
-            if (
-                transaction.type ===
-                "income"
-            ) {
+    function addTransaction(data) {
 
-                income += amount;
+        const transaction =
+            normalizeTransaction({
 
-            } else if (
-                transaction.type ===
-                "expense"
-            ) {
+                ...data,
 
-                expenses += amount;
+                id:
+                    Date.now().toString() +
+                    Math.random()
+                        .toString(36)
+                        .substring(2, 8),
 
-            }
+                date:
+                    data.date ||
+                    new Date().toISOString(),
+
+                createdAt:
+                    new Date().toISOString()
+
+            });
+
+
+        if (!transaction) {
+
+            return null;
 
         }
-    );
 
 
-    return {
+        transactions.unshift(
+            transaction
+        );
 
-        income,
-        expenses,
-        balance:
-            income - expenses
+        saveTransactions();
 
-    };
+        refreshEverything();
 
-}
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-function updateDashboard() {
-
-    const totals =
-        calculateTotals();
-
-
-    const balanceElement =
-        getElement("balance");
-
-    const incomeElement =
-        getElement("income");
-
-    const expensesElement =
-        getElement("expenses");
-
-
-    if (balanceElement) {
-
-        balanceElement.textContent =
-            formatMoney(
-                totals.balance
-            );
+        return transaction;
 
     }
 
 
-    if (incomeElement) {
-
-        incomeElement.textContent =
-            formatMoney(
-                totals.income
-            );
-
-    }
-
-
-    if (expensesElement) {
-
-        expensesElement.textContent =
-            formatMoney(
-                totals.expenses
-            );
-
-    }
-
-
-    updateMoneyHealth(
-        totals.income,
-        totals.expenses
-    );
-
-
-    displayTransactions();
-
-    detectMoneyLeak();
-
-    updateSpendingChart();
-
-    updateSpendingBreakdown();
-
-    updateSpendingAnalytics();
-
-    updateSavingsProgress();
-
-    updateSavingsDisplay();
-
-    updateBudgetDisplay();
-
-    refreshCategoryBudgets();
-
-    updateFinancialAlerts();
-   
-    updateDashboardOverview();
-}
-
-
-/* =========================================================
-   FINANCIAL HEALTH SCORE 2.0
-========================================================= */
-
-function updateMoneyHealth(
-    income,
-    expenses
-) {
-
-    const scoreElement =
-        getElement(
-            "healthScore"
-        );
-
-    const fillElement =
-        getElement(
-            "healthFill"
-        );
-
-    const messageElement =
-        getElement(
-            "healthMessage"
-        );
-
-    const explanationElement =
-        getElement(
-            "healthExplanation"
-        );
-
-    const iconElement =
-        getElement(
-            "healthIcon"
-        );
-
-    const incomeFactorElement =
-        getElement(
-            "healthIncomeFactor"
-        );
-
-    const budgetFactorElement =
-        getElement(
-            "healthBudgetFactor"
-        );
-
-    const savingsFactorElement =
-        getElement(
-            "healthSavingsFactor"
-        );
-
-    const recurringFactorElement =
-        getElement(
-            "healthRecurringFactor"
-        );
-
-    const insightElement =
-        getElement(
-            "healthInsight"
-        );
-
-
-    if (
-        !scoreElement ||
-        !fillElement
+    function updateTransaction(
+        id,
+        changes
     ) {
 
-        return;
+        const index =
+            transactions.findIndex(
+                transaction =>
+                    String(transaction.id) ===
+                    String(id)
+            );
+
+        if (index === -1) {
+            return false;
+        }
+
+        transactions[index] =
+            normalizeTransaction({
+
+                ...transactions[index],
+
+                ...changes,
+
+                id:
+                    transactions[index].id
+
+            });
+
+
+        saveTransactions();
+
+        refreshEverything();
+
+        return true;
 
     }
 
 
-    income =
-        Number(income) || 0;
+    function deleteTransaction(id) {
 
-    expenses =
-        Number(expenses) || 0;
+        const before =
+            transactions.length;
 
+        transactions =
+            transactions.filter(
+                transaction =>
+                    String(transaction.id) !==
+                    String(id)
+            );
 
-    /* =========================
-       INCOME VS SPENDING
-    ========================= */
+        if (
+            transactions.length !== before
+        ) {
 
-    let incomeScore = 0;
+            saveTransactions();
 
-    let incomeText =
-        "No income recorded";
+            refreshEverything();
 
-
-    if (income > 0) {
-
-        const ratio =
-            expenses / income;
-
-
-        if (ratio <= 0.50) {
-
-            incomeScore = 100;
-            incomeText =
-                "Excellent";
-
-        } else if (ratio <= 0.70) {
-
-            incomeScore = 85;
-            incomeText =
-                "Healthy";
-
-        } else if (ratio <= 0.85) {
-
-            incomeScore = 70;
-            incomeText =
-                "Watch spending";
-
-        } else if (ratio <= 1) {
-
-            incomeScore = 50;
-            incomeText =
-                "Very tight";
-
-        } else if (ratio <= 1.25) {
-
-            incomeScore = 30;
-            incomeText =
-                "Overspending";
-
-        } else {
-
-            incomeScore = 10;
-            incomeText =
-                "Critical";
+            return true;
 
         }
 
-    }
-
-
-    /* =========================
-       MONTHLY BUDGET
-    ========================= */
-
-    const currentMonthExpenses =
-        getCurrentMonthExpenses();
-
-
-    let budgetScore = 70;
-
-    let budgetText =
-        "No budget set";
-
-
-    const budgetAmount =
-        Number(
-            monthlyBudget
-        ) || 0;
-
-
-    if (budgetAmount > 0) {
-
-        const usage =
-            currentMonthExpenses /
-            budgetAmount;
-
-
-        if (usage <= 0.50) {
-
-            budgetScore = 100;
-            budgetText =
-                "Excellent";
-
-        } else if (usage <= 0.80) {
-
-            budgetScore = 85;
-            budgetText =
-                "On track";
-
-        } else if (usage <= 1) {
-
-            budgetScore = 65;
-            budgetText =
-                "Near limit";
-
-        } else if (usage <= 1.20) {
-
-            budgetScore = 35;
-            budgetText =
-                "Over budget";
-
-        } else {
-
-            budgetScore = 10;
-            budgetText =
-                "Far over budget";
-
-        }
+        return false;
 
     }
 
 
-    /* =========================
-       SAVINGS
-    ========================= */
+    /* =====================================================
+       TOTALS
+    ====================================================== */
 
-    let savingsScore = 50;
-
-    let savingsText =
-        "No savings goal";
-
-
-    if (
-        savingsGoal &&
-        typeof savingsGoal ===
-        "object"
+    function calculateTotals(
+        source = transactions
     ) {
 
-        const target =
-            Number(
-                savingsGoal.targetAmount
-            ) || 0;
+        let income = 0;
 
-        const saved =
-            Number(
-                savingsGoal.currentSavings
-            ) || 0;
+        let expenses = 0;
 
 
-        if (target > 0) {
-
-            const percentage =
-                Math.min(
-                    100,
-                    Math.max(
-                        0,
-                        (
-                            saved /
-                            target
-                        ) * 100
-                    )
-                );
-
-
-            savingsScore =
-                Math.round(
-                    percentage
-                );
-
-
-            if (
-                percentage >= 100
-            ) {
-
-                savingsText =
-                    "Goal reached";
-
-            } else if (
-                percentage >= 75
-            ) {
-
-                savingsText =
-                    "Excellent";
-
-            } else if (
-                percentage >= 50
-            ) {
-
-                savingsText =
-                    "Good progress";
-
-            } else if (
-                percentage >= 25
-            ) {
-
-                savingsText =
-                    "Getting started";
-
-            } else {
-
-                savingsText =
-                    "Needs attention";
-
-            }
-
-        }
-
-    }
-
-
-    /* =========================
-       RECURRING EXPENSES
-    ========================= */
-
-    let recurringScore = 70;
-
-    let recurringText =
-        "No recurring expenses";
-
-
-    let monthlyRecurringExpenses =
-        0;
-
-
-    if (
-        Array.isArray(
-            recurringTransactions
-        )
-    ) {
-
-        recurringTransactions.forEach(
-            recurring => {
-
-                if (
-                    recurring.type !==
-                    "expense"
-                ) {
-
-                    return;
-
-                }
-
+        source.forEach(
+            transaction => {
 
                 const amount =
                     Number(
-                        recurring.amount
+                        transaction.amount
                     ) || 0;
 
 
                 if (
-                    recurring.frequency ===
-                    "weekly"
+                    transaction.type ===
+                    "income"
                 ) {
 
-                    monthlyRecurringExpenses +=
-                        amount * 52 / 12;
+                    income += amount;
 
-                } else if (
-                    recurring.frequency ===
-                    "yearly"
+                }
+
+
+                if (
+                    transaction.type ===
+                    "expense"
                 ) {
 
-                    monthlyRecurringExpenses +=
-                        amount / 12;
-
-                } else {
-
-                    monthlyRecurringExpenses +=
-                        amount;
+                    expenses += amount;
 
                 }
 
             }
         );
 
-    }
 
+        return {
 
-    if (
-        monthlyRecurringExpenses > 0
-    ) {
+            income,
 
-        if (income > 0) {
+            expenses,
 
-            const ratio =
-                monthlyRecurringExpenses /
-                income;
+            balance:
+                income - expenses
 
-
-            if (ratio <= 0.10) {
-
-                recurringScore = 100;
-                recurringText =
-                    "Excellent";
-
-            } else if (ratio <= 0.20) {
-
-                recurringScore = 85;
-                recurringText =
-                    "Healthy";
-
-            } else if (ratio <= 0.30) {
-
-                recurringScore = 65;
-                recurringText =
-                    "Moderate";
-
-            } else if (ratio <= 0.40) {
-
-                recurringScore = 40;
-                recurringText =
-                    "High";
-
-            } else {
-
-                recurringScore = 15;
-                recurringText =
-                    "Very high";
-
-            }
-
-        } else {
-
-            recurringScore = 30;
-
-            recurringText =
-                "Income needed";
-
-        }
+        };
 
     }
 
 
-    /* =========================
-       OVERALL SCORE
-    ========================= */
+    /* =====================================================
+       CURRENCY
+    ====================================================== */
 
-    const score =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                Math.round(
-                    (
-                        incomeScore * 0.35 +
-                        budgetScore * 0.25 +
-                        savingsScore * 0.25 +
-                        recurringScore * 0.15
-                    )
-                )
-            )
+    function getCurrencySymbol() {
+
+        return (
+            settings.currencySymbol ||
+            "₦"
         );
 
-
-    scoreElement.textContent =
-        `${score} / 100`;
-
-
-    fillElement.style.width =
-        `${score}%`;
-
-
-    /* =========================
-       FACTORS
-    ========================= */
-
-    if (
-        incomeFactorElement
-    ) {
-
-        incomeFactorElement.textContent =
-            incomeText;
-
     }
 
 
-    if (
-        budgetFactorElement
+    function formatCurrency(
+        amount
     ) {
 
-        budgetFactorElement.textContent =
-            budgetText;
-
-    }
+        const value =
+            Number(amount) || 0;
 
 
-    if (
-        savingsFactorElement
-    ) {
+        try {
 
-        savingsFactorElement.textContent =
-            savingsText;
+            return new Intl.NumberFormat(
+                "en-NG",
+                {
 
-    }
+                    style: "currency",
 
+                    currency:
+                        settings.currency ||
+                        "NGN",
 
-    if (
-        recurringFactorElement
-    ) {
+                    maximumFractionDigits: 0
 
-        recurringFactorElement.textContent =
-            recurringText;
+                }
+            ).format(value);
 
-    }
+        } catch {
 
-
-    /* =========================
-       CARD STATE
-    ========================= */
-
-    const healthCard =
-        document.querySelector(
-            ".health-score-card"
-        );
-
-
-    if (healthCard) {
-
-        healthCard.classList.remove(
-            "health-good",
-            "health-warning",
-            "health-danger"
-        );
-
-
-        if (score >= 75) {
-
-            healthCard.classList.add(
-                "health-good"
-            );
-
-        } else if (score >= 50) {
-
-            healthCard.classList.add(
-                "health-warning"
-            );
-
-        } else {
-
-            healthCard.classList.add(
-                "health-danger"
+            return (
+                getCurrencySymbol() +
+                value.toLocaleString()
             );
 
         }
@@ -1022,1488 +546,2233 @@ function updateMoneyHealth(
     }
 
 
-    /* =========================
-       MESSAGE
-    ========================= */
-
-    if (
-        score >= 85
+    function formatCompactCurrency(
+        amount
     ) {
 
-        if (messageElement) {
-
-            messageElement.textContent =
-                "Excellent financial health!";
-
-        }
-
-
-        if (explanationElement) {
-
-            explanationElement.textContent =
-                "Your money habits are strong. Keep controlling unnecessary spending and growing your savings.";
-
-        }
-
-
-        if (iconElement) {
-
-            iconElement.textContent =
-                "💚";
-
-        }
-
-    } else if (
-        score >= 75
-    ) {
-
-        if (messageElement) {
-
-            messageElement.textContent =
-                "Your finances are looking healthy.";
-
-        }
-
-
-        if (explanationElement) {
-
-            explanationElement.textContent =
-                "You have a solid financial foundation. Keep building consistent habits.";
-
-        }
-
-
-        if (iconElement) {
-
-            iconElement.textContent =
-                "💚";
-
-        }
-
-    } else if (
-        score >= 50
-    ) {
-
-        if (messageElement) {
-
-            messageElement.textContent =
-                "Your finances need some attention.";
-
-        }
-
-
-        if (explanationElement) {
-
-            explanationElement.textContent =
-                "You are making progress, but better budgeting, spending control, or saving could improve your score.";
-
-        }
-
-
-        if (iconElement) {
-
-            iconElement.textContent =
-                "🟡";
-
-        }
-
-    } else {
-
-        if (messageElement) {
-
-            messageElement.textContent =
-                "Your finances need immediate attention.";
-
-        }
-
-
-        if (explanationElement) {
-
-            explanationElement.textContent =
-                "Your spending, budget, savings, or recurring commitments are putting pressure on your finances.";
-
-        }
-
-
-        if (iconElement) {
-
-            iconElement.textContent =
-                "🔴";
-
-        }
-
-    }
-
-
-    /* =========================
-       INSIGHT
-    ========================= */
-
-    if (insightElement) {
-
-        let insight =
-            "💡 Keep tracking your money consistently.";
+        const value =
+            Number(amount) || 0;
 
 
         if (
-            incomeScore < 50
+            !settings.compactNumbers ||
+            Math.abs(value) < 1000000
         ) {
 
-            insight =
-                "💡 Your biggest opportunity is reducing spending compared with your income.";
+            return formatCurrency(
+                value
+            );
+
+        }
+
+
+        const absolute =
+            Math.abs(value);
+
+        let formatted;
+
+
+        if (absolute >= 1000000000) {
+
+            formatted =
+                (value / 1000000000)
+                    .toFixed(1) +
+                "B";
+
+        } else {
+
+            formatted =
+                (value / 1000000)
+                    .toFixed(1) +
+                "M";
+
+        }
+
+
+        return (
+            getCurrencySymbol() +
+            formatted
+        );
+
+    }
+
+
+    /* =====================================================
+       DATE HELPERS
+    ====================================================== */
+
+    function parseDate(date) {
+
+        const result =
+            new Date(date);
+
+        if (
+            Number.isNaN(
+                result.getTime()
+            )
+        ) {
+
+            return new Date();
+
+        }
+
+        return result;
+
+    }
+
+
+    function formatDate(
+        date
+    ) {
+
+        return parseDate(
+            date
+        ).toLocaleDateString(
+            "en-NG",
+            {
+
+                day: "numeric",
+
+                month: "short",
+
+                year: "numeric"
+
+            }
+        );
+
+    }
+
+
+    function formatShortDate(
+        date
+    ) {
+
+        return parseDate(
+            date
+        ).toLocaleDateString(
+            "en-NG",
+            {
+
+                day: "numeric",
+
+                month: "short"
+
+            }
+        );
+
+    }
+
+
+    function isSameMonth(
+        date,
+        reference = new Date()
+    ) {
+
+        const a =
+            parseDate(date);
+
+        const b =
+            parseDate(reference);
+
+        return (
+            a.getFullYear() ===
+                b.getFullYear() &&
+            a.getMonth() ===
+                b.getMonth()
+        );
+
+    }
+
+
+    function isSameYear(
+        date,
+        reference = new Date()
+    ) {
+
+        const a =
+            parseDate(date);
+
+        const b =
+            parseDate(reference);
+
+        return (
+            a.getFullYear() ===
+                b.getFullYear()
+        );
+
+    }
+
+
+    function daysBetween(
+        dateA,
+        dateB
+    ) {
+
+        const a =
+            parseDate(dateA);
+
+        const b =
+            parseDate(dateB);
+
+        return Math.ceil(
+            Math.abs(
+                b.getTime() -
+                a.getTime()
+            ) /
+            86400000
+        );
+
+    }
+
+
+    /* =====================================================
+       PERIOD FILTERS
+    ====================================================== */
+
+    function getCurrentMonthTransactions() {
+
+        return transactions.filter(
+            transaction =>
+                isSameMonth(
+                    transaction.date
+                )
+        );
+
+    }
+
+
+    function getCurrentYearTransactions() {
+
+        return transactions.filter(
+            transaction =>
+                isSameYear(
+                    transaction.date
+                )
+        );
+
+    }
+
+
+    function getLast30DaysTransactions() {
+
+        const now =
+            new Date();
+
+        const cutoff =
+            new Date(
+                now.getTime() -
+                30 * 86400000
+            );
+
+        return transactions.filter(
+            transaction =>
+                parseDate(
+                    transaction.date
+                ) >= cutoff
+        );
+
+    }
+
+
+    /* =====================================================
+       SAVINGS GOALS
+    ====================================================== */
+
+    function loadSavingsGoals() {
+
+        let goals =
+            readStorage(
+                STORAGE.savingsGoals,
+                null
+            );
+
+
+        if (
+            Array.isArray(goals)
+        ) {
+
+            return goals;
+
+        }
+
+
+        const oldGoal =
+            readStorage(
+                STORAGE.savingsGoal,
+                null
+            );
+
+
+        if (
+            oldGoal &&
+            typeof oldGoal === "object"
+        ) {
+
+            const migrated = {
+
+                id:
+                    Date.now()
+                    .toString(),
+
+                name:
+                    oldGoal.name ||
+                    oldGoal.title ||
+                    "Savings Goal",
+
+                target:
+                    Number(
+                        oldGoal.target ||
+                        oldGoal.amount ||
+                        0
+                    ),
+
+                saved:
+                    Number(
+                        oldGoal.saved ||
+                        oldGoal.current ||
+                        oldGoal.progress ||
+                        0
+                    ),
+
+                deadline:
+                    oldGoal.deadline ||
+                    oldGoal.date ||
+                    "",
+
+                createdAt:
+                    oldGoal.createdAt ||
+                    new Date().toISOString()
+
+            };
+
+
+            writeStorage(
+                STORAGE.savingsGoals,
+                [migrated]
+            );
+
+
+            return [migrated];
+
+        }
+
+
+        return [];
+
+    }
+
+
+    let savingsGoals =
+        loadSavingsGoals();
+
+
+    function saveSavingsGoals() {
+
+        writeStorage(
+            STORAGE.savingsGoals,
+            savingsGoals
+        );
+
+
+        if (
+            savingsGoals.length > 0
+        ) {
+
+            writeStorage(
+                STORAGE.savingsGoal,
+                savingsGoals[0]
+            );
+
+        }
+
+    }
+
+
+    function addSavingsGoal(
+        data
+    ) {
+
+        const goal = {
+
+            id:
+                Date.now().toString() +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 7),
+
+            name:
+                data.name ||
+                "Savings Goal",
+
+            target:
+                Math.max(
+                    0,
+                    Number(data.target) || 0
+                ),
+
+            saved:
+                Math.max(
+                    0,
+                    Number(data.saved) || 0
+                ),
+
+            deadline:
+                data.deadline || "",
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        savingsGoals.unshift(
+            goal
+        );
+
+        saveSavingsGoals();
+
+        refreshEverything();
+
+        return goal;
+
+    }
+
+
+    function updateSavingsGoal(
+        id,
+        changes
+    ) {
+
+        const goal =
+            savingsGoals.find(
+                item =>
+                    String(item.id) ===
+                    String(id)
+            );
+
+        if (!goal) {
+            return false;
+        }
+
+
+        Object.assign(
+            goal,
+            changes
+        );
+
+
+        goal.target =
+            Math.max(
+                0,
+                Number(goal.target) || 0
+            );
+
+
+        goal.saved =
+            Math.max(
+                0,
+                Number(goal.saved) || 0
+            );
+
+
+        saveSavingsGoals();
+
+        refreshEverything();
+
+        return true;
+
+    }
+
+
+    function deleteSavingsGoal(
+        id
+    ) {
+
+        savingsGoals =
+            savingsGoals.filter(
+                goal =>
+                    String(goal.id) !==
+                    String(id)
+            );
+
+        saveSavingsGoals();
+
+        refreshEverything();
+
+    }
+
+
+    function getGoalProgress(
+        goal
+    ) {
+
+        if (
+            !goal ||
+            Number(goal.target) <= 0
+        ) {
+
+            return 0;
+
+        }
+
+        return Math.min(
+            100,
+            Math.max(
+                0,
+                (
+                    Number(goal.saved) /
+                    Number(goal.target)
+                ) * 100
+            )
+        );
+
+    }
+
+
+    /* =====================================================
+       BUDGETS
+    ====================================================== */
+
+    function getMonthlyBudget() {
+
+        const value =
+            readStorage(
+                STORAGE.monthlyBudget,
+                0
+            );
+
+        if (
+            typeof value === "object" &&
+            value !== null
+        ) {
+
+            return Number(
+                value.amount ||
+                value.budget ||
+                0
+            );
+
+        }
+
+        return Number(value) || 0;
+
+    }
+
+
+    function setMonthlyBudget(
+        amount
+    ) {
+
+        const value =
+            Math.max(
+                0,
+                Number(amount) || 0
+            );
+
+        writeStorage(
+            STORAGE.monthlyBudget,
+            value
+        );
+
+        refreshEverything();
+
+    }
+
+
+    function getCategoryBudgets() {
+
+        const value =
+            readStorage(
+                STORAGE.categoryBudgets,
+                {}
+            );
+
+        return (
+            value &&
+            typeof value === "object"
+                ? value
+                : {}
+        );
+
+    }
+
+
+    function setCategoryBudget(
+        category,
+        amount
+    ) {
+
+        const budgets =
+            getCategoryBudgets();
+
+        budgets[category] =
+            Math.max(
+                0,
+                Number(amount) || 0
+            );
+
+        writeStorage(
+            STORAGE.categoryBudgets,
+            budgets
+        );
+
+        refreshEverything();
+
+    }
+
+
+    function deleteCategoryBudget(
+        category
+    ) {
+
+        const budgets =
+            getCategoryBudgets();
+
+        delete budgets[category];
+
+        writeStorage(
+            STORAGE.categoryBudgets,
+            budgets
+        );
+
+        refreshEverything();
+
+    }
+
+
+    function getCurrentMonthExpenses() {
+
+        return getCurrentMonthTransactions()
+            .filter(
+                transaction =>
+                    transaction.type ===
+                    "expense"
+            );
+
+    }
+
+
+    function getCurrentMonthSpent() {
+
+        return getCurrentMonthExpenses()
+            .reduce(
+                (
+                    total,
+                    transaction
+                ) =>
+                    total +
+                    Number(
+                        transaction.amount
+                    ),
+
+                0
+            );
+
+    }
+
+
+    function getCategorySpent(
+        category
+    ) {
+
+        return getCurrentMonthExpenses()
+            .filter(
+                transaction =>
+                    transaction.category ===
+                    category
+            )
+            .reduce(
+                (
+                    total,
+                    transaction
+                ) =>
+                    total +
+                    Number(
+                        transaction.amount
+                    ),
+
+                0
+            );
+
+    }
+
+
+    /* =====================================================
+       RECURRING TRANSACTIONS
+    ====================================================== */
+
+    function getRecurringTransactions() {
+
+        const value =
+            readStorage(
+                STORAGE.recurring,
+                []
+            );
+
+        return Array.isArray(value)
+            ? value
+            : [];
+
+    }
+
+
+    function saveRecurringTransactions(
+        recurring
+    ) {
+
+        writeStorage(
+            STORAGE.recurring,
+            recurring
+        );
+
+    }
+
+
+    function addRecurringTransaction(
+        data
+    ) {
+
+        const recurring =
+            getRecurringTransactions();
+
+
+        const item = {
+
+            id:
+                Date.now().toString() +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 7),
+
+            name:
+                data.name ||
+                "Recurring payment",
+
+            amount:
+                Math.abs(
+                    Number(
+                        data.amount
+                    ) || 0
+                ),
+
+            type:
+                data.type === "income"
+                    ? "income"
+                    : "expense",
+
+            category:
+                data.category ||
+                "Other",
+
+            frequency:
+                data.frequency ||
+                "monthly",
+
+            nextDate:
+                data.nextDate ||
+                new Date().toISOString(),
+
+            active:
+                data.active !== false,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        recurring.unshift(
+            item
+        );
+
+        saveRecurringTransactions(
+            recurring
+        );
+
+        refreshEverything();
+
+        return item;
+
+    }
+
+
+    function deleteRecurringTransaction(
+        id
+    ) {
+
+        const recurring =
+            getRecurringTransactions()
+                .filter(
+                    item =>
+                        String(item.id) !==
+                        String(id)
+                );
+
+        saveRecurringTransactions(
+            recurring
+        );
+
+        refreshEverything();
+
+    }
+
+
+    /* =====================================================
+       FINANCIAL HEALTH
+    ====================================================== */
+
+    function calculateFinancialHealth() {
+
+        const totals =
+            calculateTotals();
+
+
+        if (
+            transactions.length === 0
+        ) {
+
+            return {
+
+                score: 0,
+
+                incomeFactor: 0,
+
+                budgetFactor: 0,
+
+                savingsFactor: 0,
+
+                recurringFactor: 0,
+
+                message:
+                    "Add financial activity",
+
+                explanation:
+                    "Add income, expenses, savings goals, and budgets to let MoneyLeak calculate your financial health.",
+
+                insight:
+                    "Start by recording your income and everyday expenses."
+
+            };
+
+        }
+
+
+        /* Income vs spending — 35% */
+
+        let incomeScore = 0;
+
+
+        if (
+            totals.income <= 0
+        ) {
+
+            incomeScore = 10;
+
+        } else {
+
+            const ratio =
+                totals.expenses /
+                totals.income;
+
+
+            if (ratio <= 0.5) {
+
+                incomeScore = 100;
+
+            } else if (ratio <= 0.7) {
+
+                incomeScore = 85;
+
+            } else if (ratio <= 0.85) {
+
+                incomeScore = 70;
+
+            } else if (ratio <= 1) {
+
+                incomeScore = 55;
+
+            } else if (ratio <= 1.2) {
+
+                incomeScore = 30;
+
+            } else {
+
+                incomeScore = 10;
+
+            }
+
+        }
+
+
+        /* Budget — 25% */
+
+        const budget =
+            getMonthlyBudget();
+
+        const spent =
+            getCurrentMonthSpent();
+
+        let budgetScore = 55;
+
+
+        if (budget > 0) {
+
+            const usage =
+                spent / budget;
+
+
+            if (usage <= 0.5) {
+
+                budgetScore = 100;
+
+            } else if (usage <= 0.7) {
+
+                budgetScore = 90;
+
+            } else if (usage <= 0.85) {
+
+                budgetScore = 75;
+
+            } else if (usage <= 1) {
+
+                budgetScore = 55;
+
+            } else if (usage <= 1.15) {
+
+                budgetScore = 30;
+
+            } else {
+
+                budgetScore = 10;
+
+            }
+
+        }
+
+
+        /* Savings — 25% */
+
+        const savingsRate =
+            totals.income > 0
+                ? Math.max(
+                    0,
+                    (
+                        (
+                            totals.income -
+                            totals.expenses
+                        ) /
+                        totals.income
+                    ) * 100
+                )
+                : 0;
+
+
+        let savingsScore;
+
+
+        if (
+            savingsRate >= 30
+        ) {
+
+            savingsScore = 100;
 
         } else if (
-            budgetScore < 50
+            savingsRate >= 20
         ) {
 
-            insight =
-                "💡 You are above your monthly budget. Review your biggest expense categories.";
+            savingsScore = 85;
 
         } else if (
-            savingsScore < 40
+            savingsRate >= 10
+        ) {
+
+            savingsScore = 70;
+
+        } else if (
+            savingsRate > 0
+        ) {
+
+            savingsScore = 50;
+
+        } else {
+
+            savingsScore = 15;
+
+        }
+
+
+        /* Recurring — 15% */
+
+        const recurring =
+            getRecurringTransactions()
+                .filter(
+                    item =>
+                        item.active !== false &&
+                        item.type === "expense"
+                );
+
+
+        const recurringTotal =
+            recurring.reduce(
+                (
+                    total,
+                    item
+                ) =>
+                    total +
+                    Number(item.amount || 0),
+
+                0
+            );
+
+
+        let recurringScore = 80;
+
+
+        if (
+            totals.income > 0
+        ) {
+
+            const recurringRatio =
+                recurringTotal /
+                totals.income;
+
+
+            if (
+                recurringRatio <= 0.1
+            ) {
+
+                recurringScore = 100;
+
+            } else if (
+                recurringRatio <= 0.2
+            ) {
+
+                recurringScore = 85;
+
+            } else if (
+                recurringRatio <= 0.3
+            ) {
+
+                recurringScore = 65;
+
+            } else if (
+                recurringRatio <= 0.4
+            ) {
+
+                recurringScore = 40;
+
+            } else {
+
+                recurringScore = 20;
+
+            }
+
+        }
+
+
+        const score = Math.round(
+
+            incomeScore * 0.35 +
+
+            budgetScore * 0.25 +
+
+            savingsScore * 0.25 +
+
+            recurringScore * 0.15
+
+        );
+
+
+        let message =
+            "Needs attention";
+
+        let explanation =
+            "There are areas of your finances that MoneyLeak recommends improving.";
+
+        if (score >= 85) {
+
+            message =
+                "Excellent financial health";
+
+            explanation =
+                "You're showing strong control over spending, savings, and recurring commitments.";
+
+        } else if (score >= 70) {
+
+            message =
+                "Good financial health";
+
+            explanation =
+                "Your finances are generally healthy, with a few areas that could become stronger.";
+
+        } else if (score >= 50) {
+
+            message =
+                "Fair financial health";
+
+            explanation =
+                "You have a foundation to build on, but your spending and savings deserve attention.";
+
+        } else {
+
+            message =
+                "Needs attention";
+
+            explanation =
+                "Your current spending pattern may be putting pressure on your finances.";
+
+        }
+
+
+        let insight =
+            "Keep tracking your money consistently.";
+
+
+        if (
+            totals.income <= 0
         ) {
 
             insight =
-                "💡 Your savings goal needs more attention. Try saving before spending.";
+                "Record your income so MoneyLeak can measure how much of your money you're keeping.";
+
+        } else if (
+            totals.expenses >
+            totals.income
+        ) {
+
+            insight =
+                "Your expenses are higher than your recorded income. Focus on reducing unnecessary spending first.";
+
+        } else if (
+            savingsRate < 10
+        ) {
+
+            insight =
+                "Your savings rate is below 10%. Even a small automatic saving habit can make a difference.";
+
+        } else if (
+            budget <= 0
+        ) {
+
+            insight =
+                "Set a monthly budget so you have a clear spending limit before money leaves your account.";
 
         } else if (
             recurringScore < 50
         ) {
 
             insight =
-                "💡 Your recurring expenses are taking a large share of your income. Review regular payments and subscriptions.";
+                "Your recurring commitments are taking a large share of income. Review subscriptions and fixed bills.";
 
-        } else if (
-            score >= 80
-        ) {
+        } else {
 
             insight =
-                "💡 You're building strong financial habits. Keep your spending controlled and continue growing your savings.";
+                "You're building healthy money habits. Keep your spending below your income and protect your savings.";
 
         }
 
 
-        insightElement.textContent =
-            insight;
+        return {
 
-    }
+            score,
 
-}
-
-
-/* =========================================================
-   DISPLAY TRANSACTIONS
-========================================================= */
-
-function displayTransactions() {
-
-    const list =
-        getElement(
-            "transactionList"
-        );
-
-
-    if (!list) {
-        return;
-    }
-
-
-    if (
-        !Array.isArray(
-            transactions
-        ) ||
-        transactions.length === 0
-    ) {
-
-        list.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon">
-                    💸
-                </div>
-
-                <h3>
-                    No transactions yet
-                </h3>
-
-                <p>
-                    Add your first income or expense above.
-                </p>
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    const recent =
-        transactions.slice(
-            0,
-            20
-        );
-
-
-    list.innerHTML =
-        recent.map(
-            transaction => {
-
-                const isIncome =
-                    transaction.type ===
-                    "income";
-
-
-                const sign =
-                    isIncome
-                        ? "+"
-                        : "-";
-
-
-                const className =
-                    isIncome
-                        ? "income"
-                        : "expense";
-
-
-                const name =
-                    transaction.name ||
-                    transaction.category ||
-                    (
-                        isIncome
-                            ? "Income"
-                            : "Expense"
-                    );
-
-
-                return `
-                    <div
-                        class="transaction-item ${className}"
-                    >
-
-                        <div class="transaction-info">
-
-                            <strong>
-                                ${escapeHTML(name)}
-                            </strong>
-
-                            <span>
-                                ${escapeHTML(
-                                    transaction.category ||
-                                    "Other"
-                                )}
-                                ·
-                                ${formatTransactionDate(
-                                    transaction.date
-                                )}
-                            </span>
-
-                        </div>
-
-
-                        <div class="transaction-right">
-
-                            <strong>
-                                ${sign}${formatMoney(
-                                    transaction.amount
-                                )}
-                            </strong>
-
-                            <div class="transaction-actions">
-
-                                <button
-                                    type="button"
-                                    onclick="editTransaction('${transaction.id}')"
-                                >
-                                    Edit
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onclick="deleteTransaction('${transaction.id}')"
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                `;
-
-            }
-        ).join("");
-
-}
-
-
-function formatTransactionDate(date) {
-
-    if (!date) {
-        return "Unknown date";
-    }
-
-
-    const parsed =
-        new Date(date);
-
-
-    if (
-        !Number.isFinite(
-            parsed.getTime()
-        )
-    ) {
-
-        return "Unknown date";
-
-    }
-
-
-    return parsed.toLocaleDateString(
-        "en-NG",
-        {
-            day: "numeric",
-            month: "short",
-            year: "numeric"
-        }
-    );
-
-}
-
-
-/* =========================================================
-   EDIT TRANSACTION
-========================================================= */
-
-function editTransaction(id) {
-
-    const transaction =
-        transactions.find(
-            item =>
-                item.id === id
-        );
-
-
-    if (!transaction) {
-
-        alert(
-            "Transaction not found."
-        );
-
-        return;
-
-    }
-
-
-    const amountInput =
-        prompt(
-            "Enter the new amount:",
-            transaction.amount
-        );
-
-
-    if (
-        amountInput === null
-    ) {
-
-        return;
-
-    }
-
-
-    const amount =
-        Number(amountInput);
-
-
-    if (
-        !Number.isFinite(amount) ||
-        amount <= 0
-    ) {
-
-        alert(
-            "Please enter a valid amount."
-        );
-
-        return;
-
-    }
-
-
-    const categoryInput =
-        prompt(
-            "Enter the category:",
-            transaction.category ||
-            "Other"
-        );
-
-
-    if (
-        categoryInput === null
-    ) {
-
-        return;
-
-    }
-
-
-    transaction.amount =
-        amount;
-
-    transaction.category =
-        categoryInput.trim() ||
-        "Other";
-
-
-    saveTransactions();
-
-    updateDashboard();
-
-}
-
-
-/* =========================================================
-   DELETE TRANSACTION
-========================================================= */
-
-function deleteTransaction(id) {
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete this transaction?"
-        );
-
-
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-    transactions =
-        transactions.filter(
-            transaction =>
-                transaction.id !== id
-        );
-
-
-    saveTransactions();
-
-    updateDashboard();
-
-}
-
-
-/* =========================================================
-   MONEY LEAK DETECTION
-========================================================= */
-
-function detectMoneyLeak() {
-
-    const leakMessage =
-        getElement(
-            "leakMessage"
-        );
-
-
-    if (!leakMessage) {
-
-        return;
-
-    }
-
-
-    const expenses =
-        transactions.filter(
-            transaction =>
-                transaction.type ===
-                "expense"
-        );
-
-
-    if (
-        expenses.length === 0
-    ) {
-
-        leakMessage.innerHTML =
-            "💡 Add expenses to discover where your money may be leaking.";
-
-        return;
-
-    }
-
-
-    const totals = {};
-
-
-    expenses.forEach(
-        transaction => {
-
-            const category =
-                transaction.category ||
-                "Other";
-
-
-            totals[category] =
-                (
-                    totals[category] ||
-                    0
-                ) +
-                (
-                    Number(
-                        transaction.amount
-                    ) || 0
-                );
-
-        }
-    );
-
-
-    const sorted =
-        Object.entries(
-            totals
-        ).sort(
-            (a, b) =>
-                b[1] - a[1]
-        );
-
-
-    const biggest =
-        sorted[0];
-
-
-    if (!biggest) {
-
-        return;
-
-    }
-
-
-    const possibleSaving =
-        biggest[1] * 0.20;
-
-
-    const yearlySaving =
-        possibleSaving * 12;
-
-
-    leakMessage.innerHTML = `
-        💡 Your biggest spending category is
-        <strong>${escapeHTML(biggest[0])}</strong>
-        at
-        <strong>${formatMoney(biggest[1])}</strong>.
-        Reducing it by 20% could save approximately
-        <strong>${formatMoney(possibleSaving)}</strong>
-        per month,
-        or
-        <strong>${formatMoney(yearlySaving)}</strong>
-        per year.
-    `;
-
-}
-
-
-/* =========================================================
-   SPENDING CHART
-========================================================= */
-
-function updateSpendingChart() {
-
-    const chart =
-        getElement(
-            "spendingChart"
-        );
-
-
-    if (!chart) {
-
-        return;
-
-    }
-
-
-    const totals = {};
-
-
-    transactions
-        .filter(
-            transaction =>
-                transaction.type ===
-                "expense"
-        )
-        .forEach(
-            transaction => {
-
-                const category =
-                    transaction.category ||
-                    "Other";
-
-
-                totals[category] =
-                    (
-                        totals[category] ||
-                        0
-                    ) +
-                    (
-                        Number(
-                            transaction.amount
-                        ) || 0
-                    );
-
-            }
-        );
-
-
-    const entries =
-        Object.entries(
-            totals
-        ).sort(
-            (a, b) =>
-                b[1] - a[1]
-        );
-
-
-    if (
-        entries.length === 0
-    ) {
-
-        chart.innerHTML =
-            `<div class="analytics-empty">
-                Add expenses to see your spending chart.
-            </div>`;
-
-        return;
-
-    }
-
-
-    const maximum =
-        entries[0][1];
-
-
-    chart.innerHTML =
-        entries.map(
-            ([category, amount]) => {
-
-                const percentage =
-                    maximum > 0
-                        ? (
-                            amount /
-                            maximum
-                        ) * 100
-                        : 0;
-
-
-                return `
-                    <div class="spending-chart-row">
-
-                        <div class="spending-chart-label">
-
-                            <span>
-                                ${escapeHTML(category)}
-                            </span>
-
-                            <strong>
-                                ${formatMoney(amount)}
-                            </strong>
-
-                        </div>
-
-                        <div class="spending-chart-track">
-
-                            <div
-                                class="spending-chart-fill"
-                                style="width:${percentage}%"
-                            ></div>
-
-                        </div>
-
-                    </div>
-                `;
-
-            }
-        ).join("");
-
-}
-
-
-/* =========================================================
-   SPENDING BREAKDOWN
-========================================================= */
-
-function updateSpendingBreakdown() {
-
-    const breakdown =
-        getElement(
-            "spendingBreakdown"
-        );
-
-
-    if (!breakdown) {
-
-        return;
-
-    }
-
-
-    const totals = {};
-
-
-    let total = 0;
-
-
-    transactions
-        .filter(
-            transaction =>
-                transaction.type ===
-                "expense"
-        )
-        .forEach(
-            transaction => {
-
-                const amount =
-                    Number(
-                        transaction.amount
-                    ) || 0;
-
-
-                const category =
-                    transaction.category ||
-                    "Other";
-
-
-                totals[category] =
-                    (
-                        totals[category] ||
-                        0
-                    ) +
-                    amount;
-
-
-                total += amount;
-
-            }
-        );
-
-
-    const entries =
-        Object.entries(
-            totals
-        ).sort(
-            (a, b) =>
-                b[1] - a[1]
-        );
-
-
-    if (
-        entries.length === 0
-    ) {
-
-        breakdown.innerHTML =
-            "No spending breakdown available yet.";
-
-        return;
-
-    }
-
-
-    breakdown.innerHTML =
-        entries.map(
-            ([category, amount]) => {
-
-                const percentage =
-                    total > 0
-                        ? (
-                            amount /
-                            total
-                        ) * 100
-                        : 0;
-
-
-                return `
-                    <div class="breakdown-item">
-
-                        <span>
-                            ${escapeHTML(category)}
-                        </span>
-
-                        <strong>
-                            ${formatMoney(amount)}
-                            (${percentage.toFixed(0)}%)
-                        </strong>
-
-                    </div>
-                `;
-
-            }
-        ).join("");
-
-}
-
-
-/* =========================================================
-   SPENDING ANALYTICS
-========================================================= */
-
-function updateSpendingAnalytics() {
-
-    const summary =
-        document.querySelector(
-            ".analytics-summary"
-        );
-
-
-    const totalSpentElement =
-        getElement(
-            "analyticsTotalSpent"
-        );
-
-
-    const topCategoryElement =
-        getElement(
-            "analyticsTopCategory"
-        );
-
-
-    const dailyAverageElement =
-        getElement(
-            "analyticsDailyAverage"
-        );
-
-
-    const bars =
-        getElement(
-            "analyticsBars"
-        );
-
-
-    const insight =
-        getElement(
-            "analyticsInsight"
-        );
-
-
-    if (
-        !summary &&
-        !totalSpentElement &&
-        !topCategoryElement &&
-        !dailyAverageElement &&
-        !bars
-    ) {
-
-        return;
-
-    }
-
-
-    const now =
-        new Date();
-
-
-    const currentMonth =
-        now.getMonth();
-
-
-    const currentYear =
-        now.getFullYear();
-
-
-    const monthlyExpenses =
-        transactions.filter(
-            transaction => {
-
-                if (
-                    transaction.type !==
-                    "expense"
-                ) {
-
-                    return false;
-
-                }
-
-
-                const date =
-                    new Date(
-                        transaction.date
-                    );
-
-
-                return (
-                    date.getMonth() ===
-                    currentMonth &&
-                    date.getFullYear() ===
-                    currentYear
-                );
-
-            }
-        );
-
-
-    let totalSpent = 0;
-
-
-    const categoryTotals = {};
-
-
-    monthlyExpenses.forEach(
-        transaction => {
-
-            const amount =
-                Number(
-                    transaction.amount
-                ) || 0;
-
-
-            const category =
-                transaction.category ||
-                "Other";
-
-
-            totalSpent +=
-                amount;
-
-
-            categoryTotals[category] =
-                (
-                    categoryTotals[category] ||
-                    0
-                ) +
-                amount;
-
-        }
-    );
-
-
-    const dayOfMonth =
-        now.getDate();
-
-
-    const dailyAverage =
-        dayOfMonth > 0
-            ? totalSpent /
-                dayOfMonth
-            : 0;
-
-
-    const sortedCategories =
-        Object.entries(
-            categoryTotals
-        ).sort(
-            (a, b) =>
-                b[1] - a[1]
-        );
-
-
-    const topCategory =
-        sortedCategories.length > 0
-            ? sortedCategories[0]
-            : null;
-
-
-    if (totalSpentElement) {
-
-        totalSpentElement.textContent =
-            formatMoney(
-                totalSpent
-            );
-
-    }
-
-
-    if (topCategoryElement) {
-
-        topCategoryElement.textContent =
-            topCategory
-                ? escapeHTML(
-                    topCategory[0]
-                )
-                : "—";
-
-    }
-
-
-    if (dailyAverageElement) {
-
-        dailyAverageElement.textContent =
-            formatMoney(
-                dailyAverage
-            );
-
-    }
-
-
-    if (bars) {
-
-        if (
-            sortedCategories.length ===
-            0
-        ) {
-
-            bars.innerHTML =
-                `<div class="analytics-empty">
-                    Add expenses to see your spending analytics.
-                </div>`;
-
-        } else {
-
-            const maximum =
-                sortedCategories[0][1];
-
-
-            bars.innerHTML =
-                sortedCategories.map(
-                    ([category, amount]) => {
-
-                        const percentage =
-                            totalSpent > 0
-                                ? (
-                                    amount /
-                                    totalSpent
-                                ) * 100
-                                : 0;
-
-
-                        const width =
-                            maximum > 0
-                                ? (
-                                    amount /
-                                    maximum
-                                ) * 100
-                                : 0;
-
-
-                        return `
-                            <div class="analytics-bar-row">
-
-                                <div class="analytics-bar-info">
-
-                                    <span>
-                                        ${escapeHTML(category)}
-                                    </span>
-
-                                    <strong>
-                                        ${formatMoney(amount)}
-                                        ·
-                                        ${percentage.toFixed(0)}%
-                                    </strong>
-
-                                </div>
-
-                                <div class="analytics-bar-track">
-
-                                    <div
-                                        class="analytics-bar-fill"
-                                        style="width:${width}%"
-                                    ></div>
-
-                                </div>
-
-                            </div>
-                        `;
-
-                    }
-                ).join("");
-
-        }
-
-    }
-
-
-    if (insight) {
-
-        if (
-            !topCategory
-        ) {
-
-            insight.textContent =
-                "💡 Add expenses this month to receive personalized spending insights.";
-
-        } else {
-
-            const percentage =
-                totalSpent > 0
-                    ? (
-                        topCategory[1] /
-                        totalSpent
-                    ) * 100
-                    : 0;
-
-
-            insight.textContent =
-                `💡 ${topCategory[0]} is your biggest spending category this month at ${percentage.toFixed(0)}% of your total spending.`;
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   MONTHLY BUDGET
-========================================================= */
-
-function loadMonthlyBudget() {
-
-    const saved =
-        localStorage.getItem(
-            BUDGET_STORAGE_KEY
-        );
-
-
-    if (!saved) {
-
-        return 0;
-
-    }
-
-
-    const value =
-        Number(saved);
-
-
-    return Number.isFinite(value)
-        ? value
-        : 0;
-
-}
-
-
-function saveMonthlyBudget() {
-
-    localStorage.setItem(
-        BUDGET_STORAGE_KEY,
-        String(
-            monthlyBudget
-        )
-    );
-
-}
-
-
-function getCurrentMonthExpenses() {
-
-    const now =
-        new Date();
-
-
-    return transactions
-        .filter(
-            transaction => {
-
-                if (
-                    transaction.type !==
-                    "expense"
-                ) {
-
-                    return false;
-
-                }
-
-
-                const date =
-                    new Date(
-                        transaction.date
-                    );
-
-
-                return (
-                    date.getMonth() ===
-                    now.getMonth() &&
-                    date.getFullYear() ===
-                    now.getFullYear()
-                );
-
-            }
-        )
-        .reduce(
-            (total, transaction) =>
-                total +
-                (
-                    Number(
-                        transaction.amount
-                    ) || 0
+            incomeFactor:
+                Math.round(
+                    incomeScore
                 ),
-            0
-        );
 
-}
+            budgetFactor:
+                Math.round(
+                    budgetScore
+                ),
 
+            savingsFactor:
+                Math.round(
+                    savingsScore
+                ),
 
-function updateBudgetDisplay() {
+            recurringFactor:
+                Math.round(
+                    recurringScore
+                ),
 
-    const result =
-        getElement(
-            "budgetResult"
-        );
+            message,
 
+            explanation,
 
-    if (!result) {
+            insight
 
-        return;
-
-    }
-
-
-    const spent =
-        getCurrentMonthExpenses();
-
-
-    if (
-        !monthlyBudget ||
-        monthlyBudget <= 0
-    ) {
-
-        result.innerHTML = `
-            <div class="empty-state">
-
-                <div class="empty-state-icon">
-                    💰
-                </div>
-
-                <h3>
-                    No monthly budget set
-                </h3>
-
-                <p>
-                    Set a budget to see how much of your monthly spending you have used.
-                </p>
-
-            </div>
-        `;
-
-        return;
+        };
 
     }
 
 
-    const percentage =
-        (
-            spent /
-            monthlyBudget
-        ) * 100;
+    /* =====================================================
+       DASHBOARD OVERVIEW
+    ====================================================== */
+
+    function updateDashboardOverview() {
+
+        const totals =
+            calculateTotals();
 
 
-    const safePercentage =
-        Math.min(
-            100,
-            Math.max(
-                0,
-                percentage
+        setText(
+            "overviewBalance",
+            formatCompactCurrency(
+                totals.balance
             )
         );
 
 
-    const remaining =
-        monthlyBudget -
-        spent;
+        setText(
+            "overviewIncome",
+            formatCompactCurrency(
+                totals.income
+            )
+        );
 
 
-    let status =
-        "safe";
+        setText(
+            "overviewExpenses",
+            formatCompactCurrency(
+                totals.expenses
+            )
+        );
 
 
-    let message =
-        "You're comfortably within your budget.";
+        const savingsRate =
+            totals.income > 0
+                ? Math.max(
+                    0,
+                    (
+                        (
+                            totals.income -
+                            totals.expenses
+                        ) /
+                        totals.income
+                    ) *
+                    100
+                )
+                : 0;
 
 
-    if (
-        percentage >= 100
-    ) {
+        setText(
+            "overviewSavingsRate",
+            Math.round(
+                savingsRate
+            ) + "%"
+        );
 
-        status =
-            "danger";
 
-        message =
-            "You've gone over your monthly budget.";
+        setText(
+            "overviewSavingsStatus",
 
-    } else if (
-        percentage >= 80
-    ) {
+            savingsRate >= 20
+                ? "Strong savings habit"
+                : savingsRate > 0
+                    ? "Keep building"
+                    : "Start saving"
+        );
 
-        status =
-            "warning";
 
-        message =
-            "You're getting close to your monthly budget.";
+        setText(
+            "overviewBalanceStatus",
+
+            totals.balance > 0
+                ? "You're in positive territory"
+                : totals.balance < 0
+                    ? "Spending is above income"
+                    : "Starting balance"
+        );
+
+
+        /* Goal */
+
+        const goal =
+            savingsGoals[0];
+
+
+        if (goal) {
+
+            const progress =
+                getGoalProgress(
+                    goal
+                );
+
+
+            setText(
+                "overviewGoalProgress",
+                Math.round(
+                    progress
+                ) + "%"
+            );
+
+
+            const fill =
+                document.getElementById(
+                    "overviewGoalFill"
+                );
+
+
+            if (fill) {
+
+                fill.style.width =
+                    progress + "%";
+
+            }
+
+
+            setText(
+                "overviewGoalStatus",
+                goal.name
+            );
+
+        } else {
+
+            setText(
+                "overviewGoalProgress",
+                "0%"
+            );
+
+            const fill =
+                document.getElementById(
+                    "overviewGoalFill"
+                );
+
+            if (fill) {
+                fill.style.width = "0%";
+            }
+
+            setText(
+                "overviewGoalStatus",
+                "No goal set"
+            );
+
+        }
+
+
+        /* Health */
+
+        const health =
+            calculateFinancialHealth();
+
+
+        setText(
+            "overviewHealthScore",
+            health.score + "/100"
+        );
+
+
+        setText(
+            "overviewHealthStatus",
+            health.message
+        );
+
+
+        setText(
+            "overviewInsightText",
+            health.insight
+        );
 
     }
 
 
-    result.innerHTML = `
-        <div class="budget-card">
+    /* =====================================================
+       HEALTH UI
+    ====================================================== */
 
-            <div class="budget-card-header">
+    function updateMoneyHealth() {
 
-                <div>
-
-                    <span class="analytics-label">
-                        Monthly Budget
-                    </span>
-
-                    <h3>
-                        ${formatMoney(spent)}
-                        of
-                        ${formatMoney(monthlyBudget)}
-                    </h3>
-
-                </div>
-
-                <strong>
-                    ${percentage.toFixed(0)}%
-                </strong>
-
-            </div>
+        const health =
+            calculateFinancialHealth();
 
 
-            <div class="budget-progress">
-
-                <div
-                    class="budget-progress-fill ${status === "warning"
-                        ? "warning"
-                        : status === "danger"
-                            ? "danger"
-                            : ""
-                    }"
-                    style="width:${safePercentage}%"
-                ></div>
-
-            </div>
-
-
-            <div class="budget-stats">
-
-                <div class="budget-stat">
-
-                    <span>
-                        Spent
-                    </span>
-
-                    <strong>
-                        ${formatMoney(spent)}
-                    </strong>
-
-                </div>
-
-
-                <div class="budget-stat">
-
-                    <span>
-                        Budget
-                    </span>
-
-                    <strong>
-                        ${formatMoney(monthlyBudget)}
-                    </strong>
-
-                </div>
-
-
-                <div class="budget-stat">
-
-                    <span>
-                        ${remaining >= 0
-                            ? "Remaining"
-                            : "Over by"
-                        }
-                    </span>
-
-                    <strong>
-                        ${formatMoney(
-                            Math.abs(
-                                remaining
-                            )
-                        )}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <p class="budget-message ${status}">
-                ${message}
-            </p>
-
-        </div>
-    `;
-
-}
-
-
-function setupBudgetSystem() {
-
-    const saveButton =
-        getElement(
-            "saveBudgetButton"
+        setText(
+            "healthScore",
+            health.score
         );
 
 
-    const resetButton =
-        getElement(
-            "resetBudgetButton"
+        setText(
+            "healthMessage",
+            health.message
         );
 
 
-    const input =
-        getElement(
-            "monthlyBudget"
+        setText(
+            "healthExplanation",
+            health.explanation
         );
 
 
-    if (input) {
+        setText(
+            "healthIncomeFactor",
+            health.incomeFactor + "/100"
+        );
 
-        if (
-            monthlyBudget > 0
-        ) {
 
-            input.value =
-                monthlyBudget;
+        setText(
+            "healthBudgetFactor",
+            health.budgetFactor + "/100"
+        );
+
+
+        setText(
+            "healthSavingsFactor",
+            health.savingsFactor + "/100"
+        );
+
+
+        setText(
+            "healthRecurringFactor",
+            health.recurringFactor + "/100"
+        );
+
+
+        updateHealthBar(
+            "healthIncomeBar",
+            health.incomeFactor
+        );
+
+
+        updateHealthBar(
+            "healthBudgetBar",
+            health.budgetFactor
+        );
+
+
+        updateHealthBar(
+            "healthSavingsBar",
+            health.savingsFactor
+        );
+
+
+        updateHealthBar(
+            "healthRecurringBar",
+            health.recurringFactor
+        );
+
+
+        const ring =
+            document.getElementById(
+                "healthFill"
+            );
+
+
+        if (ring) {
+
+            const circumference =
+                314;
+
+            const offset =
+                circumference -
+                (
+                    health.score /
+                    100
+                ) *
+                circumference;
+
+
+            ring.style.strokeDashoffset =
+                offset;
+
+
+            if (
+                health.score < 40
+            ) {
+
+                ring.style.stroke =
+                    "#d75b5b";
+
+            } else if (
+                health.score < 70
+            ) {
+
+                ring.style.stroke =
+                    "#d19c31";
+
+            } else {
+
+                ring.style.stroke =
+                    "#0b9861";
+
+            }
+
+        }
+
+
+        const insight =
+            document.querySelector(
+                "#healthInsight p"
+            );
+
+
+        if (insight) {
+
+            insight.textContent =
+                health.insight;
 
         }
 
     }
 
 
-    if (saveButton) {
+    function updateHealthBar(
+        id,
+        value
+    ) {
 
-        saveButton.addEventListener(
-            "click",
-            function () {
+        const element =
+            document.getElementById(id);
+
+        if (!element) {
+            return;
+        }
+
+
+        element.style.width =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    Number(value) || 0
+                )
+            ) + "%";
+
+
+        if (
+            value < 40
+        ) {
+
+            element.style.background =
+                "#d75b5b";
+
+        } else if (
+            value < 70
+        ) {
+
+            element.style.background =
+                "#d19c31";
+
+        } else {
+
+            element.style.background =
+                "#0b9861";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       BUDGET DASHBOARD
+    ====================================================== */
+
+    function updateBudgetDashboard() {
+
+        const budget =
+            getMonthlyBudget();
+
+        const spent =
+            getCurrentMonthSpent();
+
+
+        setText(
+            "dashboardBudgetSpent",
+            formatCompactCurrency(
+                spent
+            )
+        );
+
+
+        setText(
+            "dashboardBudgetLimit",
+            formatCompactCurrency(
+                budget
+            )
+        );
+
+
+        if (budget <= 0) {
+
+            setText(
+                "dashboardBudgetPercent",
+                "0%"
+            );
+
+
+            setText(
+                "dashboardBudgetRemaining",
+                "—"
+            );
+
+
+            setText(
+                "dashboardBudgetMessage",
+                "Set a monthly budget to take control of your spending."
+            );
+
+
+            const fill =
+                document.getElementById(
+                    "dashboardBudgetFill"
+                );
+
+
+            if (fill) {
+
+                fill.style.width =
+                    "0%";
+
+            }
+
+            return;
+
+        }
+
+
+        const percentage =
+            (
+                spent /
+                budget
+            ) *
+            100;
+
+
+        const safePercentage =
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    percentage
+                )
+            );
+
+
+        const remaining =
+            budget -
+            spent;
+
+
+        setText(
+            "dashboardBudgetPercent",
+            Math.round(
+                percentage
+            ) + "%"
+        );
+
+
+        setText(
+            "dashboardBudgetRemaining",
+            formatCompactCurrency(
+                remaining
+            )
+        );
+
+
+        const fill =
+            document.getElementById(
+                "dashboardBudgetFill"
+            );
+
+
+        if (fill) {
+
+            fill.style.width =
+                safePercentage + "%";
+
+
+            if (
+                percentage > 100
+            ) {
+
+                fill.style.background =
+                    "#d75b5b";
+
+            } else if (
+                percentage > 80
+            ) {
+
+                fill.style.background =
+                    "#d19c31";
+
+            } else {
+
+                fill.style.background =
+                    "#0b9861";
+
+            }
+
+        }
+
+
+        let message;
+
+
+        if (
+            percentage > 100
+        ) {
+
+            message =
+                "You've exceeded your monthly budget. Review your biggest spending categories.";
+
+        } else if (
+            percentage > 80
+        ) {
+
+            message =
+                "You're close to your monthly limit. Be selective with your remaining spending.";
+
+        } else if (
+            percentage > 50
+        ) {
+
+            message =
+                "You're over halfway through your budget. Keep an eye on the rest of the month.";
+
+        } else {
+
+            message =
+                "You're within your monthly spending plan. Keep it up.";
+
+        }
+
+
+        setText(
+            "dashboardBudgetMessage",
+            message
+        );
+
+    }
+
+
+    /* =====================================================
+       CASH FLOW
+    ====================================================== */
+
+    let currentChartPeriod =
+        "month";
+
+
+    function updateCashFlow() {
+
+        const source =
+            currentChartPeriod ===
+            "year"
+                ? getCurrentYearTransactions()
+                : getCurrentMonthTransactions();
+
+
+        const income =
+            source
+                .filter(
+                    item =>
+                        item.type ===
+                        "income"
+                )
+                .reduce(
+                    (
+                        total,
+                        item
+                    ) =>
+                        total +
+                        Number(
+                            item.amount
+                        ),
+
+                    0
+                );
+
+
+        const expenses =
+            source
+                .filter(
+                    item =>
+                        item.type ===
+                        "expense"
+                )
+                .reduce(
+                    (
+                        total,
+                        item
+                    ) =>
+                        total +
+                        Number(
+                            item.amount
+                        ),
+
+                    0
+                );
+
+
+        const cashFlow =
+            income -
+            expenses;
+
+
+        setText(
+            "periodIncome",
+            formatCompactCurrency(
+                income
+            )
+        );
+
+
+        setText(
+            "periodExpenses",
+            formatCompactCurrency(
+                expenses
+            )
+        );
+
+
+        setText(
+            "periodCashFlow",
+            formatCompactCurrency(
+                cashFlow
+            )
+        );
+
+
+        setText(
+            "cashFlowHealth",
+
+            income === 0 &&
+            expenses === 0
+
+                ? "Waiting for data"
+
+                : cashFlow >= 0
+                    ? "Positive"
+                    : "Needs attention"
+
+        );
+
+
+        drawCashFlowChart(
+            source
+        );
+
+    }
+
+
+    function drawCashFlowChart(
+        source
+    ) {
+
+        const canvas =
+            document.getElementById(
+                "cashFlowChart"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "cashFlowEmpty"
+            );
+
+
+        if (!canvas) {
+            return;
+        }
+
+
+        const context =
+            canvas.getContext("2d");
+
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+
+        const ratio =
+            window.devicePixelRatio ||
+            1;
+
+
+        canvas.width =
+            rect.width *
+            ratio;
+
+        canvas.height =
+            rect.height *
+            ratio;
+
+
+        context.scale(
+            ratio,
+            ratio
+        );
+
+
+        const width =
+            rect.width;
+
+        const height =
+            rect.height;
+
+
+        context.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        if (
+            source.length === 0
+        ) {
+
+            if (empty) {
+                empty.hidden = false;
+            }
+
+            return;
+
+        }
+
+
+        if (empty) {
+            empty.hidden = true;
+        }
+
+
+        const buckets =
+            buildChartBuckets(
+                source,
+                currentChartPeriod
+            );
+
+
+        if (
+            buckets.length < 1
+        ) {
+            return;
+        }
+
+
+        const values = [];
+
+
+        buckets.forEach(
+            bucket => {
+
+                values.push(
+                    bucket.income
+                );
+
+                values.push(
+                    bucket.expenses
+                );
+
+            }
+        );
+
+
+        const maximum =
+            Math.max(
+                ...values,
+                1
+            );
+
+
+        const padding = {
+
+            top: 20,
+
+            right: 20,
+
+            bottom: 35,
+
+            left: 50
+
+        };
+
+
+        const chartWidth =
+            width -
+            padding.left -
+            padding.right;
+
+        const chartHeight =
+            height -
+            padding.top -
+            padding.bottom;
+
+
+        /* Grid */
+
+        context.strokeStyle =
+            "#edf2ef";
+
+        context.lineWidth = 1;
+
+
+        for (
+            let i = 0;
+            i <= 4;
+            i++
+        ) {
+
+            const y =
+                padding.top +
+                (
+                    chartHeight *
+                    i /
+                    4
+                );
+
+
+            context.beginPath();
+
+            context.moveTo(
+                padding.left,
+                y
+            );
+
+            context.lineTo(
+                width -
+                padding.right,
+                y
+            );
+
+            context.stroke();
+
+
+            const value =
+                maximum -
+                (
+                    maximum *
+                    i /
+                    4
+                );
+
+
+            context.fillStyle =
+                "#9aa49f";
+
+            context.font =
+                "9px Arial";
+
+            context.textAlign =
+                "right";
+
+            context.fillText(
+                compactNumber(
+                    value
+                ),
+                padding.left - 7,
+                y + 3
+            );
+
+        }
+
+
+        drawChartLine(
+            context,
+            buckets,
+            "income",
+            maximum,
+            padding,
+            chartWidth,
+            chartHeight,
+            width
+        );
+
+
+        drawChartLine(
+            context,
+            buckets,
+            "expenses",
+            maximum,
+            padding,
+            chartWidth,
+            chartHeight,
+            width
+        );
+
+
+        /* Labels */
+
+        context.fillStyle =
+            "#8f9b95";
+
+        context.font =
+            "9px Arial";
+
+        context.textAlign =
+            "center";
+
+
+        buckets.forEach(
+            (
+                bucket,
+                index
+            ) => {
+
+                const x =
+                    padding.left +
+                    (
+                        index /
+                        Math.max(
+                            1,
+                            buckets.length - 1
+                        )
+                    ) *
+                    chartWidth;
+
+
+                context.fillText(
+                    bucket.label,
+                    x,
+                    height - 10
+                );
+
+            }
+        );
+
+    }
+
+
+    function drawChartLine(
+        context,
+        buckets,
+        key,
+        maximum,
+        padding,
+        chartWidth,
+        chartHeight,
+        width
+    ) {
+
+        context.beginPath();
+
+
+        buckets.forEach(
+            (
+                bucket,
+                index
+            ) => {
+
+                const x =
+                    padding.left +
+                    (
+                        index /
+                        Math.max(
+                            1,
+                            buckets.length - 1
+                        )
+                    ) *
+                    chartWidth;
+
 
                 const value =
                     Number(
-                        input.value
-                    );
+                        bucket[key]
+                    ) || 0;
+
+
+                const y =
+                    padding.top +
+                    chartHeight -
+                    (
+                        value /
+                        maximum
+                    ) *
+                    chartHeight;
 
 
                 if (
-                    !Number.isFinite(
-                        value
-                    ) ||
-                    value <= 0
+                    index === 0
                 ) {
 
-                    alert(
-                        "Please enter a valid monthly budget."
+                    context.moveTo(
+                        x,
+                        y
                     );
 
-                    return;
+                } else {
+
+                    context.lineTo(
+                        x,
+                        y
+                    );
 
                 }
 
+            }
+        );
 
-                monthlyBudget =
-                    value;
+
+        context.strokeStyle =
+            key === "income"
+                ? "#0b9861"
+                : "#d75b5b";
+
+        context.lineWidth = 2.5;
+
+        context.lineJoin =
+            "round";
+
+        context.lineCap =
+            "round";
+
+        context.stroke();
 
 
-                saveMonthlyBudget();
+        buckets.forEach(
+            (
+                bucket,
+                index
+            ) => {
 
-                updateBudgetDisplay();
+                const x =
+                    padding.left +
+                    (
+                        index /
+                        Math.max(
+                            1,
+                            buckets.length - 1
+                        )
+                    ) *
+                    chartWidth;
 
-                updateMoneyHealth(
-                    calculateTotals().income,
-                    calculateTotals().expenses
+
+                const value =
+                    Number(
+                        bucket[key]
+                    ) || 0;
+
+
+                const y =
+                    padding.top +
+                    chartHeight -
+                    (
+                        value /
+                        maximum
+                    ) *
+                    chartHeight;
+
+
+                context.beginPath();
+
+                context.arc(
+                    x,
+                    y,
+                    3,
+                    0,
+                    Math.PI * 2
                 );
+
+
+                context.fillStyle =
+                    key === "income"
+                        ? "#0b9861"
+                        : "#d75b5b";
+
+                context.fill();
 
             }
         );
@@ -2511,2159 +2780,662 @@ function setupBudgetSystem() {
     }
 
 
-    if (resetButton) {
+    function buildChartBuckets(
+        source,
+        period
+    ) {
 
-        resetButton.addEventListener(
-            "click",
-            function () {
-
-                monthlyBudget =
-                    0;
+        const buckets = [];
 
 
-                localStorage.removeItem(
-                    BUDGET_STORAGE_KEY
-                );
+        if (
+            period === "year"
+        ) {
 
-
-                if (input) {
-
-                    input.value = "";
-
-                }
-
-
-                updateBudgetDisplay();
-
-                updateMoneyHealth(
-                    calculateTotals().income,
-                    calculateTotals().expenses
-                );
-
-            }
-        );
-
-    }
-
-
-    updateBudgetDisplay();
-
-}
-
-
-/* =========================================================
-   CATEGORY BUDGETS
-========================================================= */
-
-function loadCategoryBudgets() {
-
-    const saved =
-        localStorage.getItem(
-            CATEGORY_BUDGET_STORAGE_KEY
-        );
-
-
-    if (!saved) {
-
-        return {};
-
-    }
-
-
-    try {
-
-        const parsed =
-            JSON.parse(saved);
-
-
-        return (
-            parsed &&
-            typeof parsed ===
-            "object"
-        )
-            ? parsed
-            : {};
-
-    } catch (error) {
-
-        return {};
-
-    }
-
-}
-
-
-function saveCategoryBudgets() {
-
-    localStorage.setItem(
-        CATEGORY_BUDGET_STORAGE_KEY,
-        JSON.stringify(
-            categoryBudgets
-        )
-    );
-
-}
-
-
-function normalizeCategory(
-    category
-) {
-
-    const value =
-        String(
-            category ||
-            "Other"
-        ).trim().toLowerCase();
-
-
-    const categories = [
-        "Food",
-        "Transport",
-        "Bills",
-        "Shopping",
-        "Entertainment",
-        "Health",
-        "Education",
-        "Other"
-    ];
-
-
-    const match =
-        categories.find(
-            item =>
-                item.toLowerCase() ===
-                value
-        );
-
-
-    return match ||
-        "Other";
-
-}
-
-
-function getCategorySpending(
-    category
-) {
-
-    const normalized =
-        normalizeCategory(
-            category
-        );
-
-
-    return transactions
-        .filter(
-            transaction =>
-                transaction.type ===
-                "expense" &&
-                normalizeCategory(
-                    transaction.category
-                ) === normalized
-        )
-        .filter(
-            transaction => {
+            for (
+                let month = 0;
+                month < 12;
+                month++
+            ) {
 
                 const date =
                     new Date(
-                        transaction.date
+                        new Date().getFullYear(),
+                        month,
+                        1
                     );
 
 
-                const now =
-                    new Date();
+                const monthTransactions =
+                    source.filter(
+                        transaction => {
+
+                            const d =
+                                parseDate(
+                                    transaction.date
+                                );
+
+                            return (
+                                d.getMonth() ===
+                                month
+                            );
+
+                        }
+                    );
 
 
-                return (
-                    date.getMonth() ===
-                    now.getMonth() &&
-                    date.getFullYear() ===
-                    now.getFullYear()
-                );
+                buckets.push({
+
+                    label:
+                        date.toLocaleDateString(
+                            "en-NG",
+                            {
+                                month: "short"
+                            }
+                        ),
+
+                    income:
+                        sumType(
+                            monthTransactions,
+                            "income"
+                        ),
+
+                    expenses:
+                        sumType(
+                            monthTransactions,
+                            "expense"
+                        )
+
+                });
 
             }
-        )
-        .reduce(
-            (total, transaction) =>
-                total +
-                (
-                    Number(
-                        transaction.amount
-                    ) || 0
-                ),
-            0
-        );
 
-}
+        } else {
+
+            for (
+                let day = 0;
+                day < 30;
+                day++
+            ) {
+
+                const date =
+                    new Date();
+
+                date.setDate(
+                    date.getDate() -
+                    (
+                        29 - day
+                    )
+                );
 
 
-function getCategoryBudgetAmount(
-    category
-) {
+                const dayTransactions =
+                    source.filter(
+                        transaction => {
 
-    return (
-        Number(
-            categoryBudgets[
-                normalizeCategory(
-                    category
+                            const d =
+                                parseDate(
+                                    transaction.date
+                                );
+
+                            return (
+                                d.getFullYear() ===
+                                    date.getFullYear() &&
+                                d.getMonth() ===
+                                    date.getMonth() &&
+                                d.getDate() ===
+                                    date.getDate()
+                            );
+
+                        }
+                    );
+
+
+                buckets.push({
+
+                    label:
+                        day % 5 === 0
+                            ? date.getDate()
+                            : "",
+
+                    income:
+                        sumType(
+                            dayTransactions,
+                            "income"
+                        ),
+
+                    expenses:
+                        sumType(
+                            dayTransactions,
+                            "expense"
+                        )
+
+                });
+
+            }
+
+        }
+
+
+        return buckets;
+
+    }
+
+
+    /* =====================================================
+       RECENT TRANSACTIONS
+    ====================================================== */
+
+    function renderRecentTransactions() {
+
+        const container =
+            document.getElementById(
+                "recentTransactions"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        const recent =
+            transactions
+                .slice()
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        parseDate(b.date) -
+                        parseDate(a.date)
                 )
-            ]
-        ) || 0
-    );
-
-}
-
-
-function updateCategoryBudgetDisplay() {
-
-    const results =
-        getElement(
-            "categoryBudgetResults"
-        );
+                .slice(
+                    0,
+                    6
+                );
 
 
-    if (!results) {
+        if (
+            recent.length === 0
+        ) {
 
-        return;
+            container.innerHTML = `
 
-    }
+                <div class="empty-state">
 
+                    <div class="empty-icon">
+                        ₦
+                    </div>
 
-    const categories =
-        Object.keys(
-            categoryBudgetFields
-        );
+                    <h4>
+                        No transactions yet
+                    </h4>
 
+                    <p>
+                        Start by adding your income or first expense.
+                    </p>
 
-    const hasBudget =
-        categories.some(
-            category =>
-                getCategoryBudgetAmount(
-                    category
-                ) > 0
-        );
+                    <div class="empty-actions">
 
+                        <a
+                            href="income.html"
+                            class="btn btn-small btn-primary"
+                        >
+                            Add Income
+                        </a>
 
-    if (!hasBudget) {
+                        <a
+                            href="expenses.html"
+                            class="btn btn-small btn-secondary"
+                        >
+                            Add Expense
+                        </a>
 
-        results.innerHTML =
-            `<div class="analytics-empty">
-                Set category budgets to track each spending area.
-            </div>`;
+                    </div>
 
-        return;
+                </div>
 
-    }
+            `;
 
+            return;
 
-    results.innerHTML =
-        categories
-            .filter(
-                category =>
-                    getCategoryBudgetAmount(
-                        category
-                    ) > 0
-            )
-            .map(
-                category => {
-
-                    const budget =
-                        getCategoryBudgetAmount(
-                            category
-                        );
+        }
 
 
-                    const spent =
-                        getCategorySpending(
-                            category
-                        );
+        container.innerHTML =
+            recent.map(
+                transaction => {
+
+                    const icon =
+                        transaction.type ===
+                        "income"
+                            ? "↗"
+                            : getCategoryIcon(
+                                transaction.category
+                            );
 
 
-                    const percentage =
-                        (
-                            spent /
-                            budget
-                        ) * 100;
-
-
-                    const safePercentage =
-                        Math.min(
-                            100,
-                            Math.max(
-                                0,
-                                percentage
-                            )
-                        );
-
-
-                    const remaining =
-                        budget -
-                        spent;
-
-
-                    let status =
-                        "safe";
-
-
-                    if (
-                        percentage >= 100
-                    ) {
-
-                        status =
-                            "danger";
-
-                    } else if (
-                        percentage >= 80
-                    ) {
-
-                        status =
-                            "warning";
-
-                    }
+                    const sign =
+                        transaction.type ===
+                        "income"
+                            ? "+"
+                            : "−";
 
 
                     return `
-                        <div class="category-budget-card ${status}">
 
-                            <div class="category-budget-header">
+                        <div
+                            class="transaction-item"
+                        >
+
+                            <div
+                                class="transaction-icon"
+                            >
+                                ${icon}
+                            </div>
+
+                            <div
+                                class="transaction-info"
+                            >
 
                                 <strong>
-                                    ${escapeHTML(category)}
+                                    ${escapeHTML(
+                                        transaction.description
+                                    )}
                                 </strong>
 
                                 <span>
-                                    ${percentage.toFixed(0)}%
+                                    ${escapeHTML(
+                                        transaction.category
+                                    )}
+                                    •
+                                    ${formatShortDate(
+                                        transaction.date
+                                    )}
                                 </span>
 
                             </div>
 
+                            <strong
+                                class="transaction-amount ${transaction.type}"
+                            >
+                                ${sign}${formatCurrency(
+                                    transaction.amount
+                                )}
+                            </strong>
 
-                            <div class="category-budget-progress">
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+    }
+
+
+    /* =====================================================
+       TOP SPENDING
+    ====================================================== */
+
+    function renderTopSpending() {
+
+        const container =
+            document.getElementById(
+                "topSpendingCategories"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        const expenses =
+            getCurrentMonthExpenses();
+
+
+        const grouped = {};
+
+
+        expenses.forEach(
+            transaction => {
+
+                const category =
+                    transaction.category ||
+                    "Other";
+
+
+                grouped[category] =
+                    (
+                        grouped[category] ||
+                        0
+                    ) +
+                    Number(
+                        transaction.amount
+                    );
+
+            }
+        );
+
+
+        const list =
+            Object.entries(
+                grouped
+            )
+            .sort(
+                (
+                    a,
+                    b
+                ) =>
+                    b[1] -
+                    a[1]
+            )
+            .slice(
+                0,
+                5
+            );
+
+
+        if (
+            list.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty-state compact">
+
+                    <div class="empty-icon">
+                        ◉
+                    </div>
+
+                    <h4>
+                        No spending data
+                    </h4>
+
+                    <p>
+                        Your biggest spending categories will appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const maximum =
+            list[0][1];
+
+
+        container.innerHTML =
+            list.map(
+                (
+                    [
+                        category,
+                        amount
+                    ]
+                ) => {
+
+                    const width =
+                        (
+                            amount /
+                            maximum
+                        ) *
+                        100;
+
+
+                    return `
+
+                        <div
+                            class="category-item"
+                        >
+
+                            <div
+                                class="category-heading"
+                            >
+
+                                <span
+                                    class="category-name"
+                                >
+                                    ${getCategoryIcon(
+                                        category
+                                    )}
+                                    ${escapeHTML(
+                                        category
+                                    )}
+                                </span>
+
+                                <strong
+                                    class="category-amount"
+                                >
+                                    ${formatCurrency(
+                                        amount
+                                    )}
+                                </strong>
+
+                            </div>
+
+                            <div
+                                class="category-track"
+                            >
 
                                 <div
-                                    class="category-budget-progress-fill"
-                                    style="width:${safePercentage}%"
+                                    class="category-fill"
+                                    style="width:${width}%"
                                 ></div>
 
                             </div>
 
-
-                            <div class="category-budget-stats">
-
-                                <span>
-                                    Spent:
-                                    <strong>
-                                        ${formatMoney(spent)}
-                                    </strong>
-                                </span>
-
-                                <span>
-                                    Limit:
-                                    <strong>
-                                        ${formatMoney(budget)}
-                                    </strong>
-                                </span>
-
-                                <span>
-                                    ${remaining >= 0
-                                        ? "Remaining"
-                                        : "Over by"
-                                    }:
-                                    <strong>
-                                        ${formatMoney(
-                                            Math.abs(
-                                                remaining
-                                            )
-                                        )}
-                                    </strong>
-                                </span>
-
-                            </div>
-
                         </div>
+
                     `;
 
                 }
             )
             .join("");
 
-}
-
-
-function setupCategoryBudgetSystem() {
-
-    Object.entries(
-        categoryBudgetFields
-    ).forEach(
-        ([category, fieldId]) => {
-
-            const input =
-                getElement(
-                    fieldId
-                );
-
-
-            if (!input) {
-                return;
-            }
-
-
-            const saved =
-                getCategoryBudgetAmount(
-                    category
-                );
-
-
-            if (saved > 0) {
-
-                input.value =
-                    saved;
-
-            }
-
-        }
-    );
-
-
-    const saveButton =
-        getElement(
-            "saveCategoryBudgetsButton"
-        );
-
-
-    if (saveButton) {
-
-        saveButton.addEventListener(
-            "click",
-            function () {
-
-                Object.entries(
-                    categoryBudgetFields
-                ).forEach(
-                    ([category, fieldId]) => {
-
-                        const input =
-                            getElement(
-                                fieldId
-                            );
-
-
-                        if (!input) {
-                            return;
-                        }
-
-
-                        const value =
-                            Number(
-                                input.value
-                            );
-
-
-                        if (
-                            Number.isFinite(
-                                value
-                            ) &&
-                            value >= 0
-                        ) {
-
-                            categoryBudgets[
-                                category
-                            ] = value;
-
-                        }
-
-                    }
-                );
-
-
-                saveCategoryBudgets();
-
-                updateCategoryBudgetDisplay();
-
-                updateMoneyHealth(
-                    calculateTotals().income,
-                    calculateTotals().expenses
-                );
-
-            }
-        );
-
     }
 
 
-    updateCategoryBudgetDisplay();
-
-}
-
-
-function refreshCategoryBudgets() {
-
-    updateCategoryBudgetDisplay();
-
-}
-
-
-/* =========================================================
-   SAVINGS GOALS
-========================================================= */
-
-function loadSavingsGoal() {
-
-    const saved =
-        localStorage.getItem(
-            SAVINGS_STORAGE_KEY
-        );
-
-
-    if (!saved) {
-
-        return {
-
-            targetAmount: 0,
-
-            currentSavings: 0,
-
-            goalWeeks: 0
-
-        };
-
-    }
-
-
-    try {
-
-        const parsed =
-            JSON.parse(saved);
-
-
-        return {
-
-            targetAmount:
-                Number(
-                    parsed.targetAmount
-                ) || 0,
-
-            currentSavings:
-                Number(
-                    parsed.currentSavings
-                ) || 0,
-
-            goalWeeks:
-                Number(
-                    parsed.goalWeeks
-                ) || 0
-
-        };
-
-    } catch (error) {
-
-        return {
-
-            targetAmount: 0,
-
-            currentSavings: 0,
-
-            goalWeeks: 0
-
-        };
-
-    }
-
-}
-
-
-function saveSavingsGoalToStorage() {
-
-    localStorage.setItem(
-        SAVINGS_STORAGE_KEY,
-        JSON.stringify(
-            savingsGoal
-        )
-    );
-
-}
-
-
-function calculateSavingsGoal() {
-
-    const targetInput =
-        getElement(
-            "savingsGoal"
-        );
-
-
-    const currentInput =
-        getElement(
-            "currentSavings"
-        );
-
-
-    const weeksInput =
-        getElement(
-            "goalWeeks"
-        );
-
-
-    if (
-        !targetInput ||
-        !currentInput ||
-        !weeksInput
-    ) {
-
-        return;
-
-    }
-
-
-    const target =
-        Number(
-            targetInput.value
-        );
-
-
-    const current =
-        Number(
-            currentInput.value
-        );
-
-
-    const weeks =
-        Number(
-            weeksInput.value
-        );
-
-
-    if (
-        !Number.isFinite(target) ||
-        target <= 0
-    ) {
-
-        alert(
-            "Please enter a valid savings target."
-        );
-
-        return;
-
-    }
-
-
-    if (
-        !Number.isFinite(current) ||
-        current < 0
-    ) {
-
-        alert(
-            "Please enter a valid current savings amount."
-        );
-
-        return;
-
-    }
-
-
-    if (
-        !Number.isFinite(weeks) ||
-        weeks <= 0
-    ) {
-
-        alert(
-            "Please enter a valid number of weeks."
-        );
-
-        return;
-
-    }
-
-
-    savingsGoal = {
-
-        targetAmount:
-            target,
-
-        currentSavings:
-            Math.min(
-                current,
-                target
-            ),
-
-        goalWeeks:
-            weeks
-
-    };
-
-
-    saveSavingsGoalToStorage();
-
-    renderSavingsPlan();
-
-    updateSavingsProgress();
-
-    updateSavingsDisplay();
-
-    updateMoneyHealth(
-        calculateTotals().income,
-        calculateTotals().expenses
-    );
-
-}
-
-
-function renderSavingsPlan() {
-
-    const result =
-        getElement(
-            "savingsResult"
-        );
-
-
-    if (!result) {
-
-        return;
-
-    }
-
-
-    const target =
-        Number(
-            savingsGoal.targetAmount
-        ) || 0;
-
-
-    const current =
-        Number(
-            savingsGoal.currentSavings
-        ) || 0;
-
-
-    const weeks =
-        Number(
-            savingsGoal.goalWeeks
-        ) || 0;
-
-
-    if (
-        target <= 0
-    ) {
-
-        result.innerHTML =
-            "Enter your savings goal to create a plan.";
-
-        return;
-
-    }
-
-
-    const remaining =
-        Math.max(
-            0,
-            target - current
-        );
-
-
-    const weekly =
-        weeks > 0
-            ? remaining / weeks
-            : 0;
-
-
-    const daily =
-        weekly / 7;
-
-
-    result.innerHTML = `
-        <div class="savings-plan">
-
-            <h3>
-                🎯 Your Savings Plan
-            </h3>
-
-            <p>
-                You still need
-                <strong>
-                    ${formatMoney(remaining)}
-                </strong>
-                to reach your goal.
-            </p>
-
-            <p>
-                Save approximately
-                <strong>
-                    ${formatMoney(weekly)}
-                </strong>
-                per week.
-            </p>
-
-            <p>
-                That's about
-                <strong>
-                    ${formatMoney(daily)}
-                </strong>
-                per day.
-            </p>
-
-        </div>
-    `;
-
-}
-
-
-function updateSavingsGoal() {
-
-    calculateSavingsGoal();
-
-}
-
-
-function saveSavingsGoal() {
-
-    calculateSavingsGoal();
-
-}
-
-
-function resetSavingsGoal() {
-
-    savingsGoal = {
-
-        targetAmount: 0,
-
-        currentSavings: 0,
-
-        goalWeeks: 0
-
-    };
-
-
-    localStorage.removeItem(
-        SAVINGS_STORAGE_KEY
-    );
-
-
-    resetSavingsDisplay();
-
-    updateMoneyHealth(
-        calculateTotals().income,
-        calculateTotals().expenses
-    );
-
-}
-
-
-function updateSavingsProgress() {
-
-    const progressFill =
-        getElement(
-            "progressFill"
-        );
-
-
-    const progressText =
-        getElement(
-            "progressText"
-        );
-
-
-    const savedAmount =
-        getElement(
-            "savedAmount"
-        );
-
-
-    const targetAmount =
-        getElement(
-            "targetAmount"
-        );
-
-
-    const remainingAmount =
-        getElement(
-            "remainingAmount"
-        );
-
-
-    const target =
-        Number(
-            savingsGoal.targetAmount
-        ) || 0;
-
-
-    const saved =
-        Number(
-            savingsGoal.currentSavings
-        ) || 0;
-
-
-    const remaining =
-        Math.max(
-            0,
-            target - saved
-        );
-
-
-    const percentage =
-        target > 0
-            ? Math.min(
-                100,
-                Math.max(
-                    0,
-                    (
-                        saved /
-                        target
-                    ) * 100
-                )
-            )
-            : 0;
-
-
-    if (progressFill) {
-
-        progressFill.style.width =
-            `${percentage}%`;
-
-    }
-
-
-    if (progressText) {
-
-        progressText.textContent =
-            `${percentage.toFixed(0)}% saved`;
-
-    }
-
-
-    if (savedAmount) {
-
-        savedAmount.textContent =
-            formatMoney(saved);
-
-    }
-
-
-    if (targetAmount) {
-
-        targetAmount.textContent =
-            formatMoney(target);
-
-    }
-
-
-    if (remainingAmount) {
-
-        remainingAmount.textContent =
-            formatMoney(remaining);
-
-    }
-
-}
-
-
-function updateSavingsDisplay() {
-
-    const result =
-        getElement(
-            "savingsResult"
-        );
-
-
-    if (!result) {
-
-        return;
-
-    }
-
-
-    if (
-        savingsGoal.targetAmount >
-        0
-    ) {
-
-        renderSavingsPlan();
-
-    }
-
-}
-
-
-function resetSavingsDisplay() {
-
-    const targetInput =
-        getElement(
-            "savingsGoal"
-        );
-
-
-    const currentInput =
-        getElement(
-            "currentSavings"
-        );
-
-
-    const weeksInput =
-        getElement(
-            "goalWeeks"
-        );
-
-
-    if (targetInput) {
-
-        targetInput.value = "";
-
-    }
-
-
-    if (currentInput) {
-
-        currentInput.value = "";
-
-    }
-
-
-    if (weeksInput) {
-
-        weeksInput.value = "";
-
-    }
-
-
-    const result =
-        getElement(
-            "savingsResult"
-        );
-
-
-    if (result) {
-
-        result.innerHTML =
-            "Enter your savings goal to create a plan.";
-
-    }
-
-
-    updateSavingsProgress();
-
-}
-
-
-function loadSavedSavingsGoal() {
-
-    const targetInput =
-        getElement(
-            "savingsGoal"
-        );
-
-
-    const currentInput =
-        getElement(
-            "currentSavings"
-        );
-
-
-    const weeksInput =
-        getElement(
-            "goalWeeks"
-        );
-
-
-    if (
-        savingsGoal.targetAmount >
-        0
-    ) {
-
-        if (targetInput) {
-
-            targetInput.value =
-                savingsGoal.targetAmount;
-
-        }
-
-
-        if (currentInput) {
-
-            currentInput.value =
-                savingsGoal.currentSavings;
-
-        }
-
-
-        if (weeksInput) {
-
-            weeksInput.value =
-                savingsGoal.goalWeeks;
-
-        }
-
-
-        renderSavingsPlan();
-
-    }
-
-
-    updateSavingsProgress();
-
-}
-
-
-/* =========================================================
-   RECURRING TRANSACTIONS
-========================================================= */
-
-function loadRecurringTransactions() {
-
-    const saved =
-        localStorage.getItem(
-            RECURRING_STORAGE_KEY
-        );
-
-
-    if (!saved) {
-
-        return [];
-
-    }
-
-
-    try {
-
-        const parsed =
-            JSON.parse(saved);
-
-
-        return Array.isArray(
-            parsed
-        )
-            ? parsed
-            : [];
-
-    } catch (error) {
-
-        return [];
-
-    }
-
-}
-
-
-function saveRecurringTransactions() {
-
-    localStorage.setItem(
-        RECURRING_STORAGE_KEY,
-        JSON.stringify(
-            recurringTransactions
-        )
-    );
-
-}
-
-
-function formatRecurringFrequency(
-    frequency
-) {
-
-    const labels = {
-
-        weekly:
-            "Every Week",
-
-        monthly:
-            "Every Month",
-
-        yearly:
-            "Every Year"
-
-    };
-
-
-    return (
-        labels[frequency] ||
-        "Every Month"
-    );
-
-}
-
-
-function displayRecurringTransactions() {
-
-    const results =
-        getElement(
-            "recurringResults"
-        );
-
-
-    if (!results) {
-
-        return;
-
-    }
-
-
-    if (
-        recurringTransactions.length ===
-        0
-    ) {
-
-        results.innerHTML = `
-            <div class="recurring-empty">
-
-                🔄
-
-                <h3>
-                    No recurring transactions
-                </h3>
-
-                <p>
-                    Add your regular income or expenses above.
-                </p>
-
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    results.innerHTML =
-        recurringTransactions
-            .map(
-                transaction => {
-
-                    const typeClass =
-                        transaction.type ===
-                        "income"
-                            ? "income"
-                            : "expense";
-
-
-                    const typeText =
-                        transaction.type ===
-                        "income"
-                            ? "Income"
-                            : "Expense";
-
-
-                    return `
-                        <div class="recurring-card">
-
-                            <div class="recurring-card-header">
-
-                                <h3 class="recurring-card-title">
-                                    ${escapeHTML(
-                                        transaction.name
-                                    )}
-                                </h3>
-
-                                <span
-                                    class="recurring-card-type ${typeClass}"
-                                >
-                                    ${typeText}
-                                </span>
-
-                            </div>
-
-
-                            <p class="recurring-card-amount">
-                                ${formatMoney(
-                                    transaction.amount
-                                )}
-                            </p>
-
-
-                            <div class="recurring-card-details">
-
-                                <span>
-                                    Category:
-                                    <strong>
-                                        ${escapeHTML(
-                                            transaction.category
-                                        )}
-                                    </strong>
-                                </span>
-
-                                <span>
-                                    Frequency:
-                                    <strong>
-                                        ${formatRecurringFrequency(
-                                            transaction.frequency
-                                        )}
-                                    </strong>
-                                </span>
-
-                            </div>
-
-
-                            <div class="recurring-card-actions">
-
-                                <button
-                                    type="button"
-                                    class="recurring-delete-button"
-                                    onclick="deleteRecurringTransaction('${transaction.id}')"
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
-
-                        </div>
-                    `;
-
-                }
-            )
-            .join("");
-
-}
-
-
-function addRecurringTransaction() {
-
-    const nameInput =
-        getElement(
-            "recurringName"
-        );
-
-
-    const amountInput =
-        getElement(
-            "recurringAmount"
-        );
-
-
-    const typeInput =
-        getElement(
-            "recurringType"
-        );
-
-
-    const categoryInput =
-        getElement(
-            "recurringCategory"
-        );
-
-
-    const frequencyInput =
-        getElement(
-            "recurringFrequency"
-        );
-
-
-    if (
-        !nameInput ||
-        !amountInput ||
-        !typeInput ||
-        !categoryInput ||
-        !frequencyInput
-    ) {
-
-        return;
-
-    }
-
-
-    const name =
-        nameInput.value.trim();
-
-
-    const amount =
-        Number(
-            amountInput.value
-        );
-
-
-    const type =
-        typeInput.value;
-
-
-    const category =
-        categoryInput.value;
-
-
-    const frequency =
-        frequencyInput.value;
-
-
-    if (!name) {
-
-        alert(
-            "Please enter a name."
-        );
-
-        nameInput.focus();
-
-        return;
-
-    }
-
-
-    if (
-        !Number.isFinite(amount) ||
-        amount <= 0
-    ) {
-
-        alert(
-            "Please enter a valid amount."
-        );
-
-        amountInput.focus();
-
-        return;
-
-    }
-
-
-    const now =
-        new Date();
-
-
-    const recurringTransaction = {
-
-        id:
-            Date.now().toString() +
-            Math.random()
-                .toString(36)
-                .substring(2, 7),
-
-        name:
-            name,
-
-        amount:
-            amount,
-
-        type:
-            type,
-
-        category:
-            category,
-
-        frequency:
-            frequency,
-
-        createdAt:
-            now.toISOString(),
-
-        nextRun:
-            now.toISOString()
-
-    };
-
-
-    recurringTransactions.push(
-        recurringTransaction
-    );
-
-
-    saveRecurringTransactions();
-
-    displayRecurringTransactions();
-
-
-    nameInput.value = "";
-
-    amountInput.value = "";
-
-    typeInput.value =
-        "expense";
-
-    categoryInput.value =
-        "Bills";
-
-    frequencyInput.value =
-        "monthly";
-
-
-    alert(
-        "Recurring transaction added successfully."
-    );
-
-
-    processRecurringTransactions();
-
-}
-
-
-function deleteRecurringTransaction(
-    id
-) {
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete this recurring transaction?"
-        );
-
-
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-    recurringTransactions =
-        recurringTransactions.filter(
-            transaction =>
-                transaction.id !== id
-        );
-
-
-    saveRecurringTransactions();
-
-    displayRecurringTransactions();
-
-    updateMoneyHealth(
-        calculateTotals().income,
-        calculateTotals().expenses
-    );
-
-}
-
-
-function setupRecurringTransactions() {
-
-    const saveButton =
-        getElement(
-            "saveRecurringButton"
-        );
-
-
-    if (saveButton) {
-
-        saveButton.addEventListener(
-            "click",
-            addRecurringTransaction
-        );
-
-    }
-
-
-    displayRecurringTransactions();
-
-}
-
-
-/* =========================================================
-   AUTOMATIC RECURRING PROCESSOR
-========================================================= */
-
-function getNextRecurringDate(
-    currentDate,
-    frequency
-) {
-
-    const nextDate =
-        new Date(
-            currentDate
-        );
-
-
-    if (
-        frequency ===
-        "weekly"
-    ) {
-
-        nextDate.setDate(
-            nextDate.getDate() +
-            7
-        );
-
-    } else if (
-        frequency ===
-        "monthly"
-    ) {
-
-        nextDate.setMonth(
-            nextDate.getMonth() +
-            1
-        );
-
-    } else if (
-        frequency ===
-        "yearly"
-    ) {
-
-        nextDate.setFullYear(
-            nextDate.getFullYear() +
-            1
-        );
-
-    } else {
-
-        nextDate.setMonth(
-            nextDate.getMonth() +
-            1
-        );
-
-    }
-
-
-    return nextDate;
-
-}
-
-
-function processRecurringTransactions() {
-
-    if (
-        !Array.isArray(
-            recurringTransactions
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    const now =
-        new Date();
-
-
-    let transactionsChanged =
-        false;
-
-
-    recurringTransactions.forEach(
-        recurring => {
-
-            if (
-                !recurring.nextRun
-            ) {
-
-                recurring.nextRun =
-                    recurring.createdAt ||
-                    now.toISOString();
-
-                transactionsChanged =
-                    true;
-
-            }
-
-
-            const nextRun =
-                new Date(
-                    recurring.nextRun
-                );
-
-
-            if (
-                !Number.isFinite(
-                    nextRun.getTime()
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                nextRun > now
-            ) {
-
-                return;
-
-            }
-
-
-            const newTransaction = {
-
-                id:
-                    Date.now().toString() +
-                    Math.random()
-                        .toString(36)
-                        .substring(2, 9),
-
-                amount:
-                    Number(
-                        recurring.amount
-                    ) || 0,
-
-                type:
-                    recurring.type,
-
-                category:
-                    recurring.category,
-
-                date:
-                    now.toISOString(),
-
-                recurring:
-                    true,
-
-                recurringId:
-                    recurring.id,
-
-                name:
-                    recurring.name
-
-            };
-
-
-            transactions.unshift(
-                newTransaction
+    /* =====================================================
+       DASHBOARD GOALS
+    ====================================================== */
+
+    function renderDashboardGoals() {
+
+        const container =
+            document.getElementById(
+                "dashboardGoals"
             );
 
 
-            transactionsChanged =
-                true;
-
-
-            let nextDate =
-                getNextRecurringDate(
-                    nextRun,
-                    recurring.frequency
-                );
-
-
-            while (
-                nextDate <= now
-            ) {
-
-                nextDate =
-                    getNextRecurringDate(
-                        nextDate,
-                        recurring.frequency
-                    );
-
-            }
-
-
-            recurring.nextRun =
-                nextDate.toISOString();
-
+        if (!container) {
+            return;
         }
-    );
-
-
-    if (
-        !transactionsChanged
-    ) {
-
-        return;
-
-    }
-
-
-    saveTransactions();
-
-    saveRecurringTransactions();
-
-    updateDashboard();
-
-    displayRecurringTransactions();
-
-}
-
-
-/* =========================================================
-   TRANSACTION FORM
-========================================================= */
-
-function setupTransactionForm() {
-
-    const form =
-        getElement(
-            "transactionForm"
-        );
-
-
-    if (!form) {
-
-        return;
-
-    }
-
-
-    form.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-            addTransaction();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   QUICK ACTIONS
-========================================================= */
-
-function setupQuickActions() {
-
-    const actions =
-        document.querySelectorAll(
-            "[data-transaction-type]"
-        );
-
-
-    actions.forEach(
-        action => {
-
-            action.addEventListener(
-                "click",
-                function () {
-
-                    const type =
-                        action.dataset
-                            .transactionType;
-
-
-                    const typeInput =
-                        getElement(
-                            "type"
-                        );
-
-
-                    const amountInput =
-                        getElement(
-                            "amount"
-                        );
-
-
-                    if (
-                        typeInput
-                    ) {
-
-                        typeInput.value =
-                            type;
-
-                    }
-
-
-                    if (
-                        amountInput
-                    ) {
-
-                        amountInput.focus();
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SAVINGS BUTTONS
-========================================================= */
-
-function setupSavingsButtons() {
-
-    const calculateButton =
-        getElement(
-            "calculateSavingsButton"
-        );
-
-
-    const updateButton =
-        getElement(
-            "updateSavingsButton"
-        );
-
-
-    const resetButton =
-        getElement(
-            "resetSavingsButton"
-        );
-
-
-    if (
-        calculateButton
-    ) {
-
-        calculateButton.addEventListener(
-            "click",
-            calculateSavingsGoal
-        );
-
-    }
-
-
-    if (
-        updateButton
-    ) {
-
-        updateButton.addEventListener(
-            "click",
-            updateSavingsGoal
-        );
-
-    }
-
-
-    if (
-        resetButton
-    ) {
-
-        resetButton.addEventListener(
-            "click",
-            resetSavingsGoal
-        );
-
-    }
-
-
-    loadSavedSavingsGoal();
-
-}
-
-
-/* =========================================================
-   ENTER KEY SUPPORT
-========================================================= */
-
-function setupEnterKeySupport() {
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key !==
-                "Enter"
-            ) {
-
-                return;
-
-            }
-
-
-            const active =
-                document.activeElement;
-
-
-            if (
-                !active
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                active.id ===
-                "amount"
-            ) {
-
-                event.preventDefault();
-
-                addTransaction();
-
-            }
-
-
-            if (
-                active.id ===
-                "recurringAmount"
-            ) {
-
-                event.preventDefault();
-
-                addRecurringTransaction();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   PAGE INITIALIZATION
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        processRecurringTransactions();
-
-        setupTransactionForm();
-
-        setupQuickActions();
-
-        setupSavingsButtons();
-
-        setupBudgetSystem();
-
-        setupCategoryBudgetSystem();
-
-        setupRecurringTransactions();
-
-        setupEnterKeySupport();
-
-        updateDashboard();
-
-    }
-);
-
-
-/* =========================================================
-   GLOBAL COMPATIBILITY
-========================================================= */
-
-window.addTransaction =
-    addTransaction;
-
-window.updateDashboard =
-    updateDashboard;
-
-window.updateMoneyHealth =
-    updateMoneyHealth;
-
-window.displayTransactions =
-    displayTransactions;
-
-window.editTransaction =
-    editTransaction;
-
-window.deleteTransaction =
-    deleteTransaction;
-
-window.detectMoneyLeak =
-    detectMoneyLeak;
-
-window.updateSpendingChart =
-    updateSpendingChart;
-
-window.updateSpendingBreakdown =
-    updateSpendingBreakdown;
-
-window.updateSpendingAnalytics =
-    updateSpendingAnalytics;
-
-window.calculateSavingsGoal =
-    calculateSavingsGoal;
-
-window.updateSavingsGoal =
-    updateSavingsGoal;
-
-window.saveSavingsGoal =
-    saveSavingsGoal;
-
-window.resetSavingsGoal =
-    resetSavingsGoal;
-
-window.updateSavingsProgress =
-    updateSavingsProgress;
-
-window.updateSavingsDisplay =
-    updateSavingsDisplay;
-
-window.resetSavingsDisplay =
-    resetSavingsDisplay;
-
-window.loadSavedSavingsGoal =
-    loadSavedSavingsGoal;
-
-window.updateBudgetDisplay =
-    updateBudgetDisplay;
-
-window.refreshCategoryBudgets =
-    refreshCategoryBudgets;
-
-window.updateCategoryBudgetDisplay =
-    updateCategoryBudgetDisplay;
-
-window.addRecurringTransaction =
-    addRecurringTransaction;
-
-window.deleteRecurringTransaction =
-    deleteRecurringTransaction;
-
-window.displayRecurringTransactions =
-    displayRecurringTransactions;
-
-window.processRecurringTransactions =
-    processRecurringTransactions;
-
-window.getCurrentMonthExpenses =
-    getCurrentMonthExpenses;
-
-
-/* =========================================================
-   END OF MONEYLEAK APP
-========================================================= */
-/* =========================================================
-   SMART FINANCIAL ALERTS
-========================================================= */
-
-function updateFinancialAlerts() {
-
-    const alertsContainer =
-        getElement("financialAlerts");
-
-
-    if (!alertsContainer) {
-        return;
-    }
-
-
-    const alerts = [];
-
-
-    const totals =
-        calculateTotals();
-
-
-    const income =
-        Number(totals.income) || 0;
-
-    const expenses =
-        Number(totals.expenses) || 0;
-
-
-    /* =========================
-       NO ACTIVITY
-    ========================= */
-
-    if (
-        income === 0 &&
-        expenses === 0
-    ) {
-
-        alerts.push({
-
-            type: "info",
-
-            icon: "💡",
-
-            title:
-                "Start tracking your money",
-
-            message:
-                "Add your income and expenses so MoneyLeak can give you personalized financial alerts.",
-
-            badge:
-                "Getting Started"
-
-        });
-
-    }
-
-
-    /* =========================
-       INCOME VS SPENDING
-    ========================= */
-
-    if (
-        income > 0
-    ) {
-
-        const spendingRatio =
-            expenses / income;
 
 
         if (
-            spendingRatio > 1
+            savingsGoals.length === 0
         ) {
+
+            container.innerHTML = `
+
+                <div class="empty-state compact">
+
+                    <div class="empty-icon">
+                        🎯
+                    </div>
+
+                    <h4>
+                        No savings goals
+                    </h4>
+
+                    <p>
+                        Create goals for the things that matter to you.
+                    </p>
+
+                    <a
+                        href="savings.html"
+                        class="btn btn-small btn-primary"
+                    >
+                        Create Goal
+                    </a>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            savingsGoals
+                .slice(
+                    0,
+                    4
+                )
+                .map(
+                    goal => {
+
+                        const progress =
+                            getGoalProgress(
+                                goal
+                            );
+
+
+                        return `
+
+                            <div
+                                class="goal-item"
+                            >
+
+                                <div
+                                    class="goal-heading"
+                                >
+
+                                    <strong>
+                                        ${escapeHTML(
+                                            goal.name
+                                        )}
+                                    </strong>
+
+                                    <span
+                                        class="goal-percent"
+                                    >
+                                        ${Math.round(
+                                            progress
+                                        )}%
+                                    </span>
+
+                                </div>
+
+                                <div
+                                    class="goal-progress"
+                                >
+
+                                    <div
+                                        class="goal-progress-fill"
+                                        style="width:${progress}%"
+                                    ></div>
+
+                                </div>
+
+                                <div
+                                    class="goal-meta"
+                                >
+
+                                    <span>
+                                        ${formatCurrency(
+                                            goal.saved
+                                        )}
+                                        saved
+                                    </span>
+
+                                    <span>
+                                        ${formatCurrency(
+                                            goal.target
+                                        )}
+                                        target
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    /* =====================================================
+       SMART ALERTS
+    ====================================================== */
+
+    function generateFinancialAlerts() {
+
+        const alerts = [];
+
+
+        const totals =
+            calculateTotals();
+
+
+        /* No activity */
+
+        if (
+            transactions.length === 0
+        ) {
+
+            alerts.push({
+
+                type: "info",
+
+                icon: "💡",
+
+                title:
+                    "Start your MoneyLeak journey",
+
+                message:
+                    "Add your income and expenses so MoneyLeak can begin analyzing your finances.",
+
+                priority: 1
+
+            });
+
+
+            return alerts;
+
+        }
+
+
+        /* Spending > income */
+
+        if (
+            totals.income > 0 &&
+            totals.expenses >
+            totals.income
+        ) {
+
+            const percentage =
+                Math.round(
+                    (
+                        totals.expenses /
+                        totals.income
+                    ) *
+                    100
+                );
+
 
             alerts.push({
 
@@ -4675,207 +3447,39 @@ function updateFinancialAlerts() {
                     "You're spending more than you earn",
 
                 message:
-                    `Your recorded expenses are ${Math.round(
-                        spendingRatio * 100
-                    )}% of your recorded income. Review your largest expenses and look for areas to reduce spending.`,
+                    `Your recorded expenses are ${percentage}% of your income. Review unnecessary spending.`,
 
-                badge:
-                    "Critical"
-
-            });
-
-        } else if (
-            spendingRatio >= 0.80
-        ) {
-
-            alerts.push({
-
-                type: "warning",
-
-                icon: "⚠️",
-
-                title:
-                    "Your spending is getting high",
-
-                message:
-                    `You're using ${Math.round(
-                        spendingRatio * 100
-                    )}% of your recorded income. Try keeping more of your income available for savings and unexpected expenses.`,
-
-                badge:
-                    "Watch Spending"
-
-            });
-
-        } else if (
-            spendingRatio <= 0.50
-        ) {
-
-            alerts.push({
-
-                type: "success",
-
-                icon: "💚",
-
-                title:
-                    "Your spending is well controlled",
-
-                message:
-                    `You're currently spending about ${Math.round(
-                        spendingRatio * 100
-                    )}% of your recorded income. Keep maintaining this healthy balance.`,
-
-                badge:
-                    "Healthy"
+                priority: 100
 
             });
 
         }
 
-    }
+
+        /* Budget */
+
+        const budget =
+            getMonthlyBudget();
 
 
-    /* =========================
-       MONTHLY BUDGET
-    ========================= */
-
-    const budget =
-        Number(
-            monthlyBudget
-        ) || 0;
-
-
-    const monthlyExpenses =
-        getCurrentMonthExpenses();
-
-
-    if (
-        budget > 0
-    ) {
-
-        const usage =
-            monthlyExpenses /
-            budget;
+        const spent =
+            getCurrentMonthSpent();
 
 
         if (
-            usage > 1
+            budget > 0
         ) {
-
-            alerts.push({
-
-                type: "danger",
-
-                icon: "💰",
-
-                title:
-                    "You've exceeded your monthly budget",
-
-                message:
-                    `You've spent ${formatMoney(
-                        monthlyExpenses
-                    )} against a budget of ${formatMoney(
-                        budget
-                    )}. You're over budget by ${formatMoney(
-                        monthlyExpenses - budget
-                    )}.`,
-
-                badge:
-                    "Over Budget"
-
-            });
-
-        } else if (
-            usage >= 0.80
-        ) {
-
-            alerts.push({
-
-                type: "warning",
-
-                icon: "🟡",
-
-                title:
-                    "You're close to your monthly budget",
-
-                message:
-                    `You've used ${Math.round(
-                        usage * 100
-                    )}% of your monthly budget. You have ${formatMoney(
-                        Math.max(
-                            0,
-                            budget - monthlyExpenses
-                        )
-                    )} remaining.`,
-
-                badge:
-                    "Budget Warning"
-
-            });
-
-        } else {
-
-            alerts.push({
-
-                type: "success",
-
-                icon: "✅",
-
-                title:
-                    "You're on track with your budget",
-
-                message:
-                    `You've used ${Math.round(
-                        usage * 100
-                    )}% of your monthly budget. Keep it up.`,
-
-                badge:
-                    "On Track"
-
-            });
-
-        }
-
-    }
-
-
-    /* =========================
-       CATEGORY BUDGETS
-    ========================= */
-
-    Object.keys(
-        categoryBudgetFields
-    ).forEach(
-        category => {
-
-            const limit =
-                getCategoryBudgetAmount(
-                    category
-                );
-
-
-            if (
-                limit <= 0
-            ) {
-
-                return;
-
-            }
-
-
-            const spent =
-                getCategorySpending(
-                    category
-                );
-
 
             const usage =
-                spent /
-                limit;
+                (
+                    spent /
+                    budget
+                ) *
+                100;
 
 
             if (
-                usage > 1
+                usage > 100
             ) {
 
                 alerts.push({
@@ -4885,262 +3489,213 @@ function updateFinancialAlerts() {
                     icon: "🔴",
 
                     title:
-                        `${category} budget exceeded`,
+                        "Monthly budget exceeded",
 
                     message:
-                        `You've spent ${formatMoney(
-                            spent
-                        )} on ${category}, which is ${formatMoney(
-                            spent - limit
-                        )} over your category limit.`,
+                        `You've spent ${formatCurrency(spent)} against a ${formatCurrency(budget)} budget.`,
 
-                    badge:
-                        "Category Alert"
+                    priority: 90
 
                 });
 
             } else if (
-                usage >= 0.80
+                usage >= 80
             ) {
 
                 alerts.push({
 
                     type: "warning",
 
-                    icon: "🟡",
+                    icon: "⚠️",
 
                     title:
-                        `${category} is near its limit`,
+                        "You're close to your budget limit",
 
                     message:
-                        `You've used ${Math.round(
-                            usage * 100
-                        )}% of your ${category} budget. Only ${formatMoney(
-                            Math.max(
-                                0,
-                                limit - spent
-                            )
-                        )} remains.`,
+                        `${Math.round(usage)}% of your monthly budget has been used.`,
 
-                    badge:
-                        "Category Warning"
+                    priority: 70
 
                 });
 
             }
 
         }
-    );
 
 
-    /* =========================
-       SAVINGS GOAL
-    ========================= */
+        /* Category budgets */
 
-    const target =
-        Number(
-            savingsGoal.targetAmount
-        ) || 0;
+        const categoryBudgets =
+            getCategoryBudgets();
 
 
-    const saved =
-        Number(
-            savingsGoal.currentSavings
-        ) || 0;
-
-
-    if (
-        target > 0
-    ) {
-
-        const savingsPercentage =
+        Object.entries(
+            categoryBudgets
+        ).forEach(
             (
-                saved /
-                target
-            ) * 100;
+                [
+                    category,
+                    limit
+                ]
+            ) => {
+
+                const spentCategory =
+                    getCategorySpent(
+                        category
+                    );
 
 
-        if (
-            savingsPercentage >= 100
-        ) {
+                const budgetValue =
+                    Number(limit) || 0;
 
-            alerts.push({
-
-                type: "success",
-
-                icon: "🎯",
-
-                title:
-                    "Savings goal reached!",
-
-                message:
-                    `Congratulations! You've reached your ${formatMoney(
-                        target
-                    )} savings goal.`,
-
-                badge:
-                    "Goal Reached"
-
-            });
-
-        } else if (
-            savingsPercentage >= 75
-        ) {
-
-            alerts.push({
-
-                type: "success",
-
-                icon: "🎯",
-
-                title:
-                    "You're close to your savings goal",
-
-                message:
-                    `You've saved ${Math.round(
-                        savingsPercentage
-                    )}% of your goal. Only ${formatMoney(
-                        Math.max(
-                            0,
-                            target - saved
-                        )
-                    )} remains.`,
-
-                badge:
-                    "Almost There"
-
-            });
-
-        } else if (
-            savingsPercentage < 25
-        ) {
-
-            alerts.push({
-
-                type: "warning",
-
-                icon: "🎯",
-
-                title:
-                    "Your savings goal needs attention",
-
-                message:
-                    `You've saved ${Math.round(
-                        savingsPercentage
-                    )}% of your goal. Consider setting aside money before spending.`,
-
-                badge:
-                    "Savings Reminder"
-
-            });
-
-        }
-
-    }
-
-
-    /* =========================
-       RECURRING EXPENSES
-    ========================= */
-
-    let recurringMonthlyExpenses =
-        0;
-
-
-    if (
-        Array.isArray(
-            recurringTransactions
-        )
-    ) {
-
-        recurringTransactions.forEach(
-            recurring => {
 
                 if (
-                    recurring.type !==
-                    "expense"
+                    budgetValue <= 0
                 ) {
-
                     return;
-
                 }
 
 
-                const amount =
-                    Number(
-                        recurring.amount
-                    ) || 0;
-
-
                 if (
-                    recurring.frequency ===
-                    "weekly"
+                    spentCategory >
+                    budgetValue
                 ) {
 
-                    recurringMonthlyExpenses +=
-                        amount *
-                        52 /
-                        12;
+                    alerts.push({
+
+                        type: "danger",
+
+                        icon: "🔴",
+
+                        title:
+                            `${category} budget exceeded`,
+
+                        message:
+                            `${formatCurrency(spentCategory)} spent against a ${formatCurrency(budgetValue)} limit.`,
+
+                        priority: 85
+
+                    });
 
                 } else if (
-                    recurring.frequency ===
-                    "yearly"
+                    spentCategory >=
+                    budgetValue * 0.8
                 ) {
 
-                    recurringMonthlyExpenses +=
-                        amount /
-                        12;
+                    alerts.push({
 
-                } else {
+                        type: "warning",
 
-                    recurringMonthlyExpenses +=
-                        amount;
+                        icon: "🟡",
+
+                        title:
+                            `${category} budget is nearly full`,
+
+                        message:
+                            `${formatCurrency(spentCategory)} of ${formatCurrency(budgetValue)} has been used.`,
+
+                        priority: 65
+
+                    });
 
                 }
 
             }
         );
 
-    }
+
+        /* Savings */
+
+        if (
+            totals.income > 0
+        ) {
+
+            const rate =
+                (
+                    (
+                        totals.income -
+                        totals.expenses
+                    ) /
+                    totals.income
+                ) *
+                100;
 
 
-    if (
-        income > 0 &&
-        recurringMonthlyExpenses > 0
-    ) {
+            if (
+                rate <= 0
+            ) {
 
-        const recurringRatio =
-            recurringMonthlyExpenses /
-            income;
+                alerts.push({
+
+                    type: "warning",
+
+                    icon: "💸",
+
+                    title:
+                        "Your savings rate is 0% or below",
+
+                    message:
+                        "Try creating a small gap between income and expenses this month.",
+
+                    priority: 75
+
+                });
+
+            } else if (
+                rate >= 20
+            ) {
+
+                alerts.push({
+
+                    type: "success",
+
+                    icon: "✅",
+
+                    title:
+                        "Great savings rate",
+
+                    message:
+                        `You're currently keeping about ${Math.round(rate)}% of recorded income.`,
+
+                    priority: 30
+
+                });
+
+            }
+
+        }
+
+
+        /* Recurring */
+
+        const recurring =
+            getRecurringTransactions()
+                .filter(
+                    item =>
+                        item.active !== false &&
+                        item.type === "expense"
+                );
+
+
+        const recurringTotal =
+            recurring.reduce(
+                (
+                    total,
+                    item
+                ) =>
+                    total +
+                    Number(
+                        item.amount || 0
+                    ),
+
+                0
+            );
 
 
         if (
-            recurringRatio >= 0.30
-        ) {
-
-            alerts.push({
-
-                type: "danger",
-
-                icon: "🔄",
-
-                title:
-                    "Recurring expenses are high",
-
-                message:
-                    `Your recurring expenses are approximately ${formatMoney(
-                        recurringMonthlyExpenses
-                    )} per month, using about ${Math.round(
-                        recurringRatio * 100
-                    )}% of your recorded income.`,
-
-                badge:
-                    "Recurring Alert"
-
-            });
-
-        } else if (
-            recurringRatio >= 0.20
+            totals.income > 0 &&
+            recurringTotal >
+            totals.income * 0.3
         ) {
 
             alerts.push({
@@ -5153,145 +3708,162 @@ function updateFinancialAlerts() {
                     "Review your recurring expenses",
 
                 message:
-                    `Your recurring expenses use about ${Math.round(
-                        recurringRatio * 100
-                    )}% of your recorded income. Consider reviewing subscriptions and regular payments.`,
+                    "Recurring commitments are using more than 30% of your recorded income.",
 
-                badge:
-                    "Review Needed"
+                priority: 60
 
             });
 
         }
 
+
+        /* Positive budget */
+
+        if (
+            budget > 0 &&
+            spent <= budget * 0.5
+        ) {
+
+            alerts.push({
+
+                type: "success",
+
+                icon: "🎯",
+
+                title:
+                    "You're on track with your budget",
+
+                message:
+                    `Only ${Math.round(
+                        (
+                            spent /
+                            budget
+                        ) *
+                        100
+                    )}% of your monthly budget has been used.`,
+
+                priority: 20
+
+            });
+
+        }
+
+
+        /* Health */
+
+        const health =
+            calculateFinancialHealth();
+
+
+        if (
+            health.score >= 85
+        ) {
+
+            alerts.push({
+
+                type: "success",
+
+                icon: "🧠",
+
+                title:
+                    "Excellent financial health",
+
+                message:
+                    "Your current financial habits are showing strong control.",
+
+                priority: 10
+
+            });
+
+        }
+
+
+        return alerts
+            .sort(
+                (
+                    a,
+                    b
+                ) =>
+                    b.priority -
+                    a.priority
+            )
+            .slice(
+                0,
+                8
+            );
+
     }
 
 
-    /* =========================
-       POSITIVE FINANCIAL HEALTH
-    ========================= */
+    function updateFinancialAlerts() {
 
-    if (
-        income > 0 &&
-        expenses < income &&
-        budget > 0 &&
-        monthlyExpenses <= budget &&
-        target > 0 &&
-        saved >= target * 0.50
-    ) {
-
-        alerts.push({
-
-            type: "success",
-
-            icon: "💚",
-
-            title:
-                "You're building strong money habits",
-
-            message:
-                "Your income is currently higher than your expenses, you're within budget, and you're making meaningful progress toward your savings goal.",
-
-            badge:
-                "Great Progress"
-
-        });
-
-    }
+        const container =
+            document.getElementById(
+                "financialAlerts"
+            );
 
 
-    /* =========================
-       SORT ALERTS
-    ========================= */
-
-    const priority = {
-
-        danger: 1,
-
-        warning: 2,
-
-        info: 3,
-
-        success: 4
-
-    };
+        if (!container) {
+            return;
+        }
 
 
-    alerts.sort(
-        (a, b) =>
-            priority[a.type] -
-            priority[b.type]
-    );
+        const alerts =
+            generateFinancialAlerts();
 
 
-    /* =========================
-       LIMIT ALERTS
-    ========================= */
+        if (
+            alerts.length === 0
+        ) {
 
-    const visibleAlerts =
-        alerts.slice(
-            0,
-            8
-        );
+            container.innerHTML = `
 
+                <div class="alert-empty">
 
-    /* =========================
-       EMPTY STATE
-    ========================= */
+                    <div class="alert-empty-icon">
+                        🔔
+                    </div>
 
-    if (
-        visibleAlerts.length ===
-        0
-    ) {
+                    <h3>
+                        You're all caught up
+                    </h3>
 
-        alertsContainer.innerHTML = `
-            <div class="alert-empty">
+                    <p>
+                        MoneyLeak doesn't currently see anything that needs your attention.
+                    </p>
 
-                <div class="alert-empty-icon">
-                    💚
                 </div>
 
-                <h3>
-                    No financial warnings
-                </h3>
+            `;
 
-                <p>
-                    Everything looks good right now. Keep tracking your money to stay ahead.
-                </p>
+            return;
 
-            </div>
-        `;
-
-        return;
-
-    }
+        }
 
 
-    /* =========================
-       RENDER ALERTS
-    ========================= */
+        container.innerHTML =
+            alerts.map(
+                alert => `
 
-    alertsContainer.innerHTML =
-        visibleAlerts.map(
-            alert => {
-
-                return `
-                    <div
-                        class="financial-alert ${alert.type}"
+                    <article
+                        class="financial-alert alert-${alert.type}"
                     >
 
-                        <div class="financial-alert-icon">
+                        <div
+                            class="alert-icon"
+                        >
                             ${alert.icon}
                         </div>
 
+                        <div
+                            class="alert-content"
+                        >
 
-                        <div class="financial-alert-content">
-
-                            <h3>
+                            <strong>
                                 ${escapeHTML(
                                     alert.title
                                 )}
-                            </h3>
+                            </strong>
 
                             <p>
                                 ${escapeHTML(
@@ -5299,408 +3871,1314 @@ function updateFinancialAlerts() {
                                 )}
                             </p>
 
-                            <span class="financial-alert-badge">
+                        </div>
+
+                    </article>
+
+                `
+            )
+            .join("");
+
+
+        updateNotificationDot(
+            alerts
+        );
+
+    }
+
+
+    function updateNotificationDot(
+        alerts
+    ) {
+
+        const dot =
+            document.getElementById(
+                "notificationDot"
+            );
+
+
+        if (!dot) {
+            return;
+        }
+
+
+        const urgent =
+            alerts.some(
+                alert =>
+                    alert.type ===
+                    "danger"
+            );
+
+
+        dot.classList.toggle(
+            "visible",
+            urgent
+        );
+
+    }
+
+
+    /* =====================================================
+       NOTIFICATION PANEL
+    ====================================================== */
+
+    function updateNotificationPanel() {
+
+        const container =
+            document.getElementById(
+                "notificationList"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        const alerts =
+            generateFinancialAlerts();
+
+
+        if (
+            alerts.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="notification-empty">
+
+                    <span>
+                        🔔
+                    </span>
+
+                    <strong>
+                        You're all caught up
+                    </strong>
+
+                    <p>
+                        New financial alerts will appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            alerts.map(
+                alert => `
+
+                    <div
+                        class="notification-item"
+                        style="
+                            padding:14px 17px;
+                            border-bottom:1px solid #edf1ef;
+                            display:flex;
+                            gap:10px;
+                        "
+                    >
+
+                        <span
+                            style="font-size:16px;"
+                        >
+                            ${alert.icon}
+                        </span>
+
+                        <div>
+
+                            <strong
+                                style="
+                                    display:block;
+                                    color:#44534c;
+                                    font-size:10px;
+                                "
+                            >
                                 ${escapeHTML(
-                                    alert.badge
+                                    alert.title
                                 )}
-                            </span>
+                            </strong>
+
+                            <p
+                                style="
+                                    margin-top:3px;
+                                    color:#929d98;
+                                    font-size:9px;
+                                "
+                            >
+                                ${escapeHTML(
+                                    alert.message
+                                )}
+                            </p>
 
                         </div>
 
                     </div>
-                `;
 
-            }
-        ).join("");
-
-}
-
-
-/* =========================================================
-   CONNECT SMART ALERTS TO DASHBOARD
-========================================================= */
-
-function refreshFinancialAlerts() {
-
-    updateFinancialAlerts();
-
-}
-
-
-/* =========================================================
-   INITIALIZE SMART ALERTS
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        updateFinancialAlerts();
+                `
+            )
+            .join("");
 
     }
-);
 
 
-/* =========================================================
-   EXPOSE SMART ALERT FUNCTIONS
-========================================================= */
+    /* =====================================================
+       SEARCH
+    ====================================================== */
 
-window.updateFinancialAlerts =
-    updateFinancialAlerts;
+    const SEARCH_PAGES = [
 
-window.refreshFinancialAlerts =
-    refreshFinancialAlerts;
+        {
+            title: "Dashboard",
+            description:
+                "Your financial command center",
+            url: "index.html",
+            icon: "⌂"
+        },
 
-/* =========================================================
-   DASHBOARD OVERVIEW 2.0 — LIVE DATA
-========================================================= */
+        {
+            title: "Income",
+            description:
+                "Track money coming in",
+            url: "income.html",
+            icon: "↗"
+        },
 
-function updateDashboardOverview() {
+        {
+            title: "Expenses",
+            description:
+                "Track money going out",
+            url: "expenses.html",
+            icon: "↘"
+        },
 
-    const totals = calculateTotals();
+        {
+            title: "Budgets",
+            description:
+                "Control your spending",
+            url: "budgets.html",
+            icon: "▣"
+        },
 
-    const income = Number(totals.income) || 0;
-    const expenses = Number(totals.expenses) || 0;
-    const balance = income - expenses;
+        {
+            title: "Savings Goals",
+            description:
+                "Plan and track your goals",
+            url: "savings.html",
+            icon: "◎"
+        },
 
-    /* =========================
-       BALANCE
-    ========================= */
+        {
+            title: "Recurring",
+            description:
+                "Manage recurring payments",
+            url: "recurring.html",
+            icon: "↻"
+        },
 
-    const balanceElement =
-        document.getElementById("overviewBalance");
+        {
+            title: "Analytics",
+            description:
+                "Understand your financial data",
+            url: "analytics.html",
+            icon: "▥"
+        },
 
-    const balanceStatus =
-        document.getElementById("overviewBalanceStatus");
-
-    if (balanceElement) {
-        balanceElement.textContent =
-            formatCurrency(balance);
-    }
-
-    if (balanceStatus) {
-
-        if (balance > 0) {
-            balanceStatus.textContent =
-                "You're currently in the positive";
-        } else if (balance < 0) {
-            balanceStatus.textContent =
-                "You're spending more than you earn";
-        } else {
-            balanceStatus.textContent =
-                "Income and expenses are balanced";
+        {
+            title: "Settings",
+            description:
+                "Manage MoneyLeak preferences",
+            url: "settings.html",
+            icon: "⚙"
         }
 
-    }
+    ];
 
 
-    /* =========================
-       INCOME
-    ========================= */
-
-    const incomeElement =
-        document.getElementById("overviewIncome");
-
-    if (incomeElement) {
-        incomeElement.textContent =
-            formatCurrency(income);
-    }
-
-
-    /* =========================
-       EXPENSES
-    ========================= */
-
-    const expensesElement =
-        document.getElementById("overviewExpenses");
-
-    if (expensesElement) {
-        expensesElement.textContent =
-            formatCurrency(expenses);
-    }
-
-
-    /* =========================
-       SAVINGS RATE
-    ========================= */
-
-    const savingsRateElement =
-        document.getElementById("overviewSavingsRate");
-
-    const savingsStatusElement =
-        document.getElementById("overviewSavingsStatus");
-
-    let savingsRate = 0;
-
-    if (income > 0) {
-        savingsRate =
-            ((income - expenses) / income) * 100;
-    }
-
-    savingsRate = Math.max(0, Math.min(100, savingsRate));
-
-    if (savingsRateElement) {
-        savingsRateElement.textContent =
-            `${Math.round(savingsRate)}%`;
-    }
-
-    if (savingsStatusElement) {
-
-        if (savingsRate >= 30) {
-            savingsStatusElement.textContent =
-                "Excellent saving progress";
-        } else if (savingsRate >= 20) {
-            savingsStatusElement.textContent =
-                "Good saving progress";
-        } else if (savingsRate > 0) {
-            savingsStatusElement.textContent =
-                "Room to increase savings";
-        } else {
-            savingsStatusElement.textContent =
-                "Start saving";
-        }
-
-    }
-
-
-    /* =========================
-       SAVINGS GOAL
-    ========================= */
-
-    const goalProgressElement =
-        document.getElementById("overviewGoalProgress");
-
-    const goalFillElement =
-        document.getElementById("overviewGoalFill");
-
-    const goalStatusElement =
-        document.getElementById("overviewGoalStatus");
-
-    let savingsGoal = null;
-
-    try {
-
-        savingsGoal =
-            JSON.parse(
-                localStorage.getItem(
-                    "moneyLeakSavingsGoal"
-                )
-            );
-
-    } catch (error) {
-
-        savingsGoal = null;
-
-    }
-
-    if (
-        savingsGoal &&
-        Number(savingsGoal.target) > 0
+    function searchMoneyLeak(
+        query
     ) {
 
-        const target =
-            Number(savingsGoal.target);
+        const term =
+            String(
+                query || ""
+            )
+            .trim()
+            .toLowerCase();
 
-        const saved =
-            Number(
-                savingsGoal.saved ||
-                savingsGoal.current ||
-                savingsGoal.amount ||
-                0
+
+        if (!term) {
+
+            return SEARCH_PAGES;
+
+        }
+
+
+        const pages =
+            SEARCH_PAGES.filter(
+                page =>
+                    (
+                        page.title +
+                        " " +
+                        page.description
+                    )
+                    .toLowerCase()
+                    .includes(term)
             );
 
-        const goalProgress =
-            Math.max(
-                0,
-                Math.min(
-                    100,
-                    (saved / target) * 100
+
+        const transactionResults =
+            transactions
+                .filter(
+                    transaction =>
+                        (
+                            transaction.description +
+                            " " +
+                            transaction.category
+                        )
+                        .toLowerCase()
+                        .includes(term)
                 )
+                .slice(
+                    0,
+                    8
+                );
+
+
+        return [
+
+            ...pages,
+
+            ...transactionResults.map(
+                transaction => ({
+
+                    title:
+                        transaction.description,
+
+                    description:
+                        `${transaction.category} • ${formatCurrency(transaction.amount)}`,
+
+                    url:
+                        "expenses.html",
+
+                    icon:
+                        transaction.type ===
+                        "income"
+                            ? "↗"
+                            : "↘"
+
+                })
+            )
+
+        ];
+
+    }
+
+
+    function renderSearchResults(
+        query
+    ) {
+
+        const container =
+            document.getElementById(
+                "searchResults"
             );
 
-        if (goalProgressElement) {
-            goalProgressElement.textContent =
-                `${Math.round(goalProgress)}%`;
+
+        if (!container) {
+            return;
         }
 
-        if (goalFillElement) {
-            goalFillElement.style.width =
-                `${goalProgress}%`;
+
+        const results =
+            searchMoneyLeak(
+                query
+            );
+
+
+        if (
+            results.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <p>
+                    No MoneyLeak results found.
+                </p>
+
+            `;
+
+            return;
+
         }
 
-        if (goalStatusElement) {
 
-            if (goalProgress >= 100) {
+        container.innerHTML =
+            results.map(
+                result => `
 
-                goalStatusElement.textContent =
-                    "🎉 Goal reached";
+                    <a
+                        class="search-result"
+                        href="${result.url}"
+                    >
 
-            } else {
+                        <span
+                            class="search-result-icon"
+                        >
+                            ${result.icon}
+                        </span>
 
-                const remaining =
-                    Math.max(0, target - saved);
+                        <span>
 
-                goalStatusElement.textContent =
-                    `${formatCurrency(remaining)} remaining`;
+                            <strong>
+                                ${escapeHTML(
+                                    result.title
+                                )}
+                            </strong>
+
+                            <span>
+                                ${escapeHTML(
+                                    result.description
+                                )}
+                            </span>
+
+                        </span>
+
+                    </a>
+
+                `
+            )
+            .join("");
+
+    }
+
+
+    /* =====================================================
+       MOBILE SIDEBAR
+    ====================================================== */
+
+    function setupMobileNavigation() {
+
+        const button =
+            document.getElementById(
+                "mobileMenu"
+            );
+
+        const sidebar =
+            document.getElementById(
+                "sidebar"
+            );
+
+        const overlay =
+            document.getElementById(
+                "mobileOverlay"
+            );
+
+
+        if (
+            !button ||
+            !sidebar
+        ) {
+
+            return;
+
+        }
+
+
+        function toggle() {
+
+            const open =
+                sidebar.classList.toggle(
+                    "mobile-open"
+                );
+
+
+            if (overlay) {
+
+                overlay.hidden =
+                    !open;
 
             }
 
         }
 
-    } else {
 
-        if (goalProgressElement) {
-            goalProgressElement.textContent =
-                "0%";
-        }
-
-        if (goalFillElement) {
-            goalFillElement.style.width =
-                "0%";
-        }
-
-        if (goalStatusElement) {
-            goalStatusElement.textContent =
-                "No goal set";
-        }
-
-    }
-
-
-    /* =========================
-       FINANCIAL HEALTH
-    ========================= */
-
-    const healthScoreElement =
-        document.getElementById("overviewHealthScore");
-
-    const healthStatusElement =
-        document.getElementById("overviewHealthStatus");
-
-    const existingHealthScore =
-        document.getElementById("healthScore");
-
-    let healthScore = 0;
-
-    if (existingHealthScore) {
-
-        const parsedScore =
-            parseInt(
-                existingHealthScore.textContent,
-                10
-            );
-
-        if (!Number.isNaN(parsedScore)) {
-            healthScore = parsedScore;
-        }
-
-    }
-
-    if (healthScoreElement) {
-
-        healthScoreElement.textContent =
-            `${healthScore}/100`;
-
-    }
-
-    if (healthStatusElement) {
-
-        if (healthScore >= 80) {
-
-            healthStatusElement.textContent =
-                "Excellent financial health";
-
-        } else if (healthScore >= 60) {
-
-            healthStatusElement.textContent =
-                "Good financial health";
-
-        } else if (healthScore >= 40) {
-
-            healthStatusElement.textContent =
-                "Needs some attention";
-
-        } else if (healthScore > 0) {
-
-            healthStatusElement.textContent =
-                "Needs improvement";
-
-        } else {
-
-            healthStatusElement.textContent =
-                "Add financial activity";
-
-        }
-
-    }
-
-
-    /* =========================
-       MONEY INSIGHT
-    ========================= */
-
-    const insightElement =
-        document.getElementById(
-            "overviewInsightText"
+        button.addEventListener(
+            "click",
+            toggle
         );
 
-    if (insightElement) {
 
-        if (income === 0 && expenses === 0) {
+        if (overlay) {
 
-            insightElement.textContent =
-                "Add your income and expenses to receive a personalized financial insight.";
+            overlay.addEventListener(
+                "click",
+                () => {
 
-        } else if (expenses > income) {
+                    sidebar.classList.remove(
+                        "mobile-open"
+                    );
 
-            insightElement.textContent =
-                `You're spending ${Math.round(
-                    (expenses / income) * 100
-                )}% of your income. Focus on reducing your largest spending categories.`;
+                    overlay.hidden =
+                        true;
 
-        } else if (savingsRate >= 30) {
-
-            insightElement.textContent =
-                `Excellent work. You're keeping about ${Math.round(
-                    savingsRate
-                )}% of your income after expenses.`;
-
-        } else if (savingsRate >= 20) {
-
-            insightElement.textContent =
-                `You're saving about ${Math.round(
-                    savingsRate
-                )}% of your income. Keep building that habit.`;
-
-        } else {
-
-            insightElement.textContent =
-                "Your finances are stable, but increasing your savings rate could strengthen your financial position.";
+                }
+            );
 
         }
 
+
+        sidebar
+            .querySelectorAll(
+                ".nav-link"
+            )
+            .forEach(
+                link => {
+
+                    link.addEventListener(
+                        "click",
+                        () => {
+
+                            sidebar.classList.remove(
+                                "mobile-open"
+                            );
+
+                            if (overlay) {
+                                overlay.hidden =
+                                    true;
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
     }
 
-}
+
+    /* =====================================================
+       SEARCH UI
+    ====================================================== */
+
+    function setupSearch() {
+
+        const button =
+            document.getElementById(
+                "searchButton"
+            );
+
+        const overlay =
+            document.getElementById(
+                "searchOverlay"
+            );
+
+        const close =
+            document.getElementById(
+                "closeSearch"
+            );
+
+        const input =
+            document.getElementById(
+                "globalSearch"
+            );
 
 
-/* =========================================================
-   UPDATE OVERVIEW WITH DASHBOARD
-========================================================= */
+        if (
+            !button ||
+            !overlay
+        ) {
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+            return;
+
+        }
+
+
+        function openSearch() {
+
+            overlay.hidden =
+                false;
+
+
+            setTimeout(
+                () => {
+
+                    if (input) {
+                        input.focus();
+                    }
+
+                },
+                50
+            );
+
+
+            renderSearchResults(
+                ""
+            );
+
+        }
+
+
+        function closeSearch() {
+
+            overlay.hidden =
+                true;
+
+        }
+
+
+        button.addEventListener(
+            "click",
+            openSearch
+        );
+
+
+        if (close) {
+
+            close.addEventListener(
+                "click",
+                closeSearch
+            );
+
+        }
+
+
+        overlay.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    overlay
+                ) {
+
+                    closeSearch();
+
+                }
+
+            }
+        );
+
+
+        if (input) {
+
+            input.addEventListener(
+                "input",
+                event => {
+
+                    renderSearchResults(
+                        event.target.value
+                    );
+
+                }
+            );
+
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "/" &&
+                    document.activeElement !==
+                    input
+                ) {
+
+                    event.preventDefault();
+
+                    openSearch();
+
+                }
+
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeSearch();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       NOTIFICATION UI
+    ====================================================== */
+
+    function setupNotifications() {
+
+        const button =
+            document.getElementById(
+                "notificationButton"
+            );
+
+        const panel =
+            document.getElementById(
+                "notificationPanel"
+            );
+
+        const close =
+            document.getElementById(
+                "closeNotifications"
+            );
+
+
+        if (
+            !button ||
+            !panel
+        ) {
+
+            return;
+
+        }
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const hidden =
+                    panel.hidden;
+
+
+                panel.hidden =
+                    !hidden;
+
+
+                if (!hidden) {
+                    return;
+                }
+
+
+                updateNotificationPanel();
+
+            }
+        );
+
+
+        if (close) {
+
+            close.addEventListener(
+                "click",
+                () => {
+
+                    panel.hidden =
+                        true;
+
+                }
+            );
+
+        }
+
+
+        document.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    panel.hidden
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    !panel.contains(
+                        event.target
+                    ) &&
+                    !button.contains(
+                        event.target
+                    )
+                ) {
+
+                    panel.hidden =
+                        true;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       PERIOD BUTTONS
+    ====================================================== */
+
+    function setupPeriodButtons() {
+
+        document
+            .querySelectorAll(
+                ".period-button"
+            )
+            .forEach(
+                button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            document
+                                .querySelectorAll(
+                                    ".period-button"
+                                )
+                                .forEach(
+                                    item =>
+                                        item.classList.remove(
+                                            "active"
+                                        )
+                                );
+
+
+                            button.classList.add(
+                                "active"
+                            );
+
+
+                            currentChartPeriod =
+                                button.dataset.period ||
+                                "month";
+
+
+                            updateCashFlow();
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =====================================================
+       GREETING
+    ====================================================== */
+
+    function updateGreeting() {
+
+        const element =
+            document.getElementById(
+                "dashboardGreeting"
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        const hour =
+            new Date().getHours();
+
+
+        let greeting;
+
+
+        if (
+            hour < 12
+        ) {
+
+            greeting =
+                "Good morning";
+
+        } else if (
+            hour < 18
+        ) {
+
+            greeting =
+                "Good afternoon";
+
+        } else {
+
+            greeting =
+                "Good evening";
+
+        }
+
+
+        const name =
+            settings.name &&
+            settings.name !==
+            "My Money"
+
+                ? `, ${settings.name}`
+
+                : "";
+
+
+        element.textContent =
+            `${greeting}${name} 👋`;
+
+    }
+
+
+    function updateDate() {
+
+        setText(
+            "currentDate",
+
+            new Date()
+                .toLocaleDateString(
+                    "en-NG",
+                    {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric"
+                    }
+                )
+        );
+
+
+        setText(
+            "footerYear",
+            new Date().getFullYear()
+        );
+
+    }
+
+
+    /* =====================================================
+       GLOBAL REFRESH
+    ====================================================== */
+
+    function refreshEverything() {
+
+        settings =
+            getSettings();
+
+
+        transactions =
+            loadTransactions();
+
+
+        savingsGoals =
+            loadSavingsGoals();
+
+
+        applySettings();
+
+
+        updateGreeting();
+
+        updateDate();
 
         updateDashboardOverview();
 
+        updateMoneyHealth();
+
+        updateBudgetDashboard();
+
+        updateCashFlow();
+
+        renderRecentTransactions();
+
+        renderTopSpending();
+
+        renderDashboardGoals();
+
+        updateFinancialAlerts();
+
+        updateNotificationPanel();
+
+        updatePageModules();
+
     }
-);
 
 
-/* =========================================================
-   GLOBAL ACCESS
-========================================================= */
+    /* =====================================================
+       PAGE MODULE HOOK
+    ====================================================== */
 
-window.updateDashboardOverview =
-    updateDashboardOverview;
+    function updatePageModules() {
+
+        if (
+            typeof window.moneyLeakPageUpdate ===
+            "function"
+        ) {
+
+            try {
+
+                window.moneyLeakPageUpdate();
+
+            } catch (error) {
+
+                console.error(
+                    "MoneyLeak page module error:",
+                    error
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       UTILITIES
+    ====================================================== */
+
+    function setText(
+        id,
+        value
+    ) {
+
+        const element =
+            document.getElementById(id);
+
+
+        if (element) {
+
+            element.textContent =
+                value;
+
+        }
+
+    }
+
+
+    function sumType(
+        source,
+        type
+    ) {
+
+        return source
+            .filter(
+                transaction =>
+                    transaction.type ===
+                    type
+            )
+            .reduce(
+                (
+                    total,
+                    transaction
+                ) =>
+                    total +
+                    Number(
+                        transaction.amount
+                    ),
+
+                0
+            );
+
+    }
+
+
+    function compactNumber(
+        value
+    ) {
+
+        const number =
+            Number(value) || 0;
+
+
+        if (
+            Math.abs(number) >=
+            1000000000
+        ) {
+
+            return (
+                (
+                    number /
+                    1000000000
+                )
+                .toFixed(1) +
+                "B"
+            );
+
+        }
+
+
+        if (
+            Math.abs(number) >=
+            1000000
+        ) {
+
+            return (
+                (
+                    number /
+                    1000000
+                )
+                .toFixed(1) +
+                "M"
+            );
+
+        }
+
+
+        if (
+            Math.abs(number) >=
+            1000
+        ) {
+
+            return (
+                (
+                    number /
+                    1000
+                )
+                .toFixed(0) +
+                "k"
+            );
+
+        }
+
+
+        return Math.round(
+            number
+        ).toString();
+
+    }
+
+
+    function getCategoryIcon(
+        category
+    ) {
+
+        const icons = {
+
+            Food: "🍔",
+
+            Transport: "🚗",
+
+            Shopping: "🛍️",
+
+            Bills: "🧾",
+
+            Housing: "🏠",
+
+            Health: "❤️",
+
+            Education: "📚",
+
+            Entertainment: "🎬",
+
+            Subscriptions: "📱",
+
+            Family: "👨‍👩‍👧",
+
+            Travel: "✈️",
+
+            Utilities: "💡",
+
+            Business: "💼",
+
+            Savings: "💰",
+
+            Other: "◉"
+
+        };
+
+
+        return (
+            icons[category] ||
+            icons.Other
+        );
+
+    }
+
+
+    function escapeHTML(
+        value
+    ) {
+
+        return String(
+            value ?? ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+    }
+
+
+    /* =====================================================
+       GLOBAL API
+    ====================================================== */
+
+    window.MoneyLeak = {
+
+        get transactions() {
+
+            return transactions;
+
+        },
+
+        get settings() {
+
+            return settings;
+
+        },
+
+        get categories() {
+
+            return CATEGORIES;
+
+        },
+
+        get savingsGoals() {
+
+            return savingsGoals;
+
+        },
+
+        calculateTotals,
+
+        formatCurrency,
+
+        formatCompactCurrency,
+
+        addTransaction,
+
+        updateTransaction,
+
+        deleteTransaction,
+
+        getCurrentMonthTransactions,
+
+        getCurrentYearTransactions,
+
+        getLast30DaysTransactions,
+
+        getMonthlyBudget,
+
+        setMonthlyBudget,
+
+        getCategoryBudgets,
+
+        setCategoryBudget,
+
+        deleteCategoryBudget,
+
+        getCategorySpent,
+
+        getRecurringTransactions,
+
+        addRecurringTransaction,
+
+        deleteRecurringTransaction,
+
+        addSavingsGoal,
+
+        updateSavingsGoal,
+
+        deleteSavingsGoal,
+
+        getGoalProgress,
+
+        calculateFinancialHealth,
+
+        generateFinancialAlerts,
+
+        saveSettings,
+
+        refresh:
+
+            refreshEverything
+
+    };
+
+
+    /* =====================================================
+       INITIALIZATION
+    ====================================================== */
+
+    function initializeMoneyLeak() {
+
+        applySettings();
+
+        setupMobileNavigation();
+
+        setupSearch();
+
+        setupNotifications();
+
+        setupPeriodButtons();
+
+        refreshEverything();
+
+        console.log(
+            "MoneyLeak Personal Finance OS initialized."
+        );
+
+    }
+
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeMoneyLeak
+        );
+
+    } else {
+
+        initializeMoneyLeak();
+
+    }
+
+
+    /* =====================================================
+       RESIZE
+    ====================================================== */
+
+    let resizeTimer;
+
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            clearTimeout(
+                resizeTimer
+            );
+
+
+            resizeTimer =
+                setTimeout(
+                    () => {
+
+                        updateCashFlow();
+
+                    },
+                    150
+                );
+
+        }
+    );
+
+
+})();
