@@ -325,7 +325,9 @@ function updateDashboard() {
     updateSpendingChart();
 
     updateSpendingBreakdown();
-
+    
+    updateSpendingAnalytics();
+   
     updateSavingsProgress();
 }
 
