@@ -3107,8 +3107,11 @@ function addRecurringTransaction() {
         frequency:
             frequency,
 
-        createdAt:
-            new Date().toISOString()
+       createdAt:
+           new Date().toISOString(),
+
+       nextRun:
+           new Date().toISOString()
 
     };
 
@@ -3223,3 +3226,183 @@ window.deleteRecurringTransaction =
 
 window.displayRecurringTransactions =
     displayRecurringTransactions;
+
+/* =========================================================
+   AUTOMATIC RECURRING TRANSACTION PROCESSOR
+========================================================= */
+
+function getNextRecurringDate(currentDate, frequency) {
+
+    const nextDate = new Date(currentDate);
+
+    if (frequency === "weekly") {
+
+        nextDate.setDate(
+            nextDate.getDate() + 7
+        );
+
+    } else if (frequency === "monthly") {
+
+        nextDate.setMonth(
+            nextDate.getMonth() + 1
+        );
+
+    } else if (frequency === "yearly") {
+
+        nextDate.setFullYear(
+            nextDate.getFullYear() + 1
+        );
+    }
+
+    return nextDate;
+}
+
+
+/* =========================
+   PROCESS DUE TRANSACTIONS
+========================= */
+
+function processRecurringTransactions() {
+
+    if (!Array.isArray(recurringTransactions)) {
+        return;
+    }
+
+    let transactionsChanged = false;
+
+    const now = new Date();
+
+
+    recurringTransactions.forEach(recurring => {
+
+        /* Give older recurring items a nextRun date */
+
+        if (!recurring.nextRun) {
+
+            recurring.nextRun =
+                recurring.createdAt ||
+                now.toISOString();
+
+            transactionsChanged = true;
+        }
+
+
+        const nextRun =
+            new Date(recurring.nextRun);
+
+
+        if (!Number.isFinite(nextRun.getTime())) {
+            return;
+        }
+
+
+        if (nextRun > now) {
+            return;
+        }
+
+
+        /* =========================
+           CREATE NORMAL TRANSACTION
+        ========================= */
+
+        const newTransaction = {
+
+            id:
+                Date.now().toString() +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 8),
+
+            amount:
+                Number(recurring.amount),
+
+            type:
+                recurring.type,
+
+            category:
+                recurring.category,
+
+            date:
+                now.toISOString(),
+
+            recurring:
+                true,
+
+            recurringId:
+                recurring.id,
+
+            name:
+                recurring.name
+        };
+
+
+        transactions.push(newTransaction);
+
+        transactionsChanged = true;
+
+
+        /* =========================
+           FIND NEXT RUN
+        ========================= */
+
+        let nextDate =
+            getNextRecurringDate(
+                nextRun,
+                recurring.frequency
+            );
+
+
+        /*
+           Keep moving the schedule forward
+           until the next date is in the future.
+        */
+
+        while (nextDate <= now) {
+
+            nextDate =
+                getNextRecurringDate(
+                    nextDate,
+                    recurring.frequency
+                );
+        }
+
+
+        recurring.nextRun =
+            nextDate.toISOString();
+
+    });
+
+
+    if (!transactionsChanged) {
+        return;
+    }
+
+
+    saveTransactions();
+
+    saveRecurringTransactions();
+
+    updateDashboard();
+
+    updateBudgetDisplay();
+
+    refreshCategoryBudgets();
+
+    updateSpendingAnalytics();
+
+    displayRecurringTransactions();
+}
+
+
+/* =========================
+   START RECURRING PROCESSOR
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        processRecurringTransactions();
+
+    }
+);
