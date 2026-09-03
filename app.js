@@ -495,6 +495,8 @@ function updateDashboard() {
     refreshCategoryBudgets();
 
     updateFinancialAlerts();
+   
+    updateDashboardOverview();
 }
 
 
