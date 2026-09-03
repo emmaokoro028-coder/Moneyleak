@@ -769,6 +769,85 @@
         </div>
 
     </section>
+<!-- =========================
+     MONTHLY BUDGET
+========================= -->
+
+<section class="budget-section" id="budget">
+
+    <div class="section-heading">
+        <div>
+            <span class="section-eyebrow">
+                TAKE CONTROL
+            </span>
+
+            <h2>
+                💰 Monthly Budget
+            </h2>
+        </div>
+    </div>
+
+    <div class="budget-form">
+
+        <div class="form-group">
+
+            <label for="monthlyBudget">
+                Monthly Budget
+            </label>
+
+            <input
+                type="number"
+                id="monthlyBudget"
+                placeholder="e.g. 200000"
+                min="1"
+                step="1"
+                inputmode="decimal"
+            >
+
+        </div>
+
+        <button
+            type="button"
+            id="saveBudgetButton"
+            class="primary-button"
+        >
+            Save Budget
+        </button>
+
+        <button
+            type="button"
+            id="resetBudgetButton"
+            class="reset-button"
+        >
+            Reset Budget
+        </button>
+
+    </div>
+
+    <div
+        id="budgetResult"
+        class="budget-result"
+    >
+
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+                💰
+            </div>
+
+            <h3>
+                No monthly budget set
+            </h3>
+
+            <p>
+                Set a budget to see how much of your monthly spending you have used.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 
 </main>
 
