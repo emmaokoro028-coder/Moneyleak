@@ -704,6 +704,8 @@ function deleteTransaction(id) {
     saveTransactions();
 
     updateDashboard();
+
+    updateBudgetDisplay();
 }
 
 
