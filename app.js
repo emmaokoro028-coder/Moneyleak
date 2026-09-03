@@ -2797,3 +2797,429 @@ function updateSpendingAnalytics() {
         `;
     }
 }
+/* =========================================================
+   RECURRING TRANSACTIONS
+========================================================= */
+
+const RECURRING_STORAGE_KEY =
+    "moneyLeakRecurringTransactions";
+
+
+let recurringTransactions =
+    loadRecurringTransactions();
+
+
+/* =========================
+   LOAD RECURRING TRANSACTIONS
+========================= */
+
+function loadRecurringTransactions() {
+
+    const saved =
+        localStorage.getItem(
+            RECURRING_STORAGE_KEY
+        );
+
+    if (!saved) {
+        return [];
+    }
+
+    try {
+
+        const parsed =
+            JSON.parse(saved);
+
+        return Array.isArray(parsed)
+            ? parsed
+            : [];
+
+    } catch (error) {
+
+        return [];
+    }
+}
+
+
+/* =========================
+   SAVE RECURRING TRANSACTIONS
+========================= */
+
+function saveRecurringTransactions() {
+
+    localStorage.setItem(
+        RECURRING_STORAGE_KEY,
+        JSON.stringify(
+            recurringTransactions
+        )
+    );
+}
+
+
+/* =========================
+   FORMAT FREQUENCY
+========================= */
+
+function formatRecurringFrequency(
+    frequency
+) {
+
+    const labels = {
+        weekly: "Every Week",
+        monthly: "Every Month",
+        yearly: "Every Year"
+    };
+
+    return (
+        labels[frequency] ||
+        "Every Month"
+    );
+}
+
+
+/* =========================
+   DISPLAY RECURRING
+========================= */
+
+function displayRecurringTransactions() {
+
+    const results =
+        document.getElementById(
+            "recurringResults"
+        );
+
+    if (!results) {
+        return;
+    }
+
+
+    if (
+        recurringTransactions.length === 0
+    ) {
+
+        results.innerHTML = `
+            <div class="recurring-empty">
+
+                🔄
+
+                <h3>
+                    No recurring transactions
+                </h3>
+
+                <p>
+                    Add your regular income or expenses above.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    results.innerHTML =
+        recurringTransactions
+            .map(transaction => {
+
+                const typeClass =
+                    transaction.type === "income"
+                        ? "income"
+                        : "expense";
+
+                const typeText =
+                    transaction.type === "income"
+                        ? "Income"
+                        : "Expense";
+
+
+                return `
+                    <div class="recurring-card">
+
+                        <div class="recurring-card-header">
+
+                            <h3 class="recurring-card-title">
+                                ${escapeHTML(
+                                    transaction.name
+                                )}
+                            </h3>
+
+                            <span
+                                class="recurring-card-type ${typeClass}"
+                            >
+                                ${typeText}
+                            </span>
+
+                        </div>
+
+
+                        <p class="recurring-card-amount">
+                            ${formatMoney(
+                                transaction.amount
+                            )}
+                        </p>
+
+
+                        <div class="recurring-card-details">
+
+                            <span>
+                                Category:
+                                <strong>
+                                    ${escapeHTML(
+                                        transaction.category
+                                    )}
+                                </strong>
+                            </span>
+
+                            <span>
+                                Frequency:
+                                <strong>
+                                    ${formatRecurringFrequency(
+                                        transaction.frequency
+                                    )}
+                                </strong>
+                            </span>
+
+                        </div>
+
+
+                        <div class="recurring-card-actions">
+
+                            <button
+                                type="button"
+                                class="recurring-delete-button"
+                                onclick="deleteRecurringTransaction('${transaction.id}')"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
+
+            })
+            .join("");
+}
+
+
+/* =========================
+   ADD RECURRING TRANSACTION
+========================= */
+
+function addRecurringTransaction() {
+
+    const nameInput =
+        document.getElementById(
+            "recurringName"
+        );
+
+    const amountInput =
+        document.getElementById(
+            "recurringAmount"
+        );
+
+    const typeInput =
+        document.getElementById(
+            "recurringType"
+        );
+
+    const categoryInput =
+        document.getElementById(
+            "recurringCategory"
+        );
+
+    const frequencyInput =
+        document.getElementById(
+            "recurringFrequency"
+        );
+
+
+    if (
+        !nameInput ||
+        !amountInput ||
+        !typeInput ||
+        !categoryInput ||
+        !frequencyInput
+    ) {
+        return;
+    }
+
+
+    const name =
+        nameInput.value.trim();
+
+    const amount =
+        Number(amountInput.value);
+
+    const type =
+        typeInput.value;
+
+    const category =
+        categoryInput.value;
+
+    const frequency =
+        frequencyInput.value;
+
+
+    if (!name) {
+
+        alert(
+            "Please enter a name."
+        );
+
+        nameInput.focus();
+
+        return;
+    }
+
+
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
+
+        alert(
+            "Please enter a valid amount."
+        );
+
+        amountInput.focus();
+
+        return;
+    }
+
+
+    const recurringTransaction = {
+
+        id:
+            Date.now().toString(),
+
+        name:
+            name,
+
+        amount:
+            amount,
+
+        type:
+            type,
+
+        category:
+            category,
+
+        frequency:
+            frequency,
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    recurringTransactions.push(
+        recurringTransaction
+    );
+
+
+    saveRecurringTransactions();
+
+    displayRecurringTransactions();
+
+
+    nameInput.value = "";
+
+    amountInput.value = "";
+
+    typeInput.value = "expense";
+
+    categoryInput.value = "Bills";
+
+    frequencyInput.value = "monthly";
+
+
+    alert(
+        "Recurring transaction added successfully."
+    );
+}
+
+
+/* =========================
+   DELETE RECURRING
+========================= */
+
+function deleteRecurringTransaction(id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this recurring transaction?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    recurringTransactions =
+        recurringTransactions.filter(
+            transaction =>
+                transaction.id !== id
+        );
+
+
+    saveRecurringTransactions();
+
+    displayRecurringTransactions();
+}
+
+
+/* =========================
+   SETUP RECURRING SYSTEM
+========================= */
+
+function setupRecurringTransactions() {
+
+    const saveButton =
+        document.getElementById(
+            "saveRecurringButton"
+        );
+
+
+    if (!saveButton) {
+        return;
+    }
+
+
+    saveButton.addEventListener(
+        "click",
+        addRecurringTransaction
+    );
+
+
+    displayRecurringTransactions();
+}
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        setupRecurringTransactions();
+
+    }
+);
+
+
+/* =========================
+   GLOBAL FUNCTIONS
+========================= */
+
+window.addRecurringTransaction =
+    addRecurringTransaction;
+
+window.deleteRecurringTransaction =
+    deleteRecurringTransaction;
+
+window.displayRecurringTransactions =
+    displayRecurringTransactions;
