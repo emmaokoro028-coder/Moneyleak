@@ -2078,3 +2078,142 @@ button:disabled {
         gap: 5px;
     }
 }
+/* =========================================================
+   SPENDING ANALYTICS
+========================================================= */
+
+.analytics-section {
+    margin-top: 32px;
+}
+
+.analytics-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.analytics-card {
+    background: #ffffff;
+    border: 1px solid #e2eee8;
+    border-radius: 18px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 6px 18px rgba(15, 81, 54, 0.05);
+}
+
+.analytics-icon {
+    font-size: 26px;
+}
+
+.analytics-label {
+    color: #71847a;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.analytics-card strong {
+    color: #153f2d;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.analytics-chart-card {
+    background: #f7fbf9;
+    border: 1px solid #e1eee8;
+    border-radius: 20px;
+    padding: 26px;
+    margin-top: 22px;
+}
+
+.analytics-chart-header h3 {
+    margin: 0;
+    color: #173f2e;
+    font-size: 20px;
+}
+
+.analytics-chart-header p {
+    margin: 6px 0 0;
+    color: #71847a;
+    font-size: 14px;
+}
+
+.analytics-bars {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.analytics-bar-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.analytics-bar-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #315847;
+}
+
+.analytics-bar-track {
+    width: 100%;
+    height: 12px;
+    background: #dfeae5;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.analytics-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #158451, #39b978);
+    border-radius: 999px;
+    transition: width 0.5s ease;
+}
+
+.analytics-empty {
+    text-align: center;
+    padding: 30px 20px;
+    color: #71847a;
+    background: #ffffff;
+    border: 1px dashed #cdded6;
+    border-radius: 16px;
+}
+
+.analytics-insight {
+    margin-top: 20px;
+    padding: 18px 20px;
+    background: #eaf8f0;
+    border: 1px solid #ccebd9;
+    border-radius: 16px;
+    color: #205b3e;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .analytics-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .analytics-chart-card {
+        padding: 20px;
+    }
+
+    .analytics-card strong {
+        font-size: 22px;
+    }
+
+    .analytics-bar-info {
+        font-size: 13px;
+    }
+}
