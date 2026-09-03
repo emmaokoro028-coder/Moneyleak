@@ -2217,3 +2217,248 @@ button:disabled {
         font-size: 13px;
     }
 }
+/* =========================================================
+   RECURRING TRANSACTIONS
+========================================================= */
+
+.recurring-section {
+    margin-top: 32px;
+    padding: 28px;
+    background: #ffffff;
+    border-radius: 22px;
+    border: 1px solid #e7eee9;
+    box-shadow: 0 10px 30px rgba(16, 64, 43, 0.06);
+}
+
+.recurring-section .section-heading {
+    margin-bottom: 24px;
+}
+
+.recurring-section h2 {
+    margin: 6px 0 8px;
+    font-size: 28px;
+    color: #123c2a;
+}
+
+.recurring-section .section-heading p {
+    margin: 0;
+    color: #718178;
+    line-height: 1.6;
+}
+
+.recurring-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 20px;
+    background: #f5faf7;
+    border: 1px solid #e0ece4;
+    border-radius: 18px;
+}
+
+.recurring-form .form-group {
+    min-width: 0;
+}
+
+.recurring-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #234c39;
+    font-weight: 800;
+}
+
+.recurring-form input,
+.recurring-form select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 15px;
+    border: 1px solid #cfded5;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #173d2c;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.recurring-form input:focus,
+.recurring-form select:focus {
+    border-color: #2f8f5b;
+    box-shadow: 0 0 0 3px rgba(47, 143, 91, 0.12);
+}
+
+.recurring-form > .primary-button {
+    grid-column: 1 / -1;
+    min-height: 50px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 12px;
+    background: #218a52;
+    color: #ffffff;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.recurring-form > .primary-button:hover {
+    background: #176d40;
+    transform: translateY(-1px);
+}
+
+.recurring-results {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.recurring-card {
+    padding: 20px;
+    background: #f8fbf9;
+    border: 1px solid #e0ebe4;
+    border-radius: 16px;
+}
+
+.recurring-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.recurring-card-title {
+    margin: 0;
+    color: #173d2c;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.recurring-card-type {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.recurring-card-type.income {
+    background: #dff5e7;
+    color: #176b3c;
+}
+
+.recurring-card-type.expense {
+    background: #ffe5e5;
+    color: #a52828;
+}
+
+.recurring-card-amount {
+    margin: 0 0 12px;
+    color: #173d2c;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.recurring-card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #718178;
+    font-size: 14px;
+}
+
+.recurring-card-details strong {
+    color: #315847;
+}
+
+.recurring-card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.recurring-delete-button {
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid #e1caca;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #a52828;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.recurring-delete-button:hover {
+    background: #fff1f1;
+}
+
+.recurring-empty {
+    grid-column: 1 / -1;
+    padding: 32px 20px;
+    text-align: center;
+    background: #f8fbf9;
+    border: 1px dashed #cfded5;
+    border-radius: 18px;
+    color: #718178;
+}
+
+.recurring-empty:first-line {
+    font-size: 28px;
+}
+
+.recurring-empty h3 {
+    margin: 10px 0 8px;
+    color: #234c39;
+}
+
+.recurring-empty p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+@media (max-width: 800px) {
+
+    .recurring-results {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .recurring-section {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .recurring-section h2 {
+        font-size: 23px;
+    }
+
+    .recurring-form {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .recurring-form > .primary-button {
+        width: 100%;
+    }
+
+    .recurring-card-header {
+        flex-direction: column;
+    }
+
+    .recurring-card-amount {
+        font-size: 21px;
+    }
+
+    .recurring-card-actions {
+        flex-direction: column;
+    }
+
+    .recurring-delete-button {
+        width: 100%;
+    }
+
+}
