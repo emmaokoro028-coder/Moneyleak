@@ -1820,3 +1820,370 @@ window.resetSavingsGoal =
 
 window.loadSavedSavingsGoal =
     loadSavedSavingsGoal;
+/* =========================
+   MONTHLY BUDGET SYSTEM
+========================= */
+
+const BUDGET_STORAGE_KEY = "moneyLeakMonthlyBudget";
+
+let monthlyBudget = loadMonthlyBudget();
+
+
+function loadMonthlyBudget() {
+    const savedBudget = localStorage.getItem(BUDGET_STORAGE_KEY);
+
+    if (!savedBudget) {
+        return 0;
+    }
+
+    const budget = Number(savedBudget);
+
+    return Number.isFinite(budget) && budget > 0
+        ? budget
+        : 0;
+}
+
+
+function saveMonthlyBudget() {
+    if (monthlyBudget > 0) {
+        localStorage.setItem(
+            BUDGET_STORAGE_KEY,
+            String(monthlyBudget)
+        );
+    } else {
+        localStorage.removeItem(BUDGET_STORAGE_KEY);
+    }
+}
+
+
+function getCurrentMonthExpenses() {
+
+    const now = new Date();
+
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    return transactions
+        .filter(transaction => {
+
+            if (transaction.type !== "expense") {
+                return false;
+            }
+
+            const transactionDate =
+                new Date(transaction.date);
+
+            return (
+                transactionDate.getMonth() === currentMonth &&
+                transactionDate.getFullYear() === currentYear
+            );
+        })
+        .reduce(
+            (total, transaction) =>
+                total + Number(transaction.amount || 0),
+            0
+        );
+}
+
+
+function updateBudgetDisplay() {
+
+    const result =
+        document.getElementById("budgetResult");
+
+    if (!result) {
+        return;
+    }
+
+    if (!monthlyBudget || monthlyBudget <= 0) {
+
+        result.innerHTML = `
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    💰
+                </div>
+
+                <h3>
+                    No monthly budget set
+                </h3>
+
+                <p>
+                    Set a budget to see how much of your monthly spending you have used.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const spent = getCurrentMonthExpenses();
+
+    const remaining =
+        monthlyBudget - spent;
+
+    const percentage =
+        (spent / monthlyBudget) * 100;
+
+    const displayPercentage =
+        Math.max(0, Math.min(percentage, 100));
+
+
+    let statusClass = "safe";
+    let statusText = "On Track";
+    let message = "";
+
+
+    if (percentage >= 100) {
+
+        statusClass = "danger";
+        statusText = "Over Budget";
+
+        message = `
+            ⚠️ You've exceeded your monthly budget by
+            <strong>${formatMoney(Math.abs(remaining))}</strong>.
+            Consider reducing non-essential spending for the rest of the month.
+        `;
+
+    } else if (percentage >= 80) {
+
+        statusClass = "warning";
+        statusText = "Almost at Limit";
+
+        message = `
+            ⚠️ You've used more than 80% of your budget.
+            You have
+            <strong>${formatMoney(remaining)}</strong>
+            remaining this month.
+        `;
+
+    } else {
+
+        statusClass = "safe";
+        statusText = "On Track";
+
+        message = `
+            ✅ You're currently on track.
+            You have
+            <strong>${formatMoney(remaining)}</strong>
+            available for the rest of the month.
+        `;
+    }
+
+
+    result.innerHTML = `
+
+        <div class="budget-card">
+
+            <div class="budget-card-header">
+
+                <div>
+
+                    <h3 class="budget-card-title">
+                        This Month's Budget
+                    </h3>
+
+                    <p>
+                        ${percentage.toFixed(1)}% used
+                    </p>
+
+                </div>
+
+                <span class="budget-status ${statusClass}">
+                    ${statusText}
+                </span>
+
+            </div>
+
+
+            <div class="budget-progress">
+
+                <div
+                    class="budget-progress-fill ${statusClass}"
+                    style="width: ${displayPercentage}%"
+                ></div>
+
+            </div>
+
+
+            <div class="budget-stats">
+
+                <div class="budget-stat">
+
+                    <span class="budget-stat-label">
+                        Monthly Budget
+                    </span>
+
+                    <span class="budget-stat-value">
+                        ${formatMoney(monthlyBudget)}
+                    </span>
+
+                </div>
+
+
+                <div class="budget-stat">
+
+                    <span class="budget-stat-label">
+                        Spent
+                    </span>
+
+                    <span class="budget-stat-value">
+                        ${formatMoney(spent)}
+                    </span>
+
+                </div>
+
+
+                <div class="budget-stat">
+
+                    <span class="budget-stat-label">
+                        Remaining
+                    </span>
+
+                    <span class="budget-stat-value">
+                        ${formatMoney(Math.max(remaining, 0))}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <p class="budget-message">
+                ${message}
+            </p>
+
+        </div>
+    `;
+}
+
+
+function setupBudgetSystem() {
+
+    const budgetInput =
+        document.getElementById("monthlyBudget");
+
+    const saveButton =
+        document.getElementById("saveBudgetButton");
+
+    const resetButton =
+        document.getElementById("resetBudgetButton");
+
+
+    if (!budgetInput || !saveButton || !resetButton) {
+        return;
+    }
+
+
+    if (monthlyBudget > 0) {
+
+        budgetInput.value =
+            monthlyBudget;
+    }
+
+
+    saveButton.addEventListener(
+        "click",
+        function () {
+
+            const value =
+                Number(budgetInput.value);
+
+
+            if (!Number.isFinite(value) || value <= 0) {
+
+                alert(
+                    "Please enter a valid monthly budget."
+                );
+
+                budgetInput.focus();
+
+                return;
+            }
+
+
+            monthlyBudget = value;
+
+            saveMonthlyBudget();
+
+            updateBudgetDisplay();
+
+            alert(
+                "Your monthly budget has been saved."
+            );
+        }
+    );
+
+
+    resetButton.addEventListener(
+        "click",
+        function () {
+
+            if (!monthlyBudget) {
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to reset your monthly budget?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            monthlyBudget = 0;
+
+            saveMonthlyBudget();
+
+            budgetInput.value = "";
+
+            updateBudgetDisplay();
+        }
+    );
+
+
+    updateBudgetDisplay();
+}
+
+
+/* =========================
+   UPDATE BUDGET AUTOMATICALLY
+========================= */
+
+function refreshBudgetAfterTransactionChange() {
+
+    if (
+        typeof updateBudgetDisplay === "function"
+    ) {
+        updateBudgetDisplay();
+    }
+}
+
+
+/* =========================
+   INITIALIZE BUDGET
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        setupBudgetSystem();
+
+        updateBudgetDisplay();
+    }
+);
+
+
+/* Make budget functions available */
+window.updateBudgetDisplay =
+    updateBudgetDisplay;
+
+window.setupBudgetSystem =
+    setupBudgetSystem;
