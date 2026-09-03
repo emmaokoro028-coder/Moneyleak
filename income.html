@@ -1,353 +1,2072 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Add and manage your income with MoneyLeak.">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Add Income | MoneyLeak</title>
+    <meta
+        name="description"
+        content="MoneyLeak income manager — track every source of money coming in."
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <meta
+        name="theme-color"
+        content="#0f8f5f"
+    >
+
+    <title>Income — MoneyLeak</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
-
-<header class="site-header">
-
-    <nav class="navbar">
-
-        <a href="index.html" class="brand">
-            <span class="brand-mark">M</span>
-            <span>MoneyLeak</span>
-        </a>
-
-        <div class="nav-links">
-            <a href="index.html">Dashboard</a>
-            <a href="index.html#transactions">Transactions</a>
-            <a href="index.html#savings-section">Savings</a>
-            <a href="index.html#insights">Insights</a>
-        </div>
-
-        <a href="index.html#add-section" class="nav-button">
-            Dashboard
-        </a>
-
-    </nav>
+<div class="app-shell">
 
 
-    <div class="hero-content">
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-        <span class="hero-badge">
-            INCOME
-        </span>
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
 
-        <h1>
-            Add money coming in.
-        </h1>
+        <div class="brand">
 
-        <p>
-            Keep your income records organized and up to date.
-        </p>
+            <div class="brand-mark">
+                ML
+            </div>
 
-    </div>
+            <div class="brand-text">
 
-</header>
+                <strong>
+                    MoneyLeak
+                </strong>
 
-
-<!-- =========================
-     MAIN
-========================= -->
-
-<main>
-
-    <section class="add-section">
-
-        <div class="section-heading">
-
-            <div>
-
-                <span class="section-eyebrow">
-                    MONEY IN
+                <span>
+                    Personal Finance OS
                 </span>
 
-                <h2>
-                    Add Income
-                </h2>
-
             </div>
 
         </div>
 
 
-        <form id="incomeForm">
+        <nav class="sidebar-nav">
 
-            <!-- AMOUNT -->
-
-            <div class="form-group">
-
-                <label for="incomeAmount">
-                    Amount
-                </label>
-
-                <input
-                    type="number"
-                    id="incomeAmount"
-                    placeholder="e.g. 50000"
-                    min="0"
-                    step="0.01"
-                    inputmode="decimal"
-                    required
-                >
-
-            </div>
-
-
-            <!-- CATEGORY -->
-
-            <div class="form-group">
-
-                <label for="incomeCategory">
-                    Income Source
-                </label>
-
-                <input
-                    type="text"
-                    id="incomeCategory"
-                    placeholder="e.g. Salary, Business, Freelance"
-                    maxlength="50"
-                    required
-                >
-
-            </div>
-
-
-            <!-- BUTTON -->
-
-            <button
-                type="submit"
-                class="primary-button"
-            >
-                + Add Income
-            </button>
-
-        </form>
-
-    </section>
-
-
-    <!-- =========================
-         INFO CARD
-    ========================= -->
-
-    <section class="health-card">
-
-        <div class="health-header">
-
-            <div>
-
-                <p class="health-label">
-                    Why track income?
-                </p>
-
-                <h2>
-                    Know what you have.
-                </h2>
-
-            </div>
-
-            <div class="health-icon">
-                💰
-            </div>
-
-        </div>
-
-        <p id="incomeInfoMessage">
-            Recording every source of income helps MoneyLeak calculate your balance and Money Health accurately.
-        </p>
-
-    </section>
-
-
-    <!-- =========================
-         BACK TO DASHBOARD
-    ========================= -->
-
-    <section class="quick-actions">
-
-        <div class="quick-action-grid">
+            <span class="nav-title">
+                MAIN
+            </span>
 
             <a
                 href="index.html"
-                class="quick-action"
+                class="nav-link"
             >
-
-                <span class="quick-action-icon">
-                    ←
-                </span>
-
-                <strong>
-                    Dashboard
-                </strong>
-
-                <small>
-                    Return to your overview
-                </small>
-
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
             </a>
 
+            <a
+                href="income.html"
+                class="nav-link active"
+            >
+                <span class="nav-icon">↗</span>
+                <span>Income</span>
+            </a>
 
             <a
                 href="expenses.html"
-                class="quick-action"
+                class="nav-link"
             >
-
-                <span class="quick-action-icon">
-                    💸
-                </span>
-
-                <strong>
-                    Add Expense
-                </strong>
-
-                <small>
-                    Record money going out
-                </small>
-
+                <span class="nav-icon">↘</span>
+                <span>Expenses</span>
             </a>
 
+            <a
+                href="budgets.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">▣</span>
+                <span>Budgets</span>
+            </a>
 
             <a
                 href="savings.html"
-                class="quick-action"
+                class="nav-link"
             >
+                <span class="nav-icon">◎</span>
+                <span>Savings Goals</span>
+            </a>
 
-                <span class="quick-action-icon">
-                    🎯
+
+            <span class="nav-title">
+                PLANNING
+            </span>
+
+            <a
+                href="recurring.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">↻</span>
+                <span>Recurring</span>
+            </a>
+
+            <a
+                href="analytics.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">▥</span>
+                <span>Analytics</span>
+            </a>
+
+
+            <span class="nav-title">
+                SYSTEM
+            </span>
+
+            <a
+                href="settings.html"
+                class="nav-link"
+            >
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-tip">
+
+                <span class="tip-icon">
+                    ✦
                 </span>
 
-                <strong>
-                    Savings Goal
-                </strong>
+                <div>
 
-                <small>
-                    Plan your savings
-                </small>
+                    <strong>
+                        Smart Money
+                    </strong>
 
-            </a>
+                    <p>
+                        Track every source of income.
+                    </p>
+
+                </div>
+
+            </div>
 
         </div>
 
-    </section>
-
-</main>
+    </aside>
 
 
-<!-- =========================
-     JAVASCRIPT
-========================= -->
 
-<script src="app.js"></script>
+    <!-- =====================================================
+         MAIN AREA
+    ====================================================== -->
 
+    <div class="main-area">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <button
+                class="mobile-menu"
+                id="mobileMenu"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <span>
+                    MONEY COMING IN
+                </span>
+
+                <h1>
+                    Income
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <button
+                    class="icon-button"
+                    id="searchButton"
+                    type="button"
+                    aria-label="Search"
+                >
+                    ⌕
+                </button>
+
+
+                <button
+                    class="icon-button"
+                    id="notificationButton"
+                    type="button"
+                    aria-label="Notifications"
+                >
+                    🔔
+
+                    <span
+                        class="notification-dot"
+                        id="notificationDot"
+                    ></span>
+
+                </button>
+
+
+                <a
+                    href="settings.html"
+                    class="profile-button"
+                >
+
+                    <span class="profile-avatar">
+                        M
+                    </span>
+
+                    <span class="profile-name">
+                        My Money
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             CONTENT
+        ================================================== -->
+
+        <main class="page-content">
+
+
+            <!-- HERO -->
+
+            <section class="dashboard-hero">
+
+                <div>
+
+                    <span class="hero-eyebrow">
+                        INCOME COMMAND CENTER
+                    </span>
+
+                    <h2>
+                        Know exactly where your money comes from.
+                    </h2>
+
+                    <p>
+                        Record your income, understand your earning
+                        sources, and build a clearer picture of your
+                        financial future.
+                    </p>
+
+                </div>
+
+
+                <div class="hero-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="scrollToIncomeForm"
+                    >
+                        + Record Income
+                    </button>
+
+                    <a
+                        href="analytics.html"
+                        class="btn btn-secondary"
+                    >
+                        View Analytics
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 INCOME OVERVIEW
+            ================================================== -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            INCOME SNAPSHOT
+                        </span>
+
+                        <h2>
+                            Your Earnings
+                        </h2>
+
+                        <p>
+                            A quick view of your recorded income.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-grid">
+
+
+                    <article class="overview-card income-card">
+
+                        <div class="card-top">
+
+                            <span class="card-icon">
+                                💰
+                            </span>
+
+                            <span class="card-label">
+                                TOTAL INCOME
+                            </span>
+
+                        </div>
+
+                        <strong
+                            id="incomeTotal"
+                            class="card-value"
+                        >
+                            ₦0
+                        </strong>
+
+                        <span class="card-status">
+                            All recorded income
+                        </span>
+
+                    </article>
+
+
+                    <article class="overview-card balance-card">
+
+                        <div class="card-top">
+
+                            <span class="card-icon">
+                                📅
+                            </span>
+
+                            <span class="card-label">
+                                THIS MONTH
+                            </span>
+
+                        </div>
+
+                        <strong
+                            id="incomeMonth"
+                            class="card-value"
+                        >
+                            ₦0
+                        </strong>
+
+                        <span class="card-status">
+                            Income received this month
+                        </span>
+
+                    </article>
+
+
+                    <article class="overview-card savings-card">
+
+                        <div class="card-top">
+
+                            <span class="card-icon">
+                                📊
+                            </span>
+
+                            <span class="card-label">
+                                AVERAGE INCOME
+                            </span>
+
+                        </div>
+
+                        <strong
+                            id="incomeAverage"
+                            class="card-value"
+                        >
+                            ₦0
+                        </strong>
+
+                        <span class="card-status">
+                            Average recorded income
+                        </span>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ADD INCOME
+            ================================================== -->
+
+            <section
+                class="dashboard-section"
+                id="incomeFormSection"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            ADD MONEY
+                        </span>
+
+                        <h2>
+                            Record New Income
+                        </h2>
+
+                        <p>
+                            Add salary, freelance work, business income,
+                            gifts, or any other money you receive.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <article class="panel">
+
+                    <form
+                        id="incomeForm"
+                        autocomplete="off"
+                    >
+
+
+                        <div
+                            style="
+                                display:grid;
+                                grid-template-columns:
+                                repeat(2,minmax(0,1fr));
+                                gap:16px;
+                            "
+                        >
+
+
+                            <!-- AMOUNT -->
+
+                            <div>
+
+                                <label
+                                    for="incomeAmount"
+                                    style="
+                                        display:block;
+                                        margin-bottom:6px;
+                                        color:#53615b;
+                                        font-size:10px;
+                                        font-weight:800;
+                                    "
+                                >
+                                    Amount
+                                </label>
+
+                                <input
+                                    id="incomeAmount"
+                                    name="amount"
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="e.g. 100000"
+                                    required
+                                    style="
+                                        width:100%;
+                                        height:45px;
+                                        padding:0 13px;
+                                        border:1px solid #dfe8e3;
+                                        border-radius:10px;
+                                        outline:none;
+                                        color:#394840;
+                                        background:white;
+                                    "
+                                >
+
+                            </div>
+
+
+
+                            <!-- SOURCE -->
+
+                            <div>
+
+                                <label
+                                    for="incomeSource"
+                                    style="
+                                        display:block;
+                                        margin-bottom:6px;
+                                        color:#53615b;
+                                        font-size:10px;
+                                        font-weight:800;
+                                    "
+                                >
+                                    Income Source
+                                </label>
+
+                                <select
+                                    id="incomeSource"
+                                    name="source"
+                                    required
+                                    style="
+                                        width:100%;
+                                        height:45px;
+                                        padding:0 13px;
+                                        border:1px solid #dfe8e3;
+                                        border-radius:10px;
+                                        outline:none;
+                                        color:#394840;
+                                        background:white;
+                                    "
+                                >
+
+                                    <option value="">
+                                        Select source
+                                    </option>
+
+                                    <option value="Salary">
+                                        Salary
+                                    </option>
+
+                                    <option value="Freelance">
+                                        Freelance
+                                    </option>
+
+                                    <option value="Business">
+                                        Business
+                                    </option>
+
+                                    <option value="Investment">
+                                        Investment
+                                    </option>
+
+                                    <option value="Gift">
+                                        Gift
+                                    </option>
+
+                                    <option value="Allowance">
+                                        Allowance
+                                    </option>
+
+                                    <option value="Side Hustle">
+                                        Side Hustle
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- DESCRIPTION -->
+
+                            <div>
+
+                                <label
+                                    for="incomeDescription"
+                                    style="
+                                        display:block;
+                                        margin-bottom:6px;
+                                        color:#53615b;
+                                        font-size:10px;
+                                        font-weight:800;
+                                    "
+                                >
+                                    Description
+                                </label>
+
+                                <input
+                                    id="incomeDescription"
+                                    name="description"
+                                    type="text"
+                                    placeholder="e.g. September salary"
+                                    style="
+                                        width:100%;
+                                        height:45px;
+                                        padding:0 13px;
+                                        border:1px solid #dfe8e3;
+                                        border-radius:10px;
+                                        outline:none;
+                                        color:#394840;
+                                        background:white;
+                                    "
+                                >
+
+                            </div>
+
+
+
+                            <!-- DATE -->
+
+                            <div>
+
+                                <label
+                                    for="incomeDate"
+                                    style="
+                                        display:block;
+                                        margin-bottom:6px;
+                                        color:#53615b;
+                                        font-size:10px;
+                                        font-weight:800;
+                                    "
+                                >
+                                    Date Received
+                                </label>
+
+                                <input
+                                    id="incomeDate"
+                                    name="date"
+                                    type="date"
+                                    required
+                                    style="
+                                        width:100%;
+                                        height:45px;
+                                        padding:0 13px;
+                                        border:1px solid #dfe8e3;
+                                        border-radius:10px;
+                                        outline:none;
+                                        color:#394840;
+                                        background:white;
+                                    "
+                                >
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- NOTE -->
+
+                        <div
+                            style="
+                                margin-top:16px;
+                            "
+                        >
+
+                            <label
+                                for="incomeNote"
+                                style="
+                                    display:block;
+                                    margin-bottom:6px;
+                                    color:#53615b;
+                                    font-size:10px;
+                                    font-weight:800;
+                                "
+                            >
+                                Note
+                            </label>
+
+                            <textarea
+                                id="incomeNote"
+                                name="note"
+                                rows="3"
+                                placeholder="Optional note about this income..."
+                                style="
+                                    width:100%;
+                                    padding:12px 13px;
+                                    border:1px solid #dfe8e3;
+                                    border-radius:10px;
+                                    outline:none;
+                                    resize:vertical;
+                                    color:#394840;
+                                    background:white;
+                                "
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- ACTIONS -->
+
+                        <div
+                            style="
+                                margin-top:17px;
+                                display:flex;
+                                justify-content:flex-end;
+                                gap:8px;
+                            "
+                        >
+
+                            <button
+                                type="reset"
+                                class="btn btn-secondary"
+                            >
+                                Clear
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                + Save Income
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </article>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SOURCE BREAKDOWN
+            ================================================== -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            EARNING SOURCES
+                        </span>
+
+                        <h2>
+                            Where Your Income Comes From
+                        </h2>
+
+                        <p>
+                            Understand which income sources contribute the most.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <article class="panel">
+
+                    <div
+                        id="incomeSourceBreakdown"
+                        class="category-list"
+                    >
+
+                        <div class="empty-state compact">
+
+                            <div class="empty-icon">
+                                ↗
+                            </div>
+
+                            <h4>
+                                No income sources yet
+                            </h4>
+
+                            <p>
+                                Your income breakdown will appear here after you record income.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 INCOME HISTORY
+            ================================================== -->
+
+            <section class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            HISTORY
+                        </span>
+
+                        <h2>
+                            Income History
+                        </h2>
+
+                        <p>
+                            Every income transaction you've recorded.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            gap:8px;
+                            flex-wrap:wrap;
+                        "
+                    >
+
+                        <select
+                            id="incomeFilter"
+                            style="
+                                min-height:36px;
+                                padding:0 10px;
+                                border:1px solid #dfe8e3;
+                                border-radius:9px;
+                                background:white;
+                                color:#64716b;
+                                font-size:9px;
+                                font-weight:700;
+                            "
+                        >
+
+                            <option value="all">
+                                All sources
+                            </option>
+
+                            <option value="Salary">
+                                Salary
+                            </option>
+
+                            <option value="Freelance">
+                                Freelance
+                            </option>
+
+                            <option value="Business">
+                                Business
+                            </option>
+
+                            <option value="Investment">
+                                Investment
+                            </option>
+
+                            <option value="Gift">
+                                Gift
+                            </option>
+
+                            <option value="Allowance">
+                                Allowance
+                            </option>
+
+                            <option value="Side Hustle">
+                                Side Hustle
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+
+                        <input
+                            id="incomeSearch"
+                            type="search"
+                            placeholder="Search income..."
+                            style="
+                                width:180px;
+                                min-height:36px;
+                                padding:0 11px;
+                                border:1px solid #dfe8e3;
+                                border-radius:9px;
+                                outline:none;
+                                background:white;
+                                color:#64716b;
+                                font-size:9px;
+                            "
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <article class="panel">
+
+                    <div
+                        id="incomeHistory"
+                        class="transaction-list"
+                    >
+
+                        <div class="empty-state">
+
+                            <div class="empty-icon">
+                                ↗
+                            </div>
+
+                            <h4>
+                                No income recorded
+                            </h4>
+
+                            <p>
+                                Add your first income transaction above.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 INCOME INSIGHT
+            ================================================== -->
+
+            <section class="dashboard-section">
+
+                <div
+                    id="incomeInsight"
+                    class="smart-insight"
+                >
+
+                    <div class="insight-icon">
+                        ✦
+                    </div>
+
+                    <div class="insight-content">
+
+                        <span>
+                            MONEYLEAK INSIGHT
+                        </span>
+
+                        <h3>
+                            Your income intelligence will appear here.
+                        </h3>
+
+                        <p>
+                            Record income to discover patterns in your earnings,
+                            identify your strongest income sources, and understand
+                            how your earning power changes over time.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+
+
+        <!-- FOOTER -->
+
+        <footer class="app-footer">
+
+            <div>
+
+                <strong>
+                    MoneyLeak
+                </strong>
+
+                <span>
+                    Your money. Your decisions. Your future.
+                </span>
+
+            </div>
+
+            <span>
+                © <span id="footerYear"></span> MoneyLeak
+            </span>
+
+        </footer>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     SEARCH
+========================================================= -->
+
+<div
+    class="search-overlay"
+    id="searchOverlay"
+    hidden
+>
+
+    <div class="search-box">
+
+        <div class="search-box-header">
+
+            <strong>
+                Search MoneyLeak
+            </strong>
+
+            <button
+                id="closeSearch"
+                type="button"
+                class="close-button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="search-input-wrapper">
+
+            <span>
+                ⌕
+            </span>
+
+            <input
+                id="globalSearch"
+                type="search"
+                placeholder="Search transactions, pages..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div
+            id="searchResults"
+            class="search-results"
+        >
+
+            <p>
+                Start typing to search.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     NOTIFICATIONS
+========================================================= -->
+
+<div
+    class="notification-panel"
+    id="notificationPanel"
+    hidden
+>
+
+    <div class="notification-panel-header">
+
+        <div>
+
+            <strong>
+                Notifications
+            </strong>
+
+            <span>
+                MoneyLeak intelligence
+            </span>
+
+        </div>
+
+        <button
+            id="closeNotifications"
+            type="button"
+            class="close-button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        id="notificationList"
+        class="notification-list"
+    ></div>
+
+</div>
+
+
+
+<!-- MOBILE OVERLAY -->
+
+<div
+    class="mobile-overlay"
+    id="mobileOverlay"
+    hidden
+></div>
+
+
+
+<!-- =========================================================
+     INCOME PAGE ENGINE
+========================================================= -->
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    const form = document.getElementById("incomeForm");
-
-    const amountInput =
-        document.getElementById("incomeAmount");
-
-    const categoryInput =
-        document.getElementById("incomeCategory");
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
 
-    if (!form) {
-        return;
+        /* =================================================
+           DEFAULT DATE
+        ================================================== */
+
+        const dateInput =
+            document.getElementById(
+                "incomeDate"
+            );
+
+
+        if (dateInput) {
+
+            const today =
+                new Date();
+
+
+            const year =
+                today.getFullYear();
+
+
+            const month =
+                String(
+                    today.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const day =
+                String(
+                    today.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            dateInput.value =
+                `${year}-${month}-${day}`;
+
+        }
+
+
+
+        /* =================================================
+           PAGE RENDER
+        ================================================== */
+
+        function renderIncomePage() {
+
+            if (
+                !window.MoneyLeak
+            ) {
+
+                return;
+
+            }
+
+
+            const allTransactions =
+                window.MoneyLeak.transactions;
+
+
+            const income =
+                allTransactions.filter(
+                    transaction =>
+                        transaction.type ===
+                        "income"
+                );
+
+
+            /* TOTAL */
+
+            const total =
+                income.reduce(
+                    (
+                        sum,
+                        transaction
+                    ) =>
+                        sum +
+                        Number(
+                            transaction.amount
+                        ),
+
+                    0
+                );
+
+
+            document
+                .getElementById(
+                    "incomeTotal"
+                )
+                .textContent =
+                window.MoneyLeak
+                    .formatCompactCurrency(
+                        total
+                    );
+
+
+
+            /* THIS MONTH */
+
+            const now =
+                new Date();
+
+
+            const monthIncome =
+                income.filter(
+                    transaction => {
+
+                        const date =
+                            new Date(
+                                transaction.date
+                            );
+
+
+                        return (
+                            date.getMonth() ===
+                            now.getMonth() &&
+                            date.getFullYear() ===
+                            now.getFullYear()
+                        );
+
+                    }
+                );
+
+
+            const monthTotal =
+                monthIncome.reduce(
+                    (
+                        sum,
+                        transaction
+                    ) =>
+                        sum +
+                        Number(
+                            transaction.amount
+                        ),
+
+                    0
+                );
+
+
+            document
+                .getElementById(
+                    "incomeMonth"
+                )
+                .textContent =
+                window.MoneyLeak
+                    .formatCompactCurrency(
+                        monthTotal
+                    );
+
+
+
+            /* AVERAGE */
+
+            const average =
+                income.length
+                    ? total /
+                      income.length
+                    : 0;
+
+
+            document
+                .getElementById(
+                    "incomeAverage"
+                )
+                .textContent =
+                window.MoneyLeak
+                    .formatCompactCurrency(
+                        average
+                    );
+
+
+
+            renderSourceBreakdown(
+                income
+            );
+
+
+            renderHistory(
+                income
+            );
+
+
+            renderIncomeInsight(
+                income,
+                total
+            );
+
+        }
+
+
+
+        /* =================================================
+           SOURCE BREAKDOWN
+        ================================================== */
+
+        function renderSourceBreakdown(
+            income
+        ) {
+
+            const container =
+                document.getElementById(
+                    "incomeSourceBreakdown"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            const grouped = {};
+
+
+            income.forEach(
+                transaction => {
+
+                    const source =
+                        transaction.category ||
+                        "Other";
+
+
+                    grouped[source] =
+                        (
+                            grouped[source] ||
+                            0
+                        ) +
+                        Number(
+                            transaction.amount
+                        );
+
+                }
+            );
+
+
+            const list =
+                Object.entries(
+                    grouped
+                )
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        b[1] -
+                        a[1]
+                );
+
+
+            if (
+                list.length === 0
+            ) {
+
+                container.innerHTML = `
+
+                    <div class="empty-state compact">
+
+                        <div class="empty-icon">
+                            ↗
+                        </div>
+
+                        <h4>
+                            No income sources yet
+                        </h4>
+
+                        <p>
+                            Your income breakdown will appear here after you record income.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            const maximum =
+                list[0][1];
+
+
+            container.innerHTML =
+                list.map(
+                    (
+                        [
+                            source,
+                            amount
+                        ]
+                    ) => {
+
+                        const width =
+                            (
+                                amount /
+                                maximum
+                            ) *
+                            100;
+
+
+                        return `
+
+                            <div class="category-item">
+
+                                <div class="category-heading">
+
+                                    <span class="category-name">
+                                        ↗
+                                        ${escapeHTML(
+                                            source
+                                        )}
+                                    </span>
+
+                                    <strong class="category-amount">
+                                        ${window.MoneyLeak.formatCurrency(
+                                            amount
+                                        )}
+                                    </strong>
+
+                                </div>
+
+                                <div class="category-track">
+
+                                    <div
+                                        class="category-fill"
+                                        style="
+                                            width:${width}%;
+                                        "
+                                    ></div>
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+        }
+
+
+
+        /* =================================================
+           HISTORY
+        ================================================== */
+
+        function renderHistory(
+            income
+        ) {
+
+            const container =
+                document.getElementById(
+                    "incomeHistory"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            const filter =
+                document.getElementById(
+                    "incomeFilter"
+                )?.value ||
+                "all";
+
+
+            const search =
+                document.getElementById(
+                    "incomeSearch"
+                )?.value
+                    .trim()
+                    .toLowerCase() ||
+                "";
+
+
+            const filtered =
+                income.filter(
+                    transaction => {
+
+                        const matchesFilter =
+                            filter === "all" ||
+                            transaction.category ===
+                            filter;
+
+
+                        const matchesSearch =
+                            !search ||
+                            (
+                                transaction.description +
+                                " " +
+                                transaction.category
+                            )
+                            .toLowerCase()
+                            .includes(
+                                search
+                            );
+
+
+                        return (
+                            matchesFilter &&
+                            matchesSearch
+                        );
+
+                    }
+                );
+
+
+            if (
+                filtered.length === 0
+            ) {
+
+                container.innerHTML = `
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ↗
+                        </div>
+
+                        <h4>
+                            No matching income
+                        </h4>
+
+                        <p>
+                            Try another search or income source.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                filtered.map(
+                    transaction => `
+
+                        <div class="transaction-item">
+
+                            <div class="transaction-icon">
+                                ↗
+                            </div>
+
+                            <div class="transaction-info">
+
+                                <strong>
+                                    ${escapeHTML(
+                                        transaction.description
+                                    )}
+                                </strong>
+
+                                <span>
+                                    ${escapeHTML(
+                                        transaction.category
+                                    )}
+                                    •
+                                    ${window.MoneyLeak.formatDate(
+                                        transaction.date
+                                    )}
+                                </span>
+
+                            </div>
+
+                            <strong
+                                class="transaction-amount income"
+                            >
+                                +
+                                ${window.MoneyLeak.formatCurrency(
+                                    transaction.amount
+                                )}
+                            </strong>
+
+                            <button
+                                type="button"
+                                data-delete-income="${escapeHTML(
+                                    transaction.id
+                                )}"
+                                style="
+                                    border:0;
+                                    background:#fff1f1;
+                                    color:#d75b5b;
+                                    width:29px;
+                                    height:29px;
+                                    border-radius:7px;
+                                    font-size:12px;
+                                "
+                                title="Delete income"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+
+
+            container
+                .querySelectorAll(
+                    "[data-delete-income]"
+                )
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            () => {
+
+                                const id =
+                                    button.dataset
+                                        .deleteIncome;
+
+
+                                const confirmed =
+                                    confirm(
+                                        "Delete this income transaction?"
+                                    );
+
+
+                                if (
+                                    !confirmed
+                                ) {
+                                    return;
+                                }
+
+
+                                window.MoneyLeak
+                                    .deleteTransaction(
+                                        id
+                                    );
+
+
+                                renderIncomePage();
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
+
+
+        /* =================================================
+           INSIGHT
+        ================================================== */
+
+        function renderIncomeInsight(
+            income,
+            total
+        ) {
+
+            const title =
+                document.querySelector(
+                    "#incomeInsight h3"
+                );
+
+
+            const text =
+                document.querySelector(
+                    "#incomeInsight p"
+                );
+
+
+            if (
+                income.length === 0
+            ) {
+
+                if (title) {
+
+                    title.textContent =
+                        "Your income intelligence will appear here.";
+
+                }
+
+
+                if (text) {
+
+                    text.textContent =
+                        "Record income to discover patterns in your earnings, identify your strongest income sources, and understand how your earning power changes over time.";
+
+                }
+
+                return;
+
+            }
+
+
+            const grouped = {};
+
+
+            income.forEach(
+                transaction => {
+
+                    const source =
+                        transaction.category ||
+                        "Other";
+
+
+                    grouped[source] =
+                        (
+                            grouped[source] ||
+                            0
+                        ) +
+                        Number(
+                            transaction.amount
+                        );
+
+                }
+            );
+
+
+            const strongest =
+                Object.entries(
+                    grouped
+                )
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        b[1] -
+                        a[1]
+                )[0];
+
+
+            if (title) {
+
+                title.textContent =
+                    strongest
+                        ? `${strongest[0]} is your strongest recorded income source.`
+                        : "You're building your income history.";
+
+            }
+
+
+            if (text) {
+
+                text.textContent =
+                    strongest
+                        ? `${strongest[0]} represents ${Math.round(
+                            (
+                                strongest[1] /
+                                total
+                            ) *
+                            100
+                        )}% of your recorded income. Keep tracking different income streams to understand how diversified your earnings are.`
+                        : "Keep recording income so MoneyLeak can identify useful patterns.";
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           FORM
+        ================================================== */
+
+        const form =
+            document.getElementById(
+                "incomeForm"
+            );
+
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                event => {
+
+                    event.preventDefault();
+
+
+                    const amount =
+                        Number(
+                            document.getElementById(
+                                "incomeAmount"
+                            ).value
+                        );
+
+
+                    const source =
+                        document.getElementById(
+                            "incomeSource"
+                        ).value;
+
+
+                    const description =
+                        document.getElementById(
+                            "incomeDescription"
+                        ).value
+                            .trim();
+
+
+                    const date =
+                        document.getElementById(
+                            "incomeDate"
+                        ).value;
+
+
+                    const note =
+                        document.getElementById(
+                            "incomeNote"
+                        ).value
+                            .trim();
+
+
+                    if (
+                        !amount ||
+                        amount <= 0
+                    ) {
+
+                        alert(
+                            "Please enter a valid income amount."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!source) {
+
+                        alert(
+                            "Please select an income source."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!date) {
+
+                        alert(
+                            "Please select the date."
+                        );
+
+                        return;
+
+                    }
+
+
+                    window.MoneyLeak
+                        .addTransaction({
+
+                            amount,
+
+                            type:
+                                "income",
+
+                            category:
+                                source,
+
+                            description:
+                                description ||
+                                source,
+
+                            date:
+                                new Date(
+                                    `${date}T12:00:00`
+                                ).toISOString(),
+
+                            note
+
+                        });
+
+
+                    form.reset();
+
+
+                    const dateInput =
+                        document.getElementById(
+                            "incomeDate"
+                        );
+
+
+                    if (dateInput) {
+
+                        const today =
+                            new Date();
+
+
+                        dateInput.value =
+                            today
+                                .toISOString()
+                                .split("T")[0];
+
+                    }
+
+
+                    renderIncomePage();
+
+
+                    alert(
+                        "Income added successfully."
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* =================================================
+           FILTERS
+        ================================================== */
+
+        document
+            .getElementById(
+                "incomeFilter"
+            )
+            ?.addEventListener(
+                "change",
+                renderIncomePage
+            );
+
+
+        document
+            .getElementById(
+                "incomeSearch"
+            )
+            ?.addEventListener(
+                "input",
+                renderIncomePage
+            );
+
+
+
+        /* =================================================
+           SCROLL BUTTON
+        ================================================== */
+
+        document
+            .getElementById(
+                "scrollToIncomeForm"
+            )
+            ?.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .getElementById(
+                            "incomeFormSection"
+                        )
+                        ?.scrollIntoView({
+                            behavior: "smooth"
+                        });
+
+                }
+            );
+
+
+
+        /* =================================================
+           SAFE HTML
+        ================================================== */
+
+        function escapeHTML(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+        }
+
+
+
+        /* =================================================
+           GLOBAL PAGE UPDATE
+        ================================================== */
+
+        window.moneyLeakPageUpdate =
+            renderIncomePage;
+
+
+        renderIncomePage();
+
+
     }
-
-
-    form.addEventListener("submit", function (event) {
-
-        event.preventDefault();
-
-
-        const amount =
-            Number(amountInput.value);
-
-        const category =
-            categoryInput.value.trim();
-
-
-        if (!amount || amount <= 0) {
-
-            alert("Please enter a valid income amount.");
-
-            amountInput.focus();
-
-            return;
-        }
-
-
-        if (!category) {
-
-            alert("Please enter where the income came from.");
-
-            categoryInput.focus();
-
-            return;
-        }
-
-
-        const existingTransactions =
-            JSON.parse(
-                localStorage.getItem("moneyLeakTransactions")
-            ) || [];
-
-
-        existingTransactions.unshift({
-
-            id: Date.now().toString(),
-
-            amount: amount,
-
-            type: "income",
-
-            category: category,
-
-            date: new Date().toISOString()
-
-        });
-
-
-        localStorage.setItem(
-            "moneyLeakTransactions",
-            JSON.stringify(existingTransactions)
-        );
-
-
-        amountInput.value = "";
-
-        categoryInput.value = "";
-
-
-        alert("Income added successfully! 💰");
-
-
-        window.location.href =
-            "index.html#transactions";
-
-    });
-
-});
+);
 
 </script>
 
+
+<script src="app.js"></script>
+
 </body>
+
 </html>
