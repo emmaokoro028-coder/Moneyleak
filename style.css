@@ -2768,3 +2768,352 @@ button:disabled {
     }
 
 }
+/* =========================================================
+   SMART FINANCIAL ALERTS
+========================================================= */
+
+.alerts-section {
+    margin-top: 32px;
+    padding: 28px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 12px 35px rgba(16, 64, 45, 0.08);
+}
+
+.alerts-section .section-heading {
+    margin-bottom: 24px;
+}
+
+.alerts-section .section-heading h2 {
+    margin: 6px 0 8px;
+    font-size: 28px;
+    color: #123c2b;
+}
+
+.alerts-section .section-heading p {
+    margin: 0;
+    color: #6b7d74;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   ALERT CONTAINER
+========================= */
+
+.financial-alerts {
+    display: grid;
+    gap: 14px;
+}
+
+
+/* =========================
+   ALERT CARD
+========================= */
+
+.financial-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    border: 1px solid #e4eee9;
+    background: #f8fbf9;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.financial-alert:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 64, 45, 0.08);
+}
+
+
+/* =========================
+   ALERT ICON
+========================= */
+
+.financial-alert-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #e7f7ef;
+
+    font-size: 21px;
+}
+
+
+/* =========================
+   ALERT CONTENT
+========================= */
+
+.financial-alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.financial-alert-content h3 {
+    margin: 0 0 5px;
+
+    color: #173f30;
+
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.financial-alert-content p {
+    margin: 0;
+
+    color: #6b7d74;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   ALERT TYPES
+========================= */
+
+.financial-alert.success {
+    background: #f0faf5;
+    border-color: #d7eee1;
+}
+
+.financial-alert.success
+.financial-alert-icon {
+    background: #dff5e9;
+}
+
+
+.financial-alert.info {
+    background: #f3f8fc;
+    border-color: #dceaf3;
+}
+
+.financial-alert.info
+.financial-alert-icon {
+    background: #e3f0f8;
+}
+
+
+.financial-alert.warning {
+    background: #fffaf0;
+    border-color: #f3e4c2;
+}
+
+.financial-alert.warning
+.financial-alert-icon {
+    background: #fff0cf;
+}
+
+
+.financial-alert.danger {
+    background: #fff5f5;
+    border-color: #f2d8d8;
+}
+
+.financial-alert.danger
+.financial-alert-icon {
+    background: #ffe2e2;
+}
+
+
+/* =========================
+   ALERT BADGE
+========================= */
+
+.financial-alert-badge {
+    display: inline-flex;
+
+    margin-top: 8px;
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    background: #e7f7ef;
+    color: #137447;
+}
+
+.financial-alert.warning
+.financial-alert-badge {
+    background: #fff0cf;
+    color: #956313;
+}
+
+.financial-alert.danger
+.financial-alert-badge {
+    background: #ffe2e2;
+    color: #a52d2d;
+}
+
+.financial-alert.info
+.financial-alert-badge {
+    background: #e3f0f8;
+    color: #28617e;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.alert-empty {
+    padding: 34px 24px;
+
+    text-align: center;
+
+    border-radius: 18px;
+
+    background: #f8fbf9;
+
+    border: 1px dashed #d9e9e1;
+}
+
+.alert-empty-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: #e7f7ef;
+
+    font-size: 26px;
+}
+
+.alert-empty h3 {
+    margin: 0 0 8px;
+
+    color: #173f30;
+
+    font-size: 17px;
+}
+
+.alert-empty p {
+    max-width: 620px;
+
+    margin: 0 auto;
+
+    color: #6b7d74;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   ALERT SUMMARY
+========================= */
+
+.alert-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+.alert-summary-card {
+    padding: 18px;
+
+    border-radius: 18px;
+
+    background: #f8fbf9;
+
+    border: 1px solid #e4eee9;
+}
+
+.alert-summary-card span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #72847b;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.alert-summary-card strong {
+    color: #173f30;
+
+    font-size: 24px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .alerts-section {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .alerts-section .section-heading h2 {
+        font-size: 24px;
+    }
+
+    .financial-alert {
+        padding: 16px;
+    }
+
+    .financial-alert-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        font-size: 19px;
+    }
+
+    .financial-alert-content h3 {
+        font-size: 15px;
+    }
+
+    .alert-summary {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================
+   ACCESSIBILITY
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .financial-alert {
+        transition: none;
+    }
+
+    .financial-alert:hover {
+        transform: none;
+    }
+
+}
