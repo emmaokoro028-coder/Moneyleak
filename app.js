@@ -4588,3 +4588,762 @@ window.getCurrentMonthExpenses =
 /* =========================================================
    END OF MONEYLEAK APP
 ========================================================= */
+/* =========================================================
+   SMART FINANCIAL ALERTS
+========================================================= */
+
+function updateFinancialAlerts() {
+
+    const alertsContainer =
+        getElement("financialAlerts");
+
+
+    if (!alertsContainer) {
+        return;
+    }
+
+
+    const alerts = [];
+
+
+    const totals =
+        calculateTotals();
+
+
+    const income =
+        Number(totals.income) || 0;
+
+    const expenses =
+        Number(totals.expenses) || 0;
+
+
+    /* =========================
+       NO ACTIVITY
+    ========================= */
+
+    if (
+        income === 0 &&
+        expenses === 0
+    ) {
+
+        alerts.push({
+
+            type: "info",
+
+            icon: "💡",
+
+            title:
+                "Start tracking your money",
+
+            message:
+                "Add your income and expenses so MoneyLeak can give you personalized financial alerts.",
+
+            badge:
+                "Getting Started"
+
+        });
+
+    }
+
+
+    /* =========================
+       INCOME VS SPENDING
+    ========================= */
+
+    if (
+        income > 0
+    ) {
+
+        const spendingRatio =
+            expenses / income;
+
+
+        if (
+            spendingRatio > 1
+        ) {
+
+            alerts.push({
+
+                type: "danger",
+
+                icon: "🚨",
+
+                title:
+                    "You're spending more than you earn",
+
+                message:
+                    `Your recorded expenses are ${Math.round(
+                        spendingRatio * 100
+                    )}% of your recorded income. Review your largest expenses and look for areas to reduce spending.`,
+
+                badge:
+                    "Critical"
+
+            });
+
+        } else if (
+            spendingRatio >= 0.80
+        ) {
+
+            alerts.push({
+
+                type: "warning",
+
+                icon: "⚠️",
+
+                title:
+                    "Your spending is getting high",
+
+                message:
+                    `You're using ${Math.round(
+                        spendingRatio * 100
+                    )}% of your recorded income. Try keeping more of your income available for savings and unexpected expenses.`,
+
+                badge:
+                    "Watch Spending"
+
+            });
+
+        } else if (
+            spendingRatio <= 0.50
+        ) {
+
+            alerts.push({
+
+                type: "success",
+
+                icon: "💚",
+
+                title:
+                    "Your spending is well controlled",
+
+                message:
+                    `You're currently spending about ${Math.round(
+                        spendingRatio * 100
+                    )}% of your recorded income. Keep maintaining this healthy balance.`,
+
+                badge:
+                    "Healthy"
+
+            });
+
+        }
+
+    }
+
+
+    /* =========================
+       MONTHLY BUDGET
+    ========================= */
+
+    const budget =
+        Number(
+            monthlyBudget
+        ) || 0;
+
+
+    const monthlyExpenses =
+        getCurrentMonthExpenses();
+
+
+    if (
+        budget > 0
+    ) {
+
+        const usage =
+            monthlyExpenses /
+            budget;
+
+
+        if (
+            usage > 1
+        ) {
+
+            alerts.push({
+
+                type: "danger",
+
+                icon: "💰",
+
+                title:
+                    "You've exceeded your monthly budget",
+
+                message:
+                    `You've spent ${formatMoney(
+                        monthlyExpenses
+                    )} against a budget of ${formatMoney(
+                        budget
+                    )}. You're over budget by ${formatMoney(
+                        monthlyExpenses - budget
+                    )}.`,
+
+                badge:
+                    "Over Budget"
+
+            });
+
+        } else if (
+            usage >= 0.80
+        ) {
+
+            alerts.push({
+
+                type: "warning",
+
+                icon: "🟡",
+
+                title:
+                    "You're close to your monthly budget",
+
+                message:
+                    `You've used ${Math.round(
+                        usage * 100
+                    )}% of your monthly budget. You have ${formatMoney(
+                        Math.max(
+                            0,
+                            budget - monthlyExpenses
+                        )
+                    )} remaining.`,
+
+                badge:
+                    "Budget Warning"
+
+            });
+
+        } else {
+
+            alerts.push({
+
+                type: "success",
+
+                icon: "✅",
+
+                title:
+                    "You're on track with your budget",
+
+                message:
+                    `You've used ${Math.round(
+                        usage * 100
+                    )}% of your monthly budget. Keep it up.`,
+
+                badge:
+                    "On Track"
+
+            });
+
+        }
+
+    }
+
+
+    /* =========================
+       CATEGORY BUDGETS
+    ========================= */
+
+    Object.keys(
+        categoryBudgetFields
+    ).forEach(
+        category => {
+
+            const limit =
+                getCategoryBudgetAmount(
+                    category
+                );
+
+
+            if (
+                limit <= 0
+            ) {
+
+                return;
+
+            }
+
+
+            const spent =
+                getCategorySpending(
+                    category
+                );
+
+
+            const usage =
+                spent /
+                limit;
+
+
+            if (
+                usage > 1
+            ) {
+
+                alerts.push({
+
+                    type: "danger",
+
+                    icon: "🔴",
+
+                    title:
+                        `${category} budget exceeded`,
+
+                    message:
+                        `You've spent ${formatMoney(
+                            spent
+                        )} on ${category}, which is ${formatMoney(
+                            spent - limit
+                        )} over your category limit.`,
+
+                    badge:
+                        "Category Alert"
+
+                });
+
+            } else if (
+                usage >= 0.80
+            ) {
+
+                alerts.push({
+
+                    type: "warning",
+
+                    icon: "🟡",
+
+                    title:
+                        `${category} is near its limit`,
+
+                    message:
+                        `You've used ${Math.round(
+                            usage * 100
+                        )}% of your ${category} budget. Only ${formatMoney(
+                            Math.max(
+                                0,
+                                limit - spent
+                            )
+                        )} remains.`,
+
+                    badge:
+                        "Category Warning"
+
+                });
+
+            }
+
+        }
+    );
+
+
+    /* =========================
+       SAVINGS GOAL
+    ========================= */
+
+    const target =
+        Number(
+            savingsGoal.targetAmount
+        ) || 0;
+
+
+    const saved =
+        Number(
+            savingsGoal.currentSavings
+        ) || 0;
+
+
+    if (
+        target > 0
+    ) {
+
+        const savingsPercentage =
+            (
+                saved /
+                target
+            ) * 100;
+
+
+        if (
+            savingsPercentage >= 100
+        ) {
+
+            alerts.push({
+
+                type: "success",
+
+                icon: "🎯",
+
+                title:
+                    "Savings goal reached!",
+
+                message:
+                    `Congratulations! You've reached your ${formatMoney(
+                        target
+                    )} savings goal.`,
+
+                badge:
+                    "Goal Reached"
+
+            });
+
+        } else if (
+            savingsPercentage >= 75
+        ) {
+
+            alerts.push({
+
+                type: "success",
+
+                icon: "🎯",
+
+                title:
+                    "You're close to your savings goal",
+
+                message:
+                    `You've saved ${Math.round(
+                        savingsPercentage
+                    )}% of your goal. Only ${formatMoney(
+                        Math.max(
+                            0,
+                            target - saved
+                        )
+                    )} remains.`,
+
+                badge:
+                    "Almost There"
+
+            });
+
+        } else if (
+            savingsPercentage < 25
+        ) {
+
+            alerts.push({
+
+                type: "warning",
+
+                icon: "🎯",
+
+                title:
+                    "Your savings goal needs attention",
+
+                message:
+                    `You've saved ${Math.round(
+                        savingsPercentage
+                    )}% of your goal. Consider setting aside money before spending.`,
+
+                badge:
+                    "Savings Reminder"
+
+            });
+
+        }
+
+    }
+
+
+    /* =========================
+       RECURRING EXPENSES
+    ========================= */
+
+    let recurringMonthlyExpenses =
+        0;
+
+
+    if (
+        Array.isArray(
+            recurringTransactions
+        )
+    ) {
+
+        recurringTransactions.forEach(
+            recurring => {
+
+                if (
+                    recurring.type !==
+                    "expense"
+                ) {
+
+                    return;
+
+                }
+
+
+                const amount =
+                    Number(
+                        recurring.amount
+                    ) || 0;
+
+
+                if (
+                    recurring.frequency ===
+                    "weekly"
+                ) {
+
+                    recurringMonthlyExpenses +=
+                        amount *
+                        52 /
+                        12;
+
+                } else if (
+                    recurring.frequency ===
+                    "yearly"
+                ) {
+
+                    recurringMonthlyExpenses +=
+                        amount /
+                        12;
+
+                } else {
+
+                    recurringMonthlyExpenses +=
+                        amount;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    if (
+        income > 0 &&
+        recurringMonthlyExpenses > 0
+    ) {
+
+        const recurringRatio =
+            recurringMonthlyExpenses /
+            income;
+
+
+        if (
+            recurringRatio >= 0.30
+        ) {
+
+            alerts.push({
+
+                type: "danger",
+
+                icon: "🔄",
+
+                title:
+                    "Recurring expenses are high",
+
+                message:
+                    `Your recurring expenses are approximately ${formatMoney(
+                        recurringMonthlyExpenses
+                    )} per month, using about ${Math.round(
+                        recurringRatio * 100
+                    )}% of your recorded income.`,
+
+                badge:
+                    "Recurring Alert"
+
+            });
+
+        } else if (
+            recurringRatio >= 0.20
+        ) {
+
+            alerts.push({
+
+                type: "warning",
+
+                icon: "🔄",
+
+                title:
+                    "Review your recurring expenses",
+
+                message:
+                    `Your recurring expenses use about ${Math.round(
+                        recurringRatio * 100
+                    )}% of your recorded income. Consider reviewing subscriptions and regular payments.`,
+
+                badge:
+                    "Review Needed"
+
+            });
+
+        }
+
+    }
+
+
+    /* =========================
+       POSITIVE FINANCIAL HEALTH
+    ========================= */
+
+    if (
+        income > 0 &&
+        expenses < income &&
+        budget > 0 &&
+        monthlyExpenses <= budget &&
+        target > 0 &&
+        saved >= target * 0.50
+    ) {
+
+        alerts.push({
+
+            type: "success",
+
+            icon: "💚",
+
+            title:
+                "You're building strong money habits",
+
+            message:
+                "Your income is currently higher than your expenses, you're within budget, and you're making meaningful progress toward your savings goal.",
+
+            badge:
+                "Great Progress"
+
+        });
+
+    }
+
+
+    /* =========================
+       SORT ALERTS
+    ========================= */
+
+    const priority = {
+
+        danger: 1,
+
+        warning: 2,
+
+        info: 3,
+
+        success: 4
+
+    };
+
+
+    alerts.sort(
+        (a, b) =>
+            priority[a.type] -
+            priority[b.type]
+    );
+
+
+    /* =========================
+       LIMIT ALERTS
+    ========================= */
+
+    const visibleAlerts =
+        alerts.slice(
+            0,
+            8
+        );
+
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    if (
+        visibleAlerts.length ===
+        0
+    ) {
+
+        alertsContainer.innerHTML = `
+            <div class="alert-empty">
+
+                <div class="alert-empty-icon">
+                    💚
+                </div>
+
+                <h3>
+                    No financial warnings
+                </h3>
+
+                <p>
+                    Everything looks good right now. Keep tracking your money to stay ahead.
+                </p>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    /* =========================
+       RENDER ALERTS
+    ========================= */
+
+    alertsContainer.innerHTML =
+        visibleAlerts.map(
+            alert => {
+
+                return `
+                    <div
+                        class="financial-alert ${alert.type}"
+                    >
+
+                        <div class="financial-alert-icon">
+                            ${alert.icon}
+                        </div>
+
+
+                        <div class="financial-alert-content">
+
+                            <h3>
+                                ${escapeHTML(
+                                    alert.title
+                                )}
+                            </h3>
+
+                            <p>
+                                ${escapeHTML(
+                                    alert.message
+                                )}
+                            </p>
+
+                            <span class="financial-alert-badge">
+                                ${escapeHTML(
+                                    alert.badge
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================================
+   CONNECT SMART ALERTS TO DASHBOARD
+========================================================= */
+
+function refreshFinancialAlerts() {
+
+    updateFinancialAlerts();
+
+}
+
+
+/* =========================================================
+   INITIALIZE SMART ALERTS
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        updateFinancialAlerts();
+
+    }
+);
+
+
+/* =========================================================
+   EXPOSE SMART ALERT FUNCTIONS
+========================================================= */
+
+window.updateFinancialAlerts =
+    updateFinancialAlerts;
+
+window.refreshFinancialAlerts =
+    refreshFinancialAlerts;
