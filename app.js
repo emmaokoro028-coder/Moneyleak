@@ -666,6 +666,8 @@ function editTransaction(id) {
     saveTransactions();
 
     updateDashboard();
+
+    updateBudgetDisplay();
 }
 
 
