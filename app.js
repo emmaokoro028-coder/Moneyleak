@@ -5348,3 +5348,357 @@ window.updateFinancialAlerts =
 
 window.refreshFinancialAlerts =
     refreshFinancialAlerts;
+
+/* =========================================================
+   DASHBOARD OVERVIEW 2.0 — LIVE DATA
+========================================================= */
+
+function updateDashboardOverview() {
+
+    const totals = calculateTotals();
+
+    const income = Number(totals.income) || 0;
+    const expenses = Number(totals.expenses) || 0;
+    const balance = income - expenses;
+
+    /* =========================
+       BALANCE
+    ========================= */
+
+    const balanceElement =
+        document.getElementById("overviewBalance");
+
+    const balanceStatus =
+        document.getElementById("overviewBalanceStatus");
+
+    if (balanceElement) {
+        balanceElement.textContent =
+            formatCurrency(balance);
+    }
+
+    if (balanceStatus) {
+
+        if (balance > 0) {
+            balanceStatus.textContent =
+                "You're currently in the positive";
+        } else if (balance < 0) {
+            balanceStatus.textContent =
+                "You're spending more than you earn";
+        } else {
+            balanceStatus.textContent =
+                "Income and expenses are balanced";
+        }
+
+    }
+
+
+    /* =========================
+       INCOME
+    ========================= */
+
+    const incomeElement =
+        document.getElementById("overviewIncome");
+
+    if (incomeElement) {
+        incomeElement.textContent =
+            formatCurrency(income);
+    }
+
+
+    /* =========================
+       EXPENSES
+    ========================= */
+
+    const expensesElement =
+        document.getElementById("overviewExpenses");
+
+    if (expensesElement) {
+        expensesElement.textContent =
+            formatCurrency(expenses);
+    }
+
+
+    /* =========================
+       SAVINGS RATE
+    ========================= */
+
+    const savingsRateElement =
+        document.getElementById("overviewSavingsRate");
+
+    const savingsStatusElement =
+        document.getElementById("overviewSavingsStatus");
+
+    let savingsRate = 0;
+
+    if (income > 0) {
+        savingsRate =
+            ((income - expenses) / income) * 100;
+    }
+
+    savingsRate = Math.max(0, Math.min(100, savingsRate));
+
+    if (savingsRateElement) {
+        savingsRateElement.textContent =
+            `${Math.round(savingsRate)}%`;
+    }
+
+    if (savingsStatusElement) {
+
+        if (savingsRate >= 30) {
+            savingsStatusElement.textContent =
+                "Excellent saving progress";
+        } else if (savingsRate >= 20) {
+            savingsStatusElement.textContent =
+                "Good saving progress";
+        } else if (savingsRate > 0) {
+            savingsStatusElement.textContent =
+                "Room to increase savings";
+        } else {
+            savingsStatusElement.textContent =
+                "Start saving";
+        }
+
+    }
+
+
+    /* =========================
+       SAVINGS GOAL
+    ========================= */
+
+    const goalProgressElement =
+        document.getElementById("overviewGoalProgress");
+
+    const goalFillElement =
+        document.getElementById("overviewGoalFill");
+
+    const goalStatusElement =
+        document.getElementById("overviewGoalStatus");
+
+    let savingsGoal = null;
+
+    try {
+
+        savingsGoal =
+            JSON.parse(
+                localStorage.getItem(
+                    "moneyLeakSavingsGoal"
+                )
+            );
+
+    } catch (error) {
+
+        savingsGoal = null;
+
+    }
+
+    if (
+        savingsGoal &&
+        Number(savingsGoal.target) > 0
+    ) {
+
+        const target =
+            Number(savingsGoal.target);
+
+        const saved =
+            Number(
+                savingsGoal.saved ||
+                savingsGoal.current ||
+                savingsGoal.amount ||
+                0
+            );
+
+        const goalProgress =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    (saved / target) * 100
+                )
+            );
+
+        if (goalProgressElement) {
+            goalProgressElement.textContent =
+                `${Math.round(goalProgress)}%`;
+        }
+
+        if (goalFillElement) {
+            goalFillElement.style.width =
+                `${goalProgress}%`;
+        }
+
+        if (goalStatusElement) {
+
+            if (goalProgress >= 100) {
+
+                goalStatusElement.textContent =
+                    "🎉 Goal reached";
+
+            } else {
+
+                const remaining =
+                    Math.max(0, target - saved);
+
+                goalStatusElement.textContent =
+                    `${formatCurrency(remaining)} remaining`;
+
+            }
+
+        }
+
+    } else {
+
+        if (goalProgressElement) {
+            goalProgressElement.textContent =
+                "0%";
+        }
+
+        if (goalFillElement) {
+            goalFillElement.style.width =
+                "0%";
+        }
+
+        if (goalStatusElement) {
+            goalStatusElement.textContent =
+                "No goal set";
+        }
+
+    }
+
+
+    /* =========================
+       FINANCIAL HEALTH
+    ========================= */
+
+    const healthScoreElement =
+        document.getElementById("overviewHealthScore");
+
+    const healthStatusElement =
+        document.getElementById("overviewHealthStatus");
+
+    const existingHealthScore =
+        document.getElementById("healthScore");
+
+    let healthScore = 0;
+
+    if (existingHealthScore) {
+
+        const parsedScore =
+            parseInt(
+                existingHealthScore.textContent,
+                10
+            );
+
+        if (!Number.isNaN(parsedScore)) {
+            healthScore = parsedScore;
+        }
+
+    }
+
+    if (healthScoreElement) {
+
+        healthScoreElement.textContent =
+            `${healthScore}/100`;
+
+    }
+
+    if (healthStatusElement) {
+
+        if (healthScore >= 80) {
+
+            healthStatusElement.textContent =
+                "Excellent financial health";
+
+        } else if (healthScore >= 60) {
+
+            healthStatusElement.textContent =
+                "Good financial health";
+
+        } else if (healthScore >= 40) {
+
+            healthStatusElement.textContent =
+                "Needs some attention";
+
+        } else if (healthScore > 0) {
+
+            healthStatusElement.textContent =
+                "Needs improvement";
+
+        } else {
+
+            healthStatusElement.textContent =
+                "Add financial activity";
+
+        }
+
+    }
+
+
+    /* =========================
+       MONEY INSIGHT
+    ========================= */
+
+    const insightElement =
+        document.getElementById(
+            "overviewInsightText"
+        );
+
+    if (insightElement) {
+
+        if (income === 0 && expenses === 0) {
+
+            insightElement.textContent =
+                "Add your income and expenses to receive a personalized financial insight.";
+
+        } else if (expenses > income) {
+
+            insightElement.textContent =
+                `You're spending ${Math.round(
+                    (expenses / income) * 100
+                )}% of your income. Focus on reducing your largest spending categories.`;
+
+        } else if (savingsRate >= 30) {
+
+            insightElement.textContent =
+                `Excellent work. You're keeping about ${Math.round(
+                    savingsRate
+                )}% of your income after expenses.`;
+
+        } else if (savingsRate >= 20) {
+
+            insightElement.textContent =
+                `You're saving about ${Math.round(
+                    savingsRate
+                )}% of your income. Keep building that habit.`;
+
+        } else {
+
+            insightElement.textContent =
+                "Your finances are stable, but increasing your savings rate could strengthen your financial position.";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE OVERVIEW WITH DASHBOARD
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        updateDashboardOverview();
+
+    }
+);
+
+
+/* =========================================================
+   GLOBAL ACCESS
+========================================================= */
+
+window.updateDashboardOverview =
+    updateDashboardOverview;
