@@ -2553,125 +2553,245 @@ window.refreshCategoryBudgets =
 ========================================================= */
 
 function updateSpendingAnalytics() {
-    const summary = document.getElementById("analyticsSummary");
-    const bars = document.getElementById("analyticsBars");
-    const insight = document.getElementById("analyticsInsight");
+
+    const summary =
+        document.querySelector(".analytics-summary");
+
+    const totalSpentElement =
+        document.getElementById("analyticsTotalSpent");
+
+    const topCategoryElement =
+        document.getElementById("analyticsTopCategory");
+
+    const dailyAverageElement =
+        document.getElementById("analyticsDailyAverage");
+
+    const bars =
+        document.getElementById("analyticsBars");
+
+    const insight =
+        document.getElementById("analyticsInsight");
+
 
     if (!summary || !bars) {
         return;
     }
 
-    const expenses = transactions.filter(
-        transaction => transaction.type === "expense"
-    );
+
+    const now = new Date();
+
+    const currentMonth =
+        now.getMonth();
+
+    const currentYear =
+        now.getFullYear();
+
+
+    const expenses =
+        transactions.filter(transaction => {
+
+            if (transaction.type !== "expense") {
+                return false;
+            }
+
+            const transactionDate =
+                new Date(transaction.date);
+
+            return (
+                transactionDate.getMonth() === currentMonth &&
+                transactionDate.getFullYear() === currentYear
+            );
+        });
+
 
     if (expenses.length === 0) {
-        summary.innerHTML = `
-            <div class="analytics-card">
-                <span class="analytics-icon">💰</span>
-                <span class="analytics-label">Total Spent</span>
-                <strong>₦0</strong>
-            </div>
 
-            <div class="analytics-card">
-                <span class="analytics-icon">🧾</span>
-                <span class="analytics-label">Transactions</span>
-                <strong>0</strong>
-            </div>
+        if (totalSpentElement) {
+            totalSpentElement.textContent =
+                formatMoney(0);
+        }
 
-            <div class="analytics-card">
-                <span class="analytics-icon">📊</span>
-                <span class="analytics-label">Average Expense</span>
-                <strong>₦0</strong>
-            </div>
-        `;
+        if (topCategoryElement) {
+            topCategoryElement.textContent = "—";
+        }
+
+        if (dailyAverageElement) {
+            dailyAverageElement.textContent =
+                formatMoney(0);
+        }
 
         bars.innerHTML = `
             <div class="analytics-empty">
-                <strong>No spending data yet</strong>
-                <p>Add some expenses to see your spending analytics.</p>
+
+                <strong>
+                    No spending data yet
+                </strong>
+
+                <p>
+                    Add some expenses this month
+                    to see your spending analytics.
+                </p>
+
             </div>
         `;
 
         if (insight) {
-            insight.innerHTML = "💡 Your spending insights will appear here after you add expenses.";
+            insight.innerHTML =
+                "💡 Your spending insights will appear here after you add expenses.";
         }
 
         return;
     }
 
-    const totalSpent = expenses.reduce(
-        (total, transaction) => total + Number(transaction.amount),
-        0
-    );
 
-    const averageExpense = totalSpent / expenses.length;
+    /* =========================
+       TOTAL SPENDING
+    ========================= */
+
+    const totalSpent =
+        expenses.reduce(
+            (total, transaction) =>
+                total +
+                Number(transaction.amount || 0),
+            0
+        );
+
+
+    /* =========================
+       DAILY AVERAGE
+    ========================= */
+
+    const daysPassed =
+        now.getDate();
+
+    const dailyAverage =
+        totalSpent / Math.max(daysPassed, 1);
+
+
+    /* =========================
+       CATEGORY TOTALS
+    ========================= */
 
     const categories = {};
 
+
     expenses.forEach(transaction => {
-        const category = transaction.category || "Other";
+
+        const category =
+            transaction.category || "Other";
 
         if (!categories[category]) {
             categories[category] = 0;
         }
 
-        categories[category] += Number(transaction.amount);
+        categories[category] +=
+            Number(transaction.amount || 0);
     });
 
-    const sortedCategories = Object.entries(categories)
-        .sort((a, b) => b[1] - a[1]);
 
-    const largestCategory = sortedCategories[0];
+    const sortedCategories =
+        Object.entries(categories)
+            .sort(
+                (a, b) => b[1] - a[1]
+            );
 
-    summary.innerHTML = `
-        <div class="analytics-card">
-            <span class="analytics-icon">💰</span>
-            <span class="analytics-label">Total Spent</span>
-            <strong>${formatMoney(totalSpent)}</strong>
-        </div>
 
-        <div class="analytics-card">
-            <span class="analytics-icon">🧾</span>
-            <span class="analytics-label">Transactions</span>
-            <strong>${expenses.length}</strong>
-        </div>
+    const largestCategory =
+        sortedCategories[0];
 
-        <div class="analytics-card">
-            <span class="analytics-icon">📊</span>
-            <span class="analytics-label">Average Expense</span>
-            <strong>${formatMoney(averageExpense)}</strong>
-        </div>
-    `;
 
-    bars.innerHTML = sortedCategories.map(([category, amount]) => {
-        const percentage = (amount / totalSpent) * 100;
+    /* =========================
+       UPDATE SUMMARY
+    ========================= */
 
-        return `
-            <div class="analytics-bar-row">
-                <div class="analytics-bar-info">
-                    <span>${escapeHTML(category)}</span>
-                    <span>${formatMoney(amount)} · ${percentage.toFixed(1)}%</span>
-                </div>
+    if (totalSpentElement) {
 
-                <div class="analytics-bar-track">
-                    <div
-                        class="analytics-bar-fill"
-                        style="width: ${percentage}%"
-                    ></div>
-                </div>
-            </div>
-        `;
-    }).join("");
+        totalSpentElement.textContent =
+            formatMoney(totalSpent);
+    }
+
+
+    if (topCategoryElement) {
+
+        topCategoryElement.textContent =
+            largestCategory
+                ? largestCategory[0]
+                : "—";
+    }
+
+
+    if (dailyAverageElement) {
+
+        dailyAverageElement.textContent =
+            formatMoney(dailyAverage);
+    }
+
+
+    /* =========================
+       CATEGORY BARS
+    ========================= */
+
+    bars.innerHTML =
+        sortedCategories
+            .map(
+                ([category, amount]) => {
+
+                    const percentage =
+                        (amount / totalSpent) * 100;
+
+                    return `
+                        <div class="analytics-bar-row">
+
+                            <div class="analytics-bar-info">
+
+                                <span>
+                                    ${escapeHTML(category)}
+                                </span>
+
+                                <span>
+                                    ${formatMoney(amount)}
+                                    ·
+                                    ${percentage.toFixed(1)}%
+                                </span>
+
+                            </div>
+
+                            <div class="analytics-bar-track">
+
+                                <div
+                                    class="analytics-bar-fill"
+                                    style="width: ${percentage}%"
+                                ></div>
+
+                            </div>
+
+                        </div>
+                    `;
+                }
+            )
+            .join("");
+
+
+    /* =========================
+       SPENDING INSIGHT
+    ========================= */
 
     if (insight && largestCategory) {
+
         const largestPercentage =
             (largestCategory[1] / totalSpent) * 100;
 
+
         insight.innerHTML = `
-            💡 Your biggest spending category is
-            <strong>${escapeHTML(largestCategory[0])}</strong>,
-            accounting for ${largestPercentage.toFixed(1)}% of your total spending.
+            💡 Your biggest spending category this month is
+            <strong>
+                ${escapeHTML(largestCategory[0])}
+            </strong>,
+            accounting for
+            <strong>
+                ${largestPercentage.toFixed(1)}%
+            </strong>
+            of your total spending.
         `;
     }
 }
