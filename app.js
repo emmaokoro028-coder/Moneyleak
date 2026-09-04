@@ -2219,163 +2219,224 @@
        ========================================================= */
 
     function setupNotifications() {
-        const button =
-            document.getElementById(
-                "notificationButton"
-            );
+    const button =
+        document.getElementById("notificationButton");
 
-        const panel =
-            document.getElementById(
-                "notificationPanel"
-            );
+    const panel =
+        document.getElementById("notificationPanel");
 
-        const close =
-            document.getElementById(
-                "closeNotifications"
-            );
+    const close =
+        document.getElementById("closeNotifications");
 
-        if (!panel) return;
+    if (!panel) return;
 
-        const hide = () => {
-            panel.hidden = true;
-            panel.classList.remove(
-                "open",
-                "active"
-            );
-            panel.style.display =
-                "none";
-            panel.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-        };
+    const hide = () => {
+        panel.hidden = true;
+        panel.classList.remove("open", "active");
+        panel.style.display = "none";
+        panel.setAttribute("aria-hidden", "true");
+        document.body.classList.remove(
+            "notifications-open"
+        );
+    };
 
-        const show = () => {
-            panel.hidden = false;
-            panel.classList.add(
-                "open",
-                "active"
-            );
-            panel.style.display =
-                "block";
-            panel.setAttribute(
-                "aria-hidden",
-                "false"
-            );
-
-            renderNotificationList();
-        };
-
-        /* Always start CLOSED */
-        hide();
-
-        if (button) {
-            button.addEventListener(
-                "click",
-                (event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    if (
-                        panel.hidden ||
-                        panel.style.display ===
-                            "none"
-                    ) {
-                        show();
-                    } else {
-                        hide();
-                    }
-                }
-            );
-        }
-
-        if (close) {
-            close.addEventListener(
-                "click",
-                (event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    hide();
-                }
-            );
-        }
-
-        document.addEventListener(
-            "click",
-            (event) => {
-                if (
-                    !panel.hidden &&
-                    !panel.contains(
-                        event.target
-                    ) &&
-                    event.target !==
-                        button
-                ) {
-                    hide();
-                }
-            }
+    const show = () => {
+        panel.hidden = false;
+        panel.classList.add("open", "active");
+        panel.style.display = "block";
+        panel.setAttribute("aria-hidden", "false");
+        document.body.classList.add(
+            "notifications-open"
         );
 
-        document.addEventListener(
-            "keydown",
-            (event) => {
-                if (
-                    event.key ===
-                    "Escape"
-                ) {
-                    hide();
-                }
+        renderNotificationList();
+    };
+
+    /* Notifications always begin CLOSED */
+    hide();
+
+    if (button) {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (
+                panel.hidden ||
+                panel.style.display === "none"
+            ) {
+                show();
+            } else {
+                hide();
             }
-        );
+        });
     }
 
-    function renderNotificationList() {
-        const container =
-            document.getElementById(
-                "notificationContent"
-            ) ||
-            document.getElementById(
-                "notificationList"
-            );
+    if (close) {
+        close.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            hide();
+        });
+    }
 
-        if (!container) return;
-
-        const alerts =
-            generateAlerts();
-
-        if (!alerts.length) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <strong>You're all caught up</strong>
-                    <span>No new financial notifications.</span>
-                </div>
-            `;
-            return;
+    document.addEventListener("click", (event) => {
+        if (
+            !panel.hidden &&
+            !panel.contains(event.target) &&
+            event.target !== button
+        ) {
+            hide();
         }
+    });
 
-        container.innerHTML =
-            alerts
-                .map(
-                    (alert) => `
-                <div class="notification-item ${escape(
-                    alert.type
-                )}">
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            hide();
+        }
+    });
+}
+
+   function renderNotificationList() {
+    const container =
+        document.getElementById("notificationContent") ||
+        document.getElementById("notificationList");
+
+    if (!container) return;
+
+    const alerts = generateAlerts();
+
+    const icons = {
+        success: "✓",
+        warning: "!",
+        danger: "!",
+        info: "i"
+    };
+
+    const labels = {
+        success: "GOOD NEWS",
+        warning: "ATTENTION",
+        danger: "ACTION NEEDED",
+        info: "INSIGHT"
+    };
+
+    if (!alerts.length) {
+        container.innerHTML = `
+            <div class="ml-notification-empty">
+                <div class="ml-empty-icon">
+                    ✓
+                </div>
+
+                <strong>
+                    You're all caught up
+                </strong>
+
+                <span>
+                    No new financial insights right now.
+                </span>
+            </div>
+        `;
+
+        return;
+    }
+
+    const notificationCards = alerts
+        .map((alert, index) => {
+            const type =
+                alert.type || "info";
+
+            return `
+                <article
+                    class="ml-notification-card ${escape(type)}"
+                    style="--notification-delay:${index * 70}ms"
+                >
+
+                    <div class="ml-notification-icon">
+                        <span>
+                            ${icons[type] || "i"}
+                        </span>
+                    </div>
+
+                    <div class="ml-notification-content">
+
+                        <div class="ml-notification-top">
+
+                            <span class="ml-notification-label">
+                                ${labels[type] || "INSIGHT"}
+                            </span>
+
+                            <span class="ml-notification-time">
+                                Now
+                            </span>
+
+                        </div>
+
+                        <h4>
+                            ${escape(
+                                alert.title
+                            )}
+                        </h4>
+
+                        <p>
+                            ${escape(
+                                alert.message
+                            )}
+                        </p>
+
+                    </div>
+
+                    <div class="ml-notification-status"></div>
+
+                </article>
+            `;
+        })
+        .join("");
+
+    container.innerHTML = `
+        <div class="ml-notification-wrapper">
+
+            <div class="ml-notification-summary">
+                <div>
+                    <span class="ml-summary-dot"></span>
+
+                    <span>
+                        ${alerts.length}
+                        ${alerts.length === 1
+                            ? "insight"
+                            : "insights"}
+                        available
+                    </span>
+                </div>
+
+                <span>
+                    Updated just now
+                </span>
+            </div>
+
+            <div class="ml-notification-cards">
+                ${notificationCards}
+            </div>
+
+            <div class="ml-notification-footer">
+
+                <div class="ml-footer-icon">
+                    ✦
+                </div>
+
+                <div>
                     <strong>
-                        ${escape(
-                            alert.title
-                        )}
+                        MoneyLeak Intelligence
                     </strong>
 
-                    <p>
-                        ${escape(
-                            alert.message
-                        )}
-                    </p>
+                    <span>
+                        Your financial activity is being analyzed automatically.
+                    </span>
                 </div>
-            `
-                )
-                .join("");
-    }
+
+            </div>
+
+        </div>
+    `;
+}
 
     /* =========================================================
        SEARCH
