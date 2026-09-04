@@ -4466,102 +4466,106 @@
     ====================================================== */
 
     function setupNotifications() {
+    const button = document.getElementById("notificationButton");
+    const panel = document.getElementById("notificationPanel");
+    const close = document.getElementById("closeNotifications");
 
-        const button =
-            document.getElementById(
-                "notificationButton"
-            );
-
-        const panel =
-            document.getElementById(
-                "notificationPanel"
-            );
-
-        const close =
-            document.getElementById(
-                "closeNotifications"
-            );
-
-
-        if (
-            !button ||
-            !panel
-        ) {
-
-            return;
-
-        }
-
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                const hidden =
-                    panel.hidden;
-
-
-                panel.hidden =
-                    !hidden;
-
-
-                if (!hidden) {
-                    return;
-                }
-
-
-                updateNotificationPanel();
-
-            }
-        );
-
-
-        if (close) {
-
-            close.addEventListener(
-                "click",
-                () => {
-
-                    panel.hidden =
-                        true;
-
-                }
-            );
-
-        }
-
-
-        document.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    panel.hidden
-                ) {
-
-                    return;
-
-                }
-
-
-                if (
-                    !panel.contains(
-                        event.target
-                    ) &&
-                    !button.contains(
-                        event.target
-                    )
-                ) {
-
-                    panel.hidden =
-                        true;
-
-                }
-
-            }
-        );
-
+    if (!panel) {
+        return;
     }
+
+    function hideNotifications() {
+        panel.classList.remove("open");
+        panel.classList.remove("active");
+
+        panel.hidden = true;
+        panel.style.display = "none";
+
+        panel.setAttribute("aria-hidden", "true");
+
+        document.body.classList.remove("notification-open");
+    }
+
+    function showNotifications() {
+        panel.hidden = false;
+        panel.classList.add("open");
+        panel.classList.add("active");
+
+        panel.style.display = "block";
+
+        panel.setAttribute("aria-hidden", "false");
+
+        document.body.classList.add("notification-open");
+
+        if (typeof renderNotifications === "function") {
+            renderNotifications();
+        }
+    }
+
+    /*
+     * Always start CLOSED.
+     * This prevents Analytics, Settings and other pages
+     * from loading with the notification panel already open.
+     */
+    hideNotifications();
+
+    if (button) {
+        button.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const isOpen =
+                panel.classList.contains("open") ||
+                panel.classList.contains("active") ||
+                panel.getAttribute("aria-hidden") === "false";
+
+            if (isOpen) {
+                hideNotifications();
+            } else {
+                showNotifications();
+            }
+        });
+    }
+
+    if (close) {
+        close.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            hideNotifications();
+        });
+    }
+
+    panel.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
+
+    document.addEventListener("click", function (event) {
+        if (
+            panel.classList.contains("open") ||
+            panel.classList.contains("active")
+        ) {
+            if (
+                !panel.contains(event.target) &&
+                (!button || !button.contains(event.target))
+            ) {
+                hideNotifications();
+            }
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            hideNotifications();
+        }
+    });
+
+    /*
+     * Public controls for other MoneyLeak pages.
+     */
+    window.closeMoneyLeakNotifications = hideNotifications;
+    window.openMoneyLeakNotifications = showNotifications;
+}
 
 
     /* =====================================================
