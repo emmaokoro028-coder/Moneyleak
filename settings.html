@@ -2,300 +2,347 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="MoneyLeak settings and personal finance control center."
+    >
 
     <title>Settings — MoneyLeak</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
     <style>
+
         /* =========================================================
-           MONEY LEAK SETTINGS
-        ========================================================= */
+           MONEYLeak SETTINGS — PREMIUM PAGE
+           ========================================================= */
 
         .settings-page {
             max-width: 1180px;
             margin: 0 auto;
+            padding-bottom: 70px;
         }
 
         .settings-hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 30px;
             margin-bottom: 28px;
         }
 
+        .settings-hero-copy {
+            max-width: 720px;
+        }
+
         .settings-eyebrow {
-            color: #07865c;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(7, 134, 92, 0.09);
+            color: #087d59;
             font-size: 12px;
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: .08em;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
-        .settings-title {
+        .settings-hero h1 {
+            margin: 0 0 10px;
+            font-size: clamp(30px, 4vw, 46px);
+            line-height: 1.05;
+            letter-spacing: -0.045em;
+        }
+
+        .settings-hero p {
             margin: 0;
-            font-size: clamp(32px, 4vw, 48px);
-            letter-spacing: -1.8px;
-            line-height: 1;
-        }
-
-        .settings-subtitle {
-            margin: 12px 0 0;
-            max-width: 700px;
-            color: #74827d;
+            color: #71807a;
             font-size: 15px;
             line-height: 1.7;
         }
 
+        .settings-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 15px;
+            border: 1px solid #dce9e4;
+            background: #fff;
+            border-radius: 14px;
+            color: #53635d;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 8px 25px rgba(20, 55, 43, .05);
+        }
+
+        .settings-status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #0a9a69;
+            box-shadow: 0 0 0 4px rgba(10, 154, 105, .10);
+        }
+
         .settings-layout {
             display: grid;
-            grid-template-columns: 250px minmax(0, 1fr);
-            gap: 24px;
+            grid-template-columns: minmax(0, 1fr) 330px;
+            gap: 22px;
             align-items: start;
         }
 
-        .settings-menu {
-            position: sticky;
-            top: 24px;
-            background: rgba(255,255,255,.88);
-            border: 1px solid #e5ece8;
-            border-radius: 20px;
-            padding: 10px;
-            box-shadow: 0 10px 35px rgba(20, 40, 32, .05);
+        .settings-main {
+            display: grid;
+            gap: 20px;
+            min-width: 0;
         }
 
-        .settings-menu-title {
-            padding: 12px 13px 8px;
-            color: #9aa7a2;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .settings-menu button {
-            width: 100%;
-            border: 0;
-            background: transparent;
-            color: #66756f;
-            padding: 12px 13px;
-            border-radius: 12px;
-            text-align: left;
-            font: inherit;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: .2s ease;
-        }
-
-        .settings-menu button:hover {
-            background: #f1f8f5;
-            color: #07865c;
-        }
-
-        .settings-menu button.active {
-            background: #e5f7f0;
-            color: #07865c;
-        }
-
-        .settings-section {
-            scroll-margin-top: 25px;
+        .settings-card {
             background: #fff;
-            border: 1px solid #e5ece8;
+            border: 1px solid #e1ebe7;
             border-radius: 22px;
-            margin-bottom: 20px;
+            box-shadow: 0 12px 35px rgba(25, 65, 50, .055);
             overflow: hidden;
-            box-shadow: 0 10px 35px rgba(20, 40, 32, .04);
         }
 
-        .settings-section-header {
-            padding: 24px 26px 18px;
-            border-bottom: 1px solid #edf2ef;
+        .settings-card-header {
+            padding: 24px 25px 18px;
+            border-bottom: 1px solid #edf2f0;
         }
 
-        .settings-section-header h2 {
+        .settings-card-header h2 {
+            margin: 0 0 6px;
+            font-size: 18px;
+            letter-spacing: -.02em;
+        }
+
+        .settings-card-header p {
             margin: 0;
-            font-size: 19px;
-            letter-spacing: -.4px;
-        }
-
-        .settings-section-header p {
-            margin: 6px 0 0;
-            color: #82908b;
+            color: #7b8984;
             font-size: 13px;
             line-height: 1.6;
         }
 
-        .settings-body {
-            padding: 8px 26px 26px;
+        .settings-card-body {
+            padding: 24px 25px;
         }
 
-        .profile-card {
-            display: flex;
+        /* PROFILE */
+
+        .profile-editor {
+            display: grid;
+            grid-template-columns: 84px minmax(0, 1fr);
+            gap: 22px;
             align-items: center;
-            gap: 18px;
-            padding: 18px 0;
         }
 
-        .profile-avatar {
-            width: 64px;
-            height: 64px;
-            flex: 0 0 64px;
+        .profile-large-avatar {
+            width: 84px;
+            height: 84px;
             display: grid;
             place-items: center;
-            border-radius: 18px;
-            background: #07865c;
-            color: white;
-            font-size: 23px;
+            border-radius: 24px;
+            background: linear-gradient(
+                145deg,
+                #0b9b6c,
+                #067450
+            );
+            color: #fff;
+            font-size: 31px;
+            font-weight: 900;
+            box-shadow:
+                0 12px 25px rgba(7, 134, 92, .22);
+        }
+
+        .profile-name-block {
+            display: grid;
+            gap: 12px;
+        }
+
+        .settings-label {
+            display: block;
+            margin-bottom: 7px;
+            color: #52615c;
+            font-size: 12px;
             font-weight: 800;
-            box-shadow: 0 10px 24px rgba(7,134,92,.2);
         }
 
-        .profile-info h3 {
-            margin: 0;
-            font-size: 17px;
+        .settings-input,
+        .settings-select {
+            width: 100%;
+            min-height: 46px;
+            border: 1px solid #dce7e3;
+            border-radius: 12px;
+            background: #fbfdfc;
+            color: #1d2925;
+            padding: 0 14px;
+            font: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: .2s ease;
+            box-sizing: border-box;
         }
 
-        .profile-info p {
-            margin: 5px 0 0;
-            color: #8a9792;
-            font-size: 13px;
+        .settings-input:focus,
+        .settings-select:focus {
+            border-color: #0a9869;
+            box-shadow:
+                0 0 0 4px rgba(10, 152, 105, .09);
+            background: #fff;
         }
 
-        .setting-row {
+        .profile-subtitle {
+            color: #87938f;
+            font-size: 12px;
+        }
+
+        /* BUTTONS */
+
+        .settings-actions {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .settings-btn {
+            min-height: 44px;
+            border: 0;
+            border-radius: 12px;
+            padding: 0 16px;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease,
+                background .18s ease;
+        }
+
+        .settings-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .settings-btn-primary {
+            background: #07865c;
+            color: #fff;
+            box-shadow:
+                0 9px 20px rgba(7, 134, 92, .17);
+        }
+
+        .settings-btn-primary:hover {
+            background: #066f4d;
+        }
+
+        .settings-btn-secondary {
+            background: #eef5f2;
+            color: #285249;
+        }
+
+        .settings-btn-danger {
+            background: #fff0f1;
+            color: #c03945;
+        }
+
+        .settings-btn-danger:hover {
+            background: #ffe4e6;
+        }
+
+        /* PREFERENCES */
+
+        .preference-list {
+            display: grid;
+        }
+
+        .preference-row {
+            display: flex;
             justify-content: space-between;
-            gap: 24px;
-            min-height: 74px;
-            border-bottom: 1px solid #edf2ef;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 0;
+            border-bottom: 1px solid #edf2f0;
         }
 
-        .setting-row:last-child {
+        .preference-row:first-child {
+            padding-top: 0;
+        }
+
+        .preference-row:last-child {
             border-bottom: 0;
+            padding-bottom: 0;
         }
 
-        .setting-info {
+        .preference-copy {
             min-width: 0;
         }
 
-        .setting-info strong {
+        .preference-copy strong {
             display: block;
+            margin-bottom: 5px;
+            color: #26342f;
             font-size: 14px;
-            color: #1c2a25;
         }
 
-        .setting-info span {
+        .preference-copy span {
             display: block;
-            margin-top: 4px;
-            color: #8b9792;
+            color: #7c8985;
             font-size: 12px;
-            line-height: 1.5;
+            line-height: 1.55;
         }
 
-        .setting-control {
+        .preference-control {
             flex: 0 0 auto;
+            min-width: 170px;
         }
 
-        .setting-input,
-        .setting-select {
-            min-width: 180px;
-            height: 44px;
-            padding: 0 13px;
-            border: 1px solid #dce6e1;
-            border-radius: 11px;
-            background: #fbfdfc;
-            color: #1d2b26;
-            font: inherit;
-            font-size: 13px;
-            outline: none;
-        }
-
-        .setting-input:focus,
-        .setting-select:focus {
-            border-color: #07865c;
-            box-shadow: 0 0 0 3px rgba(7,134,92,.08);
-        }
-
-        .save-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            margin-top: 18px;
-            padding-top: 18px;
-            border-top: 1px solid #edf2ef;
-        }
-
-        .save-message {
-            color: #07865c;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .settings-button {
-            border: 0;
-            border-radius: 11px;
-            padding: 12px 18px;
-            background: #07865c;
-            color: white;
-            font: inherit;
-            font-size: 13px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: .2s ease;
-        }
-
-        .settings-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(7,134,92,.18);
-        }
-
-        .settings-button.secondary {
-            background: #eef5f2;
-            color: #176b52;
-        }
-
-        .settings-button.danger {
-            background: #fff0f0;
-            color: #d54c55;
-        }
-
-        .settings-button.danger:hover {
-            background: #ffe5e5;
-            box-shadow: none;
-        }
+        /* TOGGLE */
 
         .toggle {
             position: relative;
-            width: 48px;
-            height: 27px;
+            display: inline-flex;
+            width: 50px;
+            height: 29px;
         }
 
         .toggle input {
+            position: absolute;
             opacity: 0;
-            width: 0;
-            height: 0;
+            pointer-events: none;
         }
 
         .toggle-slider {
-            position: absolute;
-            inset: 0;
-            border-radius: 30px;
-            background: #d6dfdb;
+            width: 50px;
+            height: 29px;
+            border-radius: 999px;
+            background: #d7e1dd;
             cursor: pointer;
             transition: .2s ease;
+            position: relative;
         }
 
-        .toggle-slider::before {
+        .toggle-slider::after {
             content: "";
             position: absolute;
+            top: 4px;
+            left: 4px;
             width: 21px;
             height: 21px;
-            left: 3px;
-            top: 3px;
+            background: #fff;
             border-radius: 50%;
-            background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,.15);
+            box-shadow: 0 2px 7px rgba(0,0,0,.16);
             transition: .2s ease;
         }
 
@@ -303,291 +350,546 @@
             background: #07865c;
         }
 
-        .toggle input:checked + .toggle-slider::before {
+        .toggle input:checked + .toggle-slider::after {
             transform: translateX(21px);
         }
 
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-top: 18px;
-        }
+        /* APPEARANCE */
 
-        .data-stat {
-            padding: 17px;
-            border: 1px solid #e5ece8;
-            border-radius: 15px;
-            background: #fafcfb;
-        }
-
-        .data-stat span {
-            display: block;
-            color: #8a9691;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .data-stat strong {
-            display: block;
-            margin-top: 7px;
-            color: #1c2a25;
-            font-size: 21px;
-        }
-
-        .action-grid {
+        .theme-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-top: 15px;
         }
 
-        .action-card {
+        .theme-option {
+            position: relative;
+        }
+
+        .theme-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .theme-card {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 18px;
-            border: 1px solid #e5ece8;
-            border-radius: 16px;
+            gap: 13px;
+            min-height: 72px;
+            padding: 14px;
+            border: 1px solid #dfe9e5;
+            border-radius: 15px;
+            cursor: pointer;
             background: #fbfdfc;
+            transition: .2s ease;
         }
 
-        .action-card h3 {
+        .theme-card:hover {
+            border-color: #9ccfbd;
+            transform: translateY(-1px);
+        }
+
+        .theme-option input:checked + .theme-card {
+            border-color: #07865c;
+            background: #effaf6;
+            box-shadow:
+                0 0 0 3px rgba(7, 134, 92, .08);
+        }
+
+        .theme-preview {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 19px;
+        }
+
+        .theme-preview.light {
+            background: #fff;
+            border: 1px solid #e0e8e5;
+        }
+
+        .theme-preview.dark {
+            background: #17221f;
+            color: #fff;
+        }
+
+        .theme-card strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .theme-card small {
+            color: #7d8a85;
+            font-size: 11px;
+        }
+
+        /* SUMMARY SIDEBAR */
+
+        .settings-side {
+            display: grid;
+            gap: 20px;
+            position: sticky;
+            top: 22px;
+        }
+
+        .account-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    #063f30,
+                    #087653
+                );
+            color: #fff;
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow:
+                0 18px 35px rgba(4, 79, 57, .20);
+        }
+
+        .account-card-label {
+            color: rgba(255,255,255,.67);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .account-card h3 {
+            margin: 8px 0 5px;
+            font-size: 21px;
+        }
+
+        .account-card p {
             margin: 0;
-            font-size: 14px;
+            color: rgba(255,255,255,.72);
+            font-size: 12px;
         }
 
-        .action-card p {
-            margin: 5px 0 0;
-            color: #8a9691;
+        .account-avatar {
+            width: 55px;
+            height: 55px;
+            display: grid;
+            place-items: center;
+            border-radius: 17px;
+            background: rgba(255,255,255,.13);
+            border: 1px solid rgba(255,255,255,.15);
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 22px;
+        }
+
+        .summary-card {
+            background: #fff;
+            border: 1px solid #e1ebe7;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(25,65,50,.055);
+        }
+
+        .summary-card-header {
+            padding: 21px 21px 14px;
+        }
+
+        .summary-card-header h3 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
+
+        .summary-card-header p {
+            margin: 0;
+            color: #87938f;
+            font-size: 11px;
+        }
+
+        .summary-stat {
+            padding: 15px 21px;
+            border-top: 1px solid #edf2f0;
+        }
+
+        .summary-stat span {
+            display: block;
+            color: #82908b;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .summary-stat strong {
+            display: block;
+            font-size: 18px;
+            letter-spacing: -.02em;
+        }
+
+        .summary-stat.positive strong {
+            color: #07865c;
+        }
+
+        .summary-stat.negative strong {
+            color: #c44c57;
+        }
+
+        /* DATA MANAGEMENT */
+
+        .data-tools {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .data-tool {
+            border: 1px solid #e0eae6;
+            border-radius: 15px;
+            padding: 17px;
+            background: #fbfdfc;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .data-tool:hover {
+            border-color: #9ccfbd;
+            transform: translateY(-1px);
+        }
+
+        .data-tool-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: #eaf7f2;
+            color: #087c58;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .data-tool strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .data-tool span {
+            display: block;
+            color: #7d8b86;
             font-size: 11px;
             line-height: 1.5;
         }
 
-        .danger-zone {
-            border-color: #f3dede;
-        }
-
-        .danger-zone .settings-section-header {
-            background: #fffafa;
-        }
+        /* PRIVACY */
 
         .privacy-box {
-            padding: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 17px;
             border-radius: 15px;
             background: #f1f8f5;
-            color: #587068;
+            border: 1px solid #dceee7;
+        }
+
+        .privacy-icon {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: #dff2ea;
+            color: #087c58;
+            font-weight: 900;
+        }
+
+        .privacy-box strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .privacy-box p {
+            margin: 0;
+            color: #71827b;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        /* DANGER */
+
+        .danger-card {
+            border-color: #f0dfe1;
+        }
+
+        .danger-card .settings-card-header {
+            background: #fffafb;
+        }
+
+        .danger-note {
+            margin: 0;
+            color: #7f7072;
             font-size: 12px;
             line-height: 1.7;
         }
 
-        .privacy-box strong {
-            color: #176b52;
+        /* TOAST */
+
+        .settings-toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            z-index: 9999;
+            max-width: 350px;
+            padding: 14px 17px;
+            border-radius: 14px;
+            background: #14221e;
+            color: #fff;
+            box-shadow: 0 18px 45px rgba(0,0,0,.18);
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(12px);
+            transition: .25s ease;
         }
 
-        .version-box {
-            text-align: center;
-            padding: 22px;
-            color: #9aa6a1;
-            font-size: 11px;
+        .settings-toast.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* DARK MODE */
-        body.dark-mode .settings-menu,
-        body.dark-mode .settings-section {
-            background: #111916;
-            border-color: #25332e;
+        /* IMPORT INPUT */
+
+        #settingsImportInput {
+            display: none;
         }
 
-        body.dark-mode .settings-section-header {
-            border-color: #25332e;
-        }
+        /* RESPONSIVE */
 
-        body.dark-mode .setting-row {
-            border-color: #25332e;
-        }
+        @media (max-width: 1000px) {
 
-        body.dark-mode .settings-title,
-        body.dark-mode .settings-section-header h2,
-        body.dark-mode .setting-info strong,
-        body.dark-mode .profile-info h3,
-        body.dark-mode .data-stat strong,
-        body.dark-mode .action-card h3 {
-            color: #eef8f4;
-        }
-
-        body.dark-mode .settings-subtitle,
-        body.dark-mode .settings-section-header p,
-        body.dark-mode .setting-info span,
-        body.dark-mode .profile-info p,
-        body.dark-mode .action-card p {
-            color: #8fa29b;
-        }
-
-        body.dark-mode .setting-input,
-        body.dark-mode .setting-select,
-        body.dark-mode .data-stat,
-        body.dark-mode .action-card {
-            background: #0d1412;
-            border-color: #293832;
-            color: #edf7f3;
-        }
-
-        body.dark-mode .privacy-box {
-            background: #12251e;
-            color: #9bb4aa;
-        }
-
-        body.dark-mode .privacy-box strong {
-            color: #63d7ad;
-        }
-
-        body.dark-mode .settings-menu button {
-            color: #9baea7;
-        }
-
-        body.dark-mode .settings-menu button:hover,
-        body.dark-mode .settings-menu button.active {
-            background: #123127;
-            color: #63d7ad;
-        }
-
-        body.dark-mode .danger-zone .settings-section-header {
-            background: #1c1111;
-        }
-
-        @media (max-width: 900px) {
             .settings-layout {
                 grid-template-columns: 1fr;
             }
 
-            .settings-menu {
+            .settings-side {
                 position: static;
-                display: flex;
-                gap: 5px;
-                overflow-x: auto;
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
             }
 
-            .settings-menu-title {
-                display: none;
-            }
-
-            .settings-menu button {
-                white-space: nowrap;
-                width: auto;
+            .account-card {
+                grid-column: 1 / -1;
             }
         }
 
-        @media (max-width: 650px) {
-            .setting-row {
-                align-items: flex-start;
-                flex-direction: column;
-                justify-content: center;
-                gap: 10px;
-                padding: 16px 0;
+        @media (max-width: 720px) {
+
+            .settings-hero {
+                display: block;
             }
 
-            .setting-control {
-                width: 100%;
+            .settings-status {
+                display: inline-flex;
+                margin-top: 16px;
             }
 
-            .setting-input,
-            .setting-select {
-                width: 100%;
-            }
-
-            .data-grid,
-            .action-grid {
+            .profile-editor {
                 grid-template-columns: 1fr;
             }
 
-            .save-row {
+            .profile-large-avatar {
+                width: 70px;
+                height: 70px;
+            }
+
+            .theme-grid,
+            .data-tools,
+            .settings-side {
+                grid-template-columns: 1fr;
+            }
+
+            .preference-row {
                 align-items: flex-start;
                 flex-direction: column;
             }
 
-            .settings-body,
-            .settings-section-header {
-                padding-left: 18px;
-                padding-right: 18px;
+            .preference-control {
+                width: 100%;
+                min-width: 0;
             }
         }
+
+        @media (max-width: 480px) {
+
+            .settings-card-body,
+            .settings-card-header {
+                padding-left: 17px;
+                padding-right: 17px;
+            }
+
+            .settings-hero h1 {
+                font-size: 31px;
+            }
+
+            .settings-actions {
+                flex-direction: column;
+            }
+
+            .settings-btn {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+           DARK MODE
+           ========================================================= */
+
+        body.dark-mode .settings-card,
+        body.dark-mode .summary-card,
+        body.dark-mode .settings-status {
+            background: #17221f;
+            border-color: #2a3b35;
+            color: #edf5f1;
+        }
+
+        body.dark-mode .settings-hero p,
+        body.dark-mode .settings-card-header p,
+        body.dark-mode .profile-subtitle,
+        body.dark-mode .preference-copy span,
+        body.dark-mode .summary-card-header p,
+        body.dark-mode .summary-stat span,
+        body.dark-mode .data-tool span,
+        body.dark-mode .settings-hero p {
+            color: #93a49d;
+        }
+
+        body.dark-mode .settings-input,
+        body.dark-mode .settings-select,
+        body.dark-mode .theme-card,
+        body.dark-mode .data-tool {
+            background: #111a18;
+            border-color: #30423b;
+            color: #edf5f1;
+        }
+
+        body.dark-mode .settings-card-header,
+        body.dark-mode .preference-row,
+        body.dark-mode .summary-stat {
+            border-color: #2a3b35;
+        }
+
+        body.dark-mode .preference-copy strong,
+        body.dark-mode .settings-label,
+        body.dark-mode .settings-card-header h2,
+        body.dark-mode .summary-card-header h3,
+        body.dark-mode .data-tool strong {
+            color: #edf5f1;
+        }
+
+        body.dark-mode .theme-option input:checked + .theme-card {
+            background: #16352a;
+        }
+
     </style>
 </head>
+
 
 <body>
 
     <!-- =========================================================
          SIDEBAR
-    ========================================================== -->
+         ========================================================= -->
 
     <aside class="sidebar">
 
         <div class="brand">
-            <div class="brand-mark">₦</div>
+
+            <div class="brand-mark">
+                ₦
+            </div>
 
             <div>
-                <div class="brand-name">MoneyLeak</div>
-                <div class="brand-subtitle">PERSONAL FINANCE OS</div>
+                <strong>MoneyLeak</strong>
+                <span>PERSONAL FINANCE OS</span>
             </div>
+
         </div>
+
 
         <nav class="sidebar-nav">
 
-            <div class="nav-label">MAIN</div>
+            <div class="nav-section-title">
+                MAIN
+            </div>
 
-            <a href="index.html" class="nav-link">
+            <a href="index.html">
                 <span>⌂</span>
-                <span>Dashboard</span>
+                Dashboard
             </a>
 
-            <a href="income.html" class="nav-link">
+            <a href="income.html">
                 <span>↗</span>
-                <span>Income</span>
+                Income
             </a>
 
-            <a href="expenses.html" class="nav-link">
+            <a href="expenses.html">
                 <span>↘</span>
-                <span>Expenses</span>
+                Expenses
             </a>
 
-            <a href="budgets.html" class="nav-link">
+            <a href="budgets.html">
                 <span>▣</span>
-                <span>Budgets</span>
+                Budgets
             </a>
 
-            <a href="savings.html" class="nav-link">
+            <a href="savings.html">
                 <span>◎</span>
-                <span>Savings Goals</span>
+                Savings Goals
             </a>
 
-            <div class="nav-label">PLANNING</div>
 
-            <a href="recurring.html" class="nav-link">
+            <div class="nav-section-title">
+                PLANNING
+            </div>
+
+            <a href="recurring.html">
                 <span>◷</span>
-                <span>Recurring</span>
+                Recurring
             </a>
 
-            <a href="analytics.html" class="nav-link">
+            <a href="analytics.html">
                 <span>▥</span>
-                <span>Analytics</span>
+                Analytics
             </a>
 
-            <div class="nav-label">SYSTEM</div>
 
-            <a href="settings.html" class="nav-link active">
+            <div class="nav-section-title">
+                SYSTEM
+            </div>
+
+            <a
+                href="settings.html"
+                class="active"
+            >
                 <span>⚙</span>
-                <span>Settings</span>
+                Settings
             </a>
 
         </nav>
 
-        <div class="sidebar-tip">
-            <strong>✦ Smart Money</strong>
-            <p>
-                Your financial data stays in this browser unless you export it.
-            </p>
+
+        <div class="sidebar-footer-card">
+
+            <strong>
+                ✦ Smart Money
+            </strong>
+
+            <span>
+                Your financial data stays in this
+                browser unless you export it.
+            </span>
+
         </div>
 
     </aside>
@@ -595,15 +897,17 @@
 
     <!-- =========================================================
          MAIN
-    ========================================================== -->
+         ========================================================= -->
 
     <main class="main-content">
+
 
         <!-- TOPBAR -->
 
         <header class="topbar">
 
             <button
+                type="button"
                 class="mobile-menu-button"
                 id="mobileMenuButton"
                 aria-label="Open menu"
@@ -611,25 +915,49 @@
                 ☰
             </button>
 
-            <button class="topbar-search" id="searchButton">
+
+            <button
+                type="button"
+                class="global-search-trigger"
+                id="searchButton"
+            >
                 <span>⌕</span>
-                <span>Search MoneyLeak...</span>
+                Search MoneyLeak
                 <kbd>/</kbd>
             </button>
+
 
             <div class="topbar-actions">
 
                 <button
+                    type="button"
                     class="icon-button"
                     id="notificationButton"
                     aria-label="Notifications"
                 >
-                    🔔
+                    ♧
                 </button>
 
+
                 <div class="profile-chip">
-                    <div class="profile-chip-avatar">M</div>
-                    <span id="topProfileName">My Money</span>
+
+                    <div
+                        class="profile-chip-avatar"
+                        id="topProfileAvatar"
+                    >
+                        M
+                    </div>
+
+                    <div>
+                        <strong id="topProfileName">
+                            My Money
+                        </strong>
+
+                        <span>
+                            Settings
+                        </span>
+                    </div>
+
                 </div>
 
             </div>
@@ -637,140 +965,130 @@
         </header>
 
 
-        <!-- CONTENT -->
+        <!-- =====================================================
+             PAGE
+             ===================================================== -->
 
-        <div class="page-container settings-page">
+        <div class="settings-page">
+
+
+            <!-- HERO -->
 
             <section class="settings-hero">
 
-                <div class="settings-eyebrow">
-                    MONEY LEAK CONTROL CENTER
+                <div class="settings-hero-copy">
+
+                    <div class="settings-eyebrow">
+                        ⚙ Control Center
+                    </div>
+
+                    <h1>
+                        Settings
+                    </h1>
+
+                    <p>
+                        Personalize MoneyLeak, manage your
+                        preferences, protect your data, and
+                        control how your financial workspace
+                        behaves.
+                    </p>
+
                 </div>
 
-                <h1 class="settings-title">
-                    Settings
-                </h1>
 
-                <p class="settings-subtitle">
-                    Personalize MoneyLeak, manage your preferences,
-                    protect your data, and control how your financial
-                    dashboard works.
-                </p>
+                <div class="settings-status">
+
+                    <span class="settings-status-dot"></span>
+
+                    MoneyLeak is running locally
+
+                </div>
 
             </section>
 
 
+            <!-- =================================================
+                 LAYOUT
+                 ================================================= -->
+
             <div class="settings-layout">
 
-                <!-- SETTINGS MENU -->
 
-                <aside class="settings-menu">
+                <!-- =================================================
+                     MAIN SETTINGS
+                     ================================================= -->
 
-                    <div class="settings-menu-title">
-                        Settings
-                    </div>
-
-                    <button class="settings-tab active" data-target="profileSection">
-                        👤 Profile
-                    </button>
-
-                    <button class="settings-tab" data-target="preferencesSection">
-                        ⚙ Preferences
-                    </button>
-
-                    <button class="settings-tab" data-target="dataSection">
-                        💾 Your Data
-                    </button>
-
-                    <button class="settings-tab" data-target="privacySection">
-                        🔐 Privacy
-                    </button>
-
-                    <button class="settings-tab" data-target="dangerSection">
-                        ⚠ Reset
-                    </button>
-
-                </aside>
-
-
-                <!-- SETTINGS CONTENT -->
-
-                <div>
+                <div class="settings-main">
 
 
                     <!-- PROFILE -->
 
-                    <section class="settings-section" id="profileSection">
+                    <section class="settings-card">
 
-                        <div class="settings-section-header">
+                        <div class="settings-card-header">
 
                             <h2>
                                 Your Profile
                             </h2>
 
                             <p>
-                                Personalize the name MoneyLeak uses throughout your dashboard.
+                                Personalize the name MoneyLeak
+                                uses throughout your dashboard.
                             </p>
 
                         </div>
 
-                        <div class="settings-body">
 
-                            <div class="profile-card">
+                        <div class="settings-card-body">
 
-                                <div class="profile-avatar" id="profileAvatar">
+                            <div class="profile-editor">
+
+                                <div
+                                    class="profile-large-avatar"
+                                    id="profileLargeAvatar"
+                                >
                                     M
                                 </div>
 
-                                <div class="profile-info">
 
-                                    <h3 id="profilePreviewName">
-                                        My Money
-                                    </h3>
+                                <div class="profile-name-block">
 
-                                    <p>
-                                        MoneyLeak personal finance workspace
-                                    </p>
+                                    <div>
 
-                                </div>
+                                        <label
+                                            class="settings-label"
+                                            for="profileName"
+                                        >
+                                            Display name
+                                        </label>
 
-                            </div>
+                                        <input
+                                            class="settings-input"
+                                            id="profileName"
+                                            type="text"
+                                            maxlength="50"
+                                            placeholder="My Money"
+                                        >
 
-                            <div class="setting-row">
+                                    </div>
 
-                                <div class="setting-info">
 
-                                    <strong>
-                                        Display name
-                                    </strong>
-
-                                    <span>
-                                        This name appears in your MoneyLeak interface.
-                                    </span>
-
-                                </div>
-
-                                <div class="setting-control">
-
-                                    <input
-                                        class="setting-input"
-                                        id="profileName"
-                                        type="text"
-                                        maxlength="40"
-                                        placeholder="My Money"
-                                    >
+                                    <div class="profile-subtitle">
+                                        This name is stored locally
+                                        in your browser.
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                            <div class="save-row">
 
-                                <span class="save-message" id="profileMessage"></span>
+                            <div class="settings-actions">
 
                                 <button
-                                    class="settings-button"
-                                    id="saveProfile"
+                                    type="button"
+                                    class="settings-btn settings-btn-primary"
+                                    id="saveProfileButton"
                                 >
                                     Save Profile
                                 </button>
@@ -784,162 +1102,158 @@
 
                     <!-- PREFERENCES -->
 
-                    <section class="settings-section" id="preferencesSection">
+                    <section class="settings-card">
 
-                        <div class="settings-section-header">
+                        <div class="settings-card-header">
 
                             <h2>
                                 Preferences
                             </h2>
 
                             <p>
-                                Choose how MoneyLeak looks and displays your financial information.
+                                Choose how MoneyLeak displays
+                                and manages your financial
+                                information.
                             </p>
 
                         </div>
 
-                        <div class="settings-body">
 
-                            <div class="setting-row">
+                        <div class="settings-card-body">
 
-                                <div class="setting-info">
+                            <div class="preference-list">
 
-                                    <strong>
-                                        Currency
-                                    </strong>
 
-                                    <span>
-                                        Choose the currency used throughout the app.
-                                    </span>
+                                <!-- CURRENCY -->
+
+                                <div class="preference-row">
+
+                                    <div class="preference-copy">
+
+                                        <strong>
+                                            Currency
+                                        </strong>
+
+                                        <span>
+                                            Choose the currency
+                                            used throughout MoneyLeak.
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="preference-control">
+
+                                        <select
+                                            class="settings-select"
+                                            id="currencySelect"
+                                        >
+
+                                            <option value="NGN">
+                                                🇳🇬 Nigerian Naira (₦)
+                                            </option>
+
+                                            <option value="USD">
+                                                🇺🇸 US Dollar ($)
+                                            </option>
+
+                                            <option value="GBP">
+                                                🇬🇧 British Pound (£)
+                                            </option>
+
+                                            <option value="EUR">
+                                                🇪🇺 Euro (€)
+                                            </option>
+
+                                            <option value="CAD">
+                                                🇨🇦 Canadian Dollar (C$)
+                                            </option>
+
+                                            <option value="AUD">
+                                                🇦🇺 Australian Dollar (A$)
+                                            </option>
+
+                                        </select>
+
+                                    </div>
 
                                 </div>
 
-                                <div class="setting-control">
 
-                                    <select
-                                        class="setting-select"
-                                        id="currencySelect"
+                                <!-- NOTIFICATIONS -->
+
+                                <div class="preference-row">
+
+                                    <div class="preference-copy">
+
+                                        <strong>
+                                            Smart notifications
+                                        </strong>
+
+                                        <span>
+                                            Allow MoneyLeak to surface
+                                            budget warnings, savings
+                                            updates, and financial alerts.
+                                        </span>
+
+                                    </div>
+
+
+                                    <label
+                                        class="toggle"
+                                        aria-label="Smart notifications"
                                     >
-
-                                        <option value="NGN">₦ Nigerian Naira</option>
-                                        <option value="USD">$ US Dollar</option>
-                                        <option value="GBP">£ British Pound</option>
-                                        <option value="EUR">€ Euro</option>
-                                        <option value="CAD">C$ Canadian Dollar</option>
-                                        <option value="AUD">A$ Australian Dollar</option>
-
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="setting-row">
-
-                                <div class="setting-info">
-
-                                    <strong>
-                                        Appearance
-                                    </strong>
-
-                                    <span>
-                                        Switch between a bright and dark MoneyLeak experience.
-                                    </span>
-
-                                </div>
-
-                                <div class="setting-control">
-
-                                    <select
-                                        class="setting-select"
-                                        id="themeSelect"
-                                    >
-
-                                        <option value="light">Light</option>
-                                        <option value="dark">Dark</option>
-
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="setting-row">
-
-                                <div class="setting-info">
-
-                                    <strong>
-                                        Financial notifications
-                                    </strong>
-
-                                    <span>
-                                        Allow MoneyLeak to show smart financial alerts.
-                                    </span>
-
-                                </div>
-
-                                <div class="setting-control">
-
-                                    <label class="toggle">
 
                                         <input
                                             type="checkbox"
                                             id="notificationsToggle"
                                         >
 
-                                        <span class="toggle-slider"></span>
+                                        <span
+                                            class="toggle-slider"
+                                        ></span>
 
                                     </label>
 
                                 </div>
 
-                            </div>
+
+                                <!-- COMPACT NUMBERS -->
+
+                                <div class="preference-row">
+
+                                    <div class="preference-copy">
+
+                                        <strong>
+                                            Compact numbers
+                                        </strong>
+
+                                        <span>
+                                            Display large amounts using
+                                            shorter formats such as
+                                            ₦1.2M and ₦450K.
+                                        </span>
+
+                                    </div>
 
 
-                            <div class="setting-row">
-
-                                <div class="setting-info">
-
-                                    <strong>
-                                        Compact numbers
-                                    </strong>
-
-                                    <span>
-                                        Display large values in a shorter format when possible.
-                                    </span>
-
-                                </div>
-
-                                <div class="setting-control">
-
-                                    <label class="toggle">
+                                    <label
+                                        class="toggle"
+                                        aria-label="Compact numbers"
+                                    >
 
                                         <input
                                             type="checkbox"
                                             id="compactNumbersToggle"
                                         >
 
-                                        <span class="toggle-slider"></span>
+                                        <span
+                                            class="toggle-slider"
+                                        ></span>
 
                                     </label>
 
                                 </div>
-
-                            </div>
-
-
-                            <div class="save-row">
-
-                                <span class="save-message" id="preferencesMessage"></span>
-
-                                <button
-                                    class="settings-button"
-                                    id="savePreferences"
-                                >
-                                    Save Preferences
-                                </button>
 
                             </div>
 
@@ -948,91 +1262,188 @@
                     </section>
 
 
-                    <!-- DATA -->
+                    <!-- APPEARANCE -->
 
-                    <section class="settings-section" id="dataSection">
+                    <section class="settings-card">
 
-                        <div class="settings-section-header">
+                        <div class="settings-card-header">
 
                             <h2>
-                                Your Data
+                                Appearance
                             </h2>
 
                             <p>
-                                Review your MoneyLeak data and create a backup whenever you want.
+                                Choose the visual environment
+                                that feels right for your workspace.
                             </p>
 
                         </div>
 
-                        <div class="settings-body">
 
-                            <div class="data-grid">
+                        <div class="settings-card-body">
 
-                                <div class="data-stat">
-                                    <span>TRANSACTIONS</span>
-                                    <strong id="dataTransactions">0</strong>
-                                </div>
+                            <div class="theme-grid">
 
-                                <div class="data-stat">
-                                    <span>SAVINGS GOALS</span>
-                                    <strong id="dataGoals">0</strong>
-                                </div>
 
-                                <div class="data-stat">
-                                    <span>RECURRING ITEMS</span>
-                                    <strong id="dataRecurring">0</strong>
-                                </div>
+                                <label class="theme-option">
+
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        value="light"
+                                        id="themeLight"
+                                    >
+
+                                    <span class="theme-card">
+
+                                        <span class="theme-preview light">
+                                            ☀
+                                        </span>
+
+                                        <span>
+
+                                            <strong>
+                                                Light
+                                            </strong>
+
+                                            <small>
+                                                Clean and bright
+                                            </small>
+
+                                        </span>
+
+                                    </span>
+
+                                </label>
+
+
+                                <label class="theme-option">
+
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        value="dark"
+                                        id="themeDark"
+                                    >
+
+                                    <span class="theme-card">
+
+                                        <span class="theme-preview dark">
+                                            ☾
+                                        </span>
+
+                                        <span>
+
+                                            <strong>
+                                                Dark
+                                            </strong>
+
+                                            <small>
+                                                Easy on the eyes
+                                            </small>
+
+                                        </span>
+
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- DATA MANAGEMENT -->
+
+                    <section class="settings-card">
+
+                        <div class="settings-card-header">
+
+                            <h2>
+                                Data Management
+                            </h2>
+
+                            <p>
+                                Keep control of your MoneyLeak
+                                information. Export a backup or
+                                restore previously saved data.
+                            </p>
+
+                        </div>
+
+
+                        <div class="settings-card-body">
+
+                            <div class="data-tools">
+
+
+                                <button
+                                    type="button"
+                                    class="data-tool"
+                                    id="exportDataButton"
+                                >
+
+                                    <div class="data-tool-icon">
+                                        ↓
+                                    </div>
+
+                                    <strong>
+                                        Export Data
+                                    </strong>
+
+                                    <span>
+                                        Download a complete
+                                        MoneyLeak backup as JSON.
+                                    </span>
+
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="data-tool"
+                                    id="importDataButton"
+                                >
+
+                                    <div class="data-tool-icon">
+                                        ↑
+                                    </div>
+
+                                    <strong>
+                                        Import Data
+                                    </strong>
+
+                                    <span>
+                                        Restore transactions,
+                                        budgets, goals and settings.
+                                    </span>
+
+                                </button>
 
                             </div>
 
 
-                            <div class="action-grid">
-
-                                <div class="action-card">
-
-                                    <div>
-                                        <h3>Export backup</h3>
-
-                                        <p>
-                                            Download your MoneyLeak information as a JSON backup.
-                                        </p>
-                                    </div>
-
-                                    <button
-                                        class="settings-button secondary"
-                                        id="exportData"
-                                    >
-                                        Export
-                                    </button>
-
-                                </div>
+                            <input
+                                type="file"
+                                id="settingsImportInput"
+                                accept=".json,application/json"
+                            >
 
 
-                                <div class="action-card">
+                            <div
+                                class="settings-actions"
+                                style="margin-top:18px;"
+                            >
 
-                                    <div>
-                                        <h3>Import backup</h3>
-
-                                        <p>
-                                            Restore MoneyLeak data from a previous backup.
-                                        </p>
-                                    </div>
-
-                                    <button
-                                        class="settings-button secondary"
-                                        id="importData"
-                                    >
-                                        Import
-                                    </button>
-
-                                    <input
-                                        type="file"
-                                        id="importFile"
-                                        accept=".json,application/json"
-                                        hidden
-                                    >
-
-                                </div>
+                                <button
+                                    type="button"
+                                    class="settings-btn settings-btn-secondary"
+                                    id="refreshDataButton"
+                                >
+                                    ↻ Refresh MoneyLeak
+                                </button>
 
                             </div>
 
@@ -1043,43 +1454,47 @@
 
                     <!-- PRIVACY -->
 
-                    <section class="settings-section" id="privacySection">
+                    <section class="settings-card">
 
-                        <div class="settings-section-header">
+                        <div class="settings-card-header">
 
                             <h2>
-                                Privacy & Security
+                                Privacy & Data
                             </h2>
 
                             <p>
-                                Understand where your MoneyLeak information is stored.
+                                Understand where your financial
+                                information is stored.
                             </p>
 
                         </div>
 
-                        <div class="settings-body">
+
+                        <div class="settings-card-body">
 
                             <div class="privacy-box">
 
-                                <strong>
-                                    Your financial information is stored locally.
-                                </strong>
+                                <div class="privacy-icon">
+                                    ✓
+                                </div>
 
-                                <br>
+                                <div>
 
-                                MoneyLeak uses your browser's local storage for the
-                                information you enter into the application. Your
-                                transactions, goals, budgets and preferences are not
-                                automatically uploaded to a MoneyLeak server.
+                                    <strong>
+                                        Your financial data stays in
+                                        your browser
+                                    </strong>
 
-                                <br><br>
+                                    <p>
+                                        MoneyLeak currently uses browser
+                                        storage for your financial data.
+                                        Your transactions, goals, budgets
+                                        and preferences remain on this
+                                        device unless you choose to export
+                                        them.
+                                    </p>
 
-                                <strong>
-                                    Backup recommendation:
-                                </strong>
-
-                                Export your data regularly if the information is important
-                                to you. Keep your backup file somewhere secure.
+                                </div>
 
                             </div>
 
@@ -1088,48 +1503,43 @@
                     </section>
 
 
-                    <!-- DANGER -->
+                    <!-- DANGER ZONE -->
 
-                    <section
-                        class="settings-section danger-zone"
-                        id="dangerSection"
-                    >
+                    <section class="settings-card danger-card">
 
-                        <div class="settings-section-header">
+                        <div class="settings-card-header">
 
                             <h2>
-                                Reset MoneyLeak
+                                Danger Zone
                             </h2>
 
                             <p>
-                                Permanently remove financial information stored in this browser.
+                                These actions can permanently remove
+                                information from this browser.
                             </p>
 
                         </div>
 
-                        <div class="settings-body">
 
-                            <div class="action-card">
+                        <div class="settings-card-body">
 
-                                <div>
+                            <p class="danger-note">
+                                Resetting MoneyLeak removes MoneyLeak
+                                transactions, budgets, savings goals,
+                                recurring items, alerts and preferences
+                                stored on this device. This cannot be
+                                undone unless you have exported a backup.
+                            </p>
 
-                                    <h3>
-                                        Delete all financial data
-                                    </h3>
 
-                                    <p>
-                                        This removes transactions, goals, budgets,
-                                        recurring items and MoneyLeak preferences.
-                                        Export a backup first if you may need the data later.
-                                    </p>
-
-                                </div>
+                            <div class="settings-actions">
 
                                 <button
-                                    class="settings-button danger"
-                                    id="resetData"
+                                    type="button"
+                                    class="settings-btn settings-btn-danger"
+                                    id="resetDataButton"
                                 >
-                                    Reset Data
+                                    Reset All MoneyLeak Data
                                 </button>
 
                             </div>
@@ -1139,98 +1549,312 @@
                     </section>
 
 
-                    <div class="version-box">
-                        MoneyLeak Personal Finance OS · Version 1.0
+                </div>
+
+
+                <!-- =================================================
+                     SIDEBAR SUMMARY
+                     ================================================= -->
+
+                <aside class="settings-side">
+
+
+                    <!-- ACCOUNT -->
+
+                    <div class="account-card">
+
+                        <div
+                            class="account-avatar"
+                            id="accountAvatar"
+                        >
+                            M
+                        </div>
+
+                        <div class="account-card-label">
+                            MoneyLeak workspace
+                        </div>
+
+                        <h3 id="accountName">
+                            My Money
+                        </h3>
+
+                        <p>
+                            Personal finance command center
+                        </p>
+
                     </div>
 
-                </div>
+
+                    <!-- FINANCIAL SNAPSHOT -->
+
+                    <div class="summary-card">
+
+                        <div class="summary-card-header">
+
+                            <h3>
+                                Financial Snapshot
+                            </h3>
+
+                            <p>
+                                Current recorded position
+                            </p>
+
+                        </div>
+
+
+                        <div class="summary-stat">
+
+                            <span>
+                                Balance
+                            </span>
+
+                            <strong id="settingsBalance">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-stat positive">
+
+                            <span>
+                                Total income
+                            </span>
+
+                            <strong id="settingsIncome">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-stat negative">
+
+                            <span>
+                                Total expenses
+                            </span>
+
+                            <strong id="settingsExpenses">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-stat">
+
+                            <span>
+                                Savings rate
+                            </span>
+
+                            <strong id="settingsSavingsRate">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-stat">
+
+                            <span>
+                                Transactions
+                            </span>
+
+                            <strong id="settingsTransactionCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SYSTEM STATUS -->
+
+                    <div class="summary-card">
+
+                        <div class="summary-card-header">
+
+                            <h3>
+                                System Status
+                            </h3>
+
+                            <p>
+                                MoneyLeak workspace health
+                            </p>
+
+                        </div>
+
+
+                        <div class="summary-stat">
+
+                            <span>
+                                Storage
+                            </span>
+
+                            <strong>
+                                Local
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-stat">
+
+                            <span>
+                                Data engine
+                            </span>
+
+                            <strong>
+                                Active
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-stat">
+
+                            <span>
+                                Version
+                            </span>
+
+                            <strong>
+                                2.0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </aside>
 
             </div>
 
         </div>
 
-    </main>
+
+        <!-- =====================================================
+             SEARCH OVERLAY
+             ===================================================== -->
+
+        <div
+            id="searchOverlay"
+            class="search-overlay"
+            hidden
+            aria-hidden="true"
+        >
+
+            <div class="search-modal">
+
+                <div class="search-modal-header">
+
+                    <strong>
+                        Search MoneyLeak
+                    </strong>
+
+                    <button
+                        type="button"
+                        id="closeSearch"
+                        aria-label="Close search"
+                    >
+                        ×
+                    </button>
+
+                </div>
 
 
-    <!-- SEARCH OVERLAY -->
+                <input
+                    type="search"
+                    id="globalSearch"
+                    placeholder="Search pages or transactions..."
+                    autocomplete="off"
+                >
 
-    <div
-        class="search-overlay"
-        id="searchOverlay"
-        hidden
-        aria-hidden="true"
-    >
 
-        <div class="search-modal">
+                <div id="searchResults"></div>
 
-            <div class="search-modal-header">
+            </div>
 
-                <h2>Search MoneyLeak</h2>
+        </div>
 
-                <button id="closeSearch">
+
+        <!-- =====================================================
+             NOTIFICATION PANEL
+             ===================================================== -->
+
+        <aside
+            id="notificationPanel"
+            class="notification-panel"
+            hidden
+            aria-hidden="true"
+        >
+
+            <div class="notification-panel-header">
+
+                <div>
+
+                    <strong>
+                        Notifications
+                    </strong>
+
+                    <span>
+                        MoneyLeak intelligence
+                    </span>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="closeNotifications"
+                    aria-label="Close notifications"
+                >
                     ×
                 </button>
 
             </div>
 
-            <input
-                type="search"
-                id="globalSearch"
-                placeholder="Search transactions and pages..."
-                autocomplete="off"
-            >
 
-            <div id="searchResults"></div>
+            <div
+                id="notificationList"
+                class="notification-list"
+            ></div>
 
-        </div>
-
-    </div>
+        </aside>
 
 
-    <!-- NOTIFICATIONS -->
+        <!-- MOBILE OVERLAY -->
 
-    <aside
-        class="notification-panel"
-        id="notificationPanel"
-        aria-hidden="true"
-    >
-
-        <div class="notification-panel-header">
-
-            <div>
-                <strong>Notifications</strong>
-                <small>MoneyLeak intelligence</small>
-            </div>
-
-            <button id="closeNotifications">
-                ×
-            </button>
-
-        </div>
-
-        <div id="notificationList">
-            <div class="empty-state">
-                No notifications yet.
-            </div>
-        </div>
-
-    </aside>
+        <div
+            id="mobileOverlay"
+            class="mobile-overlay"
+        ></div>
 
 
-    <!-- MOBILE OVERLAY -->
+    </main>
+
+
+    <!-- TOAST -->
 
     <div
-        class="mobile-overlay"
-        id="mobileOverlay"
+        id="settingsToast"
+        class="settings-toast"
+        role="status"
+        aria-live="polite"
     ></div>
 
 
-    <!-- APP ENGINE FIRST -->
+    <!-- =========================================================
+         APP ENGINE
+         IMPORTANT: app.js loads BEFORE page-specific JS.
+         ========================================================= -->
 
     <script src="app.js"></script>
 
 
-    <!-- SETTINGS ENGINE -->
+    <!-- =========================================================
+         SETTINGS PAGE ENGINE
+         ========================================================= -->
 
     <script>
 
@@ -1239,494 +1863,756 @@
             "use strict";
 
 
-            const SETTINGS_KEY = "moneyLeakSettings";
+            const ML =
+                window.MoneyLeak;
 
 
-            const defaultSettings = {
-                currency: "NGN",
-                symbol: "₦",
-                name: "My Money",
-                theme: "light",
-                notifications: true,
-                compactNumbers: false
-            };
+            /* =====================================================
+               HELPERS
+               ===================================================== */
 
-
-            function readSettings() {
-
-                try {
-
-                    const saved =
-                        JSON.parse(
-                            localStorage.getItem(SETTINGS_KEY) || "{}"
-                        );
-
-                    return {
-                        ...defaultSettings,
-                        ...saved
-                    };
-
-                } catch (error) {
-
-                    return {
-                        ...defaultSettings
-                    };
-
-                }
-
+            function get(id) {
+                return document.getElementById(id);
             }
 
 
-            function writeSettings(settings) {
+            function showToast(message) {
 
-                localStorage.setItem(
-                    SETTINGS_KEY,
-                    JSON.stringify(settings)
+                const toast =
+                    get("settingsToast");
+
+
+                if (!toast) {
+                    return;
+                }
+
+
+                toast.textContent =
+                    message;
+
+
+                toast.classList.add(
+                    "show"
                 );
 
+
+                clearTimeout(
+                    showToast.timer
+                );
+
+
+                showToast.timer =
+                    setTimeout(
+                        () => {
+
+                            toast.classList.remove(
+                                "show"
+                            );
+
+                        },
+                        2600
+                    );
             }
 
 
-            function applyTheme(theme) {
+            function getSettings() {
 
-                if (theme === "dark") {
-
-                    document.body.classList.add("dark-mode");
-
-                } else {
-
-                    document.body.classList.remove("dark-mode");
-
+                if (
+                    ML &&
+                    typeof ML.getSettings ===
+                    "function"
+                ) {
+                    return ML.getSettings();
                 }
 
+
+                return {
+                    name: "My Money",
+                    currency: "NGN",
+                    symbol: "₦",
+                    theme: "light",
+                    notifications: true,
+                    compactNumbers: false
+                };
             }
 
 
-            function updateProfilePreview(name) {
+            function saveSettings(
+                updates
+            ) {
+
+                if (
+                    ML &&
+                    typeof ML.saveSettings ===
+                    "function"
+                ) {
+
+                    return ML.saveSettings(
+                        updates
+                    );
+                }
+
+
+                return null;
+            }
+
+
+            /* =====================================================
+               PROFILE
+               ===================================================== */
+
+            function updateProfilePreview(
+                name
+            ) {
 
                 const cleanName =
-                    String(name || "My Money").trim() || "My Money";
-
-                const firstLetter =
-                    cleanName.charAt(0).toUpperCase();
-
-
-                const previewName =
-                    document.getElementById("profilePreviewName");
-
-                const avatar =
-                    document.getElementById("profileAvatar");
-
-                const topName =
-                    document.getElementById("topProfileName");
-
-                const topAvatar =
-                    document.querySelector(".profile-chip-avatar");
-
-
-                if (previewName) {
-                    previewName.textContent = cleanName;
-                }
-
-                if (avatar) {
-                    avatar.textContent = firstLetter;
-                }
-
-                if (topName) {
-                    topName.textContent = cleanName;
-                }
-
-                if (topAvatar) {
-                    topAvatar.textContent = firstLetter;
-                }
-
-            }
-
-
-            function loadSettingsIntoUI() {
-
-                const settings = readSettings();
-
-
-                const profileName =
-                    document.getElementById("profileName");
-
-                const currency =
-                    document.getElementById("currencySelect");
-
-                const theme =
-                    document.getElementById("themeSelect");
-
-                const notifications =
-                    document.getElementById("notificationsToggle");
-
-                const compact =
-                    document.getElementById("compactNumbersToggle");
-
-
-                if (profileName) {
-                    profileName.value = settings.name || "My Money";
-                }
-
-                if (currency) {
-                    currency.value = settings.currency || "NGN";
-                }
-
-                if (theme) {
-                    theme.value = settings.theme || "light";
-                }
-
-                if (notifications) {
-                    notifications.checked =
-                        settings.notifications !== false;
-                }
-
-                if (compact) {
-                    compact.checked =
-                        settings.compactNumbers === true;
-                }
-
-
-                updateProfilePreview(settings.name);
-
-                applyTheme(settings.theme);
-
-            }
-
-
-            function saveProfile() {
-
-                const input =
-                    document.getElementById("profileName");
-
-                const message =
-                    document.getElementById("profileMessage");
-
-
-                const settings = readSettings();
-
-                settings.name =
-                    String(input?.value || "My Money").trim() ||
+                    String(
+                        name ||
+                        "My Money"
+                    ).trim() ||
                     "My Money";
 
 
-                writeSettings(settings);
+                const initial =
+                    cleanName
+                        .charAt(0)
+                        .toUpperCase();
 
 
                 if (
-                    window.MoneyLeak &&
-                    typeof window.MoneyLeak.saveSettings === "function"
+                    get("profileLargeAvatar")
                 ) {
-
-                    try {
-                        window.MoneyLeak.saveSettings(settings);
-                    } catch (error) {
-                        // Local storage remains the source of truth.
-                    }
-
+                    get(
+                        "profileLargeAvatar"
+                    ).textContent =
+                        initial;
                 }
 
 
-                updateProfilePreview(settings.name);
+                if (
+                    get("accountAvatar")
+                ) {
+                    get(
+                        "accountAvatar"
+                    ).textContent =
+                        initial;
+                }
 
 
-                if (message) {
+                if (
+                    get("topProfileAvatar")
+                ) {
+                    get(
+                        "topProfileAvatar"
+                    ).textContent =
+                        initial;
+                }
 
-                    message.textContent =
-                        "Profile saved ✓";
 
-                    setTimeout(() => {
-                        message.textContent = "";
-                    }, 2500);
+                if (
+                    get("accountName")
+                ) {
+                    get(
+                        "accountName"
+                    ).textContent =
+                        cleanName;
+                }
 
+
+                if (
+                    get("topProfileName")
+                ) {
+                    get(
+                        "topProfileName"
+                    ).textContent =
+                        cleanName;
                 }
 
             }
 
 
-            function savePreferences() {
+            function loadProfile() {
 
-                const settings = readSettings();
+                const settings =
+                    getSettings();
 
+
+                const name =
+                    settings.name ||
+                    "My Money";
+
+
+                if (
+                    get("profileName")
+                ) {
+
+                    get(
+                        "profileName"
+                    ).value =
+                        name;
+                }
+
+
+                updateProfilePreview(
+                    name
+                );
+            }
+
+
+            function setupProfile() {
+
+                const input =
+                    get("profileName");
+
+
+                const saveButton =
+                    get("saveProfileButton");
+
+
+                if (input) {
+
+                    input.addEventListener(
+                        "input",
+                        () => {
+
+                            updateProfilePreview(
+                                input.value
+                            );
+
+                        }
+                    );
+                }
+
+
+                if (saveButton) {
+
+                    saveButton.addEventListener(
+                        "click",
+                        () => {
+
+                            const name =
+                                String(
+                                    input?.value ||
+                                    "My Money"
+                                ).trim();
+
+
+                            if (!name) {
+
+                                showToast(
+                                    "Please enter a display name."
+                                );
+
+                                return;
+                            }
+
+
+                            saveSettings({
+                                name
+                            });
+
+
+                            updateProfilePreview(
+                                name
+                            );
+
+
+                            showToast(
+                                "Profile saved successfully."
+                            );
+
+                        }
+                    );
+                }
+            }
+
+
+            /* =====================================================
+               PREFERENCES
+               ===================================================== */
+
+            function loadPreferences() {
+
+                const settings =
+                    getSettings();
+
+
+                if (
+                    get("currencySelect")
+                ) {
+
+                    get(
+                        "currencySelect"
+                    ).value =
+                        settings.currency ||
+                        "NGN";
+                }
+
+
+                if (
+                    get("notificationsToggle")
+                ) {
+
+                    get(
+                        "notificationsToggle"
+                    ).checked =
+                        settings.notifications !==
+                        false;
+                }
+
+
+                if (
+                    get("compactNumbersToggle")
+                ) {
+
+                    get(
+                        "compactNumbersToggle"
+                    ).checked =
+                        settings.compactNumbers ===
+                        true;
+                }
+
+
+                if (
+                    get("themeLight")
+                ) {
+
+                    get(
+                        "themeLight"
+                    ).checked =
+                        settings.theme !==
+                        "dark";
+                }
+
+
+                if (
+                    get("themeDark")
+                ) {
+
+                    get(
+                        "themeDark"
+                    ).checked =
+                        settings.theme ===
+                        "dark";
+                }
+
+            }
+
+
+            function setupPreferences() {
 
                 const currency =
-                    document.getElementById("currencySelect");
+                    get("currencySelect");
 
-                const theme =
-                    document.getElementById("themeSelect");
+
+                if (currency) {
+
+                    currency.addEventListener(
+                        "change",
+                        () => {
+
+                            saveSettings({
+                                currency:
+                                    currency.value
+                            });
+
+
+                            showToast(
+                                "Currency preference updated."
+                            );
+
+
+                            refreshSnapshot();
+
+                        }
+                    );
+                }
+
 
                 const notifications =
-                    document.getElementById("notificationsToggle");
+                    get(
+                        "notificationsToggle"
+                    );
+
+
+                if (notifications) {
+
+                    notifications.addEventListener(
+                        "change",
+                        () => {
+
+                            saveSettings({
+                                notifications:
+                                    notifications.checked
+                            });
+
+
+                            showToast(
+                                notifications.checked
+                                    ? "Smart notifications enabled."
+                                    : "Smart notifications disabled."
+                            );
+
+                        }
+                    );
+                }
+
 
                 const compact =
-                    document.getElementById("compactNumbersToggle");
+                    get(
+                        "compactNumbersToggle"
+                    );
 
 
-                settings.currency =
-                    currency?.value || "NGN";
+                if (compact) {
+
+                    compact.addEventListener(
+                        "change",
+                        () => {
+
+                            saveSettings({
+                                compactNumbers:
+                                    compact.checked
+                            });
 
 
-                settings.symbol =
-                    settings.currency === "USD"
-                        ? "$"
-                        : settings.currency === "GBP"
-                            ? "£"
-                            : settings.currency === "EUR"
-                                ? "€"
-                                : settings.currency === "CAD"
-                                    ? "C$"
-                                    : settings.currency === "AUD"
-                                        ? "A$"
-                                        : "₦";
+                            showToast(
+                                compact.checked
+                                    ? "Compact numbers enabled."
+                                    : "Compact numbers disabled."
+                            );
 
-
-                settings.theme =
-                    theme?.value || "light";
-
-
-                settings.notifications =
-                    Boolean(notifications?.checked);
-
-
-                settings.compactNumbers =
-                    Boolean(compact?.checked);
-
-
-                writeSettings(settings);
-
-                applyTheme(settings.theme);
-
-
-                if (
-                    window.MoneyLeak &&
-                    typeof window.MoneyLeak.saveSettings === "function"
-                ) {
-
-                    try {
-                        window.MoneyLeak.saveSettings(settings);
-                    } catch (error) {
-                        // Local storage remains available.
-                    }
-
+                        }
+                    );
                 }
 
 
-                const message =
-                    document.getElementById("preferencesMessage");
+                document
+                    .querySelectorAll(
+                        'input[name="theme"]'
+                    )
+                    .forEach(
+                        radio => {
+
+                            radio.addEventListener(
+                                "change",
+                                () => {
+
+                                    saveSettings({
+                                        theme:
+                                            radio.value
+                                    });
 
 
-                if (message) {
-
-                    message.textContent =
-                        "Preferences saved ✓";
-
-                    setTimeout(() => {
-                        message.textContent = "";
-                    }, 2500);
-
-                }
+                                    applyTheme(
+                                        radio.value
+                                    );
 
 
-                if (
-                    window.MoneyLeak &&
-                    typeof window.MoneyLeak.refresh === "function"
-                ) {
+                                    showToast(
+                                        radio.value ===
+                                        "dark"
+                                            ? "Dark mode enabled."
+                                            : "Light mode enabled."
+                                    );
 
-                    window.MoneyLeak.refresh();
+                                }
+                            );
 
-                }
-
+                        }
+                    );
             }
 
 
-            function getArrayFromStorage(key) {
+            function applyTheme(
+                theme
+            ) {
 
-                try {
+                document.body.classList.toggle(
+                    "dark-mode",
+                    theme ===
+                    "dark"
+                );
 
-                    const value =
-                        JSON.parse(
-                            localStorage.getItem(key) || "[]"
-                        );
 
-                    return Array.isArray(value)
-                        ? value
+                document.body.dataset.theme =
+                    theme;
+
+
+                if (
+                    ML &&
+                    typeof ML.applySettings ===
+                    "function"
+                ) {
+
+                    ML.applySettings(
+                        getSettings()
+                    );
+                }
+            }
+
+
+            /* =====================================================
+               FINANCIAL SNAPSHOT
+               ===================================================== */
+
+            function refreshSnapshot() {
+
+                if (!ML) {
+                    return;
+                }
+
+
+                const transactions =
+                    typeof ML.getTransactions ===
+                    "function"
+                        ? ML.getTransactions()
                         : [];
 
-                } catch (error) {
 
-                    return [];
-
-                }
-
-            }
-
-
-            function updateDataStats() {
-
-                let transactions = [];
-
-                let goals = [];
-
-                let recurring = [];
+                const totals =
+                    typeof ML.calculateTotals ===
+                    "function"
+                        ? ML.calculateTotals(
+                            transactions
+                        )
+                        : {
+                            income: 0,
+                            expenses: 0,
+                            balance: 0,
+                            savingsRate: 0
+                        };
 
 
-                if (
-                    window.MoneyLeak &&
-                    typeof window.MoneyLeak.getTransactions === "function"
-                ) {
-
-                    transactions =
-                        window.MoneyLeak.getTransactions();
-
-                } else {
-
-                    transactions =
-                        getArrayFromStorage("moneyLeakTransactions");
-
-                }
+                const format =
+                    typeof ML.formatCurrency ===
+                    "function"
+                        ? ML.formatCurrency
+                        : value =>
+                            "₦" +
+                            Number(
+                                value || 0
+                            ).toLocaleString();
 
 
                 if (
-                    window.MoneyLeak &&
-                    typeof window.MoneyLeak.getSavingsGoals === "function"
+                    get("settingsBalance")
                 ) {
 
-                    goals =
-                        window.MoneyLeak.getSavingsGoals();
-
-                } else {
-
-                    goals =
-                        getArrayFromStorage("moneyLeakSavingsGoals");
-
-                }
-
-
-                if (
-                    window.MoneyLeak &&
-                    typeof window.MoneyLeak.getRecurringTransactions === "function"
-                ) {
-
-                    recurring =
-                        window.MoneyLeak.getRecurringTransactions();
-
-                } else {
-
-                    recurring =
-                        getArrayFromStorage(
-                            "moneyLeakRecurringTransactions"
+                    get(
+                        "settingsBalance"
+                    ).textContent =
+                        format(
+                            totals.balance
                         );
-
                 }
 
 
-                document.getElementById("dataTransactions").textContent =
-                    transactions.length.toLocaleString();
+                if (
+                    get("settingsIncome")
+                ) {
 
-                document.getElementById("dataGoals").textContent =
-                    goals.length.toLocaleString();
+                    get(
+                        "settingsIncome"
+                    ).textContent =
+                        format(
+                            totals.income
+                        );
+                }
 
-                document.getElementById("dataRecurring").textContent =
-                    recurring.length.toLocaleString();
+
+                if (
+                    get("settingsExpenses")
+                ) {
+
+                    get(
+                        "settingsExpenses"
+                    ).textContent =
+                        format(
+                            totals.expenses
+                        );
+                }
+
+
+                if (
+                    get("settingsSavingsRate")
+                ) {
+
+                    get(
+                        "settingsSavingsRate"
+                    ).textContent =
+                        Math.round(
+                            totals.savingsRate ||
+                            0
+                        ) +
+                        "%";
+                }
+
+
+                if (
+                    get("settingsTransactionCount")
+                ) {
+
+                    get(
+                        "settingsTransactionCount"
+                    ).textContent =
+                        transactions.length;
+                }
 
             }
 
+
+            /* =====================================================
+               EXPORT DATA
+               ===================================================== */
 
             function exportData() {
 
-                const backup = {};
-
-
                 const keys = [
+
                     "moneyLeakTransactions",
+
                     "moneyLeakSavingsGoal",
+
                     "moneyLeakSavingsGoals",
+
                     "moneyLeakMonthlyBudget",
+
                     "moneyLeakCategoryBudgets",
+
                     "moneyLeakRecurringTransactions",
+
                     "moneyLeakSettings",
+
                     "moneyLeakAlerts",
+
                     "moneyLeakInitialized"
+
                 ];
 
 
-                keys.forEach(key => {
+                const backup = {
+                    app:
+                        "MoneyLeak",
 
-                    const value =
-                        localStorage.getItem(key);
+                    version:
+                        "2.0",
 
-                    if (value !== null) {
-                        backup[key] = value;
+                    exportedAt:
+                        new Date().toISOString(),
+
+                    data: {}
+                };
+
+
+                keys.forEach(
+                    key => {
+
+                        const value =
+                            localStorage.getItem(
+                                key
+                            );
+
+
+                        if (
+                            value !== null
+                        ) {
+
+                            try {
+
+                                backup.data[key] =
+                                    JSON.parse(
+                                        value
+                                    );
+
+                            } catch {
+
+                                backup.data[key] =
+                                    value;
+                            }
+
+                        }
+
                     }
+                );
 
-                });
 
-
-                backup.exportedAt =
-                    new Date().toISOString();
-
-                backup.app =
-                    "MoneyLeak Personal Finance OS";
+                const json =
+                    JSON.stringify(
+                        backup,
+                        null,
+                        2
+                    );
 
 
                 const blob =
                     new Blob(
-                        [
-                            JSON.stringify(
-                                backup,
-                                null,
-                                2
-                            )
-                        ],
+                        [json],
                         {
-                            type: "application/json"
+                            type:
+                                "application/json"
                         }
                     );
 
 
                 const url =
-                    URL.createObjectURL(blob);
+                    URL.createObjectURL(
+                        blob
+                    );
 
 
                 const link =
-                    document.createElement("a");
+                    document.createElement(
+                        "a"
+                    );
 
-                link.href = url;
 
-                link.download =
-                    "moneyleak-backup-" +
+                const date =
                     new Date()
                         .toISOString()
-                        .slice(0, 10) +
-                    ".json";
+                        .slice(
+                            0,
+                            10
+                        );
 
 
-                document.body.appendChild(link);
+                link.href =
+                    url;
+
+
+                link.download =
+                    `MoneyLeak-backup-${date}.json`;
+
+
+                document.body.appendChild(
+                    link
+                );
+
 
                 link.click();
 
+
                 link.remove();
 
-                URL.revokeObjectURL(url);
 
+                URL.revokeObjectURL(
+                    url
+                );
+
+
+                showToast(
+                    "MoneyLeak backup exported."
+                );
             }
 
 
-            function importData() {
+            /* =====================================================
+               IMPORT DATA
+               ===================================================== */
 
-                const fileInput =
-                    document.getElementById("importFile");
-
-                fileInput?.click();
-
-            }
-
-
-            function processImport(event) {
-
-                const file =
-                    event.target.files?.[0];
-
+            function importData(
+                file
+            ) {
 
                 if (!file) {
                     return;
@@ -1737,110 +2623,161 @@
                     new FileReader();
 
 
-                reader.onload = () => {
+                reader.onload =
+                    event => {
 
-                    try {
+                        try {
 
-                        const backup =
-                            JSON.parse(reader.result);
-
-
-                        const allowedKeys = [
-                            "moneyLeakTransactions",
-                            "moneyLeakSavingsGoal",
-                            "moneyLeakSavingsGoals",
-                            "moneyLeakMonthlyBudget",
-                            "moneyLeakCategoryBudgets",
-                            "moneyLeakRecurringTransactions",
-                            "moneyLeakSettings",
-                            "moneyLeakAlerts",
-                            "moneyLeakInitialized"
-                        ];
+                            const backup =
+                                JSON.parse(
+                                    event.target.result
+                                );
 
 
-                        const availableKeys =
-                            allowedKeys.filter(
-                                key =>
-                                    Object.prototype.hasOwnProperty.call(
-                                        backup,
-                                        key
-                                    )
+                            if (
+                                !backup ||
+                                typeof backup !==
+                                "object"
+                            ) {
+
+                                throw new Error(
+                                    "Invalid backup."
+                                );
+                            }
+
+
+                            const data =
+                                backup.data ||
+                                backup;
+
+
+                            const allowedKeys = [
+
+                                "moneyLeakTransactions",
+
+                                "moneyLeakSavingsGoal",
+
+                                "moneyLeakSavingsGoals",
+
+                                "moneyLeakMonthlyBudget",
+
+                                "moneyLeakCategoryBudgets",
+
+                                "moneyLeakRecurringTransactions",
+
+                                "moneyLeakSettings",
+
+                                "moneyLeakAlerts",
+
+                                "moneyLeakInitialized"
+
+                            ];
+
+
+                            let imported =
+                                0;
+
+
+                            allowedKeys.forEach(
+                                key => {
+
+                                    if (
+                                        Object.prototype
+                                            .hasOwnProperty
+                                            .call(
+                                                data,
+                                                key
+                                            )
+                                    ) {
+
+                                        localStorage.setItem(
+                                            key,
+                                            JSON.stringify(
+                                                data[key]
+                                            )
+                                        );
+
+
+                                        imported++;
+                                    }
+
+                                }
                             );
 
 
-                        if (!availableKeys.length) {
+                            if (
+                                imported === 0
+                            ) {
 
-                            alert(
-                                "This file does not appear to be a valid MoneyLeak backup."
+                                throw new Error(
+                                    "No MoneyLeak data was found in this file."
+                                );
+                            }
+
+
+                            showToast(
+                                "Backup imported. Refreshing MoneyLeak..."
                             );
 
-                            return;
+
+                            setTimeout(
+                                () => {
+
+                                    window.location.reload();
+
+                                },
+                                900
+                            );
+
+
+                        } catch (error) {
+
+                            showToast(
+                                error.message ||
+                                "Could not import this backup."
+                            );
 
                         }
 
-
-                        const confirmed =
-                            confirm(
-                                "Import this backup? Existing MoneyLeak data for the imported sections will be replaced."
-                            );
+                    };
 
 
-                        if (!confirmed) {
-                            return;
-                        }
+                reader.onerror =
+                    () => {
 
-
-                        availableKeys.forEach(key => {
-
-                            localStorage.setItem(
-                                key,
-                                backup[key]
-                            );
-
-                        });
-
-
-                        alert(
-                            "MoneyLeak backup imported successfully. The page will now refresh."
+                        showToast(
+                            "Could not read the selected file."
                         );
 
-
-                        window.location.reload();
-
-                    } catch (error) {
-
-                        alert(
-                            "MoneyLeak could not read this backup file."
-                        );
-
-                    }
-
-                };
+                    };
 
 
-                reader.readAsText(file);
-
-                event.target.value = "";
-
+                reader.readAsText(
+                    file
+                );
             }
 
 
-            function resetData() {
+            /* =====================================================
+               RESET DATA
+               ===================================================== */
 
-                const firstConfirm =
-                    confirm(
-                        "Are you sure you want to reset MoneyLeak? This will permanently remove your financial data from this browser."
+            function resetAllData() {
+
+                const confirmed =
+                    window.confirm(
+                        "Are you sure you want to reset ALL MoneyLeak data?\n\nThis will remove your transactions, budgets, savings goals, recurring items, alerts and settings from this browser.\n\nExport a backup first if you may need your data later."
                     );
 
 
-                if (!firstConfirm) {
+                if (!confirmed) {
                     return;
                 }
 
 
                 const secondConfirm =
-                    confirm(
-                        "FINAL WARNING: Your transactions, goals, budgets, recurring items and settings will be deleted. Continue?"
+                    window.confirm(
+                        "FINAL CONFIRMATION:\n\nReset MoneyLeak completely?"
                     );
 
 
@@ -1850,186 +2787,229 @@
 
 
                 const keys = [
+
                     "moneyLeakTransactions",
+
                     "moneyLeakSavingsGoal",
+
                     "moneyLeakSavingsGoals",
+
                     "moneyLeakMonthlyBudget",
+
                     "moneyLeakCategoryBudgets",
+
                     "moneyLeakRecurringTransactions",
+
                     "moneyLeakSettings",
+
                     "moneyLeakAlerts",
+
                     "moneyLeakInitialized"
+
                 ];
 
 
-                keys.forEach(key => {
-                    localStorage.removeItem(key);
-                });
+                keys.forEach(
+                    key => {
+
+                        localStorage.removeItem(
+                            key
+                        );
+
+                    }
+                );
 
 
-                alert(
+                showToast(
                     "MoneyLeak has been reset."
                 );
 
 
-                window.location.reload();
+                setTimeout(
+                    () => {
 
+                        window.location.reload();
+
+                    },
+                    900
+                );
             }
 
 
-            function setupTabs() {
+            /* =====================================================
+               BUTTONS
+               ===================================================== */
 
-                const tabs =
-                    document.querySelectorAll(
-                        ".settings-tab"
+            function setupDataButtons() {
+
+                const exportButton =
+                    get(
+                        "exportDataButton"
                     );
 
 
-                tabs.forEach(tab => {
-
-                    tab.addEventListener(
-                        "click",
-                        () => {
-
-                            tabs.forEach(item => {
-                                item.classList.remove("active");
-                            });
-
-                            tab.classList.add("active");
-
-
-                            const target =
-                                document.getElementById(
-                                    tab.dataset.target
-                                );
-
-
-                            if (target) {
-
-                                target.scrollIntoView({
-                                    behavior: "smooth",
-                                    block: "start"
-                                });
-
-                            }
-
-                        }
-                    );
-
-                });
-
-            }
-
-
-            function init() {
-
-                loadSettingsIntoUI();
-
-                updateDataStats();
-
-                setupTabs();
-
-
-                document
-                    .getElementById("saveProfile")
-                    ?.addEventListener(
-                        "click",
-                        saveProfile
+                const importButton =
+                    get(
+                        "importDataButton"
                     );
 
 
-                document
-                    .getElementById("savePreferences")
-                    ?.addEventListener(
-                        "click",
-                        savePreferences
+                const importInput =
+                    get(
+                        "settingsImportInput"
                     );
 
 
-                document
-                    .getElementById("exportData")
-                    ?.addEventListener(
+                const refreshButton =
+                    get(
+                        "refreshDataButton"
+                    );
+
+
+                const resetButton =
+                    get(
+                        "resetDataButton"
+                    );
+
+
+                if (exportButton) {
+
+                    exportButton.addEventListener(
                         "click",
                         exportData
                     );
+                }
 
 
-                document
-                    .getElementById("importData")
-                    ?.addEventListener(
+                if (
+                    importButton &&
+                    importInput
+                ) {
+
+                    importButton.addEventListener(
                         "click",
-                        importData
-                    );
+                        () => {
 
-
-                document
-                    .getElementById("importFile")
-                    ?.addEventListener(
-                        "change",
-                        processImport
-                    );
-
-
-                document
-                    .getElementById("resetData")
-                    ?.addEventListener(
-                        "click",
-                        resetData
-                    );
-
-
-                document
-                    .getElementById("themeSelect")
-                    ?.addEventListener(
-                        "change",
-                        event => {
-
-                            applyTheme(
-                                event.target.value
-                            );
+                            importInput.click();
 
                         }
                     );
 
 
-                document
-                    .getElementById("profileName")
-                    ?.addEventListener(
-                        "input",
-                        event => {
+                    importInput.addEventListener(
+                        "change",
+                        () => {
 
-                            updateProfilePreview(
-                                event.target.value
+                            importData(
+                                importInput.files?.[0]
+                            );
+
+
+                            importInput.value =
+                                "";
+
+                        }
+                    );
+                }
+
+
+                if (refreshButton) {
+
+                    refreshButton.addEventListener(
+                        "click",
+                        () => {
+
+                            if (
+                                ML &&
+                                typeof ML.refresh ===
+                                "function"
+                            ) {
+
+                                ML.refresh();
+
+                            }
+
+
+                            refreshSnapshot();
+
+
+                            loadProfile();
+
+
+                            loadPreferences();
+
+
+                            showToast(
+                                "MoneyLeak refreshed."
                             );
 
                         }
                     );
+                }
 
 
-                window.moneyLeakPageUpdate =
-                    () => {
+                if (resetButton) {
 
-                        loadSettingsIntoUI();
+                    resetButton.addEventListener(
+                        "click",
+                        resetAllData
+                    );
+                }
+            }
 
-                        updateDataStats();
 
-                    };
+            /* =====================================================
+               START
+               ===================================================== */
+
+            function initializeSettingsPage() {
+
+                loadProfile();
+
+                loadPreferences();
+
+                refreshSnapshot();
+
+                setupProfile();
+
+                setupPreferences();
+
+                setupDataButtons();
+
+
+                /*
+                 * Make sure the current theme is applied
+                 * immediately.
+                 */
+
+                const settings =
+                    getSettings();
+
+
+                applyTheme(
+                    settings.theme ||
+                    "light"
+                );
 
             }
 
 
             if (
-                document.readyState === "loading"
+                document.readyState ===
+                "loading"
             ) {
 
                 document.addEventListener(
                     "DOMContentLoaded",
-                    init
+                    initializeSettingsPage,
+                    {
+                        once: true
+                    }
                 );
 
             } else {
 
-                init();
+                initializeSettingsPage();
 
             }
 
