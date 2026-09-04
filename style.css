@@ -2665,3 +2665,506 @@ textarea:focus-visible {
         padding: 18px;
     }
 }
+/* =========================================================
+   MONEY LEAK — PREMIUM NOTIFICATION CENTER
+   ========================================================= */
+
+.notification-panel {
+    width: min(420px, calc(100vw - 32px)) !important;
+    max-height: min(680px, calc(100vh - 110px));
+    overflow: hidden;
+    border-radius: 24px !important;
+    background: rgba(255, 255, 255, 0.97) !important;
+    border: 1px solid rgba(20, 40, 35, 0.08) !important;
+    box-shadow:
+        0 30px 80px rgba(16, 45, 35, 0.18),
+        0 10px 30px rgba(16, 45, 35, 0.08) !important;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    animation: mlNotificationOpen 0.25s ease-out;
+    z-index: 9999 !important;
+}
+
+@keyframes mlNotificationOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Notification header */
+
+.notification-panel > div:first-child {
+    padding: 20px 22px !important;
+}
+
+.notification-panel h3,
+.notification-panel h2,
+.notification-panel .panel-title {
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.3px;
+}
+
+.notification-panel::before {
+    content: "MONEY LEAK  •  INTELLIGENCE";
+    display: block;
+    padding: 17px 22px 0;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.8px;
+    color: #07865a;
+}
+
+/* Close button */
+
+.notification-panel button,
+.notification-panel .close-button {
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.notification-panel button:hover,
+.notification-panel .close-button:hover {
+    transform: rotate(90deg);
+}
+
+/* Main notification wrapper */
+
+.ml-notification-wrapper {
+    padding: 0 16px 16px;
+}
+
+/* Summary */
+
+.ml-notification-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 4px 4px 14px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #f4faf7;
+    border: 1px solid #e4f1eb;
+}
+
+.ml-notification-summary > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ml-notification-summary span {
+    font-size: 11px;
+    color: #708078;
+}
+
+.ml-notification-summary > div > span:last-child {
+    color: #355148;
+    font-weight: 700;
+}
+
+.ml-summary-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #079765;
+    box-shadow:
+        0 0 0 4px rgba(7, 151, 101, 0.10);
+}
+
+/* Cards */
+
+.ml-notification-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 430px;
+    overflow-y: auto;
+    padding: 2px 3px 5px;
+}
+
+.ml-notification-cards::-webkit-scrollbar {
+    width: 5px;
+}
+
+.ml-notification-cards::-webkit-scrollbar-thumb {
+    background: #d9e5df;
+    border-radius: 20px;
+}
+
+/* Individual card */
+
+.ml-notification-card {
+    position: relative;
+    display: flex;
+    gap: 13px;
+    padding: 15px;
+    border-radius: 17px;
+    background: #ffffff;
+    border: 1px solid #e8efeb;
+    box-shadow:
+        0 5px 15px rgba(20, 50, 40, 0.045);
+    overflow: hidden;
+    animation:
+        mlNotificationCardIn
+        0.35s ease both;
+    animation-delay:
+        var(--notification-delay);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.ml-notification-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 12px 25px rgba(20, 50, 40, 0.09);
+}
+
+@keyframes mlNotificationCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Colored left accent */
+
+.ml-notification-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 3px;
+    border-radius: 0 5px 5px 0;
+    background: #8a9a93;
+}
+
+.ml-notification-card.success::before {
+    background: #08a36d;
+}
+
+.ml-notification-card.warning::before {
+    background: #e49a19;
+}
+
+.ml-notification-card.danger::before {
+    background: #e45757;
+}
+
+.ml-notification-card.info::before {
+    background: #5587d8;
+}
+
+/* Icon */
+
+.ml-notification-icon {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #eef7f3;
+}
+
+.ml-notification-icon span {
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 900;
+    color: #087e58;
+    background: #d8f1e6;
+}
+
+/* Different icon states */
+
+.ml-notification-card.warning
+    .ml-notification-icon {
+    background: #fff8e8;
+}
+
+.ml-notification-card.warning
+    .ml-notification-icon span {
+    color: #b87500;
+    background: #ffe8b1;
+}
+
+.ml-notification-card.danger
+    .ml-notification-icon {
+    background: #fff0f0;
+}
+
+.ml-notification-card.danger
+    .ml-notification-icon span {
+    color: #c83f3f;
+    background: #ffd6d6;
+}
+
+.ml-notification-card.info
+    .ml-notification-icon {
+    background: #eff5ff;
+}
+
+.ml-notification-card.info
+    .ml-notification-icon span {
+    color: #426eb6;
+    background: #dce9ff;
+}
+
+/* Card content */
+
+.ml-notification-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.ml-notification-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.ml-notification-label {
+    font-size: 8px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1.3px;
+    color: #079765 !important;
+}
+
+.ml-notification-card.warning
+    .ml-notification-label {
+    color: #b87500 !important;
+}
+
+.ml-notification-card.danger
+    .ml-notification-label {
+    color: #c83f3f !important;
+}
+
+.ml-notification-card.info
+    .ml-notification-label {
+    color: #426eb6 !important;
+}
+
+.ml-notification-time {
+    font-size: 9px !important;
+    color: #a0aaa5 !important;
+}
+
+.ml-notification-content h4 {
+    margin: 0 0 5px !important;
+    font-size: 13px !important;
+    line-height: 1.35;
+    font-weight: 800 !important;
+    color: #17251f !important;
+}
+
+.ml-notification-content p {
+    margin: 0 !important;
+    font-size: 11px !important;
+    line-height: 1.55;
+    color: #75817b !important;
+}
+
+/* Unread indicator */
+
+.ml-notification-status {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: #079765;
+    box-shadow:
+        0 0 0 3px rgba(7, 151, 101, 0.08);
+}
+
+/* Footer */
+
+.ml-notification-footer {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-top: 12px;
+    padding: 13px;
+    border-radius: 15px;
+    background:
+        linear-gradient(
+            135deg,
+            #f0faf6,
+            #f8fcfa
+        );
+    border: 1px solid #e1f0e9;
+}
+
+.ml-footer-icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    color: #087f59;
+    background: #dff3ea;
+    font-size: 15px;
+}
+
+.ml-notification-footer strong {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 10px;
+    color: #28463b;
+}
+
+.ml-notification-footer span {
+    display: block;
+    font-size: 9px;
+    line-height: 1.4;
+    color: #82918a;
+}
+
+/* Empty state */
+
+.ml-notification-empty {
+    padding: 42px 20px;
+    text-align: center;
+}
+
+.ml-empty-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 14px;
+    display: grid;
+    place-items: center;
+    border-radius: 18px;
+    background: #e9f8f1;
+    color: #07865a;
+    font-size: 23px;
+    font-weight: 800;
+    box-shadow:
+        0 10px 25px rgba(7, 134, 90, 0.10);
+}
+
+.ml-notification-empty strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #23352e;
+}
+
+.ml-notification-empty span {
+    display: block;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #87938d;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .notification-panel {
+        width: calc(100vw - 20px) !important;
+        max-height: calc(100vh - 80px);
+        border-radius: 20px !important;
+    }
+
+    .ml-notification-wrapper {
+        padding: 0 12px 12px;
+    }
+
+    .ml-notification-cards {
+        max-height: 52vh;
+    }
+
+    .ml-notification-card {
+        padding: 13px;
+    }
+
+    .ml-notification-summary {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body.dark-mode .notification-panel {
+    background: rgba(20, 29, 26, 0.98) !important;
+    border-color: rgba(255,255,255,.08) !important;
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.45) !important;
+}
+
+body.dark-mode .ml-notification-summary {
+    background: #182823;
+    border-color: #263b34;
+}
+
+body.dark-mode .ml-notification-summary span {
+    color: #8fa29a;
+}
+
+body.dark-mode
+.ml-notification-summary > div > span:last-child {
+    color: #d6e3dd;
+}
+
+body.dark-mode .ml-notification-card {
+    background: #1a2823;
+    border-color: #293a34;
+}
+
+body.dark-mode .ml-notification-content h4 {
+    color: #f0f6f3 !important;
+}
+
+body.dark-mode .ml-notification-content p {
+    color: #9caaa4 !important;
+}
+
+body.dark-mode .ml-notification-footer {
+    background: #182823;
+    border-color: #2a4038;
+}
+
+body.dark-mode .ml-notification-footer strong {
+    color: #dce9e3;
+}
+
+body.dark-mode .ml-notification-footer span {
+    color: #8fa099;
+}
+
+body.dark-mode .ml-notification-empty strong {
+    color: #edf5f1;
+}
+
+body.dark-mode .ml-notification-empty span {
+    color: #8f9e97;
+}
