@@ -2443,148 +2443,144 @@
        ========================================================= */
 
     function setupSearch() {
-        const button =
-            document.getElementById(
-                "searchButton"
-            );
+    const button = document.getElementById("searchButton");
+    const overlay = document.getElementById("searchOverlay");
+    const close =
+        document.getElementById("closeSearch") ||
+        document.getElementById("searchClose");
+    const input = document.getElementById("globalSearch");
 
-        const overlay =
-            document.getElementById(
-                "searchOverlay"
-            );
-
-        const close =
-            document.getElementById(
-                "closeSearch"
-            ) ||
-            document.getElementById(
-                "searchClose"
-            );
-
-        const input =
-            document.getElementById(
-                "globalSearch"
-            );
-
-        if (!overlay) return;
-
-        const hide = () => {
-            overlay.hidden = true;
-            overlay.classList.remove(
-                "open",
-                "active"
-            );
-            overlay.style.display =
-                "none";
-            overlay.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-
-            if (input) {
-                input.value = "";
-            }
-        };
-
-        const show = () => {
-            overlay.hidden = false;
-            overlay.classList.add(
-                "open",
-                "active"
-            );
-            overlay.style.display =
-                "flex";
-            overlay.setAttribute(
-                "aria-hidden",
-                "false"
-            );
-
-            renderSearchResults("");
-
-            setTimeout(() => {
-                input?.focus();
-            }, 40);
-        };
-
-        /* Always start CLOSED */
-        hide();
-
-        button?.addEventListener(
-            "click",
-            (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                show();
-            }
-        );
-
-        close?.addEventListener(
-            "click",
-            (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                hide();
-            }
-        );
-
-        overlay.addEventListener(
-            "click",
-            (event) => {
-                if (
-                    event.target ===
-                    overlay
-                ) {
-                    hide();
-                }
-            }
-        );
-
-        input?.addEventListener(
-            "input",
-            (event) => {
-                renderSearchResults(
-                    event.target.value
-                );
-            }
-        );
-
-        input?.addEventListener(
-            "keydown",
-            (event) => {
-                if (
-                    event.key ===
-                    "Escape"
-                ) {
-                    hide();
-                }
-            }
-        );
-
-        document.addEventListener(
-            "keydown",
-            (event) => {
-                if (
-                    event.key === "/" &&
-                    document.activeElement !==
-                        input &&
-                    !event.ctrlKey &&
-                    !event.metaKey &&
-                    !event.altKey
-                ) {
-                    event.preventDefault();
-                    show();
-                }
-
-                if (
-                    event.key ===
-                    "Escape"
-                ) {
-                    hide();
-                }
-            }
-        );
+    if (!overlay) {
+        return;
     }
 
+    function hide() {
+        overlay.hidden = true;
+        overlay.classList.remove("open", "active");
+        overlay.style.display = "none";
+        overlay.setAttribute("aria-hidden", "true");
+
+        if (input) {
+            input.value = "";
+        }
+
+        document.body.classList.remove("search-open");
+    }
+
+    function show() {
+        overlay.hidden = false;
+        overlay.classList.add("open", "active");
+        overlay.style.display = "flex";
+        overlay.setAttribute("aria-hidden", "false");
+
+        document.body.classList.add("search-open");
+
+        if (input) {
+            renderSearchResults(input.value || "");
+
+            setTimeout(() => {
+                input.focus();
+                input.select();
+            }, 60);
+        }
+    }
+
+    /* Always start closed */
+    hide();
+
+    /* Search button */
+    if (button) {
+        button.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (
+                overlay.hidden ||
+                overlay.style.display === "none"
+            ) {
+                show();
+            } else {
+                hide();
+            }
+        });
+    }
+
+    /* Close button */
+    if (close) {
+        close.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            hide();
+        });
+    }
+
+    /* Clicking the dark background closes search */
+    overlay.addEventListener("click", function (event) {
+        if (event.target === overlay) {
+            hide();
+        }
+    });
+
+    /* Search input */
+    if (input) {
+        input.addEventListener("input", function (event) {
+            renderSearchResults(
+                event.target.value || ""
+            );
+        });
+
+        input.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                hide();
+                return;
+            }
+
+            if (event.key === "Enter") {
+                const firstResult =
+                    document.querySelector(
+                        "#searchResults a"
+                    );
+
+                if (firstResult) {
+                    firstResult.click();
+                }
+            }
+        });
+    }
+
+    /* Keyboard shortcut */
+    document.addEventListener("keydown", function (event) {
+        const activeElement =
+            document.activeElement;
+
+        const isTyping =
+            activeElement &&
+            (
+                activeElement.tagName === "INPUT" ||
+                activeElement.tagName === "TEXTAREA" ||
+                activeElement.isContentEditable
+            );
+
+        /* "/" opens MoneyLeak Search */
+        if (
+            event.key === "/" &&
+            !isTyping &&
+            !event.ctrlKey &&
+            !event.metaKey &&
+            !event.altKey
+        ) {
+            event.preventDefault();
+            show();
+            return;
+        }
+
+        /* ESC closes it */
+        if (event.key === "Escape") {
+            hide();
+        }
+    });
+}
     function renderSearchResults(
         query
     ) {
