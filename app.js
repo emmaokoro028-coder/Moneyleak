@@ -4365,149 +4365,100 @@
     ====================================================== */
 
     function setupSearch() {
+    const button = document.getElementById("searchButton");
+    const overlay = document.getElementById("searchOverlay");
+    const close = document.getElementById("closeSearch");
+    const input = document.getElementById("globalSearch");
 
-        const button =
-            document.getElementById(
-                "searchButton"
-            );
+    if (!overlay) {
+        return;
+    }
 
-        const overlay =
-            document.getElementById(
-                "searchOverlay"
-            );
-
-        const close =
-            document.getElementById(
-                "closeSearch"
-            );
-
-        const input =
-            document.getElementById(
-                "globalSearch"
-            );
-
-
-        if (
-            !button ||
-            !overlay
-        ) {
-
-            return;
-
-        }
-
-
-        function openSearch() {
-
-            overlay.hidden =
-                false;
-
-
-            setTimeout(
-                () => {
-
-                    if (input) {
-                        input.focus();
-                    }
-
-                },
-                50
-            );
-
-
-            renderSearchResults(
-                ""
-            );
-
-        }
-
-
-        function closeSearch() {
-
-            overlay.hidden =
-                true;
-
-        }
-
-
-        button.addEventListener(
-            "click",
-            openSearch
-        );
-
-
-        if (close) {
-
-            close.addEventListener(
-                "click",
-                closeSearch
-            );
-
-        }
-
-
-        overlay.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target ===
-                    overlay
-                ) {
-
-                    closeSearch();
-
-                }
-
-            }
-        );
-
+    function hideSearch() {
+        overlay.hidden = true;
+        overlay.classList.remove("open");
+        overlay.classList.remove("active");
+        overlay.style.display = "none";
+        overlay.setAttribute("aria-hidden", "true");
 
         if (input) {
+            input.value = "";
+        }
+    }
 
-            input.addEventListener(
-                "input",
-                event => {
+    function showSearch() {
+        overlay.hidden = false;
+        overlay.classList.add("open");
+        overlay.classList.add("active");
+        overlay.style.display = "flex";
+        overlay.setAttribute("aria-hidden", "false");
 
-                    renderSearchResults(
-                        event.target.value
-                    );
+        setTimeout(() => {
+            if (input) {
+                input.focus();
+            }
+        }, 50);
 
-                }
-            );
+        if (input) {
+            renderSearchResults(input.value || "");
+        }
+    }
 
+    hideSearch();
+
+    if (button) {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            showSearch();
+        });
+    }
+
+    if (close) {
+        close.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            hideSearch();
+        });
+    }
+
+    overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) {
+            hideSearch();
+        }
+    });
+
+    if (input) {
+        input.addEventListener("input", (event) => {
+            renderSearchResults(event.target.value || "");
+        });
+
+        input.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                hideSearch();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", (event) => {
+        if (
+            event.key === "/" &&
+            document.activeElement !== input &&
+            !event.ctrlKey &&
+            !event.metaKey &&
+            !event.altKey
+        ) {
+            event.preventDefault();
+            showSearch();
+            return;
         }
 
-
-        document.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key === "/" &&
-                    document.activeElement !==
-                    input
-                ) {
-
-                    event.preventDefault();
-
-                    openSearch();
-
-                }
-
-
-                if (
-                    event.key === "Escape"
-                ) {
-
-                    closeSearch();
-
-                }
-
-            }
-        );
-
-    }
+        if (event.key === "Escape") {
+            hideSearch();
+        }
+    });
+}
 
 
     /* =====================================================
