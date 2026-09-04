@@ -3173,17 +3173,16 @@ body.dark-mode .ml-notification-empty span {
    MONEY LEAK — PREMIUM SEARCH COMMAND CENTER
    ========================================================= */
 
-/* Search backdrop */
 #searchOverlay {
     position: fixed !important;
     inset: 0 !important;
+
     z-index: 99999 !important;
 
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    align-items: center;
+    justify-content: center;
 
-    padding: 24px !important;
+    padding: 24px;
 
     background:
         rgba(10, 24, 19, 0.48) !important;
@@ -3192,6 +3191,17 @@ body.dark-mode .ml-notification-empty span {
     -webkit-backdrop-filter: blur(14px);
 
     animation: mlSearchFade .22s ease-out;
+}
+
+/* Search is visible only when JavaScript opens it */
+#searchOverlay.open,
+#searchOverlay.active {
+    display: flex !important;
+}
+
+/* Hidden always wins */
+#searchOverlay[hidden] {
+    display: none !important;
 }
 
 /* =========================================================
