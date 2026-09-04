@@ -3,1488 +3,2712 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Analytics — MoneyLeak</title>
+
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* =========================================================
+       ANALYTICS PAGE SAFETY STYLES
+       These guarantee that overlays/panels start closed.
+    ========================================================= */
+
+    #searchOverlay {
+      display: none;
+    }
+
+    #searchOverlay.open,
+    #searchOverlay.active {
+      display: flex;
+    }
+
+    #notificationPanel {
+      display: none;
+    }
+
+    #notificationPanel.open,
+    #notificationPanel.active {
+      display: block;
+    }
+
+    .analytics-chart-wrap {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+    }
+
+    .analytics-chart-wrap canvas {
+      display: block;
+      width: 100%;
+      height: 320px;
+    }
+
+    .analytics-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .analytics-kpi {
+      background: #fff;
+      border: 1px solid #e5eee9;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 30px rgba(20, 70, 50, 0.05);
+    }
+
+    .analytics-kpi-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #80908a;
+      margin-bottom: 12px;
+    }
+
+    .analytics-kpi-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #17251f;
+      line-height: 1.1;
+    }
+
+    .analytics-kpi-note {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #82908b;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .analytics-card {
+      background: #fff;
+      border: 1px solid #e5eee9;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(20, 70, 50, 0.05);
+    }
+
+    .analytics-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .analytics-card-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      color: #17251f;
+    }
+
+    .analytics-card-subtitle {
+      margin: 5px 0 0;
+      color: #84918c;
+      font-size: 13px;
+    }
+
+    .analytics-periods {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .analytics-period {
+      border: 1px solid #dfe9e4;
+      background: #f7faf8;
+      color: #60716a;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .analytics-period.active {
+      background: #0d9364;
+      color: #fff;
+      border-color: #0d9364;
+    }
+
+    .metric-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .metric-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 14px 0;
+      border-bottom: 1px solid #edf2ef;
+    }
+
+    .metric-row:last-child {
+      border-bottom: 0;
+    }
+
+    .metric-row-label {
+      color: #687871;
+      font-size: 14px;
+    }
+
+    .metric-row-value {
+      color: #17251f;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .category-item {
+      margin-bottom: 17px;
+    }
+
+    .category-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 7px;
+      font-size: 13px;
+    }
+
+    .category-name {
+      color: #394941;
+      font-weight: 700;
+    }
+
+    .category-amount {
+      color: #687871;
+      font-weight: 700;
+    }
+
+    .category-bar {
+      height: 8px;
+      border-radius: 99px;
+      background: #edf3ef;
+      overflow: hidden;
+    }
+
+    .category-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: #0d9364;
+    }
+
+    .insight-box {
+      padding: 18px;
+      border-radius: 15px;
+      background: #eef9f4;
+      border: 1px solid #d9eee5;
+      color: #36564a;
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .direction-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px;
+      border-radius: 17px;
+      background: #f7faf8;
+      border: 1px solid #e4eee9;
+    }
+
+    .direction-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: #eaf7f1;
+      font-size: 23px;
+      flex-shrink: 0;
+    }
+
+    .direction-title {
+      font-weight: 800;
+      color: #17251f;
+      margin-bottom: 5px;
+    }
+
+    .direction-text {
+      color: #74827c;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .empty-analytics {
+      text-align: center;
+      padding: 45px 20px;
+      color: #84918c;
+    }
+
+    .empty-analytics-icon {
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 1100px) {
+      .analytics-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .analytics-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .analytics-card {
+        padding: 18px;
+      }
+
+      .analytics-card-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .analytics-periods {
+        width: 100%;
+      }
+    }
+
+    body.dark-mode .analytics-kpi,
+    body.dark-mode .analytics-card {
+      background: #18231f;
+      border-color: #293b34;
+    }
+
+    body.dark-mode .analytics-kpi-value,
+    body.dark-mode .analytics-card-title,
+    body.dark-mode .metric-row-value,
+    body.dark-mode .direction-title {
+      color: #f2f7f4;
+    }
+
+    body.dark-mode .analytics-kpi-label,
+    body.dark-mode .analytics-kpi-note,
+    body.dark-mode .analytics-card-subtitle,
+    body.dark-mode .metric-row-label,
+    body.dark-mode .direction-text {
+      color: #9baaa3;
+    }
+
+    body.dark-mode .analytics-period {
+      background: #202e28;
+      border-color: #34483f;
+      color: #b8c6bf;
+    }
+
+    body.dark-mode .category-bar {
+      background: #293a33;
+    }
+
+    body.dark-mode .direction-box {
+      background: #202e28;
+      border-color: #34483f;
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- SIDEBAR -->
+  <!-- =========================================================
+       SIDEBAR
+  ========================================================== -->
+
   <aside class="sidebar">
+
     <div class="brand">
       <div class="brand-mark">₦</div>
+
       <div>
-        <h1>MoneyLeak</h1>
-        <span>Personal Finance OS</span>
+        <div class="brand-name">MoneyLeak</div>
+        <div class="brand-subtitle">PERSONAL FINANCE OS</div>
       </div>
     </div>
 
-    <nav class="main-nav">
-      <a href="index.html">🏠 <span>Dashboard</span></a>
-      <a href="income.html">💰 <span>Income</span></a>
-      <a href="expenses.html">💸 <span>Expenses</span></a>
-      <a href="budgets.html">🎯 <span>Budgets</span></a>
-      <a href="savings.html">💎 <span>Goals</span></a>
-      <a href="recurring.html">🔄 <span>Recurring</span></a>
-      <a href="analytics.html" class="active">📊 <span>Analytics</span></a>
-      <a href="settings.html">⚙️ <span>Settings</span></a>
+    <nav class="sidebar-nav">
+
+      <div class="nav-section-title">MAIN</div>
+
+      <a href="index.html" class="nav-item">
+        <span class="nav-icon">⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="income.html" class="nav-item">
+        <span class="nav-icon">↗</span>
+        <span>Income</span>
+      </a>
+
+      <a href="expenses.html" class="nav-item">
+        <span class="nav-icon">↘</span>
+        <span>Expenses</span>
+      </a>
+
+      <a href="budgets.html" class="nav-item">
+        <span class="nav-icon">▣</span>
+        <span>Budgets</span>
+      </a>
+
+      <a href="savings.html" class="nav-item">
+        <span class="nav-icon">◎</span>
+        <span>Savings Goals</span>
+      </a>
+
+      <div class="nav-section-title">PLANNING</div>
+
+      <a href="recurring.html" class="nav-item">
+        <span class="nav-icon">◔</span>
+        <span>Recurring</span>
+      </a>
+
+      <a href="analytics.html" class="nav-item active">
+        <span class="nav-icon">▥</span>
+        <span>Analytics</span>
+      </a>
+
+      <div class="nav-section-title">SYSTEM</div>
+
+      <a href="settings.html" class="nav-item">
+        <span class="nav-icon">⚙</span>
+        <span>Settings</span>
+      </a>
+
     </nav>
 
-    <div class="sidebar-bottom">
-      <div class="sidebar-tip">
-        <strong>Money tip</strong>
-        <p>Understanding where your money goes is the first step toward controlling it.</p>
+    <div class="sidebar-tip">
+      <div class="tip-icon">✦</div>
+      <div>
+        <strong>Smart Money</strong>
+        <p>Understand where your money goes and make better decisions.</p>
       </div>
     </div>
+
   </aside>
 
-  <!-- MAIN -->
+
+  <!-- =========================================================
+       MAIN
+  ========================================================== -->
+
   <main class="main-content">
 
     <!-- TOPBAR -->
-    <header class="topbar">
-      <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
 
-      <div class="topbar-search" id="globalSearchButton">
-        🔍 <span>Search MoneyLeak...</span>
-        <kbd>/</kbd>
+    <header class="topbar">
+
+      <div class="topbar-left">
+        <button
+          id="mobileMenuButton"
+          class="icon-button mobile-menu-button"
+          type="button"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+
+        <button
+          id="searchButton"
+          class="search-trigger"
+          type="button"
+        >
+          ⌕ <span>Search MoneyLeak...</span>
+          <kbd>/</kbd>
+        </button>
       </div>
 
       <div class="topbar-actions">
 
-        <button class="icon-btn" id="notificationBtn" title="Notifications">
+        <button
+          id="notificationButton"
+          class="icon-button"
+          type="button"
+          aria-label="Notifications"
+        >
           🔔
-          <span class="notification-dot" id="notificationDot"></span>
         </button>
 
-        <div class="profile-chip">
-          <div class="profile-avatar">M</div>
-          <span id="profileName">My Money</span>
-        </div>
+        <button
+          id="profileButton"
+          class="profile-button"
+          type="button"
+        >
+          <span class="profile-avatar">M</span>
+          <span class="profile-name">My Money</span>
+        </button>
 
       </div>
+
     </header>
 
-    <!-- HERO -->
-    <section class="page-hero">
-      <div>
-        <span class="eyebrow">FINANCIAL INTELLIGENCE</span>
-        <h2>Analytics</h2>
-        <p>
-          Understand your money, discover patterns, and make smarter financial decisions.
-        </p>
-      </div>
-    </section>
 
-    <!-- PERIOD FILTER -->
-    <section class="analytics-toolbar">
-      <div>
-        <h3>Financial performance</h3>
-        <p id="analyticsPeriodLabel">All recorded activity</p>
-      </div>
+    <!-- =========================================================
+         PAGE CONTENT
+    ========================================================== -->
 
-      <div class="period-selector" id="analyticsPeriodSelector">
-        <button class="period-btn active" data-period="month">This Month</button>
-        <button class="period-btn" data-period="3months">3 Months</button>
-        <button class="period-btn" data-period="6months">6 Months</button>
-        <button class="period-btn" data-period="year">This Year</button>
-        <button class="period-btn" data-period="all">All Time</button>
-      </div>
-    </section>
+    <section class="page-content">
 
-    <!-- KPI CARDS -->
-    <section class="overview-grid analytics-kpis">
+      <div class="page-hero">
 
-      <article class="overview-card">
-        <div class="card-icon income-icon">↗</div>
         <div>
-          <span>Total Income</span>
-          <strong id="analyticsIncome">₦0</strong>
-          <small id="analyticsIncomeChange">Recorded income</small>
-        </div>
-      </article>
+          <div class="eyebrow">FINANCIAL INTELLIGENCE</div>
 
-      <article class="overview-card">
-        <div class="card-icon expense-icon">↘</div>
-        <div>
-          <span>Total Expenses</span>
-          <strong id="analyticsExpenses">₦0</strong>
-          <small id="analyticsExpenseChange">Recorded spending</small>
-        </div>
-      </article>
+          <h1>Analytics</h1>
 
-      <article class="overview-card">
-        <div class="card-icon balance-icon">₦</div>
-        <div>
-          <span>Net Cash Flow</span>
-          <strong id="analyticsCashFlow">₦0</strong>
-          <small id="analyticsCashFlowStatus">Income minus expenses</small>
-        </div>
-      </article>
-
-      <article class="overview-card">
-        <div class="card-icon savings-icon">💎</div>
-        <div>
-          <span>Savings Rate</span>
-          <strong id="analyticsSavingsRate">0%</strong>
-          <small id="analyticsSavingsStatus">Income saved</small>
-        </div>
-      </article>
-
-    </section>
-
-    <!-- CHARTS -->
-    <section class="two-column">
-
-      <!-- INCOME VS EXPENSES -->
-      <article class="panel analytics-chart-panel">
-        <div class="panel-header">
-          <div>
-            <h3>Income vs Expenses</h3>
-            <p>How your cash flow is moving</p>
-          </div>
-        </div>
-
-        <div class="analytics-chart-wrap">
-          <canvas id="incomeExpenseChart"></canvas>
-          <div class="empty-state" id="incomeExpenseEmpty">
-            <div class="empty-icon">📊</div>
-            <h4>No financial activity yet</h4>
-            <p>Add income or expenses to generate your analytics.</p>
-          </div>
-        </div>
-      </article>
-
-      <!-- SPENDING BREAKDOWN -->
-      <article class="panel">
-        <div class="panel-header">
-          <div>
-            <h3>Spending Breakdown</h3>
-            <p>Where your money is going</p>
-          </div>
-        </div>
-
-        <div id="analyticsCategoryList" class="category-list">
-          <div class="empty-state">
-            <div class="empty-icon">🥧</div>
-            <h4>No spending data</h4>
-            <p>Your category breakdown will appear here.</p>
-          </div>
-        </div>
-      </article>
-
-    </section>
-
-    <!-- TREND + TOP SPENDING -->
-    <section class="two-column">
-
-      <article class="panel analytics-chart-panel">
-        <div class="panel-header">
-          <div>
-            <h3>Monthly Trend</h3>
-            <p>Income, expenses and cash flow over time</p>
-          </div>
-        </div>
-
-        <div class="analytics-chart-wrap">
-          <canvas id="monthlyTrendChart"></canvas>
-
-          <div class="empty-state" id="monthlyTrendEmpty">
-            <div class="empty-icon">📈</div>
-            <h4>Not enough data</h4>
-            <p>Keep recording transactions to see your financial trend.</p>
-          </div>
-        </div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-header">
-          <div>
-            <h3>Top Spending</h3>
-            <p>Your biggest expense categories</p>
-          </div>
-        </div>
-
-        <div id="analyticsTopSpending" class="category-list">
-          <div class="empty-state">
-            <div class="empty-icon">🏆</div>
-            <h4>No spending yet</h4>
-            <p>Your biggest spending categories will appear here.</p>
-          </div>
-        </div>
-      </article>
-
-    </section>
-
-    <!-- INSIGHTS -->
-    <section class="panel analytics-insights-panel">
-
-      <div class="panel-header">
-        <div>
-          <span class="eyebrow">MONEY INTELLIGENCE</span>
-          <h3>What MoneyLeak sees</h3>
-          <p>Automatic observations based on your financial activity.</p>
-        </div>
-      </div>
-
-      <div id="analyticsInsights" class="insight-grid">
-
-        <div class="smart-insight">
-          <div class="insight-icon">🧠</div>
-          <div>
-            <strong>Analyzing your finances...</strong>
-            <p>Add some transactions and MoneyLeak will generate personalized insights.</p>
-          </div>
+          <p>
+            Turn your financial activity into clear insights,
+            patterns and smarter decisions.
+          </p>
         </div>
 
       </div>
 
-    </section>
 
-    <!-- KEY METRICS -->
-    <section class="two-column">
+      <!-- PERIOD SELECTOR -->
 
-      <article class="panel">
-        <div class="panel-header">
-          <div>
-            <h3>Key Metrics</h3>
-            <p>Your financial performance at a glance</p>
-          </div>
-        </div>
+      <div class="analytics-card" style="margin-bottom:22px;">
 
-        <div class="analytics-metrics">
-
-          <div class="metric-row">
-            <span>Average monthly income</span>
-            <strong id="averageMonthlyIncome">₦0</strong>
-          </div>
-
-          <div class="metric-row">
-            <span>Average monthly expenses</span>
-            <strong id="averageMonthlyExpenses">₦0</strong>
-          </div>
-
-          <div class="metric-row">
-            <span>Largest expense</span>
-            <strong id="largestExpense">₦0</strong>
-          </div>
-
-          <div class="metric-row">
-            <span>Largest category</span>
-            <strong id="largestCategory">—</strong>
-          </div>
-
-          <div class="metric-row">
-            <span>Transactions recorded</span>
-            <strong id="transactionCount">0</strong>
-          </div>
-
-        </div>
-      </article>
-
-      <article class="panel">
-        <div class="panel-header">
-          <div>
-            <h3>Financial Direction</h3>
-            <p>Are you moving forward?</p>
-          </div>
-        </div>
-
-        <div class="direction-card" id="financialDirection">
-
-          <div class="direction-icon">🧭</div>
+        <div class="analytics-card-head">
 
           <div>
-            <strong id="directionTitle">Waiting for data</strong>
-            <p id="directionText">
-              Record your income and expenses to see your financial direction.
+            <h2 class="analytics-card-title">
+              Analysis Period
+            </h2>
+
+            <p class="analytics-card-subtitle">
+              Choose the period you want MoneyLeak to analyze.
+            </p>
+          </div>
+
+          <div class="analytics-periods">
+
+            <button
+              class="analytics-period active"
+              data-period="month"
+              type="button"
+            >
+              This Month
+            </button>
+
+            <button
+              class="analytics-period"
+              data-period="3months"
+              type="button"
+            >
+              3 Months
+            </button>
+
+            <button
+              class="analytics-period"
+              data-period="6months"
+              type="button"
+            >
+              6 Months
+            </button>
+
+            <button
+              class="analytics-period"
+              data-period="year"
+              type="button"
+            >
+              This Year
+            </button>
+
+            <button
+              class="analytics-period"
+              data-period="all"
+              type="button"
+            >
+              All Time
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           KPI CARDS
+      ====================================================== -->
+
+      <div class="analytics-kpi-grid">
+
+        <div class="analytics-kpi">
+
+          <div class="analytics-kpi-label">
+            Total Income
+          </div>
+
+          <div
+            class="analytics-kpi-value"
+            id="analyticsIncome"
+          >
+            ₦0
+          </div>
+
+          <div
+            class="analytics-kpi-note"
+            id="analyticsIncomeNote"
+          >
+            Money coming in
+          </div>
+
+        </div>
+
+
+        <div class="analytics-kpi">
+
+          <div class="analytics-kpi-label">
+            Total Expenses
+          </div>
+
+          <div
+            class="analytics-kpi-value"
+            id="analyticsExpenses"
+          >
+            ₦0
+          </div>
+
+          <div
+            class="analytics-kpi-note"
+            id="analyticsExpensesNote"
+          >
+            Money going out
+          </div>
+
+        </div>
+
+
+        <div class="analytics-kpi">
+
+          <div class="analytics-kpi-label">
+            Cash Flow
+          </div>
+
+          <div
+            class="analytics-kpi-value"
+            id="analyticsCashFlow"
+          >
+            ₦0
+          </div>
+
+          <div
+            class="analytics-kpi-note"
+            id="analyticsCashFlowNote"
+          >
+            Income minus expenses
+          </div>
+
+        </div>
+
+
+        <div class="analytics-kpi">
+
+          <div class="analytics-kpi-label">
+            Savings Rate
+          </div>
+
+          <div
+            class="analytics-kpi-value"
+            id="analyticsSavingsRate"
+          >
+            0%
+          </div>
+
+          <div
+            class="analytics-kpi-note"
+            id="analyticsSavingsRateNote"
+          >
+            Percentage retained
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           INCOME VS EXPENSES + METRICS
+      ====================================================== -->
+
+      <div class="analytics-grid">
+
+        <div class="analytics-card">
+
+          <div class="analytics-card-head">
+
+            <div>
+              <h2 class="analytics-card-title">
+                Income vs Expenses
+              </h2>
+
+              <p class="analytics-card-subtitle">
+                Compare money entering and leaving your finances.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="analytics-chart-wrap">
+            <canvas id="incomeExpenseChart"></canvas>
+          </div>
+
+        </div>
+
+
+        <div class="analytics-card">
+
+          <div class="analytics-card-head">
+
+            <div>
+              <h2 class="analytics-card-title">
+                Key Metrics
+              </h2>
+
+              <p class="analytics-card-subtitle">
+                Important numbers from this period.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="metric-list">
+
+            <div class="metric-row">
+              <span class="metric-row-label">
+                Average monthly income
+              </span>
+
+              <strong
+                class="metric-row-value"
+                id="averageIncome"
+              >
+                ₦0
+              </strong>
+            </div>
+
+            <div class="metric-row">
+              <span class="metric-row-label">
+                Average monthly expenses
+              </span>
+
+              <strong
+                class="metric-row-value"
+                id="averageExpenses"
+              >
+                ₦0
+              </strong>
+            </div>
+
+            <div class="metric-row">
+              <span class="metric-row-label">
+                Largest expense
+              </span>
+
+              <strong
+                class="metric-row-value"
+                id="largestExpense"
+              >
+                ₦0
+              </strong>
+            </div>
+
+            <div class="metric-row">
+              <span class="metric-row-label">
+                Largest category
+              </span>
+
+              <strong
+                class="metric-row-value"
+                id="largestCategory"
+              >
+                —
+              </strong>
+            </div>
+
+            <div class="metric-row">
+              <span class="metric-row-label">
+                Transactions
+              </span>
+
+              <strong
+                class="metric-row-value"
+                id="transactionCount"
+              >
+                0
+              </strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           SPENDING BREAKDOWN + TOP SPENDING
+      ====================================================== -->
+
+      <div class="analytics-grid">
+
+        <div class="analytics-card">
+
+          <div class="analytics-card-head">
+
+            <div>
+              <h2 class="analytics-card-title">
+                Spending Breakdown
+              </h2>
+
+              <p class="analytics-card-subtitle">
+                Where your money is going.
+              </p>
+            </div>
+
+          </div>
+
+          <div id="spendingBreakdown">
+
+            <div class="empty-analytics">
+              <div class="empty-analytics-icon">📊</div>
+              No spending recorded for this period.
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="analytics-card">
+
+          <div class="analytics-card-head">
+
+            <div>
+              <h2 class="analytics-card-title">
+                Top Spending
+              </h2>
+
+              <p class="analytics-card-subtitle">
+                Your biggest individual expenses.
+              </p>
+            </div>
+
+          </div>
+
+          <div
+            class="metric-list"
+            id="topSpending"
+          >
+
+            <div class="empty-analytics">
+              <div class="empty-analytics-icon">💳</div>
+              No expenses recorded.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =====================================================
+           MONTHLY TREND
+      ====================================================== -->
+
+      <div class="analytics-card" style="margin-bottom:22px;">
+
+        <div class="analytics-card-head">
+
+          <div>
+            <h2 class="analytics-card-title">
+              Monthly Trend
+            </h2>
+
+            <p class="analytics-card-subtitle">
+              See how your cash flow changes over time.
             </p>
           </div>
 
         </div>
 
-        <div class="direction-stats">
+        <div class="analytics-chart-wrap">
+          <canvas id="monthlyTrendChart"></canvas>
+        </div>
 
-          <div>
-            <span>Income</span>
-            <strong id="directionIncome">₦0</strong>
+      </div>
+
+
+      <!-- =====================================================
+           FINANCIAL INSIGHT
+      ====================================================== -->
+
+      <div class="analytics-grid">
+
+        <div class="analytics-card">
+
+          <div class="analytics-card-head">
+
+            <div>
+              <h2 class="analytics-card-title">
+                MoneyLeak Insight
+              </h2>
+
+              <p class="analytics-card-subtitle">
+                Automatic analysis of your financial behavior.
+              </p>
+            </div>
+
           </div>
 
-          <div>
-            <span>Expenses</span>
-            <strong id="directionExpenses">₦0</strong>
-          </div>
-
-          <div>
-            <span>Remaining</span>
-            <strong id="directionRemaining">₦0</strong>
+          <div
+            class="insight-box"
+            id="analyticsInsight"
+          >
+            Start recording income and expenses to unlock
+            personalized financial insights.
           </div>
 
         </div>
 
-      </article>
 
-    </section>
+        <div class="analytics-card">
 
-    <!-- QUICK ACTIONS -->
-    <section class="quick-actions-section">
+          <div class="analytics-card-head">
 
-      <div class="section-heading">
-        <div>
-          <span class="eyebrow">TAKE ACTION</span>
-          <h3>Improve your finances</h3>
+            <div>
+              <h2 class="analytics-card-title">
+                Financial Direction
+              </h2>
+
+              <p class="analytics-card-subtitle">
+                Your current financial momentum.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="direction-box">
+
+            <div
+              class="direction-icon"
+              id="directionIcon"
+            >
+              📈
+            </div>
+
+            <div>
+
+              <div
+                class="direction-title"
+                id="directionTitle"
+              >
+                Building your picture
+              </div>
+
+              <div
+                class="direction-text"
+                id="directionText"
+              >
+                MoneyLeak will determine your direction
+                as more activity is recorded.
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
+
       </div>
 
-      <div class="quick-actions-grid">
 
-        <a href="expenses.html" class="quick-action-card">
-          <div class="quick-action-icon">💸</div>
-          <strong>Track Expense</strong>
-          <span>Record where your money goes.</span>
-        </a>
+      <!-- =====================================================
+           QUICK ACTIONS
+      ====================================================== -->
 
-        <a href="income.html" class="quick-action-card">
-          <div class="quick-action-icon">💰</div>
-          <strong>Add Income</strong>
-          <span>Keep your income history accurate.</span>
-        </a>
+      <div class="analytics-card">
 
-        <a href="budgets.html" class="quick-action-card">
-          <div class="quick-action-icon">🎯</div>
-          <strong>Create Budget</strong>
-          <span>Give every naira a purpose.</span>
-        </a>
+        <div class="analytics-card-head">
 
-        <a href="savings.html" class="quick-action-card">
-          <div class="quick-action-icon">💎</div>
-          <strong>Set Goal</strong>
-          <span>Turn your plans into measurable goals.</span>
-        </a>
+          <div>
+            <h2 class="analytics-card-title">
+              Take Action
+            </h2>
+
+            <p class="analytics-card-subtitle">
+              Turn your insights into financial progress.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="quick-actions">
+
+          <a
+            href="expenses.html"
+            class="quick-action"
+          >
+            <span class="quick-action-icon">−</span>
+
+            <span>
+              <strong>Review Expenses</strong>
+              <small>Find unnecessary spending</small>
+            </span>
+          </a>
+
+          <a
+            href="budgets.html"
+            class="quick-action"
+          >
+            <span class="quick-action-icon">▣</span>
+
+            <span>
+              <strong>Set a Budget</strong>
+              <small>Control your monthly spending</small>
+            </span>
+          </a>
+
+          <a
+            href="savings.html"
+            class="quick-action"
+          >
+            <span class="quick-action-icon">◎</span>
+
+            <span>
+              <strong>Build a Goal</strong>
+              <small>Turn savings into a target</small>
+            </span>
+          </a>
+
+          <a
+            href="income.html"
+            class="quick-action"
+          >
+            <span class="quick-action-icon">+</span>
+
+            <span>
+              <strong>Add Income</strong>
+              <small>Keep your financial picture updated</small>
+            </span>
+          </a>
+
+        </div>
 
       </div>
 
     </section>
-
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <div>
-        <strong>MoneyLeak</strong>
-        <span>Personal Finance OS</span>
-      </div>
-
-      <p>Build wealth. Control spending. Know your money.</p>
-    </footer>
 
   </main>
 
-  <!-- SEARCH OVERLAY -->
-  <div class="search-overlay" id="searchOverlay">
 
-    <div class="search-modal">
+  <!-- =========================================================
+       SEARCH OVERLAY
+  ========================================================== -->
 
-      <button class="search-close" id="searchClose">×</button>
+  <div
+    id="searchOverlay"
+    class="search-overlay"
+    aria-hidden="true"
+  >
 
-      <h2>Search MoneyLeak</h2>
+    <div
+      class="search-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Search MoneyLeak"
+    >
+
+      <div class="search-modal-header">
+
+        <strong>Search MoneyLeak</strong>
+
+        <button
+          id="closeSearch"
+          class="search-close"
+          type="button"
+          aria-label="Close search"
+        >
+          ×
+        </button>
+
+      </div>
 
       <div class="search-input-wrap">
-        🔍
+
+        <span>⌕</span>
+
         <input
-          type="text"
-          id="globalSearchInput"
-          placeholder="Search pages, transactions..."
+          id="globalSearch"
+          type="search"
+          placeholder="Search transactions, pages..."
           autocomplete="off"
         >
+
       </div>
 
-      <div id="globalSearchResults" class="search-results"></div>
+      <div id="searchResults"></div>
 
     </div>
 
   </div>
 
-  <!-- NOTIFICATION PANEL -->
-  <div class="notification-panel" id="notificationPanel">
+
+  <!-- =========================================================
+       NOTIFICATION PANEL
+  ========================================================== -->
+
+  <div
+    id="notificationPanel"
+    class="notification-panel"
+    aria-hidden="true"
+  >
 
     <div class="notification-header">
-      <div>
-        <h3>Notifications</h3>
-        <p>Your financial alerts</p>
-      </div>
 
-      <button id="notificationClose">×</button>
+      <strong>Notifications</strong>
+
+      <button
+        id="closeNotifications"
+        type="button"
+        aria-label="Close notifications"
+      >
+        ×
+      </button>
+
     </div>
 
-    <div id="notificationList">
-      <div class="empty-state">
-        <div class="empty-icon">🔔</div>
-        <h4>No notifications</h4>
-        <p>MoneyLeak will show important financial alerts here.</p>
-      </div>
-    </div>
+    <div
+      id="notificationList"
+      class="notification-list"
+    ></div>
 
   </div>
 
-  <!-- MOBILE OVERLAY -->
-  <div class="mobile-overlay" id="mobileOverlay"></div>
 
-  <!-- APP ENGINE -->
+  <!-- =========================================================
+       MOBILE OVERLAY
+  ========================================================== -->
+
+  <div
+    id="mobileOverlay"
+    class="mobile-overlay"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- =========================================================
+       APP ENGINE
+  ========================================================== -->
+
   <script src="app.js"></script>
 
-  <!-- ANALYTICS ENGINE -->
+
+  <!-- =========================================================
+       ANALYTICS ENGINE
+  ========================================================== -->
+
   <script>
+  (() => {
 
-    (() => {
+    "use strict";
 
-      const ML = window.MoneyLeak;
+    const ML = window.MoneyLeak;
 
-      if (!ML) return;
+    if (!ML) {
+      console.error("MoneyLeak app engine was not loaded.");
+      return;
+    }
 
-      let currentPeriod = "month";
 
-      function getTransactions() {
-        return ML.getTransactions ? ML.getTransactions() : [];
+    /* =========================================================
+       STATE
+    ========================================================== */
+
+    let currentPeriod = "month";
+
+
+    /* =========================================================
+       HELPERS
+    ========================================================== */
+
+    function getTransactions() {
+      try {
+        return ML.getTransactions();
+      } catch (error) {
+        return [];
+      }
+    }
+
+
+    function number(value) {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+
+    function formatMoney(value) {
+      return ML.formatCurrency(number(value));
+    }
+
+
+    function dateObject(value) {
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return new Date();
       }
 
-      function formatCurrency(amount) {
-        return ML.formatCurrency
-          ? ML.formatCurrency(amount)
-          : `₦${Number(amount || 0).toLocaleString()}`;
-      }
+      return date;
+    }
 
-      function getDate(value) {
-        const date = new Date(value);
-        return Number.isNaN(date.getTime()) ? null : date;
-      }
 
-      function startOfMonth(date) {
-        return new Date(date.getFullYear(), date.getMonth(), 1);
-      }
+    function startOfMonth(date) {
+      return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        1
+      );
+    }
 
-      function monthsAgo(count) {
-        const now = new Date();
 
-        return new Date(
+    function addMonths(date, amount) {
+      return new Date(
+        date.getFullYear(),
+        date.getMonth() + amount,
+        1
+      );
+    }
+
+
+    function getPeriodTransactions() {
+
+      const transactions = getTransactions();
+
+      const now = new Date();
+
+      let start;
+
+      if (currentPeriod === "month") {
+
+        start = startOfMonth(now);
+
+      } else if (currentPeriod === "3months") {
+
+        start = addMonths(startOfMonth(now), -2);
+
+      } else if (currentPeriod === "6months") {
+
+        start = addMonths(startOfMonth(now), -5);
+
+      } else if (currentPeriod === "year") {
+
+        start = new Date(
           now.getFullYear(),
-          now.getMonth() - count,
+          0,
           1
         );
-      }
 
-      function getPeriodStart(period) {
+      } else {
 
-        const now = new Date();
-
-        if (period === "month") {
-          return startOfMonth(now);
-        }
-
-        if (period === "3months") {
-          return monthsAgo(2);
-        }
-
-        if (period === "6months") {
-          return monthsAgo(5);
-        }
-
-        if (period === "year") {
-          return new Date(now.getFullYear(), 0, 1);
-        }
-
-        return null;
-      }
-
-      function getFilteredTransactions() {
-
-        const transactions = getTransactions();
-
-        const start = getPeriodStart(currentPeriod);
-
-        if (!start) {
-          return transactions;
-        }
-
-        return transactions.filter(transaction => {
-
-          const date = getDate(transaction.date);
-
-          if (!date) return false;
-
-          return date >= start;
-
-        });
+        return transactions;
 
       }
 
-      function calculateStats(transactions) {
+      return transactions.filter(transaction => {
 
-        let income = 0;
-        let expenses = 0;
+        const date = dateObject(transaction.date);
 
-        transactions.forEach(transaction => {
+        return date >= start && date <= now;
 
-          const amount = Math.abs(Number(transaction.amount) || 0);
+      });
 
-          if (transaction.type === "income") {
-            income += amount;
-          }
+    }
 
-          if (transaction.type === "expense") {
-            expenses += amount;
-          }
 
-        });
+    function getExpenses(transactions) {
 
-        const cashFlow = income - expenses;
+      return transactions.filter(
+        transaction =>
+          String(transaction.type).toLowerCase() === "expense"
+      );
 
-        const savingsRate = income > 0
+    }
+
+
+    function getIncome(transactions) {
+
+      return transactions.filter(
+        transaction =>
+          String(transaction.type).toLowerCase() === "income"
+      );
+
+    }
+
+
+    function total(transactions) {
+
+      return transactions.reduce(
+        (sum, transaction) =>
+          sum + number(transaction.amount),
+        0
+      );
+
+    }
+
+
+    /* =========================================================
+       KPI
+    ========================================================== */
+
+    function updateKPIs(transactions) {
+
+      const income = total(getIncome(transactions));
+
+      const expenses = total(getExpenses(transactions));
+
+      const cashFlow = income - expenses;
+
+      const savingsRate =
+        income > 0
           ? (cashFlow / income) * 100
           : 0;
 
-        return {
-          income,
-          expenses,
-          cashFlow,
-          savingsRate
-        };
 
+      document.getElementById("analyticsIncome").textContent =
+        formatMoney(income);
+
+      document.getElementById("analyticsExpenses").textContent =
+        formatMoney(expenses);
+
+      document.getElementById("analyticsCashFlow").textContent =
+        formatMoney(cashFlow);
+
+      document.getElementById("analyticsSavingsRate").textContent =
+        Math.round(savingsRate) + "%";
+
+
+      document.getElementById("analyticsIncomeNote").textContent =
+        income > 0
+          ? "Money coming in"
+          : "No income recorded";
+
+
+      document.getElementById("analyticsExpensesNote").textContent =
+        expenses > 0
+          ? "Money going out"
+          : "No expenses recorded";
+
+
+      document.getElementById("analyticsCashFlowNote").textContent =
+        cashFlow >= 0
+          ? "Positive cash flow"
+          : "Spending is above income";
+
+
+      document.getElementById("analyticsSavingsRateNote").textContent =
+        savingsRate >= 20
+          ? "Strong savings habit"
+          : savingsRate > 0
+            ? "Room to save more"
+            : "No savings from this period";
+
+    }
+
+
+    /* =========================================================
+       KEY METRICS
+    ========================================================== */
+
+    function updateMetrics(transactions) {
+
+      const expenses = getExpenses(transactions);
+
+      const income = getIncome(transactions);
+
+      const expenseTotal = total(expenses);
+
+      const incomeTotal = total(income);
+
+
+      let months = 1;
+
+      if (currentPeriod === "3months") {
+        months = 3;
       }
 
-      function updateKPIs(stats) {
-
-        document.getElementById("analyticsIncome").textContent =
-          formatCurrency(stats.income);
-
-        document.getElementById("analyticsExpenses").textContent =
-          formatCurrency(stats.expenses);
-
-        document.getElementById("analyticsCashFlow").textContent =
-          formatCurrency(stats.cashFlow);
-
-        document.getElementById("analyticsSavingsRate").textContent =
-          `${Math.round(stats.savingsRate)}%`;
-
-        document.getElementById("analyticsCashFlowStatus").textContent =
-          stats.cashFlow >= 0
-            ? "Positive cash flow"
-            : "Spending exceeds income";
-
-        document.getElementById("analyticsSavingsStatus").textContent =
-          stats.savingsRate >= 20
-            ? "Excellent savings rate"
-            : stats.savingsRate > 0
-              ? "Room to improve"
-              : "No savings this period";
-
+      if (currentPeriod === "6months") {
+        months = 6;
       }
 
-      function updatePeriodLabel() {
-
-        const labels = {
-          month: "This month's financial activity",
-          "3months": "The last 3 months",
-          "6months": "The last 6 months",
-          year: "This year's financial activity",
-          all: "All recorded activity"
-        };
-
-        document.getElementById("analyticsPeriodLabel").textContent =
-          labels[currentPeriod] || labels.month;
-
+      if (currentPeriod === "year") {
+        months = 12;
       }
 
-      function drawIncomeExpenseChart(transactions) {
+      if (currentPeriod === "all") {
 
-        const canvas = document.getElementById("incomeExpenseChart");
+        const dates = transactions
+          .map(t => dateObject(t.date).getTime())
+          .filter(Boolean);
 
-        if (!canvas) return;
+        if (dates.length) {
 
-        const empty = document.getElementById("incomeExpenseEmpty");
+          const oldest = new Date(Math.min(...dates));
+          const newest = new Date(Math.max(...dates));
 
-        const income = transactions
-          .filter(t => t.type === "income")
-          .reduce((sum, t) => sum + Math.abs(Number(t.amount) || 0), 0);
-
-        const expenses = transactions
-          .filter(t => t.type === "expense")
-          .reduce((sum, t) => sum + Math.abs(Number(t.amount) || 0), 0);
-
-        if (!income && !expenses) {
-
-          canvas.style.display = "none";
-
-          if (empty) empty.style.display = "flex";
-
-          return;
+          months =
+            Math.max(
+              1,
+              (newest.getFullYear() - oldest.getFullYear()) * 12 +
+              newest.getMonth() -
+              oldest.getMonth() +
+              1
+            );
 
         }
 
-        canvas.style.display = "block";
+      }
 
-        if (empty) empty.style.display = "none";
 
-        const ctx = canvas.getContext("2d");
+      const averageIncome =
+        incomeTotal / months;
 
-        const rect = canvas.getBoundingClientRect();
+      const averageExpenses =
+        expenseTotal / months;
 
-        const width = Math.max(320, rect.width || 500);
-        const height = 280;
 
-        const dpr = window.devicePixelRatio || 1;
+      let largestExpense = null;
 
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
+      for (const expense of expenses) {
 
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        ctx.clearRect(0, 0, width, height);
-
-        const max = Math.max(income, expenses, 1);
-
-        const chartTop = 40;
-        const chartBottom = height - 40;
-        const chartHeight = chartBottom - chartTop;
-
-        const barWidth = Math.min(100, width / 5);
-
-        const incomeHeight =
-          (income / max) * chartHeight;
-
-        const expenseHeight =
-          (expenses / max) * chartHeight;
-
-        const center = width / 2;
-
-        ctx.font = "600 14px system-ui";
-        ctx.textAlign = "center";
-
-        ctx.fillStyle = "#1f8f63";
-
-        ctx.fillRect(
-          center - barWidth - 15,
-          chartBottom - incomeHeight,
-          barWidth,
-          incomeHeight
-        );
-
-        ctx.fillStyle = "#d95c5c";
-
-        ctx.fillRect(
-          center + 15,
-          chartBottom - expenseHeight,
-          barWidth,
-          expenseHeight
-        );
-
-        ctx.fillStyle = "#202a27";
-
-        ctx.fillText(
-          "Income",
-          center - barWidth / 2 - 15,
-          height - 12
-        );
-
-        ctx.fillText(
-          "Expenses",
-          center + barWidth / 2 + 15,
-          height - 12
-        );
-
-        ctx.fillStyle = "#1f8f63";
-
-        ctx.fillText(
-          formatCurrency(income),
-          center - barWidth / 2 - 15,
-          Math.max(25, chartBottom - incomeHeight - 12)
-        );
-
-        ctx.fillStyle = "#d95c5c";
-
-        ctx.fillText(
-          formatCurrency(expenses),
-          center + barWidth / 2 + 15,
-          Math.max(25, chartBottom - expenseHeight - 12)
-        );
+        if (
+          !largestExpense ||
+          number(expense.amount) >
+          number(largestExpense.amount)
+        ) {
+          largestExpense = expense;
+        }
 
       }
 
-      function getCategoryTotals(transactions) {
 
-        const totals = {};
+      document.getElementById("averageIncome").textContent =
+        formatMoney(averageIncome);
 
-        transactions
-          .filter(t => t.type === "expense")
-          .forEach(transaction => {
+      document.getElementById("averageExpenses").textContent =
+        formatMoney(averageExpenses);
 
-            const category =
-              transaction.category ||
-              "Other";
+      document.getElementById("largestExpense").textContent =
+        largestExpense
+          ? formatMoney(largestExpense.amount)
+          : "₦0";
 
-            const amount =
-              Math.abs(Number(transaction.amount) || 0);
 
-            totals[category] =
-              (totals[category] || 0) + amount;
+      document.getElementById("transactionCount").textContent =
+        transactions.length;
 
-          });
 
-        return Object.entries(totals)
+      const categories = {};
+
+      expenses.forEach(expense => {
+
+        const category =
+          expense.category ||
+          "Other";
+
+        categories[category] =
+          (categories[category] || 0) +
+          number(expense.amount);
+
+      });
+
+
+      let largestCategory = "—";
+
+      let largestCategoryAmount = 0;
+
+      Object.entries(categories).forEach(
+        ([category, amount]) => {
+
+          if (amount > largestCategoryAmount) {
+
+            largestCategoryAmount = amount;
+
+            largestCategory = category;
+
+          }
+
+        }
+      );
+
+
+      document.getElementById("largestCategory").textContent =
+        largestCategory;
+
+    }
+
+
+    /* =========================================================
+       SPENDING BREAKDOWN
+    ========================================================== */
+
+    function updateSpendingBreakdown(transactions) {
+
+      const container =
+        document.getElementById("spendingBreakdown");
+
+      const expenses = getExpenses(transactions);
+
+      const categories = {};
+
+      expenses.forEach(expense => {
+
+        const category =
+          expense.category ||
+          "Other";
+
+        categories[category] =
+          (categories[category] || 0) +
+          number(expense.amount);
+
+      });
+
+
+      const entries =
+        Object.entries(categories)
           .sort((a, b) => b[1] - a[1]);
 
+
+      if (!entries.length) {
+
+        container.innerHTML = `
+          <div class="empty-analytics">
+            <div class="empty-analytics-icon">📊</div>
+            No spending recorded for this period.
+          </div>
+        `;
+
+        return;
       }
 
-      function renderCategoryBreakdown(transactions) {
 
-        const container =
-          document.getElementById("analyticsCategoryList");
+      const maximum =
+        entries[0][1];
 
-        const categories =
-          getCategoryTotals(transactions);
 
-        if (!categories.length) {
-
-          container.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-icon">🥧</div>
-              <h4>No spending data</h4>
-              <p>Your category breakdown will appear here.</p>
-            </div>
-          `;
-
-          return;
-        }
-
-        const total =
-          categories.reduce(
-            (sum, item) => sum + item[1],
-            0
-          );
-
-        container.innerHTML =
-          categories.slice(0, 8).map(([category, amount]) => {
+      container.innerHTML =
+        entries
+          .slice(0, 10)
+          .map(([category, amount]) => {
 
             const percent =
-              total > 0
-                ? (amount / total) * 100
+              maximum > 0
+                ? (amount / maximum) * 100
                 : 0;
 
             return `
               <div class="category-item">
 
-                <div class="category-item-top">
+                <div class="category-top">
 
-                  <strong>${escapeHtml(category)}</strong>
+                  <span class="category-name">
+                    ${escapeHTML(category)}
+                  </span>
 
-                  <span>
-                    ${formatCurrency(amount)}
+                  <span class="category-amount">
+                    ${formatMoney(amount)}
                   </span>
 
                 </div>
 
-                <div class="progress-track">
+                <div class="category-bar">
 
                   <div
-                    class="progress-fill"
+                    class="category-fill"
                     style="width:${Math.min(100, percent)}%"
                   ></div>
 
                 </div>
 
-                <small>${Math.round(percent)}% of spending</small>
+              </div>
+            `;
+
+          })
+          .join("");
+
+    }
+
+
+    /* =========================================================
+       TOP SPENDING
+    ========================================================== */
+
+    function updateTopSpending(transactions) {
+
+      const container =
+        document.getElementById("topSpending");
+
+      const expenses =
+        getExpenses(transactions)
+          .sort(
+            (a, b) =>
+              number(b.amount) -
+              number(a.amount)
+          )
+          .slice(0, 6);
+
+
+      if (!expenses.length) {
+
+        container.innerHTML = `
+          <div class="empty-analytics">
+            <div class="empty-analytics-icon">💳</div>
+            No expenses recorded.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      container.innerHTML =
+        expenses
+          .map(expense => {
+
+            const name =
+              expense.description ||
+              expense.name ||
+              expense.title ||
+              expense.category ||
+              "Expense";
+
+
+            return `
+              <div class="metric-row">
+
+                <div>
+
+                  <div
+                    style="
+                      font-weight:700;
+                      color:#394941;
+                      margin-bottom:4px;
+                    "
+                  >
+                    ${escapeHTML(name)}
+                  </div>
+
+                  <div
+                    style="
+                      font-size:12px;
+                      color:#8a9792;
+                    "
+                  >
+                    ${escapeHTML(
+                      expense.category || "Other"
+                    )}
+                  </div>
+
+                </div>
+
+                <strong class="metric-row-value">
+                  ${formatMoney(expense.amount)}
+                </strong>
 
               </div>
             `;
 
-          }).join("");
+          })
+          .join("");
 
+    }
+
+
+    /* =========================================================
+       INSIGHT
+    ========================================================== */
+
+    function updateInsight(transactions) {
+
+      const box =
+        document.getElementById("analyticsInsight");
+
+      const income =
+        total(getIncome(transactions));
+
+      const expenses =
+        total(getExpenses(transactions));
+
+      if (!transactions.length) {
+
+        box.textContent =
+          "Start recording income and expenses to unlock personalized financial insights.";
+
+        return;
       }
 
-      function renderTopSpending(transactions) {
 
-        const container =
-          document.getElementById("analyticsTopSpending");
+      if (expenses > income && income > 0) {
 
-        const categories =
-          getCategoryTotals(transactions);
+        box.textContent =
+          "Your expenses are currently higher than your income for this period. Focus first on your largest spending categories and consider setting category budgets.";
 
-        if (!categories.length) {
-
-          container.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-icon">🏆</div>
-              <h4>No spending yet</h4>
-              <p>Your biggest spending categories will appear here.</p>
-            </div>
-          `;
-
-          return;
-        }
-
-        container.innerHTML =
-          categories.slice(0, 5).map(
-            ([category, amount], index) => `
-              <div class="category-item">
-
-                <div class="category-item-top">
-
-                  <strong>
-                    ${index + 1}. ${escapeHtml(category)}
-                  </strong>
-
-                  <span>
-                    ${formatCurrency(amount)}
-                  </span>
-
-                </div>
-
-              </div>
-            `
-          ).join("");
-
+        return;
       }
 
-      function drawMonthlyTrend(transactions) {
 
-        const canvas =
-          document.getElementById("monthlyTrendChart");
+      if (income > 0) {
 
-        const empty =
-          document.getElementById("monthlyTrendEmpty");
+        const rate =
+          ((income - expenses) / income) * 100;
 
-        if (!canvas) return;
+        if (rate >= 30) {
 
-        if (!transactions.length) {
-
-          canvas.style.display = "none";
-
-          if (empty) empty.style.display = "flex";
+          box.textContent =
+            "Excellent cash-flow performance. You're retaining at least 30% of recorded income. Keep this momentum and direct part of the surplus toward your savings goals.";
 
           return;
 
         }
 
-        canvas.style.display = "block";
 
-        if (empty) empty.style.display = "none";
+        if (rate >= 20) {
 
-        const now = new Date();
+          box.textContent =
+            "You're maintaining a healthy positive cash flow. Increasing your savings rate gradually could help you reach your financial goals faster.";
 
-        const months = [];
+          return;
 
-        for (let i = 5; i >= 0; i--) {
+        }
 
-          const date = new Date(
+
+        if (rate > 0) {
+
+          box.textContent =
+            "You're in positive territory, but your spending is using most of your income. Review your largest categories for opportunities to improve your savings rate.";
+
+          return;
+
+        }
+
+      }
+
+
+      box.textContent =
+        "Your financial activity is building a picture of your habits. Continue recording transactions so MoneyLeak can identify stronger patterns.";
+
+    }
+
+
+    /* =========================================================
+       FINANCIAL DIRECTION
+    ========================================================== */
+
+    function updateDirection(transactions) {
+
+      const income =
+        total(getIncome(transactions));
+
+      const expenses =
+        total(getExpenses(transactions));
+
+      const icon =
+        document.getElementById("directionIcon");
+
+      const title =
+        document.getElementById("directionTitle");
+
+      const text =
+        document.getElementById("directionText");
+
+
+      if (!transactions.length) {
+
+        icon.textContent = "📊";
+
+        title.textContent =
+          "Building your picture";
+
+        text.textContent =
+          "Record more transactions to reveal your financial direction.";
+
+        return;
+      }
+
+
+      if (expenses > income && income > 0) {
+
+        icon.textContent = "⚠️";
+
+        title.textContent =
+          "Needs attention";
+
+        text.textContent =
+          "Your current spending is ahead of your recorded income. Reducing major expenses can improve your financial direction.";
+
+        return;
+      }
+
+
+      if (income > expenses && income > 0) {
+
+        const rate =
+          ((income - expenses) / income) * 100;
+
+
+        if (rate >= 30) {
+
+          icon.textContent = "🚀";
+
+          title.textContent =
+            "Strong upward momentum";
+
+          text.textContent =
+            "You're keeping a strong portion of your income. This is a good position for building savings and long-term goals.";
+
+        } else {
+
+          icon.textContent = "📈";
+
+          title.textContent =
+            "Positive momentum";
+
+          text.textContent =
+            "Your income is currently ahead of expenses. Keep your spending controlled and increase savings gradually.";
+
+        }
+
+        return;
+      }
+
+
+      icon.textContent = "➖";
+
+      title.textContent =
+        "Balanced";
+
+      text.textContent =
+        "Your income and expenses are currently close together. Look for small opportunities to create more surplus.";
+
+    }
+
+
+    /* =========================================================
+       INCOME / EXPENSE CHART
+    ========================================================== */
+
+    function drawIncomeExpenseChart(transactions) {
+
+      const canvas =
+        document.getElementById(
+          "incomeExpenseChart"
+        );
+
+      if (!canvas) return;
+
+      const ctx =
+        canvas.getContext("2d");
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+      const width =
+        Math.max(
+          320,
+          Math.floor(rect.width)
+        );
+
+      const height = 320;
+
+      const dpr =
+        window.devicePixelRatio || 1;
+
+      canvas.width =
+        width * dpr;
+
+      canvas.height =
+        height * dpr;
+
+      ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
+
+
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      const income =
+        total(getIncome(transactions));
+
+      const expenses =
+        total(getExpenses(transactions));
+
+
+      const max =
+        Math.max(
+          income,
+          expenses,
+          1
+        );
+
+
+      const left = 55;
+
+      const right = 25;
+
+      const top = 25;
+
+      const bottom = 50;
+
+      const chartWidth =
+        width - left - right;
+
+      const chartHeight =
+        height - top - bottom;
+
+
+      /* Grid */
+
+      ctx.font =
+        "12px Arial";
+
+      ctx.textAlign =
+        "right";
+
+      ctx.fillStyle =
+        "#89958f";
+
+      for (let i = 0; i <= 4; i++) {
+
+        const y =
+          top +
+          chartHeight -
+          (i / 4) * chartHeight;
+
+        ctx.beginPath();
+
+        ctx.moveTo(left, y);
+
+        ctx.lineTo(
+          width - right,
+          y
+        );
+
+        ctx.strokeStyle =
+          "#edf2ef";
+
+        ctx.lineWidth = 1;
+
+        ctx.stroke();
+
+
+        const value =
+          (max * i) / 4;
+
+        ctx.fillText(
+          compactMoney(value),
+          left - 10,
+          y + 4
+        );
+
+      }
+
+
+      const barWidth =
+        Math.min(
+          75,
+          chartWidth / 5
+        );
+
+      const incomeHeight =
+        (income / max) *
+        chartHeight;
+
+      const expenseHeight =
+        (expenses / max) *
+        chartHeight;
+
+
+      const center =
+        left +
+        chartWidth / 2;
+
+
+      /* Income bar */
+
+      ctx.fillStyle =
+        "#0d9364";
+
+      ctx.fillRect(
+        center - barWidth - 8,
+        top + chartHeight - incomeHeight,
+        barWidth,
+        incomeHeight
+      );
+
+
+      /* Expense bar */
+
+      ctx.fillStyle =
+        "#e25f5f";
+
+      ctx.fillRect(
+        center + 8,
+        top + chartHeight - expenseHeight,
+        barWidth,
+        expenseHeight
+      );
+
+
+      ctx.fillStyle =
+        "#55645d";
+
+      ctx.textAlign =
+        "center";
+
+      ctx.font =
+        "700 12px Arial";
+
+      ctx.fillText(
+        "Income",
+        center - barWidth / 2 - 8,
+        height - 20
+      );
+
+      ctx.fillText(
+        "Expenses",
+        center + barWidth / 2 + 8,
+        height - 20
+      );
+
+    }
+
+
+    /* =========================================================
+       MONTHLY TREND
+    ========================================================== */
+
+    function drawMonthlyTrendChart(transactions) {
+
+      const canvas =
+        document.getElementById(
+          "monthlyTrendChart"
+        );
+
+      if (!canvas) return;
+
+      const ctx =
+        canvas.getContext("2d");
+
+      const rect =
+        canvas.getBoundingClientRect();
+
+      const width =
+        Math.max(
+          320,
+          Math.floor(rect.width)
+        );
+
+      const height = 320;
+
+      const dpr =
+        window.devicePixelRatio || 1;
+
+      canvas.width =
+        width * dpr;
+
+      canvas.height =
+        height * dpr;
+
+      ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
+
+
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      const months = [];
+
+      const now =
+        new Date();
+
+
+      let count = 6;
+
+      if (currentPeriod === "month") {
+        count = 6;
+      }
+
+      if (currentPeriod === "3months") {
+        count = 6;
+      }
+
+      if (currentPeriod === "6months") {
+        count = 6;
+      }
+
+      if (currentPeriod === "year") {
+        count = 12;
+      }
+
+      if (currentPeriod === "all") {
+        count = 12;
+      }
+
+
+      for (
+        let i = count - 1;
+        i >= 0;
+        i--
+      ) {
+
+        const date =
+          new Date(
             now.getFullYear(),
             now.getMonth() - i,
             1
           );
 
-          months.push({
-            label: date.toLocaleDateString(
-              undefined,
-              { month: "short" }
-            ),
-            year: date.getFullYear(),
-            month: date.getMonth(),
-            income: 0,
-            expenses: 0
-          });
-
-        }
-
-        transactions.forEach(transaction => {
-
-          const date = getDate(transaction.date);
-
-          if (!date) return;
-
-          const bucket =
-            months.find(
-              m =>
-                m.year === date.getFullYear() &&
-                m.month === date.getMonth()
-            );
-
-          if (!bucket) return;
-
-          const amount =
-            Math.abs(Number(transaction.amount) || 0);
-
-          if (transaction.type === "income") {
-            bucket.income += amount;
-          }
-
-          if (transaction.type === "expense") {
-            bucket.expenses += amount;
-          }
-
+        months.push({
+          date,
+          income: 0,
+          expenses: 0
         });
 
-        const ctx = canvas.getContext("2d");
+      }
 
-        const rect = canvas.getBoundingClientRect();
 
-        const width =
-          Math.max(320, rect.width || 600);
+      transactions.forEach(transaction => {
 
-        const height = 280;
+        const date =
+          dateObject(transaction.date);
 
-        const dpr =
-          window.devicePixelRatio || 1;
+        const key =
+          date.getFullYear() +
+          "-" +
+          date.getMonth();
 
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
 
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        ctx.clearRect(0, 0, width, height);
-
-        const max =
-          Math.max(
-            1,
-            ...months.flatMap(
-              m => [m.income, m.expenses]
-            )
+        const month =
+          months.find(item =>
+            item.date.getFullYear() ===
+              date.getFullYear() &&
+            item.date.getMonth() ===
+              date.getMonth()
           );
 
-        const left = 45;
-        const right = width - 20;
-        const top = 25;
-        const bottom = height - 40;
 
-        const chartWidth =
-          right - left;
+        if (!month) return;
 
-        const chartHeight =
-          bottom - top;
 
-        ctx.strokeStyle = "#dfe7e3";
-        ctx.lineWidth = 1;
+        if (
+          String(transaction.type).toLowerCase() ===
+          "income"
+        ) {
 
-        for (let i = 0; i <= 4; i++) {
+          month.income +=
+            number(transaction.amount);
 
-          const y =
-            top +
-            (chartHeight / 4) * i;
+        } else {
 
-          ctx.beginPath();
-
-          ctx.moveTo(left, y);
-          ctx.lineTo(right, y);
-
-          ctx.stroke();
+          month.expenses +=
+            number(transaction.amount);
 
         }
 
-        const step =
-          chartWidth /
-          Math.max(1, months.length - 1);
+      });
 
-        function point(value, index) {
 
-          return {
-            x: left + step * index,
-            y:
-              bottom -
-              (value / max) * chartHeight
-          };
+      const max =
+        Math.max(
+          1,
+          ...months.flatMap(
+            item => [
+              item.income,
+              item.expenses
+            ]
+          )
+        );
 
-        }
 
-        function drawLine(key) {
+      const left = 55;
 
-          ctx.beginPath();
+      const right = 25;
 
-          months.forEach((month, index) => {
+      const top = 25;
 
-            const p =
-              point(month[key], index);
+      const bottom = 55;
+
+      const chartWidth =
+        width - left - right;
+
+      const chartHeight =
+        height - top - bottom;
+
+
+      /* Grid */
+
+      ctx.font =
+        "12px Arial";
+
+      ctx.textAlign =
+        "right";
+
+      ctx.fillStyle =
+        "#89958f";
+
+
+      for (let i = 0; i <= 4; i++) {
+
+        const y =
+          top +
+          chartHeight -
+          (i / 4) *
+          chartHeight;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+          left,
+          y
+        );
+
+        ctx.lineTo(
+          width - right,
+          y
+        );
+
+        ctx.strokeStyle =
+          "#edf2ef";
+
+        ctx.stroke();
+
+
+        ctx.fillText(
+          compactMoney(
+            (max * i) / 4
+          ),
+          left - 10,
+          y + 4
+        );
+
+      }
+
+
+      function drawLine(key) {
+
+        ctx.beginPath();
+
+        months.forEach(
+          (month, index) => {
+
+            const x =
+              left +
+              (index /
+                Math.max(
+                  1,
+                  months.length - 1
+                )) *
+              chartWidth;
+
+            const y =
+              top +
+              chartHeight -
+              (month[key] / max) *
+              chartHeight;
+
 
             if (index === 0) {
-              ctx.moveTo(p.x, p.y);
+              ctx.moveTo(x, y);
             } else {
-              ctx.lineTo(p.x, p.y);
+              ctx.lineTo(x, y);
             }
 
-          });
+          }
+        );
 
-          ctx.stroke();
+        ctx.strokeStyle =
+          key === "income"
+            ? "#0d9364"
+            : "#e25f5f";
 
-          months.forEach((month, index) => {
+        ctx.lineWidth = 3;
 
-            const p =
-              point(month[key], index);
+        ctx.lineJoin =
+          "round";
+
+        ctx.lineCap =
+          "round";
+
+        ctx.stroke();
+
+
+        months.forEach(
+          (month, index) => {
+
+            const x =
+              left +
+              (index /
+                Math.max(
+                  1,
+                  months.length - 1
+                )) *
+              chartWidth;
+
+            const y =
+              top +
+              chartHeight -
+              (month[key] / max) *
+              chartHeight;
+
 
             ctx.beginPath();
 
             ctx.arc(
-              p.x,
-              p.y,
+              x,
+              y,
               4,
               0,
               Math.PI * 2
             );
 
+            ctx.fillStyle =
+              key === "income"
+                ? "#0d9364"
+                : "#e25f5f";
+
             ctx.fill();
 
-          });
+          }
+        );
 
-        }
+      }
 
-        ctx.lineWidth = 3;
 
-        ctx.strokeStyle = "#1f8f63";
-        ctx.fillStyle = "#1f8f63";
+      drawLine("income");
 
-        drawLine("income");
+      drawLine("expenses");
 
-        ctx.strokeStyle = "#d95c5c";
-        ctx.fillStyle = "#d95c5c";
 
-        drawLine("expenses");
+      /* Month labels */
 
-        ctx.fillStyle = "#65736d";
+      ctx.font =
+        "11px Arial";
 
-        ctx.font = "12px system-ui";
+      ctx.textAlign =
+        "center";
 
-        ctx.textAlign = "center";
+      ctx.fillStyle =
+        "#89958f";
 
-        months.forEach((month, index) => {
+
+      months.forEach(
+        (month, index) => {
 
           const x =
-            left + step * index;
+            left +
+            (index /
+              Math.max(
+                1,
+                months.length - 1
+              )) *
+            chartWidth;
+
+
+          const label =
+            month.date.toLocaleDateString(
+              "en-US",
+              {
+                month: "short"
+              }
+            );
+
 
           ctx.fillText(
-            month.label,
+            label,
             x,
-            height - 15
+            height - 22
           );
-
-        });
-
-      }
-
-      function renderInsights(transactions, stats) {
-
-        const container =
-          document.getElementById("analyticsInsights");
-
-        const insights = [];
-
-        const categories =
-          getCategoryTotals(transactions);
-
-        if (!transactions.length) {
-
-          insights.push({
-            icon: "🧠",
-            title: "Start tracking",
-            text:
-              "Add your income and expenses so MoneyLeak can understand your financial habits."
-          });
-
-        } else {
-
-          if (stats.cashFlow < 0) {
-
-            insights.push({
-              icon: "⚠️",
-              title: "You're spending more than you earn",
-              text:
-                `Your expenses are ${formatCurrency(
-                  Math.abs(stats.cashFlow)
-                )} higher than your income during this period.`
-            });
-
-          } else {
-
-            insights.push({
-              icon: "✅",
-              title: "Positive cash flow",
-              text:
-                `You have ${formatCurrency(
-                  stats.cashFlow
-                )} left after recorded expenses.`
-            });
-
-          }
-
-          if (stats.savingsRate >= 20) {
-
-            insights.push({
-              icon: "💎",
-              title: "Strong savings rate",
-              text:
-                `You're keeping about ${Math.round(
-                  stats.savingsRate
-                )}% of your income after expenses.`
-            });
-
-          } else if (stats.savingsRate > 0) {
-
-            insights.push({
-              icon: "📈",
-              title: "Your savings can improve",
-              text:
-                "Look for one or two expenses you can reduce and redirect that money toward your goals."
-            });
-
-          } else {
-
-            insights.push({
-              icon: "🎯",
-              title: "Create room for savings",
-              text:
-                "Your current expenses are consuming your recorded income. A small spending reduction can create your first savings buffer."
-            });
-
-          }
-
-          if (categories.length) {
-
-            const [category, amount] =
-              categories[0];
-
-            insights.push({
-              icon: "🔎",
-              title: `Watch ${category}`,
-              text:
-                `${category} is currently your largest spending category at ${formatCurrency(amount)}.`
-            });
-
-          }
-
-          if (transactions.length >= 10) {
-
-            insights.push({
-              icon: "📊",
-              title: "Your data is getting useful",
-              text:
-                "You have enough activity for MoneyLeak to start revealing meaningful spending patterns."
-            });
-
-          }
 
         }
+      );
 
-        container.innerHTML =
-          insights.map(insight => `
-            <div class="smart-insight">
+    }
 
-              <div class="insight-icon">
-                ${insight.icon}
-              </div>
 
-              <div>
-                <strong>${escapeHtml(insight.title)}</strong>
-                <p>${escapeHtml(insight.text)}</p>
-              </div>
+    /* =========================================================
+       UTILITY
+    ========================================================== */
 
-            </div>
-          `).join("");
+    function compactMoney(value) {
 
-      }
+      value = number(value);
 
-      function updateMetrics(transactions, stats) {
+      if (value >= 1000000) {
 
-        const monthlyIncome =
-          calculateMonthlyAverage(
-            transactions,
-            "income"
-          );
-
-        const monthlyExpenses =
-          calculateMonthlyAverage(
-            transactions,
-            "expense"
-          );
-
-        const expenses =
-          transactions.filter(
-            t => t.type === "expense"
-          );
-
-        const largest =
-          expenses.length
-            ? Math.max(
-                ...expenses.map(
-                  t => Math.abs(Number(t.amount) || 0)
-                )
-              )
-            : 0;
-
-        const categories =
-          getCategoryTotals(transactions);
-
-        document.getElementById(
-          "averageMonthlyIncome"
-        ).textContent =
-          formatCurrency(monthlyIncome);
-
-        document.getElementById(
-          "averageMonthlyExpenses"
-        ).textContent =
-          formatCurrency(monthlyExpenses);
-
-        document.getElementById(
-          "largestExpense"
-        ).textContent =
-          formatCurrency(largest);
-
-        document.getElementById(
-          "largestCategory"
-        ).textContent =
-          categories.length
-            ? categories[0][0]
-            : "—";
-
-        document.getElementById(
-          "transactionCount"
-        ).textContent =
-          transactions.length;
-
-        document.getElementById(
-          "directionIncome"
-        ).textContent =
-          formatCurrency(stats.income);
-
-        document.getElementById(
-          "directionExpenses"
-        ).textContent =
-          formatCurrency(stats.expenses);
-
-        document.getElementById(
-          "directionRemaining"
-        ).textContent =
-          formatCurrency(stats.cashFlow);
-
-        const title =
-          document.getElementById(
-            "directionTitle"
-          );
-
-        const text =
-          document.getElementById(
-            "directionText"
-          );
-
-        if (!transactions.length) {
-
-          title.textContent =
-            "Waiting for data";
-
-          text.textContent =
-            "Record your income and expenses to see your financial direction.";
-
-        } else if (stats.cashFlow > 0) {
-
-          title.textContent =
-            "You're moving forward";
-
-          text.textContent =
-            "Your recorded income is currently higher than your expenses.";
-
-        } else if (stats.cashFlow === 0) {
-
-          title.textContent =
-            "You're breaking even";
-
-          text.textContent =
-            "Your income and expenses are currently equal.";
-
-        } else {
-
-          title.textContent =
-            "Time to adjust";
-
-          text.textContent =
-            "Your expenses are currently higher than your income.";
-
-        }
-
-      }
-
-      function calculateMonthlyAverage(
-        transactions,
-        type
-      ) {
-
-        const matching =
-          transactions.filter(
-            t => t.type === type
-          );
-
-        if (!matching.length) return 0;
-
-        const months = new Set();
-
-        matching.forEach(transaction => {
-
-          const date =
-            getDate(transaction.date);
-
-          if (!date) return;
-
-          months.add(
-            `${date.getFullYear()}-${date.getMonth()}`
-          );
-
-        });
-
-        const total =
-          matching.reduce(
-            (sum, transaction) =>
-              sum +
-              Math.abs(
-                Number(transaction.amount) || 0
-              ),
-            0
-          );
-
-        return total /
-          Math.max(1, months.size);
-
-      }
-
-      function escapeHtml(value) {
-
-        return String(value ?? "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-
-      }
-
-      function renderAnalytics() {
-
-        const transactions =
-          getFilteredTransactions();
-
-        const stats =
-          calculateStats(transactions);
-
-        updatePeriodLabel();
-
-        updateKPIs(stats);
-
-        drawIncomeExpenseChart(
-          transactions
-        );
-
-        drawMonthlyTrend(
-          getTransactions()
-        );
-
-        renderCategoryBreakdown(
-          transactions
-        );
-
-        renderTopSpending(
-          transactions
-        );
-
-        renderInsights(
-          transactions,
-          stats
-        );
-
-        updateMetrics(
-          transactions,
-          stats
+        return (
+          "₦" +
+          (value / 1000000)
+            .toFixed(1) +
+          "m"
         );
 
       }
 
-      document
-        .querySelectorAll(
-          "#analyticsPeriodSelector .period-btn"
+      if (value >= 1000) {
+
+        return (
+          "₦" +
+          (value / 1000)
+            .toFixed(0) +
+          "k"
+        );
+
+      }
+
+      return "₦" + Math.round(value);
+
+    }
+
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
         )
-        .forEach(button => {
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
 
-          button.addEventListener(
-            "click",
-            () => {
+    }
 
-              document
-                .querySelectorAll(
-                  "#analyticsPeriodSelector .period-btn"
+
+    /* =========================================================
+       RENDER EVERYTHING
+    ========================================================== */
+
+    function renderAnalytics() {
+
+      const transactions =
+        getPeriodTransactions();
+
+
+      updateKPIs(
+        transactions
+      );
+
+      updateMetrics(
+        transactions
+      );
+
+      updateSpendingBreakdown(
+        transactions
+      );
+
+      updateTopSpending(
+        transactions
+      );
+
+      updateInsight(
+        transactions
+      );
+
+      updateDirection(
+        transactions
+      );
+
+      drawIncomeExpenseChart(
+        transactions
+      );
+
+      drawMonthlyTrendChart(
+        transactions
+      );
+
+    }
+
+
+    /* =========================================================
+       PERIOD BUTTONS
+    ========================================================== */
+
+    document
+      .querySelectorAll(".analytics-period")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            document
+              .querySelectorAll(
+                ".analytics-period"
+              )
+              .forEach(item =>
+                item.classList.remove(
+                  "active"
                 )
-                .forEach(btn =>
-                  btn.classList.remove("active")
-                );
+              );
 
-              button.classList.add("active");
 
-              currentPeriod =
-                button.dataset.period;
+            button.classList.add(
+              "active"
+            );
 
-              renderAnalytics();
 
-            }
+            currentPeriod =
+              button.dataset.period ||
+              "month";
+
+
+            renderAnalytics();
+
+          }
+        );
+
+      });
+
+
+    /* =========================================================
+       FORCE PANELS CLOSED ON PAGE LOAD
+    ========================================================== */
+
+    function closeAllPanels() {
+
+      const search =
+        document.getElementById(
+          "searchOverlay"
+        );
+
+      const notifications =
+        document.getElementById(
+          "notificationPanel"
+        );
+
+
+      if (search) {
+
+        search.classList.remove(
+          "open",
+          "active"
+        );
+
+        search.style.display =
+          "none";
+
+        search.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+      }
+
+
+      if (notifications) {
+
+        notifications.classList.remove(
+          "open",
+          "active"
+        );
+
+        notifications.style.display =
+          "none";
+
+        notifications.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+      }
+
+    }
+
+
+    /* =========================================================
+       EXTRA ANALYTICS SAFETY
+    ========================================================== */
+
+    closeAllPanels();
+
+
+    /* =========================================================
+       PAGE UPDATE HOOK
+    ========================================================== */
+
+    window.moneyLeakPageUpdate =
+      renderAnalytics;
+
+
+    /* =========================================================
+       INITIAL RENDER
+    ========================================================== */
+
+    renderAnalytics();
+
+
+    /* =========================================================
+       REDRAW CHARTS ON RESIZE
+    ========================================================== */
+
+    let resizeTimer;
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        clearTimeout(
+          resizeTimer
+        );
+
+        resizeTimer =
+          setTimeout(
+            renderAnalytics,
+            150
           );
 
-        });
+      }
+    );
 
-      window.moneyLeakPageUpdate =
-        renderAnalytics;
 
-      window.addEventListener(
-        "resize",
-        () => {
+    /* =========================================================
+       PAGE VISIBILITY
+    ========================================================== */
 
-          window.requestAnimationFrame(
-            renderAnalytics
-          );
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+
+        if (
+          !document.hidden
+        ) {
+
+          closeAllPanels();
+
+          renderAnalytics();
 
         }
-      );
 
-      document.addEventListener(
-        "DOMContentLoaded",
-        renderAnalytics
-      );
+      }
+    );
 
-      renderAnalytics();
-
-    })();
-
+  })();
   </script>
 
-<script>
-(() => {
-  const overlay = document.getElementById("searchOverlay");
-  const closeButton = document.getElementById("searchClose");
 
-  function closeSearch() {
-    if (!overlay) return;
+  <!-- =========================================================
+       FINAL SAFETY SCRIPT
+       Makes sure Analytics never loads with Notifications open.
+  ========================================================== -->
 
-    overlay.classList.remove("open");
-    overlay.classList.remove("active");
-    overlay.style.display = "none";
-    overlay.setAttribute("aria-hidden", "true");
-  }
+  <script>
+  (() => {
 
-  if (closeButton) {
-    closeButton.addEventListener("click", closeSearch);
-  }
+    function forceAnalyticsPanelsClosed() {
 
-  if (overlay) {
-    overlay.addEventListener("click", (event) => {
-      if (event.target === overlay) {
-        closeSearch();
+      const search =
+        document.getElementById(
+          "searchOverlay"
+        );
+
+      const notifications =
+        document.getElementById(
+          "notificationPanel"
+        );
+
+
+      if (search) {
+
+        search.classList.remove(
+          "open",
+          "active"
+        );
+
+        search.style.display =
+          "none";
+
       }
-    });
-  }
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeSearch();
+
+      if (notifications) {
+
+        notifications.classList.remove(
+          "open",
+          "active"
+        );
+
+        notifications.style.display =
+          "none";
+
+      }
+
     }
-  });
-})();
-</script>
-  
+
+
+    forceAnalyticsPanelsClosed();
+
+    window.addEventListener(
+      "pageshow",
+      forceAnalyticsPanelsClosed
+    );
+
+  })();
+  </script>
+
 </body>
 </html>
