@@ -3,21 +3,24 @@
 
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <meta
-    name="description"
-    content="MoneyLeak recurring income, bills and subscriptions.">
+    <meta
+        name="description"
+        content="MoneyLeak Recurring Money Center — manage repeating income and expenses."
+    >
 
-  <title>Recurring — MoneyLeak</title>
+    <title>MoneyLeak — Recurring</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
@@ -25,2094 +28,2570 @@
 <body>
 
 
-  <!-- SIDEBAR -->
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
 
-  <aside
-    class="sidebar"
-    id="sidebar">
-
+<aside class="sidebar">
 
     <div class="brand">
 
-      <div class="brand-mark">
-        M
-      </div>
+        <div class="brand-logo">
+            M
+        </div>
 
-      <div>
-
-        <strong>
-          MoneyLeak
-        </strong>
-
-        <span>
-          Personal Finance OS
-        </span>
-
-      </div>
+        <div>
+            <strong>MoneyLeak</strong>
+            <small>Personal Finance OS</small>
+        </div>
 
     </div>
 
 
-    <nav class="nav-menu">
+    <nav class="nav">
 
+        <a href="index.html">
+            <span class="nav-icon">⌂</span>
+            <span>Dashboard</span>
+        </a>
 
-      <a
-        href="index.html"
-        class="nav-item">
+        <a href="income.html">
+            <span class="nav-icon">↗</span>
+            <span>Income</span>
+        </a>
 
-        <span>⌂</span>
-        <span>Dashboard</span>
+        <a href="expenses.html">
+            <span class="nav-icon">↘</span>
+            <span>Expenses</span>
+        </a>
 
-      </a>
+        <a href="budgets.html">
+            <span class="nav-icon">◫</span>
+            <span>Budgets</span>
+        </a>
 
+        <a href="savings.html">
+            <span class="nav-icon">◎</span>
+            <span>Savings Goals</span>
+        </a>
 
-      <a
-        href="income.html"
-        class="nav-item">
+        <a
+            href="recurring.html"
+            class="active"
+        >
+            <span class="nav-icon">↻</span>
+            <span>Recurring</span>
+        </a>
 
-        <span>↗</span>
-        <span>Income</span>
-
-      </a>
-
-
-      <a
-        href="expenses.html"
-        class="nav-item">
-
-        <span>↘</span>
-        <span>Expenses</span>
-
-      </a>
-
-
-      <a
-        href="budgets.html"
-        class="nav-item">
-
-        <span>◫</span>
-        <span>Budgets</span>
-
-      </a>
-
-
-      <a
-        href="savings.html"
-        class="nav-item">
-
-        <span>◎</span>
-        <span>Goals</span>
-
-      </a>
-
-
-      <a
-        href="recurring.html"
-        class="nav-item active">
-
-        <span>↻</span>
-        <span>Recurring</span>
-
-      </a>
-
-
-      <a
-        href="analytics.html"
-        class="nav-item">
-
-        <span>◒</span>
-        <span>Analytics</span>
-
-      </a>
-
-
-      <a
-        href="settings.html"
-        class="nav-item">
-
-        <span>⚙</span>
-        <span>Settings</span>
-
-      </a>
-
+        <a href="analytics.html">
+            <span class="nav-icon">⌁</span>
+            <span>Analytics</span>
+        </a>
 
     </nav>
 
 
     <div class="sidebar-bottom">
 
-      <div class="sidebar-tip">
+        <nav class="nav">
 
-        <span class="tip-icon">
-          ✦
-        </span>
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
 
-        <div>
-
-          <strong>
-            Money insight
-          </strong>
-
-          <p>
-            Recurring expenses quietly add up.
-          </p>
-
-        </div>
-
-      </div>
+        </nav>
 
     </div>
 
-
-  </aside>
-
+</aside>
 
 
-  <!-- MAIN -->
 
-  <main class="main-content">
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+
+<main class="main">
 
 
     <!-- TOPBAR -->
 
     <header class="topbar">
 
+        <div class="topbar-left">
 
-      <button
-        class="mobile-menu-btn"
-        id="mobileMenuBtn">
+            <button
+                id="mobileMenuButton"
+                class="mobile-menu-button"
+                type="button"
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
 
-        ☰
+            <button
+                id="searchButton"
+                class="search-button"
+                type="button"
+                aria-label="Search"
+            >
+                ⌕
+            </button>
 
-      </button>
-
-
-      <div class="topbar-search">
-
-        <button
-          id="globalSearchBtn"
-          class="search-button">
-
-          <span>⌕</span>
-
-          <span>
-            Search MoneyLeak...
-          </span>
-
-          <kbd>/</kbd>
-
-        </button>
-
-      </div>
+        </div>
 
 
-      <div class="topbar-actions">
+        <div class="topbar-right">
 
+            <button
+                id="notificationButton"
+                class="notification-button"
+                type="button"
+                aria-label="Notifications"
+            >
+                🔔
+            </button>
 
-        <button
-          class="icon-button"
-          id="notificationBtn">
+            <a
+                href="settings.html"
+                class="profile-button"
+            >
 
-          ♢
+                <span class="profile-avatar">
+                    ML
+                </span>
 
-          <span
-            class="notification-dot"
-            id="notificationDot">
-          </span>
+                <span data-money-name>
+                    My Money
+                </span>
 
-        </button>
+            </a>
 
-
-        <a
-          href="settings.html"
-          class="profile-button">
-
-
-          <div class="profile-avatar">
-            M
-          </div>
-
-
-          <div class="profile-info">
-
-            <strong id="profileName">
-              My Money
-            </strong>
-
-            <span>
-              Finance
-            </span>
-
-          </div>
-
-
-        </a>
-
-
-      </div>
-
+        </div>
 
     </header>
 
 
 
+    <!-- ========================================================
+         PAGE
+         ======================================================== -->
+
     <div class="page-container">
 
 
-      <!-- HERO -->
-
-      <section class="page-hero">
-
-
-        <div>
-
-          <span class="eyebrow">
-            RECURRING MONEY
-          </span>
-
-
-          <h1>
-            Know what money is coming and going.
-          </h1>
-
-
-          <p>
-            Track subscriptions, bills, salary,
-            rent and other repeating money movements
-            before they surprise you.
-          </p>
-
-        </div>
-
-
-        <button
-          class="primary-button"
-          id="scrollToRecurringForm">
-
-          <span>＋</span>
-
-          Add Recurring
-
-        </button>
-
-
-      </section>
-
-
-
-      <!-- OVERVIEW -->
-
-      <section class="overview-grid">
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            ↻
-          </div>
-
-          <div class="card-label">
-            Recurring Items
-          </div>
-
-          <div
-            class="card-value"
-            id="recurringCount">
-
-            0
-
-          </div>
-
-          <div class="card-meta">
-            Active repeating items
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            ↘
-          </div>
-
-          <div class="card-label">
-            Monthly Expenses
-          </div>
-
-          <div
-            class="card-value"
-            id="recurringExpenses">
-
-            ₦0
-
-          </div>
-
-          <div class="card-meta">
-            Estimated monthly outflow
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            ↗
-          </div>
-
-          <div class="card-label">
-            Monthly Income
-          </div>
-
-          <div
-            class="card-value"
-            id="recurringIncome">
-
-            ₦0
-
-          </div>
-
-          <div class="card-meta">
-            Estimated recurring inflow
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            !
-          </div>
-
-          <div class="card-label">
-            Monthly Commitment
-          </div>
-
-          <div
-            class="card-value"
-            id="recurringCommitment">
-
-            ₦0
-
-          </div>
-
-          <div
-            class="card-meta"
-            id="commitmentLabel">
-
-            Net recurring movement
-
-          </div>
-
-        </div>
-
-
-      </section>
-
-
-
-      <!-- FORM + INSIGHT -->
-
-      <section class="two-column-section">
-
-
-        <div
-          class="panel"
-          id="recurringFormPanel">
-
-
-          <div class="panel-header">
-
-            <div>
-
-              <span class="panel-eyebrow">
-                ADD RECURRING ITEM
-              </span>
-
-              <h2>
-                Create a repeating money rule
-              </h2>
+        <!-- HERO -->
+
+        <section class="dashboard-hero">
+
+            <h1>
+                Recurring Money Center
+            </h1>
+
+            <p>
+                Never lose track of the payments and income
+                that repeat. See what's coming, what it costs
+                and how recurring commitments affect your future cash flow.
+            </p>
+
+
+            <div
+                style="
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:10px;
+                    margin-top:20px;
+                    position:relative;
+                    z-index:2;
+                "
+            >
+
+                <button
+                    id="scrollToRecurringForm"
+                    class="btn"
+                    type="button"
+                    style="
+                        background:#fff;
+                        color:#086c47;
+                    "
+                >
+                    + Add Recurring
+                </button>
+
+                <a
+                    href="analytics.html"
+                    class="btn"
+                    style="
+                        background:rgba(255,255,255,.12);
+                        color:#fff;
+                        border-color:rgba(255,255,255,.18);
+                    "
+                >
+                    View Analytics
+                </a>
 
             </div>
 
-          </div>
+        </section>
 
 
-          <form
-            id="recurringForm"
-            class="finance-form">
 
+        <!-- ====================================================
+             OVERVIEW
+             ==================================================== -->
 
-            <div class="form-row">
+        <section class="section">
 
+            <div class="section-header">
 
-              <div class="form-group">
+                <div>
 
-                <label for="recurringType">
-                  Type
-                </label>
+                    <h2>
+                        Recurring Overview
+                    </h2>
 
-
-                <select
-                  id="recurringType"
-                  required>
-
-                  <option value="expense">
-                    Expense
-                  </option>
-
-                  <option value="income">
-                    Income
-                  </option>
-
-                </select>
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label for="recurringAmount">
-                  Amount
-                </label>
-
-
-                <div class="amount-input">
-
-                  <span id="recurringCurrencySymbol">
-                    ₦
-                  </span>
-
-
-                  <input
-                    type="number"
-                    id="recurringAmount"
-                    min="0"
-                    step="0.01"
-                    placeholder="0.00"
-                    required>
+                    <p>
+                        Your repeating financial commitments
+                    </p>
 
                 </div>
 
-              </div>
-
-
             </div>
 
 
+            <div class="overview-grid">
 
-            <div class="form-row">
+                <article class="overview-card">
 
+                    <div class="overview-label">
+                        Monthly Recurring
+                    </div>
 
-              <div class="form-group">
+                    <div
+                        id="recurringMonthly"
+                        class="overview-value expense"
+                    >
+                        ₦0
+                    </div>
 
-                <label for="recurringName">
-                  Name
-                </label>
+                    <div class="card-change">
+                        Estimated expenses
+                    </div>
 
-
-                <input
-                  type="text"
-                  id="recurringName"
-                  placeholder="e.g. Netflix, Salary, Rent..."
-                  required>
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label for="recurringCategory">
-                  Category
-                </label>
+                </article>
 
 
-                <select
-                  id="recurringCategory"
-                  required>
+                <article class="overview-card">
 
-                  <option value="Bills">
-                    Bills
-                  </option>
+                    <div class="overview-label">
+                        Recurring Income
+                    </div>
 
-                  <option value="Subscriptions">
-                    Subscriptions
-                  </option>
+                    <div
+                        id="recurringIncome"
+                        class="overview-value income"
+                    >
+                        ₦0
+                    </div>
 
-                  <option value="Housing">
-                    Housing
-                  </option>
+                    <div class="card-change">
+                        Estimated monthly income
+                    </div>
 
-                  <option value="Food">
-                    Food
-                  </option>
-
-                  <option value="Transport">
-                    Transport
-                  </option>
-
-                  <option value="Education">
-                    Education
-                  </option>
-
-                  <option value="Health">
-                    Health
-                  </option>
-
-                  <option value="Family">
-                    Family
-                  </option>
-
-                  <option value="Business">
-                    Business
-                  </option>
-
-                  <option value="Entertainment">
-                    Entertainment
-                  </option>
-
-                  <option value="Utilities">
-                    Utilities
-                  </option>
-
-                  <option value="Other">
-                    Other
-                  </option>
-
-                </select>
-
-              </div>
+                </article>
 
 
-            </div>
+                <article class="overview-card">
+
+                    <div class="overview-label">
+                        Commitments
+                    </div>
+
+                    <div
+                        id="recurringCount"
+                        class="overview-value"
+                    >
+                        0
+                    </div>
+
+                    <div class="card-change">
+                        Active recurring items
+                    </div>
+
+                </article>
 
 
+                <article class="overview-card">
 
-            <div class="form-row">
+                    <div class="overview-label">
+                        Net Recurring Cash Flow
+                    </div>
 
+                    <div
+                        id="recurringNet"
+                        class="overview-value"
+                    >
+                        ₦0
+                    </div>
 
-              <div class="form-group">
+                    <div
+                        id="recurringNetStatus"
+                        class="card-change"
+                    >
+                        No recurring data
+                    </div>
 
-                <label for="recurringFrequency">
-                  Frequency
-                </label>
-
-
-                <select
-                  id="recurringFrequency"
-                  required>
-
-                  <option value="weekly">
-                    Weekly
-                  </option>
-
-                  <option value="monthly" selected>
-                    Monthly
-                  </option>
-
-                  <option value="yearly">
-                    Yearly
-                  </option>
-
-                </select>
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label for="recurringNextDate">
-                  Next date
-                </label>
-
-
-                <input
-                  type="date"
-                  id="recurringNextDate"
-                  required>
-
-              </div>
-
+                </article>
 
             </div>
 
+        </section>
 
 
-            <div class="form-group">
 
-              <label for="recurringNote">
-                Note
-                <span class="optional-label">
-                  Optional
-                </span>
-              </label>
+        <!-- ====================================================
+             INTELLIGENCE
+             ==================================================== -->
+
+        <section class="section">
+
+            <div class="two-column">
 
 
-              <textarea
-                id="recurringNote"
-                rows="3"
-                placeholder="Add any details...">
-              </textarea>
+                <article class="panel">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Recurring Intelligence
+                            </h2>
+
+                            <p>
+                                Understand the weight of your commitments
+                            </p>
+
+                        </div>
+
+                        <span style="font-size:24px;">
+                            🧠
+                        </span>
+
+                    </div>
+
+
+                    <div class="smart-insight">
+
+                        <strong>
+                            ✦ MoneyLeak Insight
+                        </strong>
+
+                        <p id="recurringInsight">
+                            Add recurring income or expenses to receive
+                            financial insights.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:grid;
+                            gap:12px;
+                            margin-top:15px;
+                        "
+                    >
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Largest Commitment
+                            </span>
+
+                            <strong id="largestRecurring">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Expense Commitments
+                            </span>
+
+                            <strong id="recurringExpenseCount">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Income Sources
+                            </span>
+
+                            <strong id="recurringIncomeCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <article class="panel">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Commitment Load
+                            </h2>
+
+                            <p>
+                                How much of your recurring income is committed?
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            text-align:center;
+                            padding:20px 0;
+                        "
+                    >
+
+                        <div
+                            id="commitmentLoad"
+                            style="
+                                font-size:34px;
+                                font-weight:850;
+                            "
+                        >
+                            0%
+                        </div>
+
+                        <p
+                            id="commitmentLoadMessage"
+                            class="text-muted"
+                        >
+                            Add recurring income and expenses
+                            to calculate your commitment load.
+                        </p>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <span
+                            id="commitmentLoadBar"
+                            style="width:0%;"
+                        ></span>
+
+                    </div>
+
+
+                    <div
+                        class="smart-insight"
+                        style="margin-top:18px;"
+                    >
+
+                        <strong>
+                            💡 Financial Rule
+                        </strong>
+
+                        <p id="commitmentAdvice">
+                            Fixed commitments should leave enough
+                            room for savings and unexpected expenses.
+                        </p>
+
+                    </div>
+
+                </article>
 
             </div>
 
+        </section>
 
 
-            <button
-              type="submit"
-              class="primary-button full-width">
 
-              Save Recurring Item
+        <!-- ====================================================
+             ADD RECURRING
+             ==================================================== -->
 
-            </button>
+        <section
+            id="recurringFormSection"
+            class="section"
+        >
 
+            <article class="panel">
 
-          </form>
+                <div class="section-header">
 
+                    <div>
 
-        </div>
+                        <h2>
+                            Add Recurring Item
+                        </h2>
 
+                        <p>
+                            Track a payment or income source that repeats
+                        </p>
 
+                    </div>
 
-        <!-- INSIGHT -->
+                    <span style="font-size:24px;">
+                        ↻
+                    </span>
 
-        <div class="panel insight-panel">
+                </div>
 
 
-          <div class="panel-header">
+                <form id="recurringForm">
 
 
-            <div>
+                    <div class="form-grid">
 
-              <span class="panel-eyebrow">
-                RECURRING INTELLIGENCE
-              </span>
 
-              <h2>
-                Your fixed money
-              </h2>
+                        <div class="form-group">
 
-            </div>
+                            <label for="recurringName">
+                                Name
+                            </label>
 
+                            <input
+                                id="recurringName"
+                                type="text"
+                                placeholder="e.g. Netflix, Rent, Salary"
+                                required
+                            >
 
-            <span class="insight-badge">
-              AI
-            </span>
+                        </div>
 
 
-          </div>
+                        <div class="form-group">
 
+                            <label for="recurringAmount">
+                                Amount
+                            </label>
 
+                            <input
+                                id="recurringAmount"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="e.g. 25000"
+                                required
+                            >
 
-          <div
-            class="large-insight"
-            id="recurringInsight">
+                        </div>
 
 
-            <div class="insight-icon">
-              ✦
-            </div>
+                        <div class="form-group">
 
+                            <label for="recurringType">
+                                Type
+                            </label>
 
-            <div>
+                            <select
+                                id="recurringType"
+                                required
+                            >
 
-              <h3>
-                Add your recurring money.
-              </h3>
+                                <option value="expense">
+                                    Expense
+                                </option>
 
-              <p>
-                MoneyLeak will estimate how much
-                money your recurring commitments
-                consume every month.
-              </p>
+                                <option value="income">
+                                    Income
+                                </option>
 
-            </div>
+                            </select>
 
+                        </div>
 
-          </div>
 
+                        <div class="form-group">
 
+                            <label for="recurringFrequency">
+                                Frequency
+                            </label>
 
-          <div class="insight-stat-row">
+                            <select
+                                id="recurringFrequency"
+                                required
+                            >
 
+                                <option value="monthly">
+                                    Monthly
+                                </option>
 
-            <div>
+                                <option value="weekly">
+                                    Weekly
+                                </option>
 
-              <span>
-                Next payment
-              </span>
+                                <option value="yearly">
+                                    Yearly
+                                </option>
 
-              <strong id="nextRecurring">
-                —
-              </strong>
+                                <option value="daily">
+                                    Daily
+                                </option>
 
-            </div>
+                            </select>
 
+                        </div>
 
-            <div>
 
-              <span>
-                Next amount
-              </span>
+                        <div class="form-group">
 
-              <strong id="nextRecurringAmount">
-                ₦0
-              </strong>
+                            <label for="recurringDate">
+                                Next Date
+                            </label>
 
-            </div>
+                            <input
+                                id="recurringDate"
+                                type="date"
+                                required
+                            >
 
+                        </div>
 
-          </div>
 
+                        <div class="form-group">
 
-        </div>
+                            <label for="recurringCategory">
+                                Category
+                            </label>
 
+                            <select
+                                id="recurringCategory"
+                            >
 
-      </section>
+                                <option value="Bills">
+                                    Bills
+                                </option>
 
+                                <option value="Housing">
+                                    Housing
+                                </option>
 
+                                <option value="Subscriptions">
+                                    Subscriptions
+                                </option>
 
-      <!-- UPCOMING -->
+                                <option value="Transport">
+                                    Transport
+                                </option>
 
-      <section class="panel">
+                                <option value="Food">
+                                    Food
+                                </option>
 
+                                <option value="Entertainment">
+                                    Entertainment
+                                </option>
 
-        <div class="panel-header">
+                                <option value="Education">
+                                    Education
+                                </option>
 
+                                <option value="Health">
+                                    Health
+                                </option>
 
-          <div>
+                                <option value="Family">
+                                    Family
+                                </option>
 
-            <span class="panel-eyebrow">
-              UPCOMING
-            </span>
+                                <option value="Debt">
+                                    Debt
+                                </option>
 
-            <h2>
-              What's coming next?
-            </h2>
+                                <option value="Other">
+                                    Other
+                                </option>
 
-          </div>
+                            </select>
 
+                        </div>
 
-          <span
-            class="panel-subtitle">
 
-            Next 30 days
+                        <div
+                            class="form-group"
+                            style="grid-column:1/-1;"
+                        >
 
-          </span>
+                            <label for="recurringDescription">
+                                Description
+                            </label>
 
+                            <textarea
+                                id="recurringDescription"
+                                rows="3"
+                                placeholder="Optional notes..."
+                            ></textarea>
 
-        </div>
+                        </div>
 
+                    </div>
 
 
-        <div
-          id="upcomingRecurring"
-          class="transaction-list">
+                    <div
+                        style="
+                            display:flex;
+                            gap:10px;
+                            flex-wrap:wrap;
+                            margin-top:18px;
+                        "
+                    >
 
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Add Recurring Item
+                        </button>
 
-          <div class="empty-state">
 
-            <div class="empty-icon">
-              ◷
-            </div>
+                        <button
+                            type="reset"
+                            class="btn"
+                        >
+                            Clear
+                        </button>
 
-            <h3>
-              Nothing scheduled
-            </h3>
+                    </div>
 
-            <p>
-              Add recurring items to see upcoming
-              payments and income.
-            </p>
+                </form>
 
-          </div>
+            </article>
 
+        </section>
 
-        </div>
 
 
-      </section>
+        <!-- ====================================================
+             UPCOMING
+             ==================================================== -->
 
+        <section class="section">
 
+            <article class="panel">
 
-      <!-- ALL RECURRING -->
+                <div class="section-header">
 
-      <section class="panel">
+                    <div>
 
+                        <h2>
+                            Upcoming
+                        </h2>
 
-        <div class="panel-header">
+                        <p>
+                            What is approaching next
+                        </p>
 
+                    </div>
 
-          <div>
+                    <strong id="upcomingCount">
+                        0
+                    </strong>
 
-            <span class="panel-eyebrow">
-              ALL RECURRING ITEMS
-            </span>
+                </div>
 
-            <h2>
-              Your recurring money
-            </h2>
 
-          </div>
+                <div id="upcomingRecurring">
 
+                    <div class="empty-state">
+                        No recurring items yet.
+                    </div>
 
-          <span
-            class="panel-subtitle"
-            id="recurringListCount">
+                </div>
 
-            0 items
+            </article>
 
-          </span>
+        </section>
 
 
-        </div>
 
+        <!-- ====================================================
+             ALL RECURRING
+             ==================================================== -->
 
+        <section class="section">
 
-        <div
-          id="recurringList"
-          class="transaction-list">
+            <article class="panel">
 
+                <div class="section-header">
 
-          <div class="empty-state">
+                    <div>
 
-            <div class="empty-icon">
-              ↻
-            </div>
+                        <h2>
+                            All Recurring Items
+                        </h2>
 
-            <h3>
-              No recurring items
-            </h3>
+                        <p>
+                            Your complete repeating-money system
+                        </p>
 
-            <p>
-              Your subscriptions, bills and recurring
-              income will appear here.
-            </p>
+                    </div>
 
-          </div>
+                </div>
 
 
-        </div>
+                <div id="recurringList">
 
+                    <div class="empty-state">
+                        No recurring items added yet.
+                    </div>
 
-      </section>
+                </div>
 
+            </article>
 
+        </section>
 
-      <!-- FOOTER -->
 
-      <footer class="site-footer">
 
-        <span>
-          MoneyLeak
-        </span>
+        <!-- ====================================================
+             QUICK ACTIONS
+             ==================================================== -->
 
-        <span>
-          •
-        </span>
+        <section class="section">
 
-        <span>
-          Plan for tomorrow before it arrives.
-        </span>
+            <article class="panel">
 
-      </footer>
+                <div class="section-header">
 
+                    <div>
+
+                        <h2>
+                            Next Moves
+                        </h2>
+
+                        <p>
+                            Keep your financial system connected
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <a
+                        href="budgets.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            🎯
+                        </div>
+
+                        <strong>
+                            Protect Your Budget
+                        </strong>
+
+                        <small class="text-muted">
+                            Make sure recurring bills fit inside your limits.
+                        </small>
+
+                    </a>
+
+
+                    <a
+                        href="savings.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            💰
+                        </div>
+
+                        <strong>
+                            Build Savings
+                        </strong>
+
+                        <small class="text-muted">
+                            Turn recurring surplus into future wealth.
+                        </small>
+
+                    </a>
+
+
+                    <a
+                        href="expenses.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            💸
+                        </div>
+
+                        <strong>
+                            Find Leaks
+                        </strong>
+
+                        <small class="text-muted">
+                            Review unnecessary subscriptions and expenses.
+                        </small>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <footer>
+
+            MoneyLeak Personal Finance OS
+
+            <br>
+
+            Your money. Your decisions. Your future.
+
+        </footer>
 
     </div>
 
-
-  </main>
-
+</main>
 
 
-  <!-- SEARCH -->
 
-  <div
-    class="search-overlay"
-    id="searchOverlay">
+<!-- ============================================================
+     SEARCH
+     ============================================================ -->
 
+<div
+    id="searchOverlay"
+    hidden
+    aria-hidden="true"
+>
 
     <div class="search-modal">
 
+        <div class="search-modal-header">
 
-      <div class="search-modal-header">
+            <strong>
+                Search MoneyLeak
+            </strong>
 
-        <h2>
-          Search MoneyLeak
-        </h2>
+            <button
+                id="closeSearch"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
 
-
-        <button
-          id="closeSearchBtn"
-          class="close-button">
-
-          ×
-
-        </button>
-
-      </div>
+        </div>
 
 
-      <div class="search-modal-input">
+        <div class="search-input-wrapper">
 
-        <span>
-          ⌕
-        </span>
+            <span>⌕</span>
 
+            <input
+                id="globalSearch"
+                type="search"
+                placeholder="Search transactions, pages..."
+                autocomplete="off"
+            >
 
-        <input
-          type="search"
-          id="globalSearchInput"
-          placeholder="Search pages, transactions..."
-          autocomplete="off">
-
-      </div>
+        </div>
 
 
-      <div
-        id="globalSearchResults"
-        class="search-results">
-      </div>
+        <div id="searchResults">
 
+            <p>
+                Start typing to search.
+            </p>
+
+        </div>
 
     </div>
 
-
-  </div>
-
+</div>
 
 
-  <!-- NOTIFICATIONS -->
 
-  <div
-    class="notification-panel"
-    id="notificationPanel">
+<!-- ============================================================
+     NOTIFICATIONS
+     ============================================================ -->
 
-
-    <div class="notification-header">
-
-
-      <div>
-
-        <strong>
-          Notifications
-        </strong>
-
-        <span>
-          MoneyLeak alerts
-        </span>
-
-      </div>
-
-
-      <button
-        id="closeNotificationBtn"
-        class="close-button">
-
-        ×
-
-      </button>
-
-
-    </div>
-
+<div
+    id="notificationPanel"
+    hidden
+    aria-hidden="true"
+>
 
     <div
-      id="notificationList"
-      class="notification-list">
+        style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:10px;
+        "
+    >
+
+        <strong>
+            Notifications
+        </strong>
+
+        <button
+            id="closeNotifications"
+            class="close-button"
+            type="button"
+        >
+            ×
+        </button>
+
     </div>
 
 
-  </div>
+    <div id="notificationList">
+
+        <p class="text-muted">
+            No new notifications.
+        </p>
+
+    </div>
+
+</div>
 
 
 
-  <div
-    class="mobile-overlay"
-    id="mobileOverlay">
-  </div>
+<!-- ============================================================
+     MOBILE MENU
+     ============================================================ -->
+
+<div id="mobileOverlay">
+
+    <div class="mobile-menu">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                margin-bottom:25px;
+            "
+        >
+
+            <strong>
+                MoneyLeak
+            </strong>
+
+            <button
+                id="mobileMenuClose"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="index.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="income.html">
+                <span class="nav-icon">↗</span>
+                Income
+            </a>
+
+            <a href="expenses.html">
+                <span class="nav-icon">↘</span>
+                Expenses
+            </a>
+
+            <a href="budgets.html">
+                <span class="nav-icon">◫</span>
+                Budgets
+            </a>
+
+            <a href="savings.html">
+                <span class="nav-icon">◎</span>
+                Savings Goals
+            </a>
+
+            <a
+                href="recurring.html"
+                class="active"
+            >
+                <span class="nav-icon">↻</span>
+                Recurring
+            </a>
+
+            <a href="analytics.html">
+                <span class="nav-icon">⌁</span>
+                Analytics
+            </a>
+
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+    </div>
+
+</div>
 
 
 
-  <!-- MAIN ENGINE FIRST -->
+<!-- ============================================================
+     PAGE LOGIC
+     ============================================================ -->
 
-  <script src="app.js"></script>
+<script>
 
-
-
-  <!-- RECURRING PAGE ENGINE -->
-
-  <script>
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
         const ML =
-          window.MoneyLeak;
+            () => window.MoneyLeak;
 
 
-        if (!ML) {
-
-          console.error(
-            "MoneyLeak engine was not loaded."
-          );
-
-          return;
-
-        }
-
-
-
-        /* =========================
-           HELPERS
-        ========================== */
-
-
-        function escapeHTML(value) {
-
-          return String(value || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-        }
-
-
-
-        function formatDate(value) {
-
-          if (!value) {
-            return "No date";
-          }
-
-
-          const date =
-            new Date(
-              value + "T00:00:00"
-            );
-
-
-          if (
-            Number.isNaN(
-              date.getTime()
-            )
-          ) {
-
-            return value;
-
-          }
-
-
-          return date.toLocaleDateString(
-            undefined,
-            {
-              day: "numeric",
-              month: "short",
-              year: "numeric"
-            }
-          );
-
-        }
-
-
-
-        function todayString() {
-
-          const now =
-            new Date();
-
-
-          return [
-            now.getFullYear(),
-            String(
-              now.getMonth() + 1
-            ).padStart(2, "0"),
-            String(
-              now.getDate()
-            ).padStart(2, "0")
-
-          ].join("-");
-
-        }
-
-
-
-        function daysFromToday(value) {
-
-          const today =
-            new Date();
-
-          today.setHours(
-            0,
-            0,
-            0,
-            0
-          );
-
-
-          const date =
-            new Date(
-              value + "T00:00:00"
-            );
-
-          date.setHours(
-            0,
-            0,
-            0,
-            0
-          );
-
-
-          return Math.round(
-            (
-              date - today
-            ) /
-            86400000
-          );
-
-        }
-
-
-
-        /* =========================
+        /* ========================================================
            DEFAULT DATE
-        ========================== */
+           ======================================================== */
 
-
-        const nextDate =
-          document.getElementById(
-            "recurringNextDate"
-          );
+        const dateInput =
+            document.getElementById(
+                "recurringDate"
+            );
 
 
         if (
-          nextDate &&
-          !nextDate.value
+            dateInput &&
+            !dateInput.value
         ) {
 
-          nextDate.value =
-            todayString();
+            const now =
+                new Date();
+
+
+            dateInput.value =
+                now.getFullYear() +
+                "-" +
+                String(
+                    now.getMonth() + 1
+                ).padStart(2, "0") +
+                "-" +
+                String(
+                    now.getDate()
+                ).padStart(2, "0");
 
         }
 
 
 
-        /* =========================
-           NORMALIZE FREQUENCY
-        ========================== */
-
-
-        function monthlyAmount(item) {
-
-          const amount =
-            Number(
-              item.amount || 0
-            );
-
-
-          if (
-            item.frequency ===
-            "weekly"
-          ) {
-
-            return amount *
-              52 /
-              12;
-
-          }
-
-
-          if (
-            item.frequency ===
-            "yearly"
-          ) {
-
-            return amount /
-              12;
-
-          }
-
-
-          return amount;
-
-        }
-
-
-
-        /* =========================
-           OVERVIEW
-        ========================== */
-
-
-        function renderOverview() {
-
-
-          const items =
-            ML.getRecurringTransactions();
-
-
-          const expenseItems =
-            items.filter(
-              item =>
-                item.type ===
-                "expense"
-            );
-
-
-          const incomeItems =
-            items.filter(
-              item =>
-                item.type ===
-                "income"
-            );
-
-
-          const monthlyExpenses =
-            expenseItems.reduce(
-              (
-                sum,
-                item
-              ) =>
-                sum +
-                monthlyAmount(item),
-              0
-            );
-
-
-          const monthlyIncome =
-            incomeItems.reduce(
-              (
-                sum,
-                item
-              ) =>
-                sum +
-                monthlyAmount(item),
-              0
-            );
-
-
-          const commitment =
-            monthlyExpenses -
-            monthlyIncome;
-
-
-          document.getElementById(
-            "recurringCount"
-          ).textContent =
-            items.length;
-
-
-          document.getElementById(
-            "recurringExpenses"
-          ).textContent =
-            ML.formatCurrency(
-              monthlyExpenses
-            );
-
-
-          document.getElementById(
-            "recurringIncome"
-          ).textContent =
-            ML.formatCurrency(
-              monthlyIncome
-            );
-
-
-          document.getElementById(
-            "recurringCommitment"
-          ).textContent =
-            ML.formatCurrency(
-              Math.abs(
-                commitment
-              )
-            );
-
-
-          document.getElementById(
-            "commitmentLabel"
-          ).textContent =
-            commitment > 0
-              ? "Net monthly outflow"
-              : "Net monthly inflow";
-
-
-          document.getElementById(
-            "recurringListCount"
-          ).textContent =
-            `${items.length} ${
-              items.length === 1
-                ? "item"
-                : "items"
-            }`;
-
-
-          renderInsight(
-            items,
-            monthlyExpenses,
-            monthlyIncome
-          );
-
-        }
-
-
-
-        /* =========================
-           INSIGHT
-        ========================== */
-
-
-        function renderInsight(
-          items,
-          monthlyExpenses,
-          monthlyIncome
-        ) {
-
-
-          const box =
-            document.getElementById(
-              "recurringInsight"
-            );
-
-
-          if (!items.length) {
-
-            box.innerHTML = `
-
-              <div class="insight-icon">
-                ✦
-              </div>
-
-              <div>
-
-                <h3>
-                  Add your recurring money.
-                </h3>
-
-                <p>
-                  MoneyLeak will estimate how much
-                  money your recurring commitments
-                  consume every month.
-                </p>
-
-              </div>
-
-            `;
-
-            return;
-
-          }
-
-
-          const expensePercentage =
-            monthlyIncome > 0
-              ? (
-                  monthlyExpenses /
-                  monthlyIncome
-                ) *
-                100
-              : 0;
-
-
-          if (
-            monthlyIncome > 0 &&
-            expensePercentage >= 50
-          ) {
-
-            box.innerHTML = `
-
-              <div class="insight-icon">
-                !
-              </div>
-
-              <div>
-
-                <h3>
-                  Your recurring costs are significant.
-                </h3>
-
-                <p>
-                  Recurring expenses are about
-                  ${expensePercentage.toFixed(0)}%
-                  of your recurring income.
-                  Review subscriptions and fixed bills
-                  for possible savings.
-                </p>
-
-              </div>
-
-            `;
-
-          } else {
-
-            box.innerHTML = `
-
-              <div class="insight-icon">
-                ✓
-              </div>
-
-              <div>
-
-                <h3>
-                  Your recurring money is mapped out.
-                </h3>
-
-                <p>
-                  You have
-                  ${ML.formatCurrency(monthlyExpenses)}
-                  of estimated recurring expenses
-                  and
-                  ${ML.formatCurrency(monthlyIncome)}
-                  of recurring income each month.
-                </p>
-
-              </div>
-
-            `;
-
-          }
-
-        }
-
-
-
-        /* =========================
-           UPCOMING
-        ========================== */
-
-
-        function renderUpcoming() {
-
-
-          const container =
-            document.getElementById(
-              "upcomingRecurring"
-            );
-
-
-          const items =
-            ML.getRecurringTransactions()
-              .filter(
-                item =>
-                  item.nextDate
-              )
-              .map(
-                item => ({
-
-                  ...item,
-
-                  days:
-                    daysFromToday(
-                      item.nextDate
-                    )
-
-                })
-              )
-              .filter(
-                item =>
-                  item.days >= 0 &&
-                  item.days <= 30
-              )
-              .sort(
-                (
-                  a,
-                  b
-                ) =>
-                  a.days -
-                  b.days
-              );
-
-
-          if (!items.length) {
-
-            container.innerHTML = `
-
-              <div class="empty-state">
-
-                <div class="empty-icon">
-                  ◷
-                </div>
-
-                <h3>
-                  Nothing scheduled
-                </h3>
-
-                <p>
-                  No recurring payments or income
-                  are scheduled within the next 30 days.
-                </p>
-
-              </div>
-
-            `;
-
-            document.getElementById(
-              "nextRecurring"
-            ).textContent =
-              "—";
-
-
-            document.getElementById(
-              "nextRecurringAmount"
-            ).textContent =
-              ML.formatCurrency(0);
-
-
-            return;
-
-          }
-
-
-          const first =
-            items[0];
-
-
-          document.getElementById(
-            "nextRecurring"
-          ).textContent =
-            first.name ||
-            "Recurring item";
-
-
-          document.getElementById(
-            "nextRecurringAmount"
-          ).textContent =
-            ML.formatCurrency(
-              first.amount
-            );
-
-
-          container.innerHTML =
-            items.map(
-              item => {
-
-
-                const isIncome =
-                  item.type ===
-                  "income";
-
-
-                let when =
-                  `${item.days} days`;
-
-
-                if (
-                  item.days === 0
-                ) {
-
-                  when =
-                    "Today";
-
-                } else if (
-                  item.days === 1
-                ) {
-
-                  when =
-                    "Tomorrow";
-
-                }
-
-
-                return `
-
-                  <div class="transaction-item">
-
-
-                    <div
-                      class="transaction-icon ${
-                        isIncome
-                          ? "income-transaction"
-                          : "expense-transaction"
-                      }">
-
-                      ${
-                        isIncome
-                          ? "↗"
-                          : "↘"
-                      }
-
-                    </div>
-
-
-                    <div class="transaction-main">
-
-                      <strong>
-                        ${escapeHTML(
-                          item.name ||
-                          item.description ||
-                          "Recurring item"
-                        )}
-                      </strong>
-
-                      <span>
-                        ${escapeHTML(
-                          item.category ||
-                          "Other"
-                        )}
-                        •
-                        ${formatDate(
-                          item.nextDate
-                        )}
-                        •
-                        ${when}
-                      </span>
-
-                    </div>
-
-
-                    <div
-                      class="transaction-amount ${
-                        isIncome
-                          ? "income-amount"
-                          : "expense-amount"
-                      }">
-
-                      ${
-                        isIncome
-                          ? "+"
-                          : "−"
-                      }
-
-                      ${ML.formatCurrency(
-                        item.amount
-                      )}
-
-                    </div>
-
-
-                  </div>
-
-                `;
-
-              }
+        /* ========================================================
+           FORM
+           ======================================================== */
+
+        document
+            .getElementById(
+                "recurringForm"
             )
-            .join("");
+            ?.addEventListener(
+                "submit",
+                function (event) {
 
-        }
-
-
-
-        /* =========================
-           ALL RECURRING
-        ========================== */
+                    event.preventDefault();
 
 
-        function renderList() {
+                    if (!ML()) {
+                        return;
+                    }
 
 
-          const container =
-            document.getElementById(
-              "recurringList"
-            );
+                    const name =
+                        document
+                            .getElementById(
+                                "recurringName"
+                            )
+                            .value
+                            .trim();
 
 
-          const items =
-            ML.getRecurringTransactions();
-
-
-          if (!items.length) {
-
-            container.innerHTML = `
-
-              <div class="empty-state">
-
-                <div class="empty-icon">
-                  ↻
-                </div>
-
-                <h3>
-                  No recurring items
-                </h3>
-
-                <p>
-                  Your subscriptions, bills and
-                  recurring income will appear here.
-                </p>
-
-              </div>
-
-            `;
-
-            return;
-
-          }
-
-
-          container.innerHTML =
-            items
-              .sort(
-                (
-                  a,
-                  b
-                ) =>
-                  new Date(
-                    a.nextDate || "9999-12-31"
-                  ) -
-                  new Date(
-                    b.nextDate || "9999-12-31"
-                  )
-              )
-              .map(
-                item => {
-
-
-                  const isIncome =
-                    item.type ===
-                    "income";
-
-
-                  return `
-
-                    <div class="transaction-item">
-
-
-                      <div
-                        class="transaction-icon ${
-                          isIncome
-                            ? "income-transaction"
-                            : "expense-transaction"
-                        }">
-
-                        ${
-                          isIncome
-                            ? "↗"
-                            : "↘"
-                        }
-
-                      </div>
-
-
-                      <div class="transaction-main">
-
-                        <strong>
-                          ${escapeHTML(
-                            item.name ||
-                            item.description ||
-                            "Recurring item"
-                          )}
-                        </strong>
-
-                        <span>
-                          ${escapeHTML(
-                            item.category ||
-                            "Other"
-                          )}
-                          •
-                          ${
-                            item.frequency ||
-                            "monthly"
-                          }
-                          • next
-                          ${
-                            item.nextDate
-                              ? formatDate(
-                                  item.nextDate
+                    const amount =
+                        Number(
+                            document
+                                .getElementById(
+                                    "recurringAmount"
                                 )
-                              : "not set"
-                          }
-                        </span>
-
-                      </div>
+                                .value
+                        );
 
 
-                      <div
-                        class="transaction-amount ${
-                          isIncome
-                            ? "income-amount"
-                            : "expense-amount"
-                        }">
-
-                        ${
-                          isIncome
-                            ? "+"
-                            : "−"
-                        }
-
-                        ${ML.formatCurrency(
-                          item.amount
-                        )}
-
-                      </div>
+                    const type =
+                        document
+                            .getElementById(
+                                "recurringType"
+                            )
+                            .value;
 
 
-                      <button
-                        class="transaction-delete"
-                        data-delete-recurring="${escapeHTML(item.id)}"
-                        title="Delete recurring item">
-
-                        ×
-
-                      </button>
+                    const frequency =
+                        document
+                            .getElementById(
+                                "recurringFrequency"
+                            )
+                            .value;
 
 
-                    </div>
-
-                  `;
-
-                }
-              )
-              .join("");
-
-
-          container
-            .querySelectorAll(
-              "[data-delete-recurring]"
-            )
-            .forEach(
-              button => {
-
-                button.addEventListener(
-                  "click",
-                  function () {
+                    const date =
+                        document
+                            .getElementById(
+                                "recurringDate"
+                            )
+                            .value;
 
 
-                    const id =
-                      this.dataset
-                        .deleteRecurring;
+                    const category =
+                        document
+                            .getElementById(
+                                "recurringCategory"
+                            )
+                            .value;
+
+
+                    const description =
+                        document
+                            .getElementById(
+                                "recurringDescription"
+                            )
+                            .value
+                            .trim();
 
 
                     if (
-                      !window.confirm(
-                        "Delete this recurring item?"
-                      )
+                        !name ||
+                        !amount ||
+                        amount <= 0 ||
+                        !date
                     ) {
 
-                      return;
+                        alert(
+                            "Please complete the required fields."
+                        );
+
+                        return;
 
                     }
 
 
-                    ML.deleteRecurringTransaction(
-                      id
-                    );
+                    const item = {
+
+                        id:
+                            "recurring_" +
+                            Date.now(),
+
+                        name:
+                            name,
+
+                        amount:
+                            amount,
+
+                        type:
+                            type,
+
+                        frequency:
+                            frequency,
+
+                        nextDate:
+                            date,
+
+                        category:
+                            category,
+
+                        description:
+                            description,
+
+                        active:
+                            true,
+
+                        createdAt:
+                            new Date()
+                                .toISOString()
+
+                    };
+
+
+                    if (
+                        typeof ML()
+                            .addRecurringTransaction ===
+                        "function"
+                    ) {
+
+                        ML()
+                            .addRecurringTransaction(
+                                item
+                            );
+
+                    } else {
+
+                        saveFallback(
+                            item
+                        );
+
+                    }
+
+
+                    this.reset();
+
+
+                    const newDate =
+                        new Date();
+
+
+                    document
+                        .getElementById(
+                            "recurringDate"
+                        )
+                        .value =
+                        newDate
+                            .toISOString()
+                            .slice(
+                                0,
+                                10
+                            );
 
 
                     renderPage();
 
-                  }
-                );
+                }
+            );
 
-              }
+
+
+        /* ========================================================
+           SCROLL
+           ======================================================== */
+
+        document
+            .getElementById(
+                "scrollToRecurringForm"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    document
+                        .getElementById(
+                            "recurringFormSection"
+                        )
+                        ?.scrollIntoView({
+                            behavior:
+                                "smooth",
+                            block:
+                                "start"
+                        });
+
+
+                    setTimeout(
+                        function () {
+
+                            document
+                                .getElementById(
+                                    "recurringName"
+                                )
+                                ?.focus();
+
+                        },
+                        400
+                    );
+
+                }
+            );
+
+
+
+        /* ========================================================
+           UPDATE EVENT
+           ======================================================== */
+
+        window.addEventListener(
+            "moneyLeakUpdated",
+            renderPage
+        );
+
+
+        setTimeout(
+            renderPage,
+            200
+        );
+
+
+
+        /* ========================================================
+           RENDER
+           ======================================================== */
+
+        function renderPage() {
+
+            if (!ML()) {
+                return;
+            }
+
+
+            const items =
+                getRecurringItems();
+
+
+            const monthlyExpense =
+                items
+                    .filter(
+                        item =>
+                            item.type ===
+                            "expense"
+                    )
+                    .reduce(
+                        (
+                            total,
+                            item
+                        ) =>
+                            total +
+                            monthlyAmount(
+                                item
+                            ),
+                        0
+                    );
+
+
+            const monthlyIncome =
+                items
+                    .filter(
+                        item =>
+                            item.type ===
+                            "income"
+                    )
+                    .reduce(
+                        (
+                            total,
+                            item
+                        ) =>
+                            total +
+                            monthlyAmount(
+                                item
+                            ),
+                        0
+                    );
+
+
+            const net =
+                monthlyIncome -
+                monthlyExpense;
+
+
+            setText(
+                "recurringMonthly",
+                ML().displayCurrency(
+                    monthlyExpense
+                )
+            );
+
+
+            setText(
+                "recurringIncome",
+                ML().displayCurrency(
+                    monthlyIncome
+                )
+            );
+
+
+            setText(
+                "recurringCount",
+                items.length
+            );
+
+
+            setText(
+                "recurringNet",
+                ML().displayCurrency(
+                    net
+                )
+            );
+
+
+            setText(
+                "recurringExpenseCount",
+                items.filter(
+                    item =>
+                        item.type ===
+                        "expense"
+                ).length
+            );
+
+
+            setText(
+                "recurringIncomeCount",
+                items.filter(
+                    item =>
+                        item.type ===
+                        "income"
+                ).length
+            );
+
+
+            updateNetStatus(
+                net
+            );
+
+
+            renderIntelligence(
+                items,
+                monthlyExpense,
+                monthlyIncome
+            );
+
+
+            renderUpcoming(
+                items
+            );
+
+
+            renderAllItems(
+                items
+            );
+
+
+            renderCommitmentLoad(
+                monthlyExpense,
+                monthlyIncome
             );
 
         }
 
 
 
-        /* =========================
-           FORM
-        ========================== */
+        /* ========================================================
+           GET ITEMS
+           ======================================================== */
 
+        function getRecurringItems() {
 
-        document
-          .getElementById(
-            "recurringForm"
-          )
-          .addEventListener(
-            "submit",
-            function (event) {
+            if (
+                ML() &&
+                typeof ML()
+                    .getRecurringTransactions ===
+                "function"
+            ) {
 
-
-              event.preventDefault();
-
-
-              const type =
-                document.getElementById(
-                  "recurringType"
-                ).value;
-
-
-              const amount =
-                Number(
-                  document.getElementById(
-                    "recurringAmount"
-                  ).value
-                );
-
-
-              const name =
-                document.getElementById(
-                  "recurringName"
-                ).value.trim();
-
-
-              const category =
-                document.getElementById(
-                  "recurringCategory"
-                ).value;
-
-
-              const frequency =
-                document.getElementById(
-                  "recurringFrequency"
-                ).value;
-
-
-              const nextDate =
-                document.getElementById(
-                  "recurringNextDate"
-                ).value;
-
-
-              const note =
-                document.getElementById(
-                  "recurringNote"
-                ).value.trim();
-
-
-              if (
-                !amount ||
-                amount <= 0
-              ) {
-
-                alert(
-                  "Please enter a valid amount."
-                );
-
-                return;
-
-              }
-
-
-              if (!name) {
-
-                alert(
-                  "Please enter a name."
-                );
-
-                return;
-
-              }
-
-
-              if (!nextDate) {
-
-                alert(
-                  "Please choose the next date."
-                );
-
-                return;
-
-              }
-
-
-              ML.addRecurringTransaction({
-
-                type,
-
-                amount,
-
-                name,
-
-                description: name,
-
-                category,
-
-                frequency,
-
-                nextDate,
-
-                note
-
-              });
-
-
-              document
-                .getElementById(
-                  "recurringForm"
+                return (
+                    ML()
+                        .getRecurringTransactions() ||
+                    []
                 )
-                .reset();
-
-
-              document.getElementById(
-                "recurringType"
-              ).value =
-                "expense";
-
-
-              document.getElementById(
-                "recurringFrequency"
-              ).value =
-                "monthly";
-
-
-              document.getElementById(
-                "recurringNextDate"
-              ).value =
-                todayString();
-
-
-              renderPage();
-
-
-              alert(
-                "Recurring item saved successfully."
-              );
+                .filter(
+                    item =>
+                        item.active !==
+                        false
+                );
 
             }
-          );
 
 
+            try {
 
-        /* =========================
-           SCROLL
-        ========================== */
-
-
-        document
-          .getElementById(
-            "scrollToRecurringForm"
-          )
-          .addEventListener(
-            "click",
-            function () {
-
-              document
-                .getElementById(
-                  "recurringFormPanel"
+                return JSON.parse(
+                    localStorage.getItem(
+                        "moneyLeakRecurringTransactions"
+                    ) ||
+                    "[]"
                 )
-                .scrollIntoView({
-                  behavior: "smooth",
-                  block: "start"
-                });
+                .filter(
+                    item =>
+                        item.active !==
+                        false
+                );
+
+            } catch (
+                error
+            ) {
+
+                return [];
 
             }
-          );
-
-
-
-        /* =========================
-           PAGE REFRESH
-        ========================== */
-
-
-        function renderPage() {
-
-          renderOverview();
-
-          renderUpcoming();
-
-          renderList();
 
         }
 
 
-        window.moneyLeakPageUpdate =
-          renderPage;
+
+        /* ========================================================
+           FALLBACK SAVE
+           ======================================================== */
+
+        function saveFallback(
+            item
+        ) {
+
+            const items =
+                getRecurringItems();
 
 
-        renderPage();
+            items.push(
+                item
+            );
 
 
-      }
-    );
+            localStorage.setItem(
+                "moneyLeakRecurringTransactions",
+                JSON.stringify(
+                    items
+                )
+            );
 
-  </script>
+        }
+
+
+
+        /* ========================================================
+           MONTHLY CONVERSION
+           ======================================================== */
+
+        function monthlyAmount(
+            item
+        ) {
+
+            const amount =
+                Number(
+                    item.amount ||
+                    0
+                );
+
+
+            switch (
+                String(
+                    item.frequency ||
+                    "monthly"
+                )
+                .toLowerCase()
+            ) {
+
+                case "daily":
+                    return amount *
+                        30.4375;
+
+                case "weekly":
+                    return amount *
+                        4.345;
+
+                case "yearly":
+                case "annual":
+                    return amount /
+                        12;
+
+                default:
+                    return amount;
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           NET STATUS
+           ======================================================== */
+
+        function updateNetStatus(
+            net
+        ) {
+
+            const element =
+                document.getElementById(
+                    "recurringNetStatus"
+                );
+
+
+            if (!element) {
+                return;
+            }
+
+
+            if (net > 0) {
+
+                element.textContent =
+                    "Positive recurring cash flow";
+
+            } else if (
+                net < 0
+            ) {
+
+                element.textContent =
+                    "Recurring expenses exceed income";
+
+            } else {
+
+                element.textContent =
+                    "Balanced";
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           INTELLIGENCE
+           ======================================================== */
+
+        function renderIntelligence(
+            items,
+            expense,
+            income
+        ) {
+
+            const insight =
+                document.getElementById(
+                    "recurringInsight"
+                );
+
+
+            const largest =
+                items
+                    .slice()
+                    .sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            Number(
+                                b.amount
+                            ) -
+                            Number(
+                                a.amount
+                            )
+                    )[0];
+
+
+            if (largest) {
+
+                setText(
+                    "largestRecurring",
+                    largest.name
+                );
+
+            } else {
+
+                setText(
+                    "largestRecurring",
+                    "—"
+                );
+
+            }
+
+
+            if (!insight) {
+                return;
+            }
+
+
+            if (!items.length) {
+
+                insight.textContent =
+                    "You haven't added recurring money yet. Start with your biggest fixed payments and reliable income sources.";
+
+                return;
+
+            }
+
+
+            if (
+                expense >
+                income &&
+                income > 0
+            ) {
+
+                insight.textContent =
+                    "Your recurring expenses are higher than your recurring income. This creates a structural cash-flow gap that should be addressed before adding more commitments.";
+
+                return;
+
+            }
+
+
+            if (
+                income > 0 &&
+                expense /
+                income >=
+                0.7
+            ) {
+
+                insight.textContent =
+                    "A large portion of your recurring income is already committed. Protect your flexibility by reviewing subscriptions, memberships and other non-essential fixed costs.";
+
+                return;
+
+            }
+
+
+            if (
+                income > 0
+            ) {
+
+                insight.textContent =
+                    "Your recurring income currently covers your recurring commitments. Protect this surplus by directing part of it toward savings goals.";
+
+                return;
+
+            }
+
+
+            insight.textContent =
+                "You have recurring expenses recorded but no recurring income. Add stable income sources if applicable so MoneyLeak can calculate your commitment load.";
+
+        }
+
+
+
+        /* ========================================================
+           COMMITMENT LOAD
+           ======================================================== */
+
+        function renderCommitmentLoad(
+            expense,
+            income
+        ) {
+
+            const percentage =
+                income > 0
+                    ? (
+                        expense /
+                        income
+                    ) *
+                    100
+                    : 0;
+
+
+            setText(
+                "commitmentLoad",
+                Math.min(
+                    100,
+                    percentage
+                ).toFixed(1) +
+                "%"
+            );
+
+
+            const bar =
+                document.getElementById(
+                    "commitmentLoadBar"
+                );
+
+
+            if (bar) {
+
+                bar.style.width =
+                    Math.min(
+                        100,
+                        percentage
+                    ) +
+                    "%";
+
+            }
+
+
+            const message =
+                document.getElementById(
+                    "commitmentLoadMessage"
+                );
+
+
+            const advice =
+                document.getElementById(
+                    "commitmentAdvice"
+                );
+
+
+            if (!income) {
+
+                if (message) {
+
+                    message.textContent =
+                        "Add recurring income to calculate your commitment load.";
+
+                }
+
+
+                return;
+
+            }
+
+
+            if (
+                percentage >=
+                80
+            ) {
+
+                if (message) {
+
+                    message.textContent =
+                        "Very high commitment load.";
+
+                }
+
+
+                if (advice) {
+
+                    advice.textContent =
+                        "Your fixed commitments consume most of your recurring income. Consider reducing non-essential recurring expenses.";
+
+                }
+
+            } else if (
+                percentage >=
+                60
+            ) {
+
+                if (message) {
+
+                    message.textContent =
+                        "Your commitments are relatively high.";
+
+                }
+
+
+                if (advice) {
+
+                    advice.textContent =
+                        "Keep discretionary recurring costs under review and protect room for savings.";
+
+                }
+
+            } else {
+
+                if (message) {
+
+                    message.textContent =
+                        "Your recurring commitments are within a healthier range.";
+
+                }
+
+
+                if (advice) {
+
+                    advice.textContent =
+                        "Use your recurring surplus to strengthen emergency savings and long-term goals.";
+
+                }
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           UPCOMING
+           ======================================================== */
+
+        function renderUpcoming(
+            items
+        ) {
+
+            const container =
+                document.getElementById(
+                    "upcomingRecurring"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            const now =
+                new Date();
+
+
+            const upcoming =
+                items
+                    .map(
+                        item => ({
+                            ...item,
+                            parsedDate:
+                                new Date(
+                                    item.nextDate
+                                )
+                        })
+                    )
+                    .filter(
+                        item =>
+                            !isNaN(
+                                item.parsedDate
+                            )
+                    )
+                    .sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            a.parsedDate -
+                            b.parsedDate
+                    )
+                    .slice(
+                        0,
+                        5
+                    );
+
+
+            setText(
+                "upcomingCount",
+                upcoming.length
+            );
+
+
+            if (!upcoming.length) {
+
+                container.innerHTML =
+                    `
+                    <div class="empty-state">
+                        No upcoming recurring items.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                upcoming
+                    .map(
+                        item => {
+
+                            const days =
+                                daysUntil(
+                                    item.parsedDate,
+                                    now
+                                );
+
+
+                            const dateText =
+                                formatDate(
+                                    item.parsedDate
+                                );
+
+
+                            const amount =
+                                ML().displayCurrency(
+                                    Number(
+                                        item.amount ||
+                                        0
+                                    )
+                                );
+
+
+                            const typeLabel =
+                                item.type ===
+                                "income"
+                                    ? "Income"
+                                    : "Expense";
+
+
+                            return `
+                            <div
+                                style="
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:space-between;
+                                    gap:15px;
+                                    padding:15px 0;
+                                    border-bottom:1px solid var(--ml-border);
+                                "
+                            >
+
+                                <div>
+
+                                    <strong>
+                                        ${escapeHTML(item.name)}
+                                    </strong>
+
+                                    <small
+                                        class="text-muted"
+                                        style="display:block;margin-top:4px;"
+                                    >
+                                        ${typeLabel} · ${dateText}
+                                    </small>
+
+                                </div>
+
+
+                                <div style="text-align:right;">
+
+                                    <strong>
+                                        ${amount}
+                                    </strong>
+
+                                    <small
+                                        class="text-muted"
+                                        style="display:block;margin-top:4px;"
+                                    >
+                                        ${relativeDays(days)}
+                                    </small>
+
+                                </div>
+
+                            </div>
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+
+
+
+        /* ========================================================
+           ALL ITEMS
+           ======================================================== */
+
+        function renderAllItems(
+            items
+        ) {
+
+            const container =
+                document.getElementById(
+                    "recurringList"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (!items.length) {
+
+                container.innerHTML =
+                    `
+                    <div class="empty-state">
+                        No recurring items added yet.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                items
+                    .slice()
+                    .sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            new Date(
+                                a.nextDate
+                            ) -
+                            new Date(
+                                b.nextDate
+                            )
+                    )
+                    .map(
+                        item => {
+
+                            const monthly =
+                                monthlyAmount(
+                                    item
+                                );
+
+
+                            return `
+                            <div
+                                style="
+                                    padding:18px 0;
+                                    border-bottom:1px solid var(--ml-border);
+                                "
+                            >
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        align-items:flex-start;
+                                        gap:20px;
+                                    "
+                                >
+
+                                    <div>
+
+                                        <strong
+                                            style="font-size:17px;"
+                                        >
+                                            ${escapeHTML(item.name)}
+                                        </strong>
+
+                                        <small
+                                            class="text-muted"
+                                            style="
+                                                display:block;
+                                                margin-top:5px;
+                                            "
+                                        >
+                                            ${escapeHTML(
+                                                item.category ||
+                                                "Other"
+                                            )}
+
+                                            ·
+
+                                            ${escapeHTML(
+                                                item.frequency ||
+                                                "monthly"
+                                            )}
+
+                                        </small>
+
+                                    </div>
+
+
+                                    <div
+                                        style="
+                                            text-align:right;
+                                        "
+                                    >
+
+                                        <strong>
+                                            ${ML().displayCurrency(
+                                                Number(
+                                                    item.amount ||
+                                                    0
+                                                )
+                                            )}
+                                        </strong>
+
+                                        <small
+                                            class="text-muted"
+                                            style="
+                                                display:block;
+                                                margin-top:5px;
+                                            "
+                                        >
+                                            ≈ ${ML().displayCurrency(
+                                                monthly
+                                            )}/month
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        align-items:center;
+                                        gap:10px;
+                                        margin-top:14px;
+                                    "
+                                >
+
+                                    <small class="text-muted">
+                                        Next: ${formatDate(
+                                            new Date(
+                                                item.nextDate
+                                            )
+                                        )}
+                                    </small>
+
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-delete-recurring="${escapeAttribute(
+                                            item.id
+                                        )}"
+                                    >
+                                        Remove
+                                    </button>
+
+                                </div>
+
+                            </div>
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+
+            container
+                .querySelectorAll(
+                    "[data-delete-recurring]"
+                )
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const id =
+                                    this.dataset
+                                        .deleteRecurring;
+
+
+                                if (
+                                    !confirm(
+                                        "Remove this recurring item?"
+                                    )
+                                ) {
+                                    return;
+                                }
+
+
+                                if (
+                                    ML() &&
+                                    typeof ML()
+                                        .deleteRecurringTransaction ===
+                                    "function"
+                                ) {
+
+                                    ML()
+                                        .deleteRecurringTransaction(
+                                            id
+                                        );
+
+                                } else {
+
+                                    const remaining =
+                                        getRecurringItems()
+                                            .filter(
+                                                item =>
+                                                    item.id !==
+                                                    id
+                                            );
+
+
+                                    localStorage.setItem(
+                                        "moneyLeakRecurringTransactions",
+                                        JSON.stringify(
+                                            remaining
+                                        )
+                                    );
+
+                                }
+
+
+                                renderPage();
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
+
+
+        /* ========================================================
+           DATE HELPERS
+           ======================================================== */
+
+        function daysUntil(
+            date,
+            now
+        ) {
+
+            const oneDay =
+                86400000;
+
+
+            const today =
+                new Date(
+                    now.getFullYear(),
+                    now.getMonth(),
+                    now.getDate()
+                );
+
+
+            const target =
+                new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate()
+                );
+
+
+            return Math.ceil(
+                (
+                    target -
+                    today
+                ) /
+                oneDay
+            );
+
+        }
+
+
+        function relativeDays(
+            days
+        ) {
+
+            if (days < 0) {
+                return "Past due";
+            }
+
+            if (days === 0) {
+                return "Today";
+            }
+
+            if (days === 1) {
+                return "Tomorrow";
+            }
+
+            return "In " +
+                days +
+                " days";
+
+        }
+
+
+        function formatDate(
+            date
+        ) {
+
+            if (
+                !date ||
+                isNaN(date)
+            ) {
+                return "—";
+            }
+
+
+            return date.toLocaleDateString(
+                undefined,
+                {
+                    day:
+                        "numeric",
+                    month:
+                        "short",
+                    year:
+                        "numeric"
+                }
+            );
+
+        }
+
+
+
+        /* ========================================================
+           SAFE HELPERS
+           ======================================================== */
+
+        function setText(
+            id,
+            value
+        ) {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    value;
+
+            }
+
+        }
+
+
+        function escapeHTML(
+            value
+        ) {
+
+            return String(
+                value ??
+                ""
+            )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+        }
+
+
+        function escapeAttribute(
+            value
+        ) {
+
+            return escapeHTML(
+                value
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+
+<!-- ============================================================
+     MONEY LEAK ENGINE
+     ============================================================ -->
+
+<script src="app.js"></script>
 
 
 </body>
