@@ -1,12 +1,16 @@
+/* ============================================================
+   MONEYLEAK — PERSONAL FINANCE OS
+   Core Application Engine
+   Version 3.0
+   ============================================================ */
+
 (() => {
     "use strict";
 
-    /* =========================================================
-       MONEYLEAK — PERSONAL FINANCE OS
-       CENTRAL APPLICATION ENGINE
-       ========================================================= */
+    /* ============================================================
+       STORAGE
+       ============================================================ */
 
-    const ML = {};
     const STORAGE = {
         transactions: "moneyLeakTransactions",
         savingsGoals: "moneyLeakSavingsGoals",
@@ -15,16 +19,21 @@
         categoryBudgets: "moneyLeakCategoryBudgets",
         recurring: "moneyLeakRecurringTransactions",
         settings: "moneyLeakSettings",
-        alerts: "moneyLeakAlerts"
+        alerts: "moneyLeakAlerts",
+        initialized: "moneyLeakInitialized",
+        assistantHistory: "moneyLeakAssistantHistory"
     };
 
     const DEFAULT_SETTINGS = {
-        name: "My Money",
         currency: "NGN",
-        currencySymbol: "₦",
+        symbol: "₦",
+        name: "My Money",
         theme: "light",
         notifications: true,
-        compactNumbers: false
+        compactNumbers: false,
+        voiceAssistant: true,
+        voiceRate: 1,
+        voicePitch: 1
     };
 
     const CATEGORIES = [
@@ -45,21 +54,31 @@
         "Other"
     ];
 
-    /* =========================================================
-       STORAGE
-       ========================================================= */
+    const INCOME_SOURCES = [
+        "Salary",
+        "Freelance",
+        "Business",
+        "Investment",
+        "Gift",
+        "Allowance",
+        "Side Hustle",
+        "Other"
+    ];
 
-    function read(key, fallback) {
+    /* ============================================================
+       UTILITIES
+       ============================================================ */
+
+    function readJSON(key, fallback) {
         try {
             const value = localStorage.getItem(key);
-            if (value === null) return fallback;
-            return JSON.parse(value);
+            return value ? JSON.parse(value) : fallback;
         } catch {
             return fallback;
         }
     }
 
-    function write(key, value) {
+    function writeJSON(key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
             return true;
@@ -68,13 +87,7 @@
         }
     }
 
-    function remove(key) {
-        try {
-            localStorage.removeItem(key);
-        } catch {}
-    }
-
-    function id(prefix = "ml") {
+    function uid(prefix = "ml") {
         return (
             prefix +
             "_" +
@@ -84,388 +97,295 @@
         );
     }
 
-    function num(value) {
+    function number(value) {
         const n = Number(value);
         return Number.isFinite(n) ? n : 0;
     }
 
-    function today() {
+    function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+    function todayString() {
         const d = new Date();
-
-        return [
-            d.getFullYear(),
-            String(d.getMonth() + 1).padStart(2, "0"),
-            String(d.getDate()).padStart(2, "0")
-        ].join("-");
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
     }
 
-    function date(value) {
-        const d = new Date(value);
-
-        return Number.isNaN(d.getTime())
-            ? new Date()
-            : d;
+    function parseDate(date) {
+        const d = new Date(date);
+        return Number.isNaN(d.getTime()) ? new Date() : d;
     }
 
-    function escape(value) {
+    function formatDate(date) {
+        return parseDate(date).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        });
+    }
+
+    function formatShortDate(date) {
+        return parseDate(date).toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric"
+        });
+    }
+
+    function daysBetween(a, b) {
+        const first = parseDate(a);
+        const second = parseDate(b);
+        return Math.ceil(
+            Math.abs(second.getTime() - first.getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
+    }
+
+    function escapeHTML(value) {
         return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
     }
 
-    /* =========================================================
+    /* ============================================================
        SETTINGS
-       ========================================================= */
+       ============================================================ */
 
     function getSettings() {
         return {
             ...DEFAULT_SETTINGS,
-            ...(read(STORAGE.settings, {}) || {})
+            ...readJSON(STORAGE.settings, {})
         };
     }
 
-    function saveSettings(values = {}) {
+    function saveSettings(changes = {}) {
         const settings = {
             ...getSettings(),
-            ...values
+            ...changes
         };
 
-        write(STORAGE.settings, settings);
-        applyTheme();
+        writeJSON(STORAGE.settings, settings);
+        applySettings();
 
         return settings;
     }
 
-    function applyTheme() {
+    function applySettings() {
         const settings = getSettings();
 
         document.documentElement.dataset.theme =
+            settings.theme === "dark" ? "dark" : "light";
+
+        document.body?.classList.toggle(
+            "dark-mode",
             settings.theme === "dark"
-                ? "dark"
-                : "light";
+        );
 
-        if (document.body) {
-            document.body.classList.toggle(
-                "dark-mode",
-                settings.theme === "dark"
-            );
-        }
+        document.body?.classList.toggle(
+            "compact-numbers",
+            Boolean(settings.compactNumbers)
+        );
 
-        document.querySelectorAll(
-            "[data-user-name]"
-        ).forEach((element) => {
-            element.textContent =
-                settings.name || "My Money";
+        const nameElements = document.querySelectorAll(
+            "[data-money-name], #profileName, #userName"
+        );
+
+        nameElements.forEach(el => {
+            el.textContent = settings.name || "My Money";
         });
     }
 
-    /* =========================================================
+    /* ============================================================
        CURRENCY
-       ========================================================= */
+       ============================================================ */
 
-    function getCurrencySymbol() {
-        const settings = getSettings();
-
-        if (settings.currencySymbol) {
-            return settings.currencySymbol;
-        }
-
-        const symbols = {
-            NGN: "₦",
-            USD: "$",
-            GBP: "£",
-            EUR: "€",
-            CAD: "CA$",
-            AUD: "A$",
-            GHS: "GH₵",
-            KES: "KSh",
-            ZAR: "R"
-        };
-
-        return (
-            symbols[settings.currency] ||
-            settings.currency ||
-            "₦"
-        );
+    function currencySymbol() {
+        return getSettings().symbol || "₦";
     }
 
     function formatCurrency(value) {
-        const amount = num(value);
-        const settings = getSettings();
+        const amount = number(value);
 
         try {
-            return new Intl.NumberFormat(
-                undefined,
-                {
-                    style: "currency",
-                    currency:
-                        settings.currency || "NGN",
-                    maximumFractionDigits: 0
-                }
-            ).format(amount);
+            return new Intl.NumberFormat("en-NG", {
+                style: "currency",
+                currency: getSettings().currency || "NGN",
+                maximumFractionDigits: 2
+            }).format(amount);
         } catch {
-            return (
-                getCurrencySymbol() +
-                Math.round(amount).toLocaleString()
-            );
+            return `${currencySymbol()}${amount.toLocaleString()}`;
         }
     }
 
     function formatCompactCurrency(value) {
-        const amount = num(value);
-        const symbol = getCurrencySymbol();
+        const amount = number(value);
 
         if (Math.abs(amount) >= 1000000000) {
-            return (
-                symbol +
-                (amount / 1000000000).toFixed(1) +
-                "B"
-            );
+            return `${currencySymbol()}${(amount / 1000000000).toFixed(1)}B`;
         }
 
         if (Math.abs(amount) >= 1000000) {
-            return (
-                symbol +
-                (amount / 1000000).toFixed(1) +
-                "M"
-            );
+            return `${currencySymbol()}${(amount / 1000000).toFixed(1)}M`;
         }
 
         if (Math.abs(amount) >= 1000) {
-            return (
-                symbol +
-                (amount / 1000).toFixed(1) +
-                "K"
-            );
+            return `${currencySymbol()}${(amount / 1000).toFixed(1)}K`;
         }
 
-        return (
-            symbol +
-            Math.round(amount).toLocaleString()
-        );
+        return formatCurrency(amount);
     }
 
-    function money(value) {
+    function displayCurrency(value) {
         return getSettings().compactNumbers
             ? formatCompactCurrency(value)
             : formatCurrency(value);
     }
 
-    /* =========================================================
-       DATE HELPERS
-       ========================================================= */
-
-    function formatDate(value) {
-        return date(value).toLocaleDateString(
-            undefined,
-            {
-                day: "numeric",
-                month: "short",
-                year: "numeric"
-            }
-        );
-    }
-
-    function formatShortDate(value) {
-        return date(value).toLocaleDateString(
-            undefined,
-            {
-                day: "numeric",
-                month: "short"
-            }
-        );
-    }
-
-    function daysFromToday(value) {
-        const start = new Date(today());
-        const end = date(value);
-
-        return Math.ceil(
-            (end - start) /
-                (1000 * 60 * 60 * 24)
-        );
-    }
-
-    /* =========================================================
+    /* ============================================================
        TRANSACTIONS
-       ========================================================= */
+       ============================================================ */
 
     function normalizeTransaction(item = {}) {
-        let type =
-            String(
-                item.type ||
-                item.transactionType ||
-                "expense"
-            ).toLowerCase();
+        const amount = Math.abs(
+            number(item.amount ?? item.value ?? item.price)
+        );
 
-        type =
-            type === "income"
+        const type =
+            String(item.type || "").toLowerCase() === "income"
                 ? "income"
                 : "expense";
 
         return {
-            id:
-                item.id ||
-                id("transaction"),
-
-            amount: Math.abs(
-                num(
-                    item.amount ??
-                    item.value
-                )
-            ),
-
+            id: item.id || uid("txn"),
+            amount,
             type,
-
             category:
                 item.category ||
-                (type === "income"
-                    ? "Income"
-                    : "Other"),
-
+                (type === "income" ? "Income" : "Other"),
             description:
                 item.description ||
                 item.name ||
                 item.title ||
-                item.source ||
-                "Transaction",
-
-            source:
-                item.source || "",
-
-            date:
-                item.date ||
-                item.createdAt ||
-                today(),
-
-            note:
-                item.note ||
-                item.notes ||
-                "",
-
-            account:
-                item.account ||
-                "Cash",
-
-            createdAt:
-                item.createdAt ||
-                new Date().toISOString()
+                (type === "income" ? "Income" : "Expense"),
+            date: item.date || todayString(),
+            note: item.note || "",
+            account: item.account || "Main",
+            createdAt: item.createdAt || new Date().toISOString()
         };
     }
 
     function getTransactions() {
-        const data =
-            read(
-                STORAGE.transactions,
-                []
-            );
+        const raw = readJSON(STORAGE.transactions, []);
 
-        if (!Array.isArray(data)) {
+        if (!Array.isArray(raw)) {
             return [];
         }
 
-        return data
+        return raw
             .map(normalizeTransaction)
             .sort(
                 (a, b) =>
-                    date(b.date) -
-                    date(a.date)
+                    parseDate(b.date).getTime() -
+                    parseDate(a.date).getTime()
             );
     }
 
-    function saveTransactions(items) {
-        return write(
+    function saveTransactions(transactions) {
+        return writeJSON(
             STORAGE.transactions,
-            items.map(normalizeTransaction)
+            transactions.map(normalizeTransaction)
         );
     }
 
-    function addTransaction(item) {
-        const transactions =
-            getTransactions();
+    function addTransaction(transaction) {
+        const transactions = getTransactions();
 
-        const transaction =
-            normalizeTransaction(item);
+        const newTransaction = normalizeTransaction(transaction);
 
-        transactions.unshift(transaction);
+        transactions.unshift(newTransaction);
 
         saveTransactions(transactions);
-        refresh();
 
-        return transaction;
+        refreshEverything();
+
+        return newTransaction;
     }
 
-    function updateTransaction(
-        transactionId,
-        changes = {}
-    ) {
-        const transactions =
-            getTransactions();
+    function updateTransaction(id, changes) {
+        const transactions = getTransactions();
 
-        const index =
-            transactions.findIndex(
-                (item) =>
-                    String(item.id) ===
-                    String(transactionId)
-            );
+        const index = transactions.findIndex(
+            transaction => transaction.id === id
+        );
 
-        if (index < 0) {
+        if (index === -1) {
             return null;
         }
 
-        transactions[index] =
-            normalizeTransaction({
-                ...transactions[index],
-                ...changes,
-                id:
-                    transactions[index].id
-            });
+        transactions[index] = normalizeTransaction({
+            ...transactions[index],
+            ...changes,
+            id
+        });
 
         saveTransactions(transactions);
-        refresh();
+        refreshEverything();
 
         return transactions[index];
     }
 
-    function deleteTransaction(
-        transactionId
-    ) {
-        const transactions =
-            getTransactions();
+    function deleteTransaction(id) {
+        const transactions = getTransactions();
 
-        const remaining =
-            transactions.filter(
-                (item) =>
-                    String(item.id) !==
-                    String(transactionId)
-            );
+        const existing = transactions.find(
+            transaction => transaction.id === id
+        );
+
+        if (!existing) {
+            return false;
+        }
+
+        const remaining = transactions.filter(
+            transaction => transaction.id !== id
+        );
 
         saveTransactions(remaining);
-        refresh();
+
+        refreshEverything();
 
         return true;
     }
 
-    /* =========================================================
-       FINANCIAL TOTALS
-       ========================================================= */
+    function getIncomeTransactions() {
+        return getTransactions().filter(
+            transaction => transaction.type === "income"
+        );
+    }
 
-    function calculateTotals(
-        transactions = getTransactions()
-    ) {
+    function getExpenseTransactions() {
+        return getTransactions().filter(
+            transaction => transaction.type === "expense"
+        );
+    }
+
+    /* ============================================================
+       TOTALS
+       ============================================================ */
+
+    function calculateTotals(transactions = getTransactions()) {
         let income = 0;
         let expenses = 0;
 
-        transactions.forEach((item) => {
-            if (item.type === "income") {
-                income += num(item.amount);
-            }
-
-            if (item.type === "expense") {
-                expenses += num(item.amount);
+        transactions.forEach(transaction => {
+            if (transaction.type === "income") {
+                income += transaction.amount;
+            } else {
+                expenses += transaction.amount;
             }
         });
 
@@ -477,123 +397,68 @@
         };
     }
 
-    function getPeriodTransactions(
-        period = "month",
-        transactions = getTransactions()
-    ) {
+    function getPeriodTransactions(period = "month") {
         const now = new Date();
 
-        const year = now.getFullYear();
-        const month = now.getMonth();
+        return getTransactions().filter(transaction => {
+            const date = parseDate(transaction.date);
 
-        return transactions.filter((item) => {
-            const d = date(item.date);
-
-            if (period === "all") {
-                return true;
-            }
-
-            if (period === "year") {
+            if (period === "today") {
                 return (
-                    d.getFullYear() ===
-                    year
+                    date.getFullYear() === now.getFullYear() &&
+                    date.getMonth() === now.getMonth() &&
+                    date.getDate() === now.getDate()
                 );
             }
 
-            if (period === "6months") {
+            if (period === "month") {
                 return (
-                    d >=
-                    new Date(
-                        year,
-                        month - 5,
-                        1
-                    )
+                    date.getFullYear() === now.getFullYear() &&
+                    date.getMonth() === now.getMonth()
                 );
             }
 
             if (period === "3months") {
-                return (
-                    d >=
-                    new Date(
-                        year,
-                        month - 2,
-                        1
-                    )
-                );
+                const cutoff = new Date();
+                cutoff.setMonth(cutoff.getMonth() - 3);
+                return date >= cutoff;
             }
 
-            return (
-                d.getFullYear() === year &&
-                d.getMonth() === month
-            );
+            if (period === "6months") {
+                const cutoff = new Date();
+                cutoff.setMonth(cutoff.getMonth() - 6);
+                return date >= cutoff;
+            }
+
+            if (period === "year") {
+                return date.getFullYear() === now.getFullYear();
+            }
+
+            return true;
         });
     }
 
-    /* =========================================================
+    /* ============================================================
        SAVINGS GOALS
-       ========================================================= */
+       ============================================================ */
 
     function getSavingsGoals() {
-        let goals =
-            read(
-                STORAGE.savingsGoals,
-                []
-            );
+        let goals = readJSON(STORAGE.savingsGoals, null);
 
         if (!Array.isArray(goals)) {
             goals = [];
-        }
 
-        /* Migrate old MoneyLeak goal */
-        if (goals.length === 0) {
-            const oldGoal =
-                read(
-                    STORAGE.oldSavingsGoal,
-                    null
-                );
+            const old = readJSON(STORAGE.oldSavingsGoal, null);
 
-            if (
-                oldGoal &&
-                typeof oldGoal === "object"
-            ) {
+            if (old && typeof old === "object") {
                 goals.push({
-                    id:
-                        oldGoal.id ||
-                        id("goal"),
-
-                    name:
-                        oldGoal.name ||
-                        oldGoal.title ||
-                        "Savings Goal",
-
-                    target:
-                        num(
-                            oldGoal.target ||
-                            oldGoal.goal ||
-                            oldGoal.amount
-                        ),
-
-                    current:
-                        num(
-                            oldGoal.current ||
-                            oldGoal.saved ||
-                            oldGoal.progress
-                        ),
-
-                    deadline:
-                        oldGoal.deadline ||
-                        oldGoal.date ||
-                        "",
-
-                    createdAt:
-                        oldGoal.createdAt ||
-                        new Date().toISOString()
+                    id: uid("goal"),
+                    name: old.name || "Savings Goal",
+                    target: number(old.target || old.amount),
+                    current: number(old.current || old.saved),
+                    deadline: old.deadline || "",
+                    createdAt: new Date().toISOString()
                 });
-
-                write(
-                    STORAGE.savingsGoals,
-                    goals
-                );
             }
         }
 
@@ -601,776 +466,1917 @@
     }
 
     function saveSavingsGoals(goals) {
-        return write(
-            STORAGE.savingsGoals,
-            goals
-        );
+        return writeJSON(STORAGE.savingsGoals, goals);
     }
 
-    function addSavingsGoal(goal = {}) {
-        const goals =
-            getSavingsGoals();
+    function addSavingsGoal(goal) {
+        const goals = getSavingsGoals();
 
         const newGoal = {
-            id: id("goal"),
-
-            name:
-                goal.name ||
-                "New Goal",
-
-            target:
-                Math.max(
-                    0,
-                    num(goal.target)
-                ),
-
-            current:
-                Math.max(
-                    0,
-                    num(goal.current)
-                ),
-
-            deadline:
-                goal.deadline || "",
-
+            id: goal.id || uid("goal"),
+            name: goal.name || "Savings Goal",
+            target: number(goal.target),
+            current: number(goal.current),
+            deadline: goal.deadline || "",
             createdAt:
-                new Date().toISOString()
+                goal.createdAt || new Date().toISOString()
         };
 
         goals.push(newGoal);
 
         saveSavingsGoals(goals);
-        refresh();
+        refreshEverything();
 
         return newGoal;
     }
 
-    function updateSavingsGoal(
-        goalId,
-        changes = {}
-    ) {
-        const goals =
-            getSavingsGoals();
+    function updateSavingsGoal(id, changes) {
+        const goals = getSavingsGoals();
 
-        const index =
-            goals.findIndex(
-                (goal) =>
-                    String(goal.id) ===
-                    String(goalId)
-            );
+        const index = goals.findIndex(goal => goal.id === id);
 
-        if (index < 0) {
+        if (index === -1) {
             return null;
         }
 
         goals[index] = {
             ...goals[index],
-            ...changes,
-            target:
-                changes.target !== undefined
-                    ? num(changes.target)
-                    : num(
-                          goals[index]
-                              .target
-                      ),
-            current:
-                changes.current !== undefined
-                    ? num(changes.current)
-                    : num(
-                          goals[index]
-                              .current
-                      )
+            ...changes
         };
 
+        goals[index].target = number(goals[index].target);
+        goals[index].current = number(goals[index].current);
+
         saveSavingsGoals(goals);
-        refresh();
+        refreshEverything();
 
         return goals[index];
     }
 
-    function deleteSavingsGoal(goalId) {
-        const goals =
-            getSavingsGoals().filter(
-                (goal) =>
-                    String(goal.id) !==
-                    String(goalId)
-            );
+    function deleteSavingsGoal(id) {
+        const goals = getSavingsGoals().filter(
+            goal => goal.id !== id
+        );
 
         saveSavingsGoals(goals);
-        refresh();
+        refreshEverything();
 
         return true;
     }
 
     function goalProgress(goal) {
-        if (
-            !goal ||
-            num(goal.target) <= 0
-        ) {
+        if (!goal || number(goal.target) <= 0) {
             return 0;
         }
 
-        return Math.min(
-            100,
-            Math.max(
-                0,
-                (num(goal.current) /
-                    num(goal.target)) *
-                    100
-            )
+        return clamp(
+            (number(goal.current) / number(goal.target)) * 100,
+            0,
+            100
         );
     }
 
-    /* =========================================================
+    /* ============================================================
        BUDGETS
-       ========================================================= */
+       ============================================================ */
 
     function getMonthlyBudget() {
-        const value =
-            read(
-                STORAGE.monthlyBudget,
-                0
-            );
-
-        if (
-            typeof value === "object" &&
-            value !== null
-        ) {
-            return num(
-                value.amount ||
-                value.limit
-            );
-        }
-
-        return num(value);
+        return number(
+            readJSON(STORAGE.monthlyBudget, 0)
+        );
     }
 
     function setMonthlyBudget(amount) {
-        const value =
-            Math.max(
-                0,
-                num(amount)
-            );
+        const value = Math.max(0, number(amount));
 
-        write(
-            STORAGE.monthlyBudget,
-            value
-        );
+        writeJSON(STORAGE.monthlyBudget, value);
 
-        refresh();
+        refreshEverything();
 
         return value;
     }
 
-    function getCurrentMonthExpenses() {
-        return calculateTotals(
-            getPeriodTransactions(
-                "month"
-            )
-        ).expenses;
-    }
-
     function getCategoryBudgets() {
-        const budgets =
-            read(
-                STORAGE.categoryBudgets,
-                {}
-            );
-
-        return (
-            budgets &&
-            typeof budgets === "object"
-                ? budgets
-                : {}
-        );
+        return readJSON(STORAGE.categoryBudgets, {});
     }
 
-    function setCategoryBudget(
-        category,
-        amount
-    ) {
-        const budgets =
-            getCategoryBudgets();
+    function setCategoryBudget(category, amount) {
+        const budgets = getCategoryBudgets();
 
-        budgets[category] =
-            Math.max(
-                0,
-                num(amount)
-            );
+        budgets[category] = Math.max(0, number(amount));
 
-        write(
-            STORAGE.categoryBudgets,
-            budgets
-        );
+        writeJSON(STORAGE.categoryBudgets, budgets);
 
-        refresh();
+        refreshEverything();
 
-        return budgets;
+        return budgets[category];
     }
 
-    function deleteCategoryBudget(
-        category
-    ) {
-        const budgets =
-            getCategoryBudgets();
+    function deleteCategoryBudget(category) {
+        const budgets = getCategoryBudgets();
 
         delete budgets[category];
 
-        write(
-            STORAGE.categoryBudgets,
-            budgets
-        );
+        writeJSON(STORAGE.categoryBudgets, budgets);
 
-        refresh();
+        refreshEverything();
     }
 
-    function getCategorySpending(
-        category,
-        transactions =
+    function currentMonthExpenses() {
+        return calculateTotals(
             getPeriodTransactions("month")
-    ) {
-        return transactions
+                .filter(t => t.type === "expense")
+        ).expenses;
+    }
+
+    function categorySpending(category, period = "month") {
+        return getPeriodTransactions(period)
             .filter(
-                (item) =>
-                    item.type === "expense" &&
-                    String(
-                        item.category
-                    ).toLowerCase() ===
-                        String(
-                            category
-                        ).toLowerCase()
+                transaction =>
+                    transaction.type === "expense" &&
+                    transaction.category === category
             )
             .reduce(
-                (sum, item) =>
-                    sum +
-                    num(item.amount),
+                (sum, transaction) =>
+                    sum + transaction.amount,
                 0
             );
     }
 
-    /* =========================================================
-       RECURRING MONEY
-       ========================================================= */
+    /* ============================================================
+       RECURRING TRANSACTIONS
+       ============================================================ */
 
     function getRecurringTransactions() {
-        const data =
-            read(
-                STORAGE.recurring,
-                []
-            );
+        const recurring = readJSON(STORAGE.recurring, []);
 
-        return Array.isArray(data)
-            ? data
+        return Array.isArray(recurring)
+            ? recurring
             : [];
     }
 
-    function saveRecurringTransactions(
-        items
-    ) {
-        return write(
-            STORAGE.recurring,
-            items
-        );
+    function saveRecurringTransactions(items) {
+        return writeJSON(STORAGE.recurring, items);
     }
 
-    function addRecurringTransaction(
-        item = {}
-    ) {
-        const recurring =
-            getRecurringTransactions();
+    function addRecurringTransaction(item) {
+        const recurring = getRecurringTransactions();
 
         const newItem = {
-            id: id("recurring"),
-
+            id: item.id || uid("rec"),
             type:
                 item.type === "income"
                     ? "income"
                     : "expense",
-
-            amount:
-                Math.abs(
-                    num(item.amount)
-                ),
-
-            name:
-                item.name ||
-                "Recurring item",
-
-            category:
-                item.category ||
-                "Bills",
-
-            frequency:
-                item.frequency ||
-                "monthly",
-
-            nextDate:
-                item.nextDate ||
-                today(),
-
-            note:
-                item.note ||
-                "",
-
+            amount: Math.abs(number(item.amount)),
+            name: item.name || "Recurring payment",
+            category: item.category || "Bills",
+            frequency: item.frequency || "monthly",
+            nextDate: item.nextDate || todayString(),
+            note: item.note || "",
+            active: item.active !== false,
             createdAt:
-                new Date().toISOString()
+                item.createdAt || new Date().toISOString()
         };
 
         recurring.push(newItem);
 
-        saveRecurringTransactions(
-            recurring
-        );
-
-        refresh();
+        saveRecurringTransactions(recurring);
+        refreshEverything();
 
         return newItem;
     }
 
-    function deleteRecurringTransaction(
-        itemId
-    ) {
-        const recurring =
-            getRecurringTransactions()
-                .filter(
-                    (item) =>
-                        String(item.id) !==
-                        String(itemId)
-                );
-
-        saveRecurringTransactions(
-            recurring
+    function deleteRecurringTransaction(id) {
+        const items = getRecurringTransactions().filter(
+            item => item.id !== id
         );
 
-        refresh();
+        saveRecurringTransactions(items);
+        refreshEverything();
+
+        return true;
     }
 
-    function monthlyRecurringAmount(
-        item
-    ) {
-        const amount =
-            num(item.amount);
-
-        switch (
-            String(
-                item.frequency ||
-                    "monthly"
-            ).toLowerCase()
-        ) {
-            case "weekly":
-                return amount * 4.345;
-
-            case "yearly":
-            case "annual":
-                return amount / 12;
-
-            case "daily":
-                return amount * 30.4375;
-
-            default:
-                return amount;
-        }
-    }
-
-    /* =========================================================
+    /* ============================================================
        FINANCIAL HEALTH
-       ========================================================= */
+       ============================================================ */
 
     function calculateFinancialHealth() {
-        const monthly =
-            calculateTotals(
-                getPeriodTransactions(
-                    "month"
-                )
-            );
+        const month = calculateTotals(
+            getPeriodTransactions("month")
+        );
 
-        const income =
-            monthly.income;
+        const income = month.income;
+        const expenses = month.expenses;
 
-        const expenses =
-            monthly.expenses;
-
-        /* 35 points — spending control */
         let incomeFactor = 0;
 
         if (income > 0) {
-            const ratio =
-                expenses / income;
-
-            if (ratio <= 0.5)
-                incomeFactor = 35;
-            else if (ratio <= 0.7)
-                incomeFactor = 30;
-            else if (ratio <= 0.85)
-                incomeFactor = 24;
-            else if (ratio <= 1)
-                incomeFactor = 15;
-            else
-                incomeFactor = 5;
+            incomeFactor = clamp(
+                ((income - expenses) / income) * 100,
+                0,
+                100
+            );
         }
 
-        /* 25 points — budget */
-        let budgetFactor = 12;
+        const monthlyBudget = getMonthlyBudget();
 
-        const budget =
-            getMonthlyBudget();
+        let budgetFactor = 70;
 
-        if (budget > 0) {
-            const usage =
-                expenses / budget;
-
-            if (usage <= 0.6)
-                budgetFactor = 25;
-            else if (usage <= 0.8)
-                budgetFactor = 21;
-            else if (usage <= 1)
-                budgetFactor = 15;
-            else
-                budgetFactor = 5;
+        if (monthlyBudget > 0) {
+            budgetFactor = clamp(
+                ((monthlyBudget - expenses) /
+                    monthlyBudget) *
+                    100 +
+                    30,
+                0,
+                100
+            );
         }
 
-        /* 25 points — savings */
-        const savingsRate =
-            income > 0
-                ? ((income - expenses) /
-                      income) *
-                  100
-                : 0;
+        const goals = getSavingsGoals();
 
-        let savingsFactor = 3;
-
-        if (savingsRate >= 30)
-            savingsFactor = 25;
-        else if (savingsRate >= 20)
-            savingsFactor = 22;
-        else if (savingsRate >= 10)
-            savingsFactor = 16;
-        else if (savingsRate > 0)
-            savingsFactor = 10;
-
-        /* 15 points — recurring */
-        let recurringFactor = 15;
-
-        const recurring =
-            getRecurringTransactions();
-
-        const recurringExpenses =
-            recurring
-                .filter(
-                    (item) =>
-                        item.type ===
-                        "expense"
-                )
-                .reduce(
-                    (sum, item) =>
-                        sum +
-                        monthlyRecurringAmount(
-                            item
-                        ),
-                    0
-                );
+        let savingsFactor = 35;
 
         if (income > 0) {
-            const ratio =
-                recurringExpenses /
-                income;
+            const savingsRate =
+                ((income - expenses) / income) * 100;
 
-            if (ratio > 0.5)
-                recurringFactor = 4;
-            else if (ratio > 0.3)
-                recurringFactor = 8;
-            else if (ratio > 0.2)
-                recurringFactor = 12;
+            savingsFactor = clamp(
+                savingsRate * 4,
+                0,
+                100
+            );
         }
 
-        const score = Math.max(
-            0,
-            Math.min(
-                100,
-                Math.round(
-                    incomeFactor +
-                        budgetFactor +
-                        savingsFactor +
-                        recurringFactor
-                )
-            )
+        const recurring = getRecurringTransactions()
+            .filter(item => item.active);
+
+        const recurringMonthly = recurring.reduce(
+            (sum, item) => {
+                const amount = number(item.amount);
+
+                if (item.type === "income") {
+                    return sum;
+                }
+
+                if (item.frequency === "weekly") {
+                    return sum + amount * 4.33;
+                }
+
+                if (item.frequency === "yearly") {
+                    return sum + amount / 12;
+                }
+
+                return sum + amount;
+            },
+            0
+        );
+
+        let recurringFactor = 100;
+
+        if (income > 0) {
+            recurringFactor = clamp(
+                100 - (recurringMonthly / income) * 100,
+                0,
+                100
+            );
+        }
+
+        const score = Math.round(
+            incomeFactor * 0.35 +
+            budgetFactor * 0.25 +
+            savingsFactor * 0.25 +
+            recurringFactor * 0.15
         );
 
         let status = "Needs attention";
-        let message =
-            "Your financial picture needs some attention.";
 
         if (score >= 85) {
             status = "Excellent";
-            message =
-                "Excellent work. Your financial habits are strong.";
         } else if (score >= 70) {
             status = "Healthy";
-            message =
-                "You're on a healthy financial path. Keep building consistency.";
         } else if (score >= 50) {
             status = "Fair";
+        }
+
+        let message =
+            "Your finances have room for improvement.";
+
+        if (score >= 85) {
             message =
-                "You're making progress, but there are areas you can improve.";
+                "You're managing your money exceptionally well.";
+        } else if (score >= 70) {
+            message =
+                "Your financial foundation looks healthy.";
+        } else if (score >= 50) {
+            message =
+                "You're on the right path, but a few improvements could make a big difference.";
         }
 
         return {
             score,
             status,
             message,
-            savingsRate,
-            incomeFactor,
-            budgetFactor,
-            savingsFactor,
-            recurringFactor
+            factors: {
+                income: Math.round(incomeFactor),
+                budget: Math.round(budgetFactor),
+                savings: Math.round(savingsFactor),
+                recurring: Math.round(recurringFactor)
+            }
         };
     }
 
-    /* =========================================================
-       SMART ALERTS
-       ========================================================= */
+    /* ============================================================
+       SAFE TO SPEND
+       ============================================================ */
+
+    function getSafeToSpend() {
+        const month = calculateTotals(
+            getPeriodTransactions("month")
+        );
+
+        const income = month.income;
+        const expenses = month.expenses;
+
+        const recurring = getRecurringTransactions()
+            .filter(item => item.active && item.type === "expense")
+            .reduce((sum, item) => {
+                if (item.frequency === "weekly") {
+                    return sum + item.amount * 4.33;
+                }
+
+                if (item.frequency === "yearly") {
+                    return sum + item.amount / 12;
+                }
+
+                return sum + item.amount;
+            }, 0);
+
+        const goals = getSavingsGoals();
+
+        const goalMonthly = goals.reduce((sum, goal) => {
+            if (!goal.deadline || goal.target <= goal.current) {
+                return sum;
+            }
+
+            const months = Math.max(
+                1,
+                daysBetween(
+                    todayString(),
+                    goal.deadline
+                ) / 30
+            );
+
+            return (
+                sum +
+                (goal.target - goal.current) / months
+            );
+        }, 0);
+
+        const budget = getMonthlyBudget();
+
+        const budgetRemaining =
+            budget > 0
+                ? Math.max(0, budget - expenses)
+                : Infinity;
+
+        const cashAvailable =
+            income -
+            expenses -
+            recurring -
+            goalMonthly;
+
+        const safe = Math.max(
+            0,
+            Math.min(
+                cashAvailable,
+                budgetRemaining
+            )
+        );
+
+        return {
+            safeToSpend: Number.isFinite(safe)
+                ? safe
+                : Math.max(0, cashAvailable),
+            income,
+            expenses,
+            recurring,
+            goalMonthly,
+            budgetRemaining:
+                Number.isFinite(budgetRemaining)
+                    ? budgetRemaining
+                    : null
+        };
+    }
+
+    /* ============================================================
+       SMART INSIGHTS
+       ============================================================ */
+
+    function generateInsight() {
+        const month = calculateTotals(
+            getPeriodTransactions("month")
+        );
+
+        const income = month.income;
+        const expenses = month.expenses;
+
+        if (income === 0 && expenses === 0) {
+            return "Start by adding your income and expenses. MoneyLeak will build your financial picture automatically.";
+        }
+
+        if (expenses > income && income > 0) {
+            return `You're spending ${formatCurrency(
+                expenses - income
+            )} more than your recorded income this month. Reducing discretionary spending should be your priority.`;
+        }
+
+        const budget = getMonthlyBudget();
+
+        if (budget > 0 && expenses >= budget) {
+            return `You've reached your monthly budget of ${formatCurrency(
+                budget
+            )}. Consider pausing non-essential spending.`;
+        }
+
+        if (income > 0) {
+            const rate =
+                ((income - expenses) / income) * 100;
+
+            if (rate >= 30) {
+                return `Excellent month. You're currently keeping about ${rate.toFixed(
+                    0
+                )}% of your recorded income.`;
+            }
+
+            if (rate >= 20) {
+                return `You're saving about ${rate.toFixed(
+                    0
+                )}% of your income. You're moving in a strong direction.`;
+            }
+
+            if (rate > 0) {
+                return `You're currently keeping about ${rate.toFixed(
+                    0
+                )}% of your income. Try increasing that gradually.`;
+            }
+        }
+
+        return "Your finances are stable. Keep tracking consistently so MoneyLeak can identify stronger patterns.";
+    }
+
+    /* ============================================================
+       ALERT ENGINE
+       ============================================================ */
 
     function generateAlerts() {
         const alerts = [];
 
-        const transactions =
-            getTransactions();
+        const month = calculateTotals(
+            getPeriodTransactions("month")
+        );
 
-        const monthly =
-            calculateTotals(
-                getPeriodTransactions(
-                    "month"
-                )
-            );
-
-        const budget =
-            getMonthlyBudget();
-
-        if (!transactions.length) {
+        if (
+            month.income === 0 &&
+            month.expenses === 0
+        ) {
             alerts.push({
+                id: "no-activity",
                 type: "info",
                 title: "Start tracking",
                 message:
-                    "Add your first income or expense to begin understanding your money."
+                    "Add your first income or expense to unlock MoneyLeak Intelligence."
             });
         }
 
         if (
-            monthly.income > 0 &&
-            monthly.expenses >
-                monthly.income
+            month.expenses > month.income &&
+            month.income > 0
         ) {
             alerts.push({
-                type: "danger",
-                title:
-                    "Spending is above income",
+                id: "spending-over-income",
+                type: "critical",
+                title: "Spending exceeds income",
                 message:
-                    "Your expenses are higher than your income this month."
+                    "Your expenses are currently higher than your recorded income this month."
             });
         }
 
-        if (
-            budget > 0 &&
-            monthly.expenses > budget
-        ) {
-            alerts.push({
-                type: "danger",
-                title: "Budget exceeded",
-                message:
-                    `You're ${money(
-                        monthly.expenses -
-                            budget
-                    )} over your monthly budget.`
-            });
-        } else if (
-            budget > 0 &&
-            monthly.expenses /
-                budget >=
-                0.8
-        ) {
-            alerts.push({
-                type: "warning",
-                title:
-                    "Budget almost reached",
-                message:
-                    "You've used more than 80% of your monthly budget."
-            });
-        }
+        const budget = getMonthlyBudget();
 
-        const savingsRate =
-            monthly.income > 0
-                ? ((monthly.income -
-                    monthly.expenses) /
-                    monthly.income) *
-                  100
-                : 0;
+        if (budget > 0) {
+            const percent =
+                (month.expenses / budget) * 100;
 
-        if (savingsRate >= 20) {
-            alerts.push({
-                type: "success",
-                title:
-                    "Healthy savings rate",
-                message:
-                    `You're saving approximately ${Math.round(
-                        savingsRate
-                    )}% of recorded income.`
-            });
-        }
-
-        if (
-            monthly.income > 0 &&
-            savingsRate <= 0
-        ) {
-            alerts.push({
-                type: "warning",
-                title:
-                    "Cash flow needs attention",
-                message:
-                    "Your expenses are currently consuming all or more than your recorded income."
-            });
-        }
-
-        const categoryBudgets =
-            getCategoryBudgets();
-
-        const monthTransactions =
-            getPeriodTransactions(
-                "month"
-            );
-
-        Object.keys(
-            categoryBudgets
-        ).forEach((category) => {
-            const limit =
-                num(
-                    categoryBudgets[
-                        category
-                    ]
-                );
-
-            const spent =
-                getCategorySpending(
-                    category,
-                    monthTransactions
-                );
-
-            if (
-                limit > 0 &&
-                spent > limit
-            ) {
+            if (percent >= 100) {
                 alerts.push({
-                    type: "danger",
-                    title:
-                        `${category} budget exceeded`,
+                    id: "budget-over",
+                    type: "critical",
+                    title: "Budget exceeded",
                     message:
-                        `${category} is ${money(
-                            spent - limit
-                        )} over its budget.`
+                        "You've exceeded your monthly budget."
+                });
+            } else if (percent >= 80) {
+                alerts.push({
+                    id: "budget-warning",
+                    type: "warning",
+                    title: "Budget warning",
+                    message: `You've used ${percent.toFixed(
+                        0
+                    )}% of your monthly budget.`
+                });
+            }
+        }
+
+        const goals = getSavingsGoals();
+
+        goals.forEach(goal => {
+            const progress = goalProgress(goal);
+
+            if (progress >= 100) {
+                alerts.push({
+                    id: `goal-${goal.id}-complete`,
+                    type: "success",
+                    title: "Goal completed 🎉",
+                    message: `${goal.name} has reached its target.`
+                });
+            } else if (progress >= 75) {
+                alerts.push({
+                    id: `goal-${goal.id}-milestone`,
+                    type: "success",
+                    title: "Savings milestone",
+                    message: `${goal.name} is ${progress.toFixed(
+                        0
+                    )}% complete.`
                 });
             }
         });
 
-        const recurring =
-            getRecurringTransactions();
-
-        const recurringExpenses =
-            recurring
-                .filter(
-                    (item) =>
-                        item.type ===
-                        "expense"
-                )
-                .reduce(
-                    (sum, item) =>
-                        sum +
-                        monthlyRecurringAmount(
-                            item
-                        ),
-                    0
-                );
-
-        if (
-            monthly.income > 0 &&
-            recurringExpenses /
-                monthly.income >
-                0.3
-        ) {
-            alerts.push({
-                type: "warning",
-                title:
-                    "Recurring costs are high",
-                message:
-                    "Recurring commitments are using a large part of your income."
-            });
-        }
-
-        const health =
-            calculateFinancialHealth();
+        const health = calculateFinancialHealth();
 
         if (health.score >= 85) {
             alerts.push({
+                id: "health-excellent",
                 type: "success",
-                title:
-                    "Financial health is excellent",
+                title: "Financial health is excellent",
                 message:
-                    "Your current money habits are looking strong."
+                    "You're building a strong financial foundation."
             });
         }
 
-        return alerts.slice(0, 10);
+        return alerts;
     }
 
-    /* =========================================================
-       DOM HELPERS
-       ========================================================= */
+    function getAlerts() {
+        return generateAlerts();
+    }
 
-    function text(idValue, value) {
-        const element =
+    /* ============================================================
+       SEARCH
+       ============================================================ */
+
+    function searchMoneyLeak(query) {
+        const q = String(query || "")
+            .trim()
+            .toLowerCase();
+
+        if (!q) {
+            return [];
+        }
+
+        const pages = [
+            {
+                name: "Dashboard",
+                url: "index.html",
+                keywords: "dashboard home overview money"
+            },
+            {
+                name: "Income",
+                url: "income.html",
+                keywords: "income salary earnings money received"
+            },
+            {
+                name: "Expenses",
+                url: "expenses.html",
+                keywords: "expenses spending transactions"
+            },
+            {
+                name: "Savings Goals",
+                url: "savings.html",
+                keywords: "savings goals target"
+            },
+            {
+                name: "Budgets",
+                url: "budgets.html",
+                keywords: "budget limits spending"
+            },
+            {
+                name: "Recurring",
+                url: "recurring.html",
+                keywords: "recurring bills subscriptions"
+            },
+            {
+                name: "Analytics",
+                url: "analytics.html",
+                keywords: "analytics reports charts trends"
+            },
+            {
+                name: "Settings",
+                url: "settings.html",
+                keywords: "settings preferences profile"
+            }
+        ];
+
+        const pageResults = pages
+            .filter(page =>
+                `${page.name} ${page.keywords}`
+                    .toLowerCase()
+                    .includes(q)
+            )
+            .map(page => ({
+                ...page,
+                resultType: "page"
+            }));
+
+        const transactionResults = getTransactions()
+            .filter(transaction => {
+                const text = [
+                    transaction.description,
+                    transaction.category,
+                    transaction.note,
+                    transaction.type
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+                return text.includes(q);
+            })
+            .slice(0, 20)
+            .map(transaction => ({
+                ...transaction,
+                resultType: "transaction"
+            }));
+
+        return [
+            ...pageResults,
+            ...transactionResults
+        ];
+    }
+
+    /* ============================================================
+       VOICE ASSISTANT
+       ============================================================ */
+
+    let recognition = null;
+    let assistantListening = false;
+    let pendingVoiceAction = null;
+
+    function supportsSpeechRecognition() {
+        return Boolean(
+            window.SpeechRecognition ||
+            window.webkitSpeechRecognition
+        );
+    }
+
+    function supportsSpeechSynthesis() {
+        return "speechSynthesis" in window;
+    }
+
+    function speak(text) {
+        if (!supportsSpeechSynthesis()) {
+            return;
+        }
+
+        window.speechSynthesis.cancel();
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        const settings = getSettings();
+
+        utterance.rate =
+            number(settings.voiceRate) || 1;
+
+        utterance.pitch =
+            number(settings.voicePitch) || 1;
+
+        utterance.lang = "en-NG";
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function createAssistantUI() {
+        if (!getSettings().voiceAssistant) {
+            return;
+        }
+
+        if (document.getElementById("moneyLeakAssistant")) {
+            return;
+        }
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.id = "moneyLeakAssistant";
+
+        wrapper.innerHTML = `
+            <button
+                id="moneyLeakVoiceButton"
+                type="button"
+                aria-label="Open MoneyLeak AI Assistant"
+                title="MoneyLeak AI"
+            >
+                <span class="ml-voice-icon">🎙️</span>
+                <span class="ml-voice-label">MoneyLeak AI</span>
+            </button>
+
+            <div
+                id="moneyLeakVoicePanel"
+                class="ml-voice-panel"
+                hidden
+                aria-hidden="true"
+            >
+                <div class="ml-voice-header">
+                    <div>
+                        <small>MoneyLeak Intelligence</small>
+                        <strong>AI Assistant</strong>
+                    </div>
+
+                    <button
+                        id="moneyLeakVoiceClose"
+                        type="button"
+                        aria-label="Close"
+                    >×</button>
+                </div>
+
+                <div
+                    id="moneyLeakVoiceStatus"
+                    class="ml-voice-status"
+                >
+                    Tap the microphone and tell me what you need.
+                </div>
+
+                <div
+                    id="moneyLeakVoiceTranscript"
+                    class="ml-voice-transcript"
+                >
+                    <span>Try saying:</span>
+                    <strong>
+                        "How much did I spend this month?"
+                    </strong>
+                </div>
+
+                <button
+                    id="moneyLeakStartListening"
+                    class="ml-voice-listen"
+                    type="button"
+                >
+                    <span>🎙️</span>
+                    Start listening
+                </button>
+
+                <div class="ml-voice-examples">
+                    <button type="button" data-voice-example="Add ₦5,000 for food">
+                        Add expense
+                    </button>
+
+                    <button type="button" data-voice-example="How much did I spend this month?">
+                        Check spending
+                    </button>
+
+                    <button type="button" data-voice-example="How healthy are my finances?">
+                        Financial health
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(wrapper);
+
+        const button =
             document.getElementById(
-                idValue
+                "moneyLeakVoiceButton"
             );
 
-        if (element) {
-            element.textContent =
-                value;
+        const panel =
+            document.getElementById(
+                "moneyLeakVoicePanel"
+            );
+
+        const close =
+            document.getElementById(
+                "moneyLeakVoiceClose"
+            );
+
+        const listen =
+            document.getElementById(
+                "moneyLeakStartListening"
+            );
+
+        button?.addEventListener("click", () => {
+            panel.hidden = false;
+            panel.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+        });
+
+        close?.addEventListener("click", () => {
+            stopListening();
+
+            panel.hidden = true;
+
+            panel.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+        });
+
+        listen?.addEventListener(
+            "click",
+            startListening
+        );
+
+        document
+            .querySelectorAll("[data-voice-example]")
+            .forEach(example => {
+                example.addEventListener("click", () => {
+                    processAssistantCommand(
+                        example.dataset.voiceExample
+                    );
+                });
+            });
+    }
+
+    function updateAssistantStatus(text) {
+        const status =
+            document.getElementById(
+                "moneyLeakVoiceStatus"
+            );
+
+        if (status) {
+            status.textContent = text;
         }
     }
 
-    function width(
-        idValue,
-        percentage
-    ) {
-        const element =
+    function updateAssistantTranscript(text) {
+        const transcript =
             document.getElementById(
-                idValue
+                "moneyLeakVoiceTranscript"
             );
 
-        if (!element) return;
-
-        element.style.width =
-            Math.max(
-                0,
-                Math.min(
-                    100,
-                    percentage
-                )
-            ) + "%";
+        if (transcript) {
+            transcript.innerHTML =
+                `<strong>${escapeHTML(text)}</strong>`;
+        }
     }
 
-    /* =========================================================
-       DASHBOARD
-       ========================================================= */
-
-    function renderDashboard() {
-        const all =
-            calculateTotals();
-
-        const monthly =
-            calculateTotals(
-                getPeriodTransactions(
-                    "month"
-                )
+    function startListening() {
+        if (!supportsSpeechRecognition()) {
+            updateAssistantStatus(
+                "Voice recognition is not available in this browser. Try Chrome or another supported browser."
             );
+
+            speak(
+                "Voice recognition is not available in this browser."
+            );
+
+            return;
+        }
+
+        const Recognition =
+            window.SpeechRecognition ||
+            window.webkitSpeechRecognition;
+
+        if (!recognition) {
+            recognition = new Recognition();
+
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.lang = "en-NG";
+
+            recognition.onstart = () => {
+                assistantListening = true;
+
+                updateAssistantStatus(
+                    "Listening… tell me what you want MoneyLeak to do."
+                );
+
+                const button =
+                    document.getElementById(
+                        "moneyLeakStartListening"
+                    );
+
+                if (button) {
+                    button.classList.add("listening");
+                    button.innerHTML =
+                        "🔴 Listening…";
+                }
+            };
+
+            recognition.onresult = event => {
+                let transcript = "";
+
+                for (
+                    let i = event.resultIndex;
+                    i < event.results.length;
+                    i++
+                ) {
+                    transcript +=
+                        event.results[i][0].transcript;
+                }
+
+                updateAssistantTranscript(
+                    transcript
+                );
+
+                const result =
+                    event.results[
+                        event.results.length - 1
+                    ];
+
+                if (result.isFinal) {
+                    processAssistantCommand(
+                        transcript
+                    );
+                }
+            };
+
+            recognition.onerror = event => {
+                assistantListening = false;
+
+                updateAssistantStatus(
+                    `Voice error: ${event.error}.`
+                );
+
+                resetListenButton();
+            };
+
+            recognition.onend = () => {
+                assistantListening = false;
+                resetListenButton();
+            };
+        }
+
+        try {
+            recognition.start();
+        } catch {
+            stopListening();
+
+            setTimeout(() => {
+                try {
+                    recognition.start();
+                } catch {}
+            }, 300);
+        }
+    }
+
+    function stopListening() {
+        if (recognition) {
+            try {
+                recognition.stop();
+            } catch {}
+        }
+
+        assistantListening = false;
+
+        resetListenButton();
+    }
+
+    function resetListenButton() {
+        const button =
+            document.getElementById(
+                "moneyLeakStartListening"
+            );
+
+        if (button) {
+            button.classList.remove("listening");
+            button.innerHTML =
+                "<span>🎙️</span> Start listening";
+        }
+    }
+
+    /* ============================================================
+       VOICE COMMAND PARSER
+       ============================================================ */
+
+    function normalizeVoiceText(text) {
+        return String(text || "")
+            .toLowerCase()
+            .replace(/[₦$,]/g, "")
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    function extractAmount(text) {
+        const normalized = normalizeVoiceText(text);
+
+        const patterns = [
+            /(\d+(?:\.\d+)?)\s*(billion|bn)/i,
+            /(\d+(?:\.\d+)?)\s*(million|m)/i,
+            /(\d+(?:\.\d+)?)\s*(thousand|k)/i,
+            /(\d+(?:\.\d+)?)/i
+        ];
+
+        for (const pattern of patterns) {
+            const match =
+                normalized.match(pattern);
+
+            if (!match) {
+                continue;
+            }
+
+            let value = parseFloat(match[1]);
+
+            if (
+                /billion|bn/i.test(match[2] || "")
+            ) {
+                value *= 1000000000;
+            } else if (
+                /million|m/i.test(match[2] || "")
+            ) {
+                value *= 1000000;
+            } else if (
+                /thousand|k/i.test(match[2] || "")
+            ) {
+                value *= 1000;
+            }
+
+            return value;
+        }
+
+        return 0;
+    }
+
+    function detectCategory(text) {
+        const value = normalizeVoiceText(text);
+
+        const map = {
+            food: "Food",
+            grocery: "Food",
+            groceries: "Food",
+            restaurant: "Food",
+            eating: "Food",
+
+            transport: "Transport",
+            transportation: "Transport",
+            fuel: "Transport",
+            petrol: "Transport",
+            uber: "Transport",
+            taxi: "Transport",
+
+            shopping: "Shopping",
+            clothes: "Shopping",
+            clothing: "Shopping",
+
+            rent: "Housing",
+            housing: "Housing",
+
+            electricity: "Utilities",
+            water: "Utilities",
+            utility: "Utilities",
+            utilities: "Utilities",
+
+            subscription: "Subscriptions",
+            subscriptions: "Subscriptions",
+            netflix: "Subscriptions",
+
+            entertainment: "Entertainment",
+            movie: "Entertainment",
+            movies: "Entertainment",
+
+            health: "Health",
+            medicine: "Health",
+            hospital: "Health",
+
+            school: "Education",
+            education: "Education",
+
+            travel: "Travel",
+
+            business: "Business",
+
+            family: "Family"
+        };
+
+        for (const key of Object.keys(map)) {
+            if (value.includes(key)) {
+                return map[key];
+            }
+        }
+
+        return "Other";
+    }
+
+    function extractDate(text) {
+        const value = normalizeVoiceText(text);
+
+        if (value.includes("yesterday")) {
+            const date = new Date();
+            date.setDate(date.getDate() - 1);
+
+            return date.toISOString().slice(0, 10);
+        }
+
+        if (value.includes("tomorrow")) {
+            const date = new Date();
+            date.setDate(date.getDate() + 1);
+
+            return date.toISOString().slice(0, 10);
+        }
+
+        return todayString();
+    }
+
+    function extractDescription(text, type) {
+        let value = String(text || "").trim();
+
+        value = value
+            .replace(
+                /^(add|record|log|save|create)\s+/i,
+                ""
+            )
+            .replace(
+                /^(an?|my)\s+/i,
+                ""
+            )
+            .replace(
+                /₦?\s*\d[\d,]*(?:\.\d+)?\s*(k|thousand|m|million|bn|billion)?/i,
+                ""
+            )
+            .replace(
+                /\b(today|yesterday|tomorrow)\b/gi,
+                ""
+            )
+            .replace(
+                /\b(for|on|as)\b\s*$/i,
+                ""
+            )
+            .trim();
+
+        if (!value) {
+            return type === "income"
+                ? "Income"
+                : "Expense";
+        }
+
+        return value
+            .replace(/\s+/g, " ")
+            .slice(0, 80);
+    }
+
+    function parseVoiceCommand(text) {
+        const original = String(text || "").trim();
+        const value = normalizeVoiceText(original);
+
+        if (!value) {
+            return {
+                action: "unknown"
+            };
+        }
+
+        /* NAVIGATION */
+
+        const navigation = [
+            ["dashboard", "index.html"],
+            ["home", "index.html"],
+            ["income", "income.html"],
+            ["expenses", "expenses.html"],
+            ["spending", "expenses.html"],
+            ["savings", "savings.html"],
+            ["goals", "savings.html"],
+            ["budget", "budgets.html"],
+            ["budgets", "budgets.html"],
+            ["recurring", "recurring.html"],
+            ["analytics", "analytics.html"],
+            ["reports", "analytics.html"],
+            ["settings", "settings.html"]
+        ];
+
+        if (
+            value.startsWith("open ") ||
+            value.startsWith("show me my ")
+        ) {
+            for (const [keyword, url] of navigation) {
+                if (value.includes(keyword)) {
+                    return {
+                        action: "navigate",
+                        url,
+                        name: keyword
+                    };
+                }
+            }
+        }
+
+        /* FINANCIAL QUESTIONS */
+
+        if (
+            value.includes("financial health") ||
+            value.includes("how healthy") ||
+            value.includes("health score")
+        ) {
+            return {
+                action: "financialHealth"
+            };
+        }
+
+        if (
+            value.includes("safe to spend") ||
+            value.includes("can i afford")
+        ) {
+            return {
+                action: "safeToSpend"
+            };
+        }
+
+        if (
+            value.includes("how much did i spend") ||
+            value.includes("how much have i spent") ||
+            value.includes("my spending this month")
+        ) {
+            return {
+                action: "monthSpending"
+            };
+        }
+
+        if (
+            value.includes("how much did i earn") ||
+            value.includes("how much income") ||
+            value.includes("income this month")
+        ) {
+            return {
+                action: "monthIncome"
+            };
+        }
+
+        if (
+            value.includes("biggest expense") ||
+            value.includes("largest expense")
+        ) {
+            return {
+                action: "largestExpense"
+            };
+        }
+
+        if (
+            value.includes("where am i spending") ||
+            value.includes("where do i spend") ||
+            value.includes("spending most")
+        ) {
+            return {
+                action: "topCategory"
+            };
+        }
+
+        if (
+            value.includes("give me advice") ||
+            value.includes("financial advice") ||
+            value.includes("how can i save") ||
+            value.includes("how do i save")
+        ) {
+            return {
+                action: "advice"
+            };
+        }
+
+        /* DELETE */
+
+        if (
+            value.includes("delete my last expense") ||
+            value.includes("remove my last expense")
+        ) {
+            return {
+                action: "deleteLastExpense"
+            };
+        }
+
+        /* BUDGET */
+
+        if (
+            value.includes("set my monthly budget") ||
+            value.includes("set monthly budget") ||
+            value.includes("my monthly budget")
+        ) {
+            const amount =
+                extractAmount(original);
+
+            return {
+                action: "setBudget",
+                amount
+            };
+        }
+
+        /* SAVINGS GOAL */
+
+        if (
+            value.includes("create a savings goal") ||
+            value.includes("create savings goal") ||
+            value.includes("new savings goal")
+        ) {
+            const amount =
+                extractAmount(original);
+
+            let name = original
+                .replace(
+                    /create\s+(a\s+)?savings\s+goal/i,
+                    ""
+                )
+                .replace(
+                    /of\s+₦?\s*[\d,]+/i,
+                    ""
+                )
+                .replace(
+                    /for\s+₦?\s*[\d,]+/i,
+                    ""
+                )
+                .trim();
+
+            if (!name) {
+                name = "New Savings Goal";
+            }
+
+            return {
+                action: "createGoal",
+                amount,
+                name
+            };
+        }
+
+        /* INCOME */
+
+        if (
+            value.startsWith("add income") ||
+            value.startsWith("record income") ||
+            value.startsWith("log income") ||
+            value.includes("received income") ||
+            value.includes("received salary")
+        ) {
+            return {
+                action: "addIncome",
+                amount: extractAmount(original),
+                description:
+                    extractDescription(
+                        original,
+                        "income"
+                    ),
+                source: detectIncomeSource(original),
+                date: extractDate(original)
+            };
+        }
+
+        /* EXPENSE */
+
+        if (
+            value.startsWith("add ") ||
+            value.startsWith("record ") ||
+            value.startsWith("log ") ||
+            value.includes("i spent ") ||
+            value.includes("i paid ") ||
+            value.includes("i bought ")
+        ) {
+            const amount =
+                extractAmount(original);
+
+            if (amount > 0) {
+                return {
+                    action: "addExpense",
+                    amount,
+                    category:
+                        detectCategory(original),
+                    description:
+                        extractDescription(
+                            original,
+                            "expense"
+                        ),
+                    date: extractDate(original)
+                };
+            }
+        }
+
+        return {
+            action: "unknown",
+            original
+        };
+    }
+
+    function detectIncomeSource(text) {
+        const value = normalizeVoiceText(text);
+
+        for (const source of INCOME_SOURCES) {
+            if (
+                value.includes(
+                    source.toLowerCase()
+                )
+            ) {
+                return source;
+            }
+        }
+
+        if (value.includes("salary")) {
+            return "Salary";
+        }
+
+        if (
+            value.includes("freelance") ||
+            value.includes("freelancing")
+        ) {
+            return "Freelance";
+        }
+
+        if (value.includes("business")) {
+            return "Business";
+        }
+
+        return "Other";
+    }
+
+    /* ============================================================
+       ASSISTANT ACTION EXECUTION
+       ============================================================ */
+
+    function processAssistantCommand(text) {
+        updateAssistantTranscript(text);
+        updateAssistantStatus("Thinking…");
+
+        const command =
+            parseVoiceCommand(text);
+
+        executeAssistantCommand(command);
+    }
+
+    function executeAssistantCommand(command) {
+        switch (command.action) {
+            case "addExpense":
+                executeAddExpense(command);
+                break;
+
+            case "addIncome":
+                executeAddIncome(command);
+                break;
+
+            case "setBudget":
+                executeSetBudget(command);
+                break;
+
+            case "createGoal":
+                executeCreateGoal(command);
+                break;
+
+            case "financialHealth":
+                executeHealthCommand();
+                break;
+
+            case "safeToSpend":
+                executeSafeToSpend();
+                break;
+
+            case "monthSpending":
+                executeMonthSpending();
+                break;
+
+            case "monthIncome":
+                executeMonthIncome();
+                break;
+
+            case "largestExpense":
+                executeLargestExpense();
+                break;
+
+            case "topCategory":
+                executeTopCategory();
+                break;
+
+            case "advice":
+                executeAdvice();
+                break;
+
+            case "deleteLastExpense":
+                executeDeleteLastExpense();
+                break;
+
+            case "navigate":
+                executeNavigation(command);
+                break;
+
+            default:
+                executeUnknown(command);
+        }
+    }
+
+    function assistantConfirm(message, action) {
+        pendingVoiceAction = action;
+
+        updateAssistantStatus(
+            `${message} Say "yes" to confirm or "cancel" to stop.`
+        );
+
+        speak(
+            `${message}. Say yes to confirm or cancel to stop.`
+        );
+    }
+
+    function executeAddExpense(command) {
+        if (!command.amount) {
+            const message =
+                "I couldn't find the amount. Try saying something like: add 5000 for food.";
+
+            updateAssistantStatus(message);
+            speak(message);
+            return;
+        }
+
+        const description =
+            command.description || "Expense";
+
+        const message =
+            `I found a ${formatCurrency(
+                command.amount
+            )} ${command.category.toLowerCase()} expense for ${description}.`;
+
+        assistantConfirm(message, () => {
+            const transaction =
+                addTransaction({
+                    amount: command.amount,
+                    type: "expense",
+                    category: command.category,
+                    description,
+                    date: command.date
+                });
+
+            const response =
+                `Done. I added ${formatCurrency(
+                    transaction.amount
+                )} for ${transaction.description}.`;
+
+            updateAssistantStatus(response);
+            speak(response);
+        });
+    }
+
+    function executeAddIncome(command) {
+        if (!command.amount) {
+            const message =
+                "I couldn't find the income amount.";
+
+            updateAssistantStatus(message);
+            speak(message);
+            return;
+        }
+
+        const message =
+            `I found ${formatCurrency(
+                command.amount
+            )} of ${command.source} income.`;
+
+        assistantConfirm(message, () => {
+            const transaction =
+                addTransaction({
+                    amount: command.amount,
+                    type: "income",
+                    category: command.source,
+                    description:
+                        command.description ||
+                        command.source,
+                    date: command.date
+                });
+
+            const response =
+                `Done. I added ${formatCurrency(
+                    transaction.amount
+                )} of income.`;
+
+            updateAssistantStatus(response);
+            speak(response);
+        });
+    }
+
+    function executeSetBudget(command) {
+        if (!command.amount) {
+            const message =
+                "Tell me the amount for your monthly budget.";
+
+            updateAssistantStatus(message);
+            speak(message);
+            return;
+        }
+
+        const message =
+            `Set your monthly budget to ${formatCurrency(
+                command.amount
+            )}?`;
+
+        assistantConfirm(message, () => {
+            setMonthlyBudget(command.amount);
+
+            const response =
+                `Done. Your monthly budget is now ${formatCurrency(
+                    command.amount
+                )}.`;
+
+            updateAssistantStatus(response);
+            speak(response);
+        });
+    }
+
+    function executeCreateGoal(command) {
+        if (!command.amount) {
+            const message =
+                "Tell me the target amount for the savings goal.";
+
+            updateAssistantStatus(message);
+            speak(message);
+            return;
+        }
+
+        const message =
+            `Create a savings goal called ${command.name} with a target of ${formatCurrency(
+                command.amount
+            )}?`;
+
+        assistantConfirm(message, () => {
+            const goal =
+                addSavingsGoal({
+                    name: command.name,
+                    target: command.amount,
+                    current: 0
+                });
+
+            const response =
+                `Done. I created your ${goal.name} savings goal.`;
+
+            updateAssistantStatus(response);
+            speak(response);
+        });
+    }
+
+    function executeHealthCommand() {
+        const health =
+            calculateFinancialHealth();
+
+        const response =
+            `Your MoneyLeak financial health score is ${health.score} out of 100. ${health.message}`;
+
+        updateAssistantStatus(response);
+        speak(response);
+    }
+
+    function executeSafeToSpend() {
+        const safe =
+            getSafeToSpend();
+
+        const response =
+            `Your estimated safe to spend amount this month is ${formatCurrency(
+                safe.safeToSpend
+            )}.`;
+
+        updateAssistantStatus(response);
+        speak(response);
+    }
+
+    function executeMonthSpending() {
+        const totals =
+            calculateTotals(
+                getPeriodTransactions("month")
+            );
+
+        const response =
+            `You've spent ${formatCurrency(
+                totals.expenses
+            )} this month.`;
+
+        updateAssistantStatus(response);
+        speak(response);
+    }
+
+    function executeMonthIncome() {
+        const totals =
+            calculateTotals(
+                getPeriodTransactions("month")
+            );
+
+        const response =
+            `You've recorded ${formatCurrency(
+                totals.income
+            )} of income this month.`;
+
+        updateAssistantStatus(response);
+        speak(response);
+    }
+
+    function executeLargestExpense() {
+        const expenses =
+            getExpenseTransactions();
+
+        if (!expenses.length) {
+            const response =
+                "You don't have any expenses recorded yet.";
+
+            updateAssistantStatus(response);
+            speak(response);
+            return;
+        }
+
+        const largest =
+            expenses.reduce(
+                (max, item) =>
+                    item.amount > max.amount
+                        ? item
+                        : max
+            );
+
+        const response =
+            `Your largest recorded expense is ${formatCurrency(
+                largest.amount
+            )} for ${largest.description}.`;
+
+        updateAssistantStatus(response);
+        speak(response);
+    }
+
+    function executeTopCategory() {
+        const expenses =
+            getPeriodTransactions("month")
+                .filter(
+                    transaction =>
+                        transaction.type ===
+                        "expense"
+                );
+
+        if (!expenses.length) {
+            const response =
+                "You don't have enough spending data yet.";
+
+            updateAssistantStatus(response);
+            speak(response);
+            return;
+        }
+
+        const totals = {};
+
+        expenses.forEach(transaction => {
+            totals[transaction.category] =
+                (totals[transaction.category] || 0) +
+                transaction.amount;
+        });
+
+        const top =
+            Object.entries(totals)
+                .sort((a, b) => b[1] - a[1])[0];
+
+        const response =
+            `Your biggest spending category this month is ${top[0]}, at ${formatCurrency(
+                top[1]
+            )}.`;
+
+        updateAssistantStatus(response);
+        speak(response);
+    }
+
+    function executeAdvice() {
+        const insight =
+            generateInsight();
+
+        updateAssistantStatus(insight);
+        speak(insight);
+    }
+
+    function executeDeleteLastExpense() {
+        const expense =
+            getExpenseTransactions()[0];
+
+        if (!expense) {
+            const response =
+                "You don't have any expenses to delete.";
+
+            updateAssistantStatus(response);
+            speak(response);
+            return;
+        }
+
+        const message =
+            `Delete your latest expense of ${formatCurrency(
+                expense.amount
+            )} for ${expense.description}?`;
+
+        assistantConfirm(message, () => {
+            deleteTransaction(expense.id);
+
+            const response =
+                "Done. The latest expense has been deleted.";
+
+            updateAssistantStatus(response);
+            speak(response);
+        });
+    }
+
+    function executeNavigation(command) {
+        const response =
+            `Opening ${command.name}.`;
+
+        updateAssistantStatus(response);
+        speak(response);
+
+        setTimeout(() => {
+            window.location.href =
+                command.url;
+        }, 500);
+    }
+
+    function executeUnknown(command) {
+        const response =
+            `I didn't fully understand that. Try asking about your spending, income, budget, savings goals, financial health, or say something like "add 5000 for food".`;
+
+        updateAssistantStatus(response);
+        speak(response);
+    }
+
+    function handleVoiceConfirmation(text) {
+        const value =
+            normalizeVoiceText(text);
+
+        if (!pendingVoiceAction) {
+            return false;
+        }
+
+        if (
+            value === "yes" ||
+            value === "yeah" ||
+            value === "yep" ||
+            value === "confirm" ||
+            value === "do it"
+        ) {
+            const action =
+                pendingVoiceAction;
+
+            pendingVoiceAction = null;
+
+            action();
+
+            return true;
+        }
+
+        if (
+            value === "no" ||
+            value === "cancel" ||
+            value === "stop"
+        ) {
+            pendingVoiceAction = null;
+
+            const response =
+                "Okay. I cancelled that action.";
+
+            updateAssistantStatus(response);
+            speak(response);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /* ============================================================
+       DASHBOARD
+       ============================================================ */
+
+    function setText(id, value) {
+        const el =
+            document.getElementById(id);
+
+        if (el) {
+            el.textContent = value;
+        }
+    }
+
+    function setWidth(id, percentage) {
+        const el =
+            document.getElementById(id);
+
+        if (el) {
+            el.style.width =
+                `${clamp(number(percentage), 0, 100)}%`;
+        }
+    }
+
+    function updateDashboard() {
+        const month =
+            calculateTotals(
+                getPeriodTransactions("month")
+            );
+
+        const all =
+            calculateTotals(
+                getTransactions()
+            );
+
+        const savingsRate =
+            month.income > 0
+                ? ((month.income -
+                    month.expenses) /
+                    month.income) *
+                  100
+                : 0;
 
         const goals =
             getSavingsGoals();
@@ -1378,16 +2384,14 @@
         const target =
             goals.reduce(
                 (sum, goal) =>
-                    sum +
-                    num(goal.target),
+                    sum + number(goal.target),
                 0
             );
 
         const saved =
             goals.reduce(
                 (sum, goal) =>
-                    sum +
-                    num(goal.current),
+                    sum + number(goal.current),
                 0
             );
 
@@ -1396,1517 +2400,825 @@
                 ? (saved / target) * 100
                 : 0;
 
-        const savingsRate =
-            monthly.income > 0
-                ? ((monthly.income -
-                    monthly.expenses) /
-                    monthly.income) *
-                  100
-                : 0;
-
         const health =
             calculateFinancialHealth();
 
-        text(
+        setText(
             "overviewBalance",
-            money(all.balance)
+            displayCurrency(all.balance)
         );
 
-        text(
+        setText(
             "overviewIncome",
-            money(monthly.income)
+            displayCurrency(month.income)
         );
 
-        text(
+        setText(
             "overviewExpenses",
-            money(monthly.expenses)
+            displayCurrency(month.expenses)
         );
 
-        text(
+        setText(
             "overviewSavingsRate",
             `${Math.max(
                 0,
-                Math.round(savingsRate)
-            )}%`
+                savingsRate
+            ).toFixed(0)}%`
         );
 
-        text(
+        setText(
             "overviewGoalProgress",
-            `${Math.round(
-                goalProgress
-            )}%`
+            `${goalProgress.toFixed(0)}%`
         );
 
-        width(
+        setWidth(
             "overviewGoalFill",
             goalProgress
         );
 
-        text(
-            "overviewGoalStatus",
-            goals.length
-                ? `${goals.length} active goal${
-                      goals.length === 1
-                          ? ""
-                          : "s"
-                  }`
-                : "No goals yet"
-        );
-
-        text(
+        setText(
             "overviewHealthScore",
             health.score
         );
 
-        text(
+        setText(
             "overviewHealthStatus",
             health.status
         );
 
-        text(
-            "periodIncome",
-            money(monthly.income)
-        );
-
-        text(
-            "periodExpenses",
-            money(monthly.expenses)
-        );
-
-        text(
-            "periodCashFlow",
-            money(monthly.cashFlow)
-        );
-
-        text(
-            "cashFlowHealth",
-            monthly.cashFlow >= 0
-                ? "Positive cash flow"
-                : "Negative cash flow"
-        );
-
-        text(
+        setText(
             "healthScore",
             health.score
         );
 
-        width(
+        setWidth(
             "healthFill",
             health.score
         );
 
-        text(
+        setText(
             "healthMessage",
             health.message
         );
 
-        text(
-            "healthExplanation",
-            "Your score combines spending control, budget management, savings behavior and recurring commitments."
-        );
-
-        text(
+        setText(
             "healthIncomeFactor",
-            `${health.incomeFactor}/35`
+            `${health.factors.income}%`
         );
 
-        text(
+        setText(
             "healthBudgetFactor",
-            `${health.budgetFactor}/25`
+            `${health.factors.budget}%`
         );
 
-        text(
+        setText(
             "healthSavingsFactor",
-            `${health.savingsFactor}/25`
+            `${health.factors.savings}%`
         );
 
-        text(
+        setText(
             "healthRecurringFactor",
-            `${health.recurringFactor}/15`
+            `${health.factors.recurring}%`
         );
 
-        width(
+        setWidth(
             "healthIncomeBar",
-            (health.incomeFactor /
-                35) *
-                100
+            health.factors.income
         );
 
-        width(
+        setWidth(
             "healthBudgetBar",
-            (health.budgetFactor /
-                25) *
-                100
+            health.factors.budget
         );
 
-        width(
+        setWidth(
             "healthSavingsBar",
-            (health.savingsFactor /
-                25) *
-                100
+            health.factors.savings
         );
 
-        width(
+        setWidth(
             "healthRecurringBar",
-            (health.recurringFactor /
-                15) *
-                100
+            health.factors.recurring
         );
 
+        setText(
+            "overviewInsightText",
+            generateInsight()
+        );
+
+        setText(
+            "healthExplanation",
+            health.message
+        );
+
+        setText(
+            "healthInsight",
+            generateInsight()
+        );
+
+        updateDashboardBudget();
+        updateRecentTransactions();
+        updateTopSpending();
+        updateDashboardGoals();
+        updateAlerts();
+        updateCashFlowSummary();
+    }
+
+    function updateDashboardBudget() {
         const budget =
             getMonthlyBudget();
 
-        const budgetPercent =
+        const spent =
+            currentMonthExpenses();
+
+        const percent =
             budget > 0
-                ? (monthly.expenses /
-                      budget) *
-                  100
+                ? (spent / budget) * 100
                 : 0;
 
-        text(
+        setText(
             "dashboardBudgetPercent",
-            `${Math.round(
-                budgetPercent
-            )}%`
+            `${percent.toFixed(0)}%`
         );
 
-        width(
+        setWidth(
             "dashboardBudgetFill",
-            budgetPercent
+            percent
         );
 
-        text(
+        setText(
             "dashboardBudgetSpent",
-            money(monthly.expenses)
+            displayCurrency(spent)
         );
 
-        text(
-            "dashboardBudgetLimit",
-            money(budget)
-        );
-
-        text(
+        setText(
             "dashboardBudgetRemaining",
-            money(
-                Math.max(
-                    0,
-                    budget -
-                        monthly.expenses
-                )
+            displayCurrency(
+                Math.max(0, budget - spent)
             )
         );
 
-        text(
-            "dashboardBudgetMessage",
-            !budget
-                ? "Set a monthly budget to start tracking your spending."
-                : budgetPercent > 100
-                ? "You've exceeded your monthly budget."
-                : budgetPercent >= 80
-                ? "You're approaching your budget limit."
-                : "You're within your monthly budget."
+        setText(
+            "dashboardBudgetLimit",
+            displayCurrency(budget)
         );
 
-        renderRecent();
-        renderTopCategories();
-        renderGoals();
-        renderAlerts();
-        renderInsight();
-        renderCashFlow();
+        setText(
+            "budgetUsedDisplay",
+            displayCurrency(spent)
+        );
+
+        setText(
+            "monthlySpentDisplay",
+            displayCurrency(spent)
+        );
+
+        setText(
+            "monthlyBudgetDisplay",
+            displayCurrency(budget)
+        );
     }
 
-    function renderRecent() {
+    function updateRecentTransactions() {
         const container =
             document.getElementById(
                 "recentTransactions"
             );
 
-        if (!container) return;
+        if (!container) {
+            return;
+        }
 
-        const items =
-            getTransactions().slice(
-                0,
-                6
-            );
+        const transactions =
+            getTransactions().slice(0, 8);
 
-        if (!items.length) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <strong>No transactions yet</strong>
-                    <span>Add income or expenses to see them here.</span>
-                </div>
-            `;
+        if (!transactions.length) {
+            container.innerHTML =
+                `<div class="empty-state">
+                    No transactions yet.
+                </div>`;
+
             return;
         }
 
         container.innerHTML =
-            items
-                .map(
-                    (item) => `
-                <div class="transaction-row">
-                    <div class="transaction-icon ${item.type}">
-                        ${
-                            item.type ===
-                            "income"
-                                ? "↗"
-                                : "↘"
-                        }
-                    </div>
+            transactions
+                .map(transaction => `
+                    <div class="transaction-row">
+                        <div>
+                            <strong>
+                                ${escapeHTML(
+                                    transaction.description
+                                )}
+                            </strong>
+                            <small>
+                                ${escapeHTML(
+                                    transaction.category
+                                )}
+                                ·
+                                ${formatShortDate(
+                                    transaction.date
+                                )}
+                            </small>
+                        </div>
 
-                    <div class="transaction-main">
-                        <strong>
-                            ${escape(
-                                item.description
+                        <strong class="${
+                            transaction.type === "income"
+                                ? "income"
+                                : "expense"
+                        }">
+                            ${
+                                transaction.type === "income"
+                                    ? "+"
+                                    : "-"
+                            }${displayCurrency(
+                                transaction.amount
                             )}
                         </strong>
-
-                        <span>
-                            ${escape(
-                                item.category
-                            )}
-                            ·
-                            ${formatShortDate(
-                                item.date
-                            )}
-                        </span>
                     </div>
-
-                    <strong class="transaction-amount ${item.type}">
-                        ${
-                            item.type ===
-                            "income"
-                                ? "+"
-                                : "-"
-                        }${money(
-                            item.amount
-                        )}
-                    </strong>
-                </div>
-            `
-                )
+                `)
                 .join("");
     }
 
-    function renderTopCategories() {
+    function updateTopSpending() {
         const container =
             document.getElementById(
                 "topSpendingCategories"
             );
 
-        if (!container) return;
+        if (!container) {
+            return;
+        }
 
-        const map = {};
+        const totals = {};
 
-        getPeriodTransactions(
-            "month"
-        )
+        getPeriodTransactions("month")
             .filter(
-                (item) =>
-                    item.type ===
+                transaction =>
+                    transaction.type ===
                     "expense"
             )
-            .forEach((item) => {
-                const category =
-                    item.category ||
-                    "Other";
-
-                map[category] =
-                    (map[category] || 0) +
-                    num(item.amount);
+            .forEach(transaction => {
+                totals[transaction.category] =
+                    (totals[transaction.category] ||
+                        0) +
+                    transaction.amount;
             });
 
-        const entries =
-            Object.entries(map)
-                .sort(
-                    (a, b) =>
-                        b[1] - a[1]
-                )
+        const categories =
+            Object.entries(totals)
+                .sort((a, b) => b[1] - a[1])
                 .slice(0, 5);
 
-        if (!entries.length) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <strong>No spending data</strong>
-                    <span>Your top spending categories will appear here.</span>
-                </div>
-            `;
+        if (!categories.length) {
+            container.innerHTML =
+                `<div class="empty-state">
+                    No spending data yet.
+                </div>`;
+
             return;
         }
 
-        const highest =
-            entries[0][1];
-
-        container.innerHTML =
-            entries
-                .map(
-                    ([category, amount]) => `
-                <div class="category-row">
-                    <div class="category-row-top">
-                        <strong>
-                            ${escape(
-                                category
-                            )}
-                        </strong>
-
-                        <span>
-                            ${money(
-                                amount
-                            )}
-                        </span>
-                    </div>
-
-                    <div class="mini-bar">
-                        <span style="width:${(
-                            (amount /
-                                highest) *
-                            100
-                        ).toFixed(1)}%"></span>
-                    </div>
-                </div>
-            `
-                )
-                .join("");
-    }
-
-    function renderGoals() {
-        const container =
-            document.getElementById(
-                "dashboardGoals"
+        const total =
+            categories.reduce(
+                (sum, item) => sum + item[1],
+                0
             );
 
-        if (!container) return;
-
-        const goals =
-            getSavingsGoals().slice(
-                0,
-                3
-            );
-
-        if (!goals.length) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <strong>No savings goals yet</strong>
-                    <span>Create a goal and start building toward it.</span>
-                </div>
-            `;
-            return;
-        }
-
         container.innerHTML =
-            goals
-                .map((goal) => {
-                    const progress =
-                        goalProgress(
-                            goal
-                        );
+            categories
+                .map(([category, amount]) => {
+                    const percent =
+                        total > 0
+                            ? (amount / total) * 100
+                            : 0;
 
                     return `
-                        <div class="goal-row">
-                            <div class="goal-row-top">
+                        <div class="category-row">
+                            <div>
                                 <strong>
-                                    ${escape(
-                                        goal.name
+                                    ${escapeHTML(
+                                        category
                                     )}
                                 </strong>
-
-                                <span>
-                                    ${Math.round(
-                                        progress
-                                    )}%
-                                </span>
+                                <small>
+                                    ${percent.toFixed(
+                                        0
+                                    )}% of top spending
+                                </small>
                             </div>
 
-                            <div class="mini-bar">
-                                <span style="width:${progress}%"></span>
-                            </div>
-
-                            <small>
-                                ${money(
-                                    goal.current
+                            <strong>
+                                ${displayCurrency(
+                                    amount
                                 )}
-                                of
-                                ${money(
-                                    goal.target
-                                )}
-                            </small>
+                            </strong>
                         </div>
                     `;
                 })
                 .join("");
     }
 
-    function renderAlerts() {
+    function updateDashboardGoals() {
+        const container =
+            document.getElementById(
+                "dashboardGoals"
+            );
+
+        if (!container) {
+            return;
+        }
+
+        const goals =
+            getSavingsGoals()
+                .slice(0, 4);
+
+        if (!goals.length) {
+            container.innerHTML =
+                `<div class="empty-state">
+                    Create your first savings goal.
+                </div>`;
+
+            return;
+        }
+
+        container.innerHTML =
+            goals
+                .map(goal => {
+                    const progress =
+                        goalProgress(goal);
+
+                    return `
+                        <div class="goal-row">
+                            <div>
+                                <strong>
+                                    ${escapeHTML(
+                                        goal.name
+                                    )}
+                                </strong>
+
+                                <small>
+                                    ${displayCurrency(
+                                        goal.current
+                                    )}
+                                    /
+                                    ${displayCurrency(
+                                        goal.target
+                                    )}
+                                </small>
+                            </div>
+
+                            <strong>
+                                ${progress.toFixed(0)}%
+                            </strong>
+                        </div>
+
+                        <div class="progress-bar">
+                            <span style="width:${progress}%"></span>
+                        </div>
+                    `;
+                })
+                .join("");
+    }
+
+    function updateAlerts() {
         const container =
             document.getElementById(
                 "financialAlerts"
             );
 
-        if (!container) return;
+        if (!container) {
+            return;
+        }
 
         const alerts =
-            generateAlerts();
+            generateAlerts().slice(0, 6);
 
         if (!alerts.length) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <strong>Everything looks good</strong>
-                    <span>No major financial alerts right now.</span>
-                </div>
-            `;
+            container.innerHTML =
+                `<div class="empty-state">
+                    You're all caught up.
+                </div>`;
+
             return;
         }
 
         container.innerHTML =
             alerts
-                .map(
-                    (alert) => `
-                <div class="alert-card ${escape(
-                    alert.type
-                )}">
-                    <div class="alert-dot"></div>
-
-                    <div>
+                .map(alert => `
+                    <div class="alert-item ${escapeHTML(
+                        alert.type
+                    )}">
                         <strong>
-                            ${escape(
+                            ${escapeHTML(
                                 alert.title
                             )}
                         </strong>
 
                         <p>
-                            ${escape(
+                            ${escapeHTML(
                                 alert.message
                             )}
                         </p>
                     </div>
-                </div>
-            `
-                )
+                `)
                 .join("");
     }
 
-    function renderInsight() {
-        const element =
-            document.getElementById(
-                "overviewInsightText"
-            );
-
-        if (!element) return;
-
-        const monthly =
+    function updateCashFlowSummary() {
+        const totals =
             calculateTotals(
-                getPeriodTransactions(
-                    "month"
-                )
+                getPeriodTransactions("month")
             );
 
-        if (
-            monthly.income === 0 &&
-            monthly.expenses === 0
-        ) {
-            element.textContent =
-                "Add your income and expenses to unlock personalized financial intelligence.";
-            return;
-        }
+        setText(
+            "periodIncome",
+            displayCurrency(totals.income)
+        );
 
-        if (
-            monthly.expenses >
-            monthly.income
-        ) {
-            element.textContent =
-                "Your spending is currently above your recorded income. Review your biggest spending category first.";
-            return;
-        }
+        setText(
+            "periodExpenses",
+            displayCurrency(totals.expenses)
+        );
 
-        const rate =
-            monthly.income > 0
-                ? ((monthly.income -
-                    monthly.expenses) /
-                    monthly.income) *
-                  100
-                : 0;
+        setText(
+            "periodCashFlow",
+            displayCurrency(totals.cashFlow)
+        );
 
-        if (rate >= 20) {
-            element.textContent =
-                `Excellent. You're currently keeping about ${Math.round(
-                    rate
-                )}% of your recorded income.`;
-        } else {
-            element.textContent =
-                "Your cash flow is positive. Try increasing your savings rate by reducing one flexible expense.";
-        }
+        setText(
+            "cashFlowHealth",
+            totals.cashFlow >= 0
+                ? "Positive"
+                : "Needs attention"
+        );
     }
 
-    /* =========================================================
-       CASH FLOW CHART
-       ========================================================= */
+    /* ============================================================
+       PAGE HOOK
+       ============================================================ */
 
-    function renderCashFlow() {
-        const canvas =
-            document.getElementById(
-                "cashFlowChart"
-            );
-
-        if (!canvas) return;
-
-        const ctx =
-            canvas.getContext(
-                "2d"
-            );
-
-        if (!ctx) return;
-
-        const width =
-            canvas.clientWidth ||
-            600;
-
-        const height =
-            canvas.clientHeight ||
-            260;
-
-        const ratio =
-            window.devicePixelRatio ||
-            1;
-
-        canvas.width =
-            width * ratio;
-
-        canvas.height =
-            height * ratio;
-
-        ctx.setTransform(
-            ratio,
-            0,
-            0,
-            ratio,
-            0,
-            0
-        );
-
-        ctx.clearRect(
-            0,
-            0,
-            width,
-            height
-        );
-
-        const transactions =
-            getTransactions();
-
-        const now =
-            new Date();
-
-        const months = [];
-
-        for (
-            let i = 5;
-            i >= 0;
-            i--
-        ) {
-            const month =
-                new Date(
-                    now.getFullYear(),
-                    now.getMonth() - i,
-                    1
-                );
-
-            let income = 0;
-            let expense = 0;
-
-            transactions.forEach(
-                (item) => {
-                    const d =
-                        date(
-                            item.date
-                        );
-
-                    if (
-                        d.getFullYear() ===
-                            month.getFullYear() &&
-                        d.getMonth() ===
-                            month.getMonth()
-                    ) {
-                        if (
-                            item.type ===
-                            "income"
-                        ) {
-                            income +=
-                                num(
-                                    item.amount
-                                );
-                        } else {
-                            expense +=
-                                num(
-                                    item.amount
-                                );
-                        }
-                    }
-                }
-            );
-
-            months.push({
-                label:
-                    month.toLocaleDateString(
-                        undefined,
-                        {
-                            month: "short"
-                        }
-                    ),
-                income,
-                expense
-            });
-        }
-
-        const values =
-            months.flatMap(
-                (m) => [
-                    m.income,
-                    m.expense
-                ]
-            );
-
-        const max =
-            Math.max(
-                1,
-                ...values
-            );
-
-        const pad = 32;
-        const chartWidth =
-            width - pad * 2;
-        const chartHeight =
-            height - pad * 2;
-
-        ctx.strokeStyle =
-            "rgba(100,100,100,.15)";
-
-        ctx.lineWidth = 1;
-
-        for (
-            let i = 0;
-            i < 4;
-            i++
-        ) {
-            const y =
-                pad +
-                (chartHeight /
-                    3) *
-                    i;
-
-            ctx.beginPath();
-            ctx.moveTo(
-                pad,
-                y
-            );
-            ctx.lineTo(
-                width - pad,
-                y
-            );
-            ctx.stroke();
-        }
-
-        function line(
-            property,
-            dashed
-        ) {
-            ctx.beginPath();
-
-            months.forEach(
-                (month, index) => {
-                    const x =
-                        pad +
-                        (chartWidth /
-                            Math.max(
-                                1,
-                                months.length -
-                                    1
-                            )) *
-                            index;
-
-                    const y =
-                        height -
-                        pad -
-                        (month[
-                            property
-                        ] /
-                            max) *
-                            chartHeight;
-
-                    if (
-                        index === 0
-                    ) {
-                        ctx.moveTo(
-                            x,
-                            y
-                        );
-                    } else {
-                        ctx.lineTo(
-                            x,
-                            y
-                        );
-                    }
-                }
-            );
-
-            ctx.strokeStyle =
-                dashed
-                    ? "rgba(100,100,100,.5)"
-                    : "rgba(20,120,80,.95)";
-
-            ctx.lineWidth = 3;
-
-            ctx.setLineDash(
-                dashed
-                    ? [6, 5]
-                    : []
-            );
-
-            ctx.stroke();
-            ctx.setLineDash([]);
-        }
-
-        line(
-            "income",
-            false
-        );
-
-        line(
-            "expense",
-            true
-        );
-
-        ctx.fillStyle =
-            "rgba(100,100,100,.8)";
-
-        ctx.font =
-            "12px system-ui";
-
-        months.forEach(
-            (month, index) => {
-                const x =
-                    pad +
-                    (chartWidth /
-                        Math.max(
-                            1,
-                            months.length -
-                                1
-                        )) *
-                        index;
-
-                ctx.fillText(
-                    month.label,
-                    x - 10,
-                    height - 8
-                );
-            }
-        );
-
-        const empty =
-            document.getElementById(
-                "cashFlowEmpty"
-            );
-
-        if (empty) {
-            empty.hidden =
-                !values.some(
-                    (value) =>
-                        value > 0
-                );
-        }
-    }
-
-    /* =========================================================
-       NOTIFICATIONS
-       ========================================================= */
-
-    function setupNotifications() {
-    const button =
-        document.getElementById("notificationButton");
-
-    const panel =
-        document.getElementById("notificationPanel");
-
-    const close =
-        document.getElementById("closeNotifications");
-
-    if (!panel) return;
-
-    const hide = () => {
-        panel.hidden = true;
-        panel.classList.remove("open", "active");
-        panel.style.display = "none";
-        panel.setAttribute("aria-hidden", "true");
-        document.body.classList.remove(
-            "notifications-open"
-        );
-    };
-
-    const show = () => {
-        panel.hidden = false;
-        panel.classList.add("open", "active");
-        panel.style.display = "block";
-        panel.setAttribute("aria-hidden", "false");
-        document.body.classList.add(
-            "notifications-open"
-        );
-
-        renderNotificationList();
-    };
-
-    /* Notifications always begin CLOSED */
-    hide();
-
-    if (button) {
-        button.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
+    function callPageUpdate() {
+        try {
             if (
-                panel.hidden ||
-                panel.style.display === "none"
+                typeof window.moneyLeakPageUpdate ===
+                "function"
             ) {
-                show();
-            } else {
-                hide();
+                window.moneyLeakPageUpdate();
             }
-        });
-    }
-
-    if (close) {
-        close.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            hide();
-        });
-    }
-
-    document.addEventListener("click", (event) => {
-        if (
-            !panel.hidden &&
-            !panel.contains(event.target) &&
-            event.target !== button
-        ) {
-            hide();
+        } catch (error) {
+            console.warn(
+                "MoneyLeak page update error:",
+                error
+            );
         }
-    });
-
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            hide();
-        }
-    });
-}
-
-   function renderNotificationList() {
-    const container =
-        document.getElementById("notificationContent") ||
-        document.getElementById("notificationList");
-
-    if (!container) return;
-
-    const alerts = generateAlerts();
-
-    const icons = {
-        success: "✓",
-        warning: "!",
-        danger: "!",
-        info: "i"
-    };
-
-    const labels = {
-        success: "GOOD NEWS",
-        warning: "ATTENTION",
-        danger: "ACTION NEEDED",
-        info: "INSIGHT"
-    };
-
-    if (!alerts.length) {
-        container.innerHTML = `
-            <div class="ml-notification-empty">
-                <div class="ml-empty-icon">
-                    ✓
-                </div>
-
-                <strong>
-                    You're all caught up
-                </strong>
-
-                <span>
-                    No new financial insights right now.
-                </span>
-            </div>
-        `;
-
-        return;
     }
 
-    const notificationCards = alerts
-        .map((alert, index) => {
-            const type =
-                alert.type || "info";
+    function refreshEverything() {
+        updateDashboard();
+        callPageUpdate();
 
-            return `
-                <article
-                    class="ml-notification-card ${escape(type)}"
-                    style="--notification-delay:${index * 70}ms"
-                >
+        window.dispatchEvent(
+            new CustomEvent(
+                "moneyLeakUpdated"
+            )
+        );
+    }
 
-                    <div class="ml-notification-icon">
-                        <span>
-                            ${icons[type] || "i"}
-                        </span>
-                    </div>
-
-                    <div class="ml-notification-content">
-
-                        <div class="ml-notification-top">
-
-                            <span class="ml-notification-label">
-                                ${labels[type] || "INSIGHT"}
-                            </span>
-
-                            <span class="ml-notification-time">
-                                Now
-                            </span>
-
-                        </div>
-
-                        <h4>
-                            ${escape(
-                                alert.title
-                            )}
-                        </h4>
-
-                        <p>
-                            ${escape(
-                                alert.message
-                            )}
-                        </p>
-
-                    </div>
-
-                    <div class="ml-notification-status"></div>
-
-                </article>
-            `;
-        })
-        .join("");
-
-    container.innerHTML = `
-        <div class="ml-notification-wrapper">
-
-            <div class="ml-notification-summary">
-                <div>
-                    <span class="ml-summary-dot"></span>
-
-                    <span>
-                        ${alerts.length}
-                        ${alerts.length === 1
-                            ? "insight"
-                            : "insights"}
-                        available
-                    </span>
-                </div>
-
-                <span>
-                    Updated just now
-                </span>
-            </div>
-
-            <div class="ml-notification-cards">
-                ${notificationCards}
-            </div>
-
-            <div class="ml-notification-footer">
-
-                <div class="ml-footer-icon">
-                    ✦
-                </div>
-
-                <div>
-                    <strong>
-                        MoneyLeak Intelligence
-                    </strong>
-
-                    <span>
-                        Your financial activity is being analyzed automatically.
-                    </span>
-                </div>
-
-            </div>
-
-        </div>
-    `;
-}
-
-    /* =========================================================
-       SEARCH
-       ========================================================= */
+    /* ============================================================
+       SEARCH UI
+       ============================================================ */
 
     function setupSearch() {
-    const button = document.getElementById("searchButton");
-    const overlay = document.getElementById("searchOverlay");
-    const close =
-        document.getElementById("closeSearch") ||
-        document.getElementById("searchClose");
-    const input = document.getElementById("globalSearch");
-
-    if (!overlay) {
-        return;
-    }
-
-    function hide() {
-        overlay.hidden = true;
-        overlay.classList.remove("open", "active");
-        overlay.style.display = "none";
-        overlay.setAttribute("aria-hidden", "true");
-
-        if (input) {
-            input.value = "";
-        }
-
-        document.body.classList.remove("search-open");
-    }
-
-    function show() {
-        overlay.hidden = false;
-        overlay.classList.add("open", "active");
-        overlay.style.display = "flex";
-        overlay.setAttribute("aria-hidden", "false");
-
-        document.body.classList.add("search-open");
-
-        if (input) {
-            renderSearchResults(input.value || "");
-
-            setTimeout(() => {
-                input.focus();
-                input.select();
-            }, 60);
-        }
-    }
-
-    /* Always start closed */
-    hide();
-
-    /* Search button */
-    if (button) {
-        button.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (
-                overlay.hidden ||
-                overlay.style.display === "none"
-            ) {
-                show();
-            } else {
-                hide();
-            }
-        });
-    }
-
-    /* Close button */
-    if (close) {
-        close.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            hide();
-        });
-    }
-
-    /* Clicking the dark background closes search */
-    overlay.addEventListener("click", function (event) {
-        if (event.target === overlay) {
-            hide();
-        }
-    });
-
-    /* Search input */
-    if (input) {
-        input.addEventListener("input", function (event) {
-            renderSearchResults(
-                event.target.value || ""
-            );
-        });
-
-        input.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                event.preventDefault();
-                hide();
-                return;
-            }
-
-            if (event.key === "Enter") {
-                const firstResult =
-                    document.querySelector(
-                        "#searchResults a"
-                    );
-
-                if (firstResult) {
-                    firstResult.click();
-                }
-            }
-        });
-    }
-
-    /* Keyboard shortcut */
-    document.addEventListener("keydown", function (event) {
-        const activeElement =
-            document.activeElement;
-
-        const isTyping =
-            activeElement &&
-            (
-                activeElement.tagName === "INPUT" ||
-                activeElement.tagName === "TEXTAREA" ||
-                activeElement.isContentEditable
-            );
-
-        /* "/" opens MoneyLeak Search */
-        if (
-            event.key === "/" &&
-            !isTyping &&
-            !event.ctrlKey &&
-            !event.metaKey &&
-            !event.altKey
-        ) {
-            event.preventDefault();
-            show();
-            return;
-        }
-
-        /* ESC closes it */
-        if (event.key === "Escape") {
-            hide();
-        }
-    });
-}
-    function renderSearchResults(
-        query
-    ) {
-        const container =
-            document.getElementById(
-                "searchResults"
-            );
-
-        if (!container) return;
-
-        const q =
-            String(
-                query || ""
-            )
-                .trim()
-                .toLowerCase();
-
-        const pages = [
-            [
-                "Dashboard",
-                "index.html",
-                "Your financial command center"
-            ],
-            [
-                "Income",
-                "income.html",
-                "Track money coming in"
-            ],
-            [
-                "Expenses",
-                "expenses.html",
-                "Track money going out"
-            ],
-            [
-                "Budgets",
-                "budgets.html",
-                "Control monthly spending"
-            ],
-            [
-                "Savings Goals",
-                "savings.html",
-                "Build toward financial goals"
-            ],
-            [
-                "Recurring",
-                "recurring.html",
-                "Manage recurring money"
-            ],
-            [
-                "Analytics",
-                "analytics.html",
-                "Understand financial patterns"
-            ],
-            [
-                "Settings",
-                "settings.html",
-                "Customize MoneyLeak"
-            ]
-        ];
-
-        const pageResults =
-            pages.filter(
-                ([name, , description]) =>
-                    !q ||
-                    name
-                        .toLowerCase()
-                        .includes(q) ||
-                    description
-                        .toLowerCase()
-                        .includes(q)
-            );
-
-        const transactionResults =
-            getTransactions()
-                .filter(
-                    (item) =>
-                        !q ||
-                        item.description
-                            .toLowerCase()
-                            .includes(q) ||
-                        item.category
-                            .toLowerCase()
-                            .includes(q) ||
-                        item.type
-                            .toLowerCase()
-                            .includes(q)
-                )
-                .slice(0, 8);
-
-        let html = "";
-
-        if (pageResults.length) {
-            html += `
-                <div class="search-section">
-                    <small>Pages</small>
-
-                    ${pageResults
-                        .map(
-                            ([
-                                name,
-                                url,
-                                description
-                            ]) => `
-                            <a
-                                class="search-result"
-                                href="${url}"
-                            >
-                                <strong>
-                                    ${escape(
-                                        name
-                                    )}
-                                </strong>
-
-                                <span>
-                                    ${escape(
-                                        description
-                                    )}
-                                </span>
-                            </a>
-                        `
-                        )
-                        .join("")}
-                </div>
-            `;
-        }
-
-        if (
-            transactionResults.length
-        ) {
-            html += `
-                <div class="search-section">
-                    <small>
-                        Transactions
-                    </small>
-
-                    ${transactionResults
-                        .map(
-                            (item) => `
-                            <div class="search-result">
-                                <strong>
-                                    ${escape(
-                                        item.description
-                                    )}
-                                </strong>
-
-                                <span>
-                                    ${escape(
-                                        item.category
-                                    )}
-                                    ·
-                                    ${money(
-                                        item.amount
-                                    )}
-                                </span>
-                            </div>
-                        `
-                        )
-                        .join("")}
-                </div>
-            `;
-        }
-
-        if (!html) {
-            html = `
-                <div class="empty-state">
-                    <strong>No results found</strong>
-                    <span>Try another search.</span>
-                </div>
-            `;
-        }
-
-        container.innerHTML =
-            html;
-    }
-
-    /* =========================================================
-       MOBILE MENU
-       ========================================================= */
-
-    function setupMobileMenu() {
         const button =
             document.getElementById(
-                "mobileMenuButton"
+                "searchButton"
             );
 
         const overlay =
             document.getElementById(
-                "mobileOverlay"
+                "searchOverlay"
             );
 
-        const sidebar =
-            document.querySelector(
-                ".sidebar"
+        const close =
+            document.getElementById(
+                "closeSearch"
+            ) ||
+            document.getElementById(
+                "searchClose"
             );
 
-        if (!button) return;
+        const input =
+            document.getElementById(
+                "globalSearch"
+            );
 
-        function close() {
+        const results =
+            document.getElementById(
+                "searchResults"
+            );
+
+        if (!overlay) {
+            return;
+        }
+
+        const hide = () => {
+            overlay.hidden = true;
+            overlay.classList.remove(
+                "open",
+                "active"
+            );
+            overlay.style.display = "none";
+            overlay.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
             document.body.classList.remove(
-                "mobile-menu-open"
+                "search-open"
             );
+        };
 
-            overlay?.classList.remove(
+        const show = () => {
+            overlay.hidden = false;
+            overlay.classList.add(
                 "open",
                 "active"
             );
-
-            if (overlay) {
-                overlay.style.display =
-                    "none";
-            }
-
-            sidebar?.classList.remove(
-                "open",
-                "active"
-            );
-        }
-
-        function open() {
-            document.body.classList.add(
-                "mobile-menu-open"
+            overlay.style.display = "flex";
+            overlay.setAttribute(
+                "aria-hidden",
+                "false"
             );
 
-            overlay?.classList.add(
-                "open",
-                "active"
-            );
+            setTimeout(() => {
+                input?.focus();
+            }, 50);
+        };
 
-            if (overlay) {
-                overlay.style.display =
-                    "block";
-            }
-
-            sidebar?.classList.add(
-                "open",
-                "active"
-            );
-        }
-
-        button.addEventListener(
+        button?.addEventListener(
             "click",
+            show
+        );
+
+        close?.addEventListener(
+            "click",
+            hide
+        );
+
+        overlay.addEventListener(
+            "click",
+            event => {
+                if (
+                    event.target === overlay
+                ) {
+                    hide();
+                }
+            }
+        );
+
+        input?.addEventListener(
+            "input",
             () => {
-                document.body.classList.contains(
-                    "mobile-menu-open"
-                )
-                    ? close()
-                    : open();
+                const matches =
+                    searchMoneyLeak(
+                        input.value
+                    );
+
+                if (!input.value.trim()) {
+                    if (results) {
+                        results.innerHTML =
+                            "<p>Start typing to search.</p>";
+                    }
+                    return;
+                }
+
+                if (!matches.length) {
+                    if (results) {
+                        results.innerHTML =
+                            "<p>No results found.</p>";
+                    }
+                    return;
+                }
+
+                if (results) {
+                    results.innerHTML =
+                        matches
+                            .map(item => {
+                                if (
+                                    item.resultType ===
+                                    "page"
+                                ) {
+                                    return `
+                                        <button
+                                            type="button"
+                                            class="search-result"
+                                            data-url="${escapeHTML(
+                                                item.url
+                                            )}"
+                                        >
+                                            <strong>
+                                                ${escapeHTML(
+                                                    item.name
+                                                )}
+                                            </strong>
+                                            <small>
+                                                Page
+                                            </small>
+                                        </button>
+                                    `;
+                                }
+
+                                return `
+                                    <button
+                                        type="button"
+                                        class="search-result"
+                                    >
+                                        <strong>
+                                            ${escapeHTML(
+                                                item.description
+                                            )}
+                                        </strong>
+                                        <small>
+                                            ${escapeHTML(
+                                                item.category
+                                            )}
+                                            ·
+                                            ${formatCurrency(
+                                                item.amount
+                                            )}
+                                        </small>
+                                    </button>
+                                `;
+                            })
+                            .join("");
+
+                    results
+                        .querySelectorAll(
+                            "[data-url]"
+                        )
+                        .forEach(item => {
+                            item.addEventListener(
+                                "click",
+                                () => {
+                                    window.location.href =
+                                        item.dataset.url;
+                                }
+                            );
+                        });
+                }
             }
         );
-
-        overlay?.addEventListener(
-            "click",
-            close
-        );
-
-        sidebar
-            ?.querySelectorAll("a")
-            .forEach((link) => {
-                link.addEventListener(
-                    "click",
-                    close
-                );
-            });
 
         document.addEventListener(
             "keydown",
-            (event) => {
+            event => {
                 if (
-                    event.key ===
-                    "Escape"
+                    event.key === "/" &&
+                    document.activeElement?.tagName !==
+                        "INPUT" &&
+                    document.activeElement?.tagName !==
+                        "TEXTAREA"
                 ) {
-                    close();
+                    event.preventDefault();
+                    show();
+                }
+
+                if (
+                    event.key === "Escape" &&
+                    !overlay.hidden
+                ) {
+                    hide();
                 }
             }
         );
     }
 
-    /* =========================================================
-       ACTIVE NAVIGATION
-       ========================================================= */
+    /* ============================================================
+       NOTIFICATIONS
+       ============================================================ */
 
-    function setupNavigation() {
-        let current =
-            location.pathname
-                .split("/")
-                .pop();
+    function setupNotifications() {
+        const button =
+            document.getElementById(
+                "notificationButton"
+            );
 
-        if (!current) {
-            current =
-                "index.html";
+        const panel =
+            document.getElementById(
+                "notificationPanel"
+            );
+
+        const close =
+            document.getElementById(
+                "closeNotifications"
+            );
+
+        const list =
+            document.getElementById(
+                "notificationList"
+            );
+
+        if (!panel) {
+            return;
         }
 
-        document
-            .querySelectorAll(
-                ".sidebar a, .nav-link"
-            )
-            .forEach((link) => {
-                const href =
-                    link.getAttribute(
-                        "href"
-                    );
+        const hide = () => {
+            panel.hidden = true;
+            panel.classList.remove(
+                "open",
+                "active"
+            );
+        };
 
-                if (!href) return;
+        const show = () => {
+            renderNotifications();
 
-                const clean =
-                    href
-                        .split("?")[0]
-                        .split("#")[0];
+            panel.hidden = false;
+            panel.classList.add(
+                "open",
+                "active"
+            );
+        };
 
-                link.classList.toggle(
-                    "active",
-                    clean === current
-                );
-            });
+        button?.addEventListener(
+            "click",
+            show
+        );
+
+        close?.addEventListener(
+            "click",
+            hide
+        );
+
+        panel.addEventListener(
+            "click",
+            event => {
+                if (
+                    event.target === panel
+                ) {
+                    hide();
+                }
+            }
+        );
+
+        function renderNotifications() {
+            if (!list) {
+                return;
+            }
+
+            const alerts =
+                generateAlerts();
+
+            if (!alerts.length) {
+                list.innerHTML =
+                    "<p>No new notifications.</p>";
+                return;
+            }
+
+            list.innerHTML =
+                alerts
+                    .map(alert => `
+                        <div class="notification-item">
+                            <strong>
+                                ${escapeHTML(
+                                    alert.title
+                                )}
+                            </strong>
+
+                            <p>
+                                ${escapeHTML(
+                                    alert.message
+                                )}
+                            </p>
+                        </div>
+                    `)
+                    .join("");
+        }
+
+        document.addEventListener(
+            "keydown",
+            event => {
+                if (
+                    event.key === "Escape" &&
+                    !panel.hidden
+                ) {
+                    hide();
+                }
+            }
+        );
     }
 
-    /* =========================================================
+    /* ============================================================
        PERIOD BUTTONS
-       ========================================================= */
+       ============================================================ */
 
     function setupPeriodButtons() {
         document
             .querySelectorAll(
                 "[data-period]"
             )
-            .forEach((button) => {
+            .forEach(button => {
                 button.addEventListener(
                     "click",
                     () => {
@@ -2914,215 +3226,191 @@
                             .querySelectorAll(
                                 "[data-period]"
                             )
-                            .forEach(
-                                (
-                                    item
-                                ) =>
-                                    item.classList.remove(
-                                        "active"
-                                    )
+                            .forEach(item =>
+                                item.classList.remove(
+                                    "active"
+                                )
                             );
 
                         button.classList.add(
                             "active"
                         );
 
-                        window.moneyLeakAnalyticsPeriod =
-                            button.dataset.period;
-
-                        if (
-                            typeof window.moneyLeakPageUpdate ===
-                            "function"
-                        ) {
-                            window.moneyLeakPageUpdate();
-                        }
-
-                        renderDashboard();
+                        window.dispatchEvent(
+                            new CustomEvent(
+                                "moneyLeakPeriodChanged",
+                                {
+                                    detail: {
+                                        period:
+                                            button.dataset
+                                                .period
+                                    }
+                                }
+                            )
+                        );
                     }
                 );
             });
     }
 
-    /* =========================================================
-       EXPORT / IMPORT
-       ========================================================= */
+    /* ============================================================
+       MOBILE NAVIGATION
+       ============================================================ */
 
-    function exportData() {
-        const data = {
-            version: 2,
-            exportedAt:
-                new Date().toISOString(),
-            transactions:
-                getTransactions(),
-            savingsGoals:
-                getSavingsGoals(),
-            monthlyBudget:
-                getMonthlyBudget(),
-            categoryBudgets:
-                getCategoryBudgets(),
-            recurring:
-                getRecurringTransactions(),
-            settings:
-                getSettings()
-        };
-
-        const blob =
-            new Blob(
-                [
-                    JSON.stringify(
-                        data,
-                        null,
-                        2
-                    )
-                ],
-                {
-                    type:
-                        "application/json"
-                }
+    function setupMobileNavigation() {
+        const open =
+            document.getElementById(
+                "mobileMenuButton"
             );
 
-        const url =
-            URL.createObjectURL(
-                blob
+        const close =
+            document.getElementById(
+                "mobileMenuClose"
             );
 
-        const link =
-            document.createElement(
-                "a"
+        const overlay =
+            document.getElementById(
+                "mobileOverlay"
             );
 
-        link.href = url;
-
-        link.download =
-            `moneyleak-backup-${today()}.json`;
-
-        document.body.appendChild(
-            link
-        );
-
-        link.click();
-
-        link.remove();
-
-        URL.revokeObjectURL(url);
-    }
-
-    function importData(data) {
-        if (
-            !data ||
-            typeof data !== "object"
-        ) {
-            throw new Error(
-                "Invalid MoneyLeak backup."
-            );
+        if (!overlay) {
+            return;
         }
 
-        if (
-            Array.isArray(
-                data.transactions
-            )
-        ) {
-            saveTransactions(
-                data.transactions
-            );
-        }
-
-        if (
-            Array.isArray(
-                data.savingsGoals
-            )
-        ) {
-            saveSavingsGoals(
-                data.savingsGoals
-            );
-        }
-
-        if (
-            data.monthlyBudget !==
-            undefined
-        ) {
-            setMonthlyBudget(
-                data.monthlyBudget
-            );
-        }
-
-        if (
-            data.categoryBudgets &&
-            typeof data.categoryBudgets ===
-                "object"
-        ) {
-            write(
-                STORAGE.categoryBudgets,
-                data.categoryBudgets
-            );
-        }
-
-        if (
-            Array.isArray(
-                data.recurring
-            )
-        ) {
-            saveRecurringTransactions(
-                data.recurring
-            );
-        }
-
-        if (
-            data.settings &&
-            typeof data.settings ===
-                "object"
-        ) {
-            saveSettings(
-                data.settings
-            );
-        }
-
-        refresh();
-    }
-
-    /* =========================================================
-       RESET
-       ========================================================= */
-
-    function resetAllData() {
-        Object.values(
-            STORAGE
-        ).forEach(remove);
-
-        window.location.reload();
-    }
-
-    /* =========================================================
-       PAGE REFRESH
-       ========================================================= */
-
-    function refresh() {
-        applyTheme();
-
-        renderDashboard();
-
-        if (
-            typeof window.moneyLeakPageUpdate ===
-            "function"
-        ) {
-            try {
-                window.moneyLeakPageUpdate();
-            } catch (error) {
-                console.warn(
-                    "MoneyLeak page update failed:",
-                    error
+        open?.addEventListener(
+            "click",
+            () => {
+                overlay.classList.add(
+                    "open"
                 );
             }
-        }
+        );
+
+        close?.addEventListener(
+            "click",
+            () => {
+                overlay.classList.remove(
+                    "open"
+                );
+            }
+        );
     }
 
-    /* =========================================================
-       PUBLIC API
-       ========================================================= */
+    /* ============================================================
+       GREETING
+       ============================================================ */
 
-    Object.assign(ML, {
-        STORAGE,
+    function setupGreeting() {
+        const greeting =
+            document.getElementById(
+                "dashboardGreeting"
+            );
+
+        if (!greeting) {
+            return;
+        }
+
+        const hour =
+            new Date().getHours();
+
+        let text = "Good evening";
+
+        if (hour < 12) {
+            text = "Good morning";
+        } else if (hour < 18) {
+            text = "Good afternoon";
+        }
+
+        greeting.textContent =
+            `${text}, ${getSettings().name || "there"}`;
+    }
+
+    /* ============================================================
+       GLOBAL SHORTCUTS
+       ============================================================ */
+
+    function setupKeyboardShortcuts() {
+        document.addEventListener(
+            "keydown",
+            event => {
+                if (
+                    event.ctrlKey &&
+                    event.shiftKey &&
+                    event.key.toLowerCase() === "m"
+                ) {
+                    event.preventDefault();
+
+                    const button =
+                        document.getElementById(
+                            "moneyLeakVoiceButton"
+                        );
+
+                    button?.click();
+                }
+            }
+        );
+    }
+
+    /* ============================================================
+       INITIALIZATION
+       ============================================================ */
+
+    function initialize() {
+        if (
+            !localStorage.getItem(
+                STORAGE.initialized
+            )
+        ) {
+            writeJSON(
+                STORAGE.initialized,
+                {
+                    version: 3,
+                    createdAt:
+                        new Date().toISOString()
+                }
+            );
+        }
+
+        applySettings();
+
+        createAssistantUI();
+
+        setupSearch();
+        setupNotifications();
+        setupPeriodButtons();
+        setupMobileNavigation();
+        setupGreeting();
+        setupKeyboardShortcuts();
+
+        refreshEverything();
+
+        console.log(
+            "%cMoneyLeak 3.0 initialized",
+            "font-weight:bold;font-size:14px;"
+        );
+
+        console.log(
+            "MoneyLeak AI voice assistant:",
+            supportsSpeechRecognition()
+                ? "available"
+                : "browser unsupported"
+        );
+    }
+
+    /* ============================================================
+       PUBLIC API
+       ============================================================ */
+
+    window.MoneyLeak = {
+        version: "3.0",
+
+        storage: STORAGE,
+
         categories: CATEGORIES,
+        incomeSources: INCOME_SOURCES,
+
+        getSettings,
+        saveSettings,
 
         getTransactions,
         saveTransactions,
@@ -3130,21 +3418,19 @@
         updateTransaction,
         deleteTransaction,
 
+        getIncomeTransactions,
+        getExpenseTransactions,
+
         calculateTotals,
         getPeriodTransactions,
 
         formatCurrency,
         formatCompactCurrency,
-        currencySymbol:
-            getCurrencySymbol,
-        displayCurrency: money,
+        displayCurrency,
+        currencySymbol,
 
         formatDate,
         formatShortDate,
-
-        getSettings,
-        saveSettings,
-        applySettings: applyTheme,
 
         getSavingsGoals,
         saveSavingsGoals,
@@ -3155,81 +3441,44 @@
 
         getMonthlyBudget,
         setMonthlyBudget,
-        getCurrentMonthExpenses,
 
         getCategoryBudgets,
         setCategoryBudget,
         deleteCategoryBudget,
-        getCategorySpending,
+
+        categorySpending,
+        currentMonthExpenses,
 
         getRecurringTransactions,
         saveRecurringTransactions,
         addRecurringTransaction,
         deleteRecurringTransaction,
-        monthlyRecurringAmount,
 
         calculateFinancialHealth,
+        getSafeToSpend,
+
+        generateInsight,
         generateAlerts,
+        getAlerts,
 
-        exportData,
-        importData,
-        resetAllData,
+        searchMoneyLeak,
 
-        refresh
-    });
+        speak,
+        startListening,
+        stopListening,
+        processAssistantCommand,
 
-    window.MoneyLeak = ML;
+        refresh: refreshEverything,
 
-    /* =========================================================
-       INITIALIZATION
-       ========================================================= */
+        todayString
+    };
 
-    function initialize() {
-        if (
-            window.__MONEY_LEAK_STARTED__
-        ) {
-            return;
+    window.addEventListener(
+        "moneyLeakUpdated",
+        () => {
+            updateDashboard();
         }
-
-        window.__MONEY_LEAK_STARTED__ =
-            true;
-
-        /*
-         * Critical:
-         * overlays are initialized first
-         * and forced closed.
-         */
-        setupSearch();
-        setupNotifications();
-        setupMobileMenu();
-
-        setupNavigation();
-        setupPeriodButtons();
-
-        applyTheme();
-        renderDashboard();
-
-        /*
-         * Allow individual pages to
-         * finish registering their
-         * page renderer.
-         */
-        setTimeout(() => {
-            if (
-                typeof window.moneyLeakPageUpdate ===
-                "function"
-            ) {
-                try {
-                    window.moneyLeakPageUpdate();
-                } catch (error) {
-                    console.warn(
-                        "MoneyLeak page renderer error:",
-                        error
-                    );
-                }
-            }
-        }, 50);
-    }
+    );
 
     if (
         document.readyState ===
@@ -3243,19 +3492,4 @@
     } else {
         initialize();
     }
-
-    window.addEventListener(
-        "resize",
-        () => {
-            renderCashFlow();
-        }
-    );
-
-    window.addEventListener(
-        "storage",
-        () => {
-            refresh();
-        }
-    );
-
 })();
