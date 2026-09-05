@@ -1,2050 +1,2563 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MoneyLeak savings goals and financial planning.">
-  <title>Savings Goals — MoneyLeak</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="MoneyLeak Savings Goals — build, track and achieve your financial goals."
+    >
+
+    <title>MoneyLeak — Savings Goals</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <aside class="sidebar" id="sidebar">
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+
+<aside class="sidebar">
 
     <div class="brand">
-      <div class="brand-mark">M</div>
+        <div class="brand-logo">M</div>
 
-      <div>
-        <strong>MoneyLeak</strong>
-        <span>Personal Finance OS</span>
-      </div>
+        <div>
+            <strong>MoneyLeak</strong>
+            <small>Personal Finance OS</small>
+        </div>
     </div>
 
 
-    <nav class="nav-menu">
+    <nav class="nav">
 
-      <a href="index.html" class="nav-item">
-        <span>⌂</span>
-        <span>Dashboard</span>
-      </a>
+        <a href="index.html">
+            <span class="nav-icon">⌂</span>
+            <span>Dashboard</span>
+        </a>
 
-      <a href="income.html" class="nav-item">
-        <span>↗</span>
-        <span>Income</span>
-      </a>
+        <a href="income.html">
+            <span class="nav-icon">↗</span>
+            <span>Income</span>
+        </a>
 
-      <a href="expenses.html" class="nav-item">
-        <span>↘</span>
-        <span>Expenses</span>
-      </a>
+        <a href="expenses.html">
+            <span class="nav-icon">↘</span>
+            <span>Expenses</span>
+        </a>
 
-      <a href="budgets.html" class="nav-item">
-        <span>◫</span>
-        <span>Budgets</span>
-      </a>
+        <a href="budgets.html">
+            <span class="nav-icon">◫</span>
+            <span>Budgets</span>
+        </a>
 
-      <a href="savings.html" class="nav-item active">
-        <span>◎</span>
-        <span>Goals</span>
-      </a>
+        <a href="savings.html" class="active">
+            <span class="nav-icon">◎</span>
+            <span>Savings Goals</span>
+        </a>
 
-      <a href="recurring.html" class="nav-item">
-        <span>↻</span>
-        <span>Recurring</span>
-      </a>
+        <a href="recurring.html">
+            <span class="nav-icon">↻</span>
+            <span>Recurring</span>
+        </a>
 
-      <a href="analytics.html" class="nav-item">
-        <span>◒</span>
-        <span>Analytics</span>
-      </a>
-
-      <a href="settings.html" class="nav-item">
-        <span>⚙</span>
-        <span>Settings</span>
-      </a>
+        <a href="analytics.html">
+            <span class="nav-icon">⌁</span>
+            <span>Analytics</span>
+        </a>
 
     </nav>
 
 
     <div class="sidebar-bottom">
 
-      <div class="sidebar-tip">
+        <nav class="nav">
 
-        <span class="tip-icon">✦</span>
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
 
-        <div>
-          <strong>Money insight</strong>
-          <p>Give every saved naira a purpose.</p>
-        </div>
-
-      </div>
+        </nav>
 
     </div>
 
-  </aside>
+</aside>
 
 
-  <main class="main-content">
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
 
-    <!-- TOPBAR -->
+<main class="main">
+
     <header class="topbar">
 
-      <button
-        class="mobile-menu-btn"
-        id="mobileMenuBtn"
-        aria-label="Open menu">
-        ☰
-      </button>
+        <div class="topbar-left">
+
+            <button
+                id="mobileMenuButton"
+                class="mobile-menu-button"
+                type="button"
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
+
+            <button
+                id="searchButton"
+                class="search-button"
+                type="button"
+                aria-label="Search"
+            >
+                ⌕
+            </button>
+
+        </div>
 
 
-      <div class="topbar-search">
+        <div class="topbar-right">
 
-        <button
-          id="globalSearchBtn"
-          class="search-button">
+            <button
+                id="notificationButton"
+                class="notification-button"
+                type="button"
+                aria-label="Notifications"
+            >
+                🔔
+            </button>
 
-          <span>⌕</span>
-          <span>Search MoneyLeak...</span>
-          <kbd>/</kbd>
+            <a
+                href="settings.html"
+                class="profile-button"
+            >
+                <span class="profile-avatar">ML</span>
 
-        </button>
+                <span data-money-name>
+                    My Money
+                </span>
+            </a>
 
-      </div>
-
-
-      <div class="topbar-actions">
-
-        <button
-          class="icon-button"
-          id="notificationBtn"
-          aria-label="Notifications">
-
-          ♢
-          <span
-            class="notification-dot"
-            id="notificationDot">
-          </span>
-
-        </button>
-
-
-        <a href="settings.html" class="profile-button">
-
-          <div class="profile-avatar">
-            M
-          </div>
-
-          <div class="profile-info">
-
-            <strong id="profileName">
-              My Money
-            </strong>
-
-            <span>
-              Finance
-            </span>
-
-          </div>
-
-        </a>
-
-      </div>
+        </div>
 
     </header>
 
 
+    <!-- ========================================================
+         PAGE
+         ======================================================== -->
+
     <div class="page-container">
 
 
-      <!-- HERO -->
-      <section class="page-hero">
+        <!-- HERO -->
 
-        <div>
+        <section class="dashboard-hero">
 
-          <span class="eyebrow">
-            FINANCIAL GOALS
-          </span>
-
-          <h1>
-            Give your money a destination.
-          </h1>
-
-          <p>
-            Create goals, track your progress, and know exactly
-            how much you need to save to reach them.
-          </p>
-
-        </div>
-
-
-        <button
-          class="primary-button"
-          id="scrollToGoalForm">
-
-          <span>＋</span>
-          Create Goal
-
-        </button>
-
-      </section>
-
-
-      <!-- OVERVIEW -->
-      <section class="overview-grid">
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            ◎
-          </div>
-
-          <div class="card-label">
-            Total Goal Target
-          </div>
-
-          <div
-            class="card-value"
-            id="goalsTarget">
-
-            ₦0
-
-          </div>
-
-          <div class="card-meta">
-            Across all goals
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            ₦
-          </div>
-
-          <div class="card-label">
-            Total Saved
-          </div>
-
-          <div
-            class="card-value"
-            id="goalsSaved">
-
-            ₦0
-
-          </div>
-
-          <div class="card-meta">
-            Current progress
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            %
-          </div>
-
-          <div class="card-label">
-            Overall Progress
-          </div>
-
-          <div
-            class="card-value"
-            id="goalsProgress">
-
-            0%
-
-          </div>
-
-          <div class="card-meta">
-            Toward all targets
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            🎯
-          </div>
-
-          <div class="card-label">
-            Active Goals
-          </div>
-
-          <div
-            class="card-value"
-            id="goalsActive">
-
-            0
-
-          </div>
-
-          <div class="card-meta">
-            Goals in progress
-          </div>
-
-        </div>
-
-
-      </section>
-
-
-      <!-- CREATE GOAL + INSIGHT -->
-      <section class="two-column-section">
-
-
-        <div
-          class="panel"
-          id="goalFormPanel">
-
-
-          <div class="panel-header">
-
-            <div>
-
-              <span class="panel-eyebrow">
-                CREATE A GOAL
-              </span>
-
-              <h2>
-                Start saving for something
-              </h2>
-
-            </div>
-
-          </div>
-
-
-          <form
-            id="goalForm"
-            class="finance-form">
-
-
-            <div class="form-group">
-
-              <label for="goalName">
-                Goal name
-              </label>
-
-              <input
-                type="text"
-                id="goalName"
-                placeholder="e.g. New laptop, Car, Emergency fund..."
-                required>
-
-            </div>
-
-
-            <div class="form-row">
-
-
-              <div class="form-group">
-
-                <label for="goalTarget">
-                  Target amount
-                </label>
-
-                <div class="amount-input">
-
-                  <span id="goalCurrencySymbol">
-                    ₦
-                  </span>
-
-                  <input
-                    type="number"
-                    id="goalTarget"
-                    min="1"
-                    step="0.01"
-                    placeholder="0.00"
-                    required>
-
-                </div>
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label for="goalCurrent">
-                  Already saved
-                </label>
-
-                <div class="amount-input">
-
-                  <span id="goalCurrencySymbol2">
-                    ₦
-                  </span>
-
-                  <input
-                    type="number"
-                    id="goalCurrent"
-                    min="0"
-                    step="0.01"
-                    value="0"
-                    placeholder="0.00">
-
-                </div>
-
-              </div>
-
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="goalDeadline">
-                Target date
-              </label>
-
-              <input
-                type="date"
-                id="goalDeadline"
-                required>
-
-            </div>
-
-
-            <button
-              type="submit"
-              class="primary-button full-width">
-
-              Create Savings Goal
-
-            </button>
-
-          </form>
-
-
-        </div>
-
-
-        <!-- INSIGHT -->
-        <div class="panel insight-panel">
-
-
-          <div class="panel-header">
-
-            <div>
-
-              <span class="panel-eyebrow">
-                SMART SAVINGS
-              </span>
-
-              <h2>
-                Your savings strategy
-              </h2>
-
-            </div>
-
-            <span class="insight-badge">
-              AI
-            </span>
-
-          </div>
-
-
-          <div
-            class="large-insight"
-            id="savingsInsight">
-
-            <div class="insight-icon">
-              ✦
-            </div>
-
-            <div>
-
-              <h3>
-                Your goals will appear here.
-              </h3>
-
-              <p>
-                Create a goal and MoneyLeak will calculate
-                the pace you need to maintain to reach it.
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="insight-stat-row">
-
-
-            <div>
-
-              <span>
-                Priority goal
-              </span>
-
-              <strong id="priorityGoal">
-                —
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Needed / month
-              </span>
-
-              <strong id="priorityMonthly">
-                ₦0
-              </strong>
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
-      <!-- GOALS -->
-      <section class="panel">
-
-
-        <div class="panel-header">
-
-          <div>
-
-            <span class="panel-eyebrow">
-              YOUR GOALS
-            </span>
-
-            <h2>
-              Savings roadmap
-            </h2>
-
-          </div>
-
-
-          <span
-            class="panel-subtitle"
-            id="goalCountLabel">
-
-            0 goals
-
-          </span>
-
-        </div>
-
-
-        <div
-          id="goalsList"
-          class="goals-grid">
-
-
-          <div class="empty-state">
-
-            <div class="empty-icon">
-              ◎
-            </div>
-
-            <h3>
-              No savings goals yet
-            </h3>
+            <h1>
+                Wealth Builder
+            </h1>
 
             <p>
-              Create your first goal and turn your plans
-              into something measurable.
+                Give your money a destination. Create savings
+                goals, track your progress and see exactly what
+                it will take to reach the things that matter to you.
             </p>
 
-          </div>
+
+            <div
+                style="
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:10px;
+                    margin-top:20px;
+                    position:relative;
+                    z-index:2;
+                "
+            >
+
+                <button
+                    id="scrollToGoalForm"
+                    class="btn"
+                    type="button"
+                    style="
+                        background:#fff;
+                        color:#086c47;
+                    "
+                >
+                    + Create Goal
+                </button>
 
 
-        </div>
-
-
-      </section>
-
-
-      <!-- SAVINGS SUMMARY -->
-      <section class="panel">
-
-
-        <div class="panel-header">
-
-          <div>
-
-            <span class="panel-eyebrow">
-              SAVINGS SUMMARY
-            </span>
-
-            <h2>
-              Your progress
-            </h2>
-
-          </div>
-
-        </div>
-
-
-        <div class="savings-summary-box">
-
-
-          <div class="summary-progress">
-
-            <div class="summary-progress-top">
-
-              <span>
-                Overall savings progress
-              </span>
-
-              <strong id="summaryProgress">
-                0%
-              </strong>
+                <a
+                    href="analytics.html"
+                    class="btn"
+                    style="
+                        background:rgba(255,255,255,.12);
+                        color:#fff;
+                        border-color:rgba(255,255,255,.18);
+                    "
+                >
+                    View Analytics
+                </a>
 
             </div>
 
+        </section>
 
-            <div class="category-bar">
 
-              <div
-                class="category-bar-fill"
-                id="summaryProgressFill"
-                style="width:0%">
-              </div>
+        <!-- ====================================================
+             SAVINGS OVERVIEW
+             ==================================================== -->
 
-            </div>
+        <section class="section">
 
-          </div>
+            <div class="section-header">
 
+                <div>
+                    <h2>Savings Overview</h2>
 
-          <div class="summary-stats">
-
-
-            <div>
-
-              <span>
-                Saved
-              </span>
-
-              <strong id="summarySaved">
-                ₦0
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Remaining
-              </span>
-
-              <strong id="summaryRemaining">
-                ₦0
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Goals completed
-              </span>
-
-              <strong id="summaryCompleted">
-                0
-              </strong>
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
-      <footer class="site-footer">
-
-        <span>
-          MoneyLeak
-        </span>
-
-        <span>
-          •
-        </span>
-
-        <span>
-          Save intentionally. Build patiently.
-        </span>
-
-      </footer>
-
-
-    </div>
-
-  </main>
-
-
-  <!-- SEARCH OVERLAY -->
-  <div
-    class="search-overlay"
-    id="searchOverlay">
-
-
-    <div class="search-modal">
-
-
-      <div class="search-modal-header">
-
-        <h2>
-          Search MoneyLeak
-        </h2>
-
-        <button
-          id="closeSearchBtn"
-          class="close-button">
-
-          ×
-
-        </button>
-
-      </div>
-
-
-      <div class="search-modal-input">
-
-        <span>
-          ⌕
-        </span>
-
-        <input
-          type="search"
-          id="globalSearchInput"
-          placeholder="Search pages, transactions..."
-          autocomplete="off">
-
-      </div>
-
-
-      <div
-        id="globalSearchResults"
-        class="search-results">
-      </div>
-
-
-    </div>
-
-  </div>
-
-
-  <!-- NOTIFICATIONS -->
-  <div
-    class="notification-panel"
-    id="notificationPanel">
-
-
-    <div class="notification-header">
-
-      <div>
-
-        <strong>
-          Notifications
-        </strong>
-
-        <span>
-          MoneyLeak alerts
-        </span>
-
-      </div>
-
-
-      <button
-        id="closeNotificationBtn"
-        class="close-button">
-
-        ×
-
-      </button>
-
-    </div>
-
-
-    <div
-      id="notificationList"
-      class="notification-list">
-    </div>
-
-
-  </div>
-
-
-  <div
-    class="mobile-overlay"
-    id="mobileOverlay">
-  </div>
-
-
-  <!-- MAIN ENGINE FIRST -->
-  <script src="app.js"></script>
-
-
-  <!-- SAVINGS PAGE ENGINE -->
-  <script>
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      function () {
-
-
-        const ML = window.MoneyLeak;
-
-
-        if (!ML) {
-
-          console.error(
-            "MoneyLeak engine was not loaded."
-          );
-
-          return;
-
-        }
-
-
-        /* =========================
-           HELPERS
-        ========================== */
-
-
-        function escapeHTML(value) {
-
-          return String(value || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-        }
-
-
-        function formatDate(dateValue) {
-
-          if (!dateValue) {
-            return "No date";
-          }
-
-
-          const date =
-            new Date(
-              dateValue + "T00:00:00"
-            );
-
-
-          if (Number.isNaN(date.getTime())) {
-            return dateValue;
-          }
-
-
-          return date.toLocaleDateString(
-            undefined,
-            {
-              day: "numeric",
-              month: "short",
-              year: "numeric"
-            }
-          );
-
-        }
-
-
-        function daysBetween(dateValue) {
-
-          const today =
-            new Date();
-
-          today.setHours(
-            0,
-            0,
-            0,
-            0
-          );
-
-
-          const target =
-            new Date(
-              dateValue + "T00:00:00"
-            );
-
-
-          target.setHours(
-            0,
-            0,
-            0,
-            0
-          );
-
-
-          return Math.ceil(
-            (
-              target - today
-            ) /
-            86400000
-          );
-
-        }
-
-
-        /* =========================
-           FORM DEFAULTS
-        ========================== */
-
-
-        const deadlineInput =
-          document.getElementById(
-            "goalDeadline"
-          );
-
-
-        if (
-          deadlineInput &&
-          !deadlineInput.value
-        ) {
-
-          const future =
-            new Date();
-
-          future.setMonth(
-            future.getMonth() + 6
-          );
-
-
-          const year =
-            future.getFullYear();
-
-
-          const month =
-            String(
-              future.getMonth() + 1
-            ).padStart(2, "0");
-
-
-          const day =
-            String(
-              future.getDate()
-            ).padStart(2, "0");
-
-
-          deadlineInput.value =
-            `${year}-${month}-${day}`;
-
-        }
-
-
-        /* =========================
-           OVERVIEW
-        ========================== */
-
-
-        function renderOverview() {
-
-
-          const goals =
-            ML.getSavingsGoals();
-
-
-          const target =
-            goals.reduce(
-              (sum, goal) =>
-                sum +
-                Number(
-                  goal.target || 0
-                ),
-              0
-            );
-
-
-          const saved =
-            goals.reduce(
-              (sum, goal) =>
-                sum +
-                Number(
-                  goal.current || 0
-                ),
-              0
-            );
-
-
-          const progress =
-            target > 0
-              ? Math.min(
-                  100,
-                  (saved / target) * 100
-                )
-              : 0;
-
-
-          const active =
-            goals.filter(
-              goal =>
-                Number(
-                  goal.current || 0
-                ) <
-                Number(
-                  goal.target || 0
-                )
-            ).length;
-
-
-          document.getElementById(
-            "goalsTarget"
-          ).textContent =
-            ML.formatCurrency(target);
-
-
-          document.getElementById(
-            "goalsSaved"
-          ).textContent =
-            ML.formatCurrency(saved);
-
-
-          document.getElementById(
-            "goalsProgress"
-          ).textContent =
-            `${progress.toFixed(0)}%`;
-
-
-          document.getElementById(
-            "goalsActive"
-          ).textContent =
-            active;
-
-
-          document.getElementById(
-            "goalCountLabel"
-          ).textContent =
-            `${goals.length} ${
-              goals.length === 1
-                ? "goal"
-                : "goals"
-            }`;
-
-        }
-
-
-        /* =========================
-           GOAL CARDS
-        ========================== */
-
-
-        function renderGoals() {
-
-
-          const container =
-            document.getElementById(
-              "goalsList"
-            );
-
-
-          const goals =
-            ML.getSavingsGoals();
-
-
-          if (!goals.length) {
-
-            container.innerHTML = `
-
-              <div class="empty-state">
-
-                <div class="empty-icon">
-                  ◎
+                    <p>
+                        Your progress toward financial goals
+                    </p>
                 </div>
 
-                <h3>
-                  No savings goals yet
-                </h3>
-
-                <p>
-                  Create your first goal and
-                  turn your plans into something measurable.
-                </p>
-
-              </div>
-
-            `;
-
-            return;
-
-          }
+            </div>
 
 
-          container.innerHTML =
-            goals
-              .map(
-                goal => {
+            <div class="overview-grid">
 
+                <article class="overview-card">
 
-                  const target =
-                    Number(
-                      goal.target || 0
-                    );
-
-
-                  const current =
-                    Number(
-                      goal.current || 0
-                    );
-
-
-                  const safeTarget =
-                    target > 0
-                      ? target
-                      : 1;
-
-
-                  const progress =
-                    Math.min(
-                      100,
-                      (
-                        current /
-                        safeTarget
-                      ) *
-                      100
-                    );
-
-
-                  const remaining =
-                    Math.max(
-                      0,
-                      target -
-                      current
-                    );
-
-
-                  const days =
-                    goal.deadline
-                      ? daysBetween(
-                          goal.deadline
-                        )
-                      : 0;
-
-
-                  let monthly = 0;
-
-
-                  if (
-                    remaining > 0 &&
-                    days > 0
-                  ) {
-
-                    monthly =
-                      remaining /
-                      Math.max(
-                        days / 30.4375,
-                        1
-                      );
-
-                  }
-
-
-                  let status =
-                    "On track";
-
-
-                  if (
-                    current >= target
-                  ) {
-
-                    status =
-                      "Completed";
-
-                  } else if (
-                    days < 0
-                  ) {
-
-                    status =
-                      "Past deadline";
-
-                  } else if (
-                    days <= 30
-                  ) {
-
-                    status =
-                      "Deadline soon";
-
-                  }
-
-
-                  return `
+                    <div class="overview-label">
+                        Total Saved
+                    </div>
 
                     <div
-                      class="goal-card"
-                      data-goal-id="${escapeHTML(goal.id)}">
+                        id="totalSaved"
+                        class="overview-value income"
+                    >
+                        ₦0
+                    </div>
+
+                    <div class="card-change">
+                        Across all goals
+                    </div>
+
+                </article>
 
 
-                      <div class="goal-card-top">
+                <article class="overview-card">
 
-                        <div>
+                    <div class="overview-label">
+                        Target Amount
+                    </div>
 
-                          <span class="goal-status">
-                            ${status}
-                          </span>
+                    <div
+                        id="totalTarget"
+                        class="overview-value"
+                    >
+                        ₦0
+                    </div>
 
-                          <h3>
-                            ${escapeHTML(
-                              goal.name ||
-                              "Savings Goal"
-                            )}
-                          </h3>
+                    <div class="card-change">
+                        Total goal targets
+                    </div>
 
-                        </div>
-
-
-                        <button
-                          class="goal-delete"
-                          data-delete-goal="${escapeHTML(goal.id)}"
-                          title="Delete goal">
-
-                          ×
-
-                        </button>
-
-                      </div>
+                </article>
 
 
-                      <div class="goal-card-amount">
+                <article class="overview-card">
 
-                        <strong>
-                          ${ML.formatCurrency(current)}
-                        </strong>
+                    <div class="overview-label">
+                        Overall Progress
+                    </div>
 
-                        <span>
-                          of ${ML.formatCurrency(target)}
-                        </span>
+                    <div
+                        id="overallProgress"
+                        class="overview-value"
+                    >
+                        0%
+                    </div>
 
-                      </div>
+                    <div class="card-change">
+                        Across active goals
+                    </div>
 
-
-                      <div class="category-bar">
-
-                        <div
-                          class="category-bar-fill"
-                          style="width:${Math.max(
-                            progress,
-                            progress > 0 ? 2 : 0
-                          )}%">
-                        </div>
-
-                      </div>
+                </article>
 
 
-                      <div class="goal-progress-row">
+                <article class="overview-card">
 
-                        <strong>
-                          ${progress.toFixed(0)}%
-                        </strong>
+                    <div class="overview-label">
+                        Active Goals
+                    </div>
 
-                        <span>
-                          ${ML.formatCurrency(
-                            remaining
-                          )}
-                          remaining
-                        </span>
+                    <div
+                        id="activeGoalCount"
+                        class="overview-value"
+                    >
+                        0
+                    </div>
 
-                      </div>
+                    <div class="card-change">
+                        Goals in progress
+                    </div>
 
+                </article>
 
-                      <div class="goal-details">
+            </div>
 
-
-                        <div>
-
-                          <span>
-                            Deadline
-                          </span>
-
-                          <strong>
-                            ${
-                              goal.deadline
-                                ? formatDate(
-                                    goal.deadline
-                                  )
-                                : "No deadline"
-                            }
-                          </strong>
-
-                        </div>
+        </section>
 
 
-                        <div>
+        <!-- ====================================================
+             CREATE GOAL
+             ==================================================== -->
 
-                          <span>
-                            Time left
-                          </span>
+        <section
+            id="goalFormSection"
+            class="section"
+        >
 
-                          <strong>
-                            ${
-                              days < 0
-                                ? "Overdue"
-                                : `${days} days`
-                            }
-                          </strong>
+            <article class="panel">
 
-                        </div>
+                <div class="section-header">
 
+                    <div>
 
-                        <div>
+                        <h2>Create Savings Goal</h2>
 
-                          <span>
-                            Needed / month
-                          </span>
-
-                          <strong>
-                            ${ML.formatCurrency(
-                              monthly
-                            )}
-                          </strong>
-
-                        </div>
-
-
-                      </div>
-
-
-                      ${
-                        current < target
-                          ? `
-
-                            <div class="goal-update">
-
-                              <label>
-                                Update saved amount
-                              </label>
-
-                              <div class="goal-update-row">
-
-                                <input
-                                  type="number"
-                                  min="0"
-                                  step="0.01"
-                                  value="${current}"
-                                  data-current-goal="${escapeHTML(goal.id)}">
-
-                                <button
-                                  class="secondary-button"
-                                  data-update-goal="${escapeHTML(goal.id)}">
-
-                                  Update
-
-                                </button>
-
-                              </div>
-
-                            </div>
-
-                          `
-                          : `
-
-                            <div class="goal-complete">
-
-                              <span>
-                                ✓
-                              </span>
-
-                              Goal completed!
-
-                            </div>
-
-                          `
-                      }
-
+                        <p>
+                            Turn a dream into a measurable target
+                        </p>
 
                     </div>
 
-                  `;
+                    <span style="font-size:24px;">
+                        🎯
+                    </span>
 
-                }
-              )
-              .join("");
+                </div>
 
 
-          /* DELETE */
+                <form id="goalForm">
 
+                    <div class="form-grid">
 
-          container
-            .querySelectorAll(
-              "[data-delete-goal]"
-            )
-            .forEach(
-              button => {
 
-                button.addEventListener(
-                  "click",
-                  function () {
+                        <div class="form-group">
 
+                            <label for="goalName">
+                                Goal Name
+                            </label>
 
-                    const id =
-                      this.dataset.deleteGoal;
+                            <input
+                                id="goalName"
+                                type="text"
+                                placeholder="e.g. New MacBook"
+                                required
+                            >
 
+                        </div>
 
-                    if (
-                      !window.confirm(
-                        "Delete this savings goal?"
-                      )
-                    ) {
 
-                      return;
+                        <div class="form-group">
 
-                    }
+                            <label for="goalTarget">
+                                Target Amount
+                            </label>
 
+                            <input
+                                id="goalTarget"
+                                type="number"
+                                min="1"
+                                step="0.01"
+                                placeholder="e.g. 1000000"
+                                required
+                            >
 
-                    ML.deleteSavingsGoal(id);
+                        </div>
 
-                    renderPage();
 
-                  }
-                );
+                        <div class="form-group">
 
-              }
-            );
+                            <label for="goalCurrent">
+                                Already Saved
+                            </label>
 
+                            <input
+                                id="goalCurrent"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                placeholder="e.g. 100000"
+                            >
 
-          /* UPDATE */
+                        </div>
 
 
-          container
-            .querySelectorAll(
-              "[data-update-goal]"
-            )
-            .forEach(
-              button => {
+                        <div class="form-group">
 
-                button.addEventListener(
-                  "click",
-                  function () {
+                            <label for="goalDeadline">
+                                Target Date
+                            </label>
 
+                            <input
+                                id="goalDeadline"
+                                type="date"
+                            >
 
-                    const id =
-                      this.dataset.updateGoal;
+                        </div>
 
 
-                    const input =
-                      container.querySelector(
-                        `[data-current-goal="${CSS.escape(id)}"]`
-                      );
+                        <div class="form-group">
 
+                            <label for="goalColor">
+                                Goal Type
+                            </label>
 
-                    if (!input) {
-                      return;
-                    }
+                            <select id="goalColor">
 
+                                <option value="General">
+                                    General
+                                </option>
 
-                    const amount =
-                      Number(
-                        input.value
-                      );
+                                <option value="Emergency Fund">
+                                    Emergency Fund
+                                </option>
 
+                                <option value="Education">
+                                    Education
+                                </option>
 
-                    const goal =
-                      ML.getSavingsGoals()
-                        .find(
-                          item =>
-                            item.id === id
-                        );
+                                <option value="Business">
+                                    Business
+                                </option>
 
+                                <option value="Travel">
+                                    Travel
+                                </option>
 
-                    if (!goal) {
-                      return;
-                    }
+                                <option value="Technology">
+                                    Technology
+                                </option>
 
+                                <option value="Home">
+                                    Home
+                                </option>
 
-                    if (
-                      amount < 0
-                    ) {
+                                <option value="Car">
+                                    Car
+                                </option>
 
-                      alert(
-                        "Saved amount cannot be negative."
-                      );
+                                <option value="Investment">
+                                    Investment
+                                </option>
 
-                      return;
+                                <option value="Other">
+                                    Other
+                                </option>
 
-                    }
+                            </select>
 
+                        </div>
 
-                    ML.updateSavingsGoal(
-                      id,
-                      {
-                        current: amount
-                      }
-                    );
 
+                        <div class="form-group">
 
-                    renderPage();
+                            <label for="goalDescription">
+                                Description
+                            </label>
 
-                  }
-                );
+                            <input
+                                id="goalDescription"
+                                type="text"
+                                placeholder="What are you saving for?"
+                            >
 
-              }
-            );
+                        </div>
 
-        }
+                    </div>
 
 
-        /* =========================
-           SAVINGS INSIGHT
-        ========================== */
+                    <div
+                        style="
+                            display:flex;
+                            flex-wrap:wrap;
+                            gap:10px;
+                            margin-top:18px;
+                        "
+                    >
 
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Create Goal
+                        </button>
 
-        function renderInsight() {
+                        <button
+                            type="reset"
+                            class="btn btn-secondary"
+                        >
+                            Clear
+                        </button>
 
+                    </div>
 
-          const goals =
-            ML.getSavingsGoals();
+                </form>
 
+            </article>
 
-          const insight =
-            document.getElementById(
-              "savingsInsight"
-            );
+        </section>
 
 
-          if (!goals.length) {
+        <!-- ====================================================
+             GOAL INTELLIGENCE
+             ==================================================== -->
 
-            insight.innerHTML = `
+        <section class="section">
 
-              <div class="insight-icon">
-                ✦
-              </div>
+            <div class="two-column">
 
-              <div>
 
-                <h3>
-                  Your goals will appear here.
-                </h3>
+                <article class="panel">
 
-                <p>
-                  Create a goal and MoneyLeak will
-                  calculate the pace you need to maintain
-                  to reach it.
-                </p>
+                    <div class="section-header">
 
-              </div>
+                        <div>
+                            <h2>Goal Intelligence</h2>
 
-            `;
+                            <p>
+                                What it will take to get there
+                            </p>
+                        </div>
 
+                        <span style="font-size:24px;">
+                            🧠
+                        </span>
 
-            document.getElementById(
-              "priorityGoal"
-            ).textContent =
-              "—";
+                    </div>
 
 
-            document.getElementById(
-              "priorityMonthly"
-            ).textContent =
-              ML.formatCurrency(0);
+                    <div class="smart-insight">
 
+                        <strong>
+                            ✦ MoneyLeak Goal Insight
+                        </strong>
 
-            return;
+                        <p id="goalInsight">
+                            Create a savings goal and MoneyLeak
+                            will calculate your path toward it.
+                        </p>
 
-          }
+                    </div>
 
 
-          const incomplete =
-            goals.filter(
-              goal =>
-                Number(
-                  goal.current || 0
-                ) <
-                Number(
-                  goal.target || 0
-                )
-            );
+                    <div
+                        style="
+                            display:grid;
+                            gap:12px;
+                            margin-top:16px;
+                        "
+                    >
 
+                        <div class="mini-stat">
 
-          const priority =
-            incomplete.sort(
-              (a, b) => {
+                            <span>
+                                Closest Goal
+                            </span>
 
-                const daysA =
-                  a.deadline
-                    ? daysBetween(
-                        a.deadline
-                      )
-                    : 999999;
+                            <strong id="closestGoal">
+                                —
+                            </strong>
 
+                        </div>
 
-                const daysB =
-                  b.deadline
-                    ? daysBetween(
-                        b.deadline
-                      )
-                    : 999999;
 
+                        <div class="mini-stat">
 
-                return daysA - daysB;
+                            <span>
+                                Most Urgent Goal
+                            </span>
 
-              }
-            )[0];
+                            <strong id="urgentGoal">
+                                —
+                            </strong>
 
+                        </div>
 
-          if (!priority) {
 
-            insight.innerHTML = `
+                        <div class="mini-stat">
 
-              <div class="insight-icon">
-                🏆
-              </div>
+                            <span>
+                                Monthly Savings Needed
+                            </span>
 
-              <div>
+                            <strong id="monthlySavingsNeeded">
+                                ₦0
+                            </strong>
 
-                <h3>
-                  Amazing — all your goals are complete.
-                </h3>
+                        </div>
 
-                <p>
-                  You have reached every savings target
-                  currently stored in MoneyLeak.
-                </p>
+                    </div>
 
-              </div>
+                </article>
 
-            `;
 
-            return;
+                <article class="panel">
 
-          }
+                    <div class="section-header">
 
+                        <div>
+                            <h2>Milestones</h2>
 
-          const target =
-            Number(
-              priority.target || 0
-            );
+                            <p>
+                                Keep moving forward
+                            </p>
+                        </div>
 
+                    </div>
 
-          const current =
-            Number(
-              priority.current || 0
-            );
 
+                    <div
+                        id="goalMilestones"
+                    >
 
-          const remaining =
-            Math.max(
-              0,
-              target - current
-            );
+                        <div class="empty-state">
+                            Your milestones will appear here.
+                        </div>
 
+                    </div>
 
-          const days =
-            priority.deadline
-              ? daysBetween(
-                  priority.deadline
-                )
-              : 0;
-
-
-          const monthly =
-            days > 0
-              ? remaining /
-                Math.max(
-                  days / 30.4375,
-                  1
-                )
-              : remaining;
-
-
-          document.getElementById(
-            "priorityGoal"
-          ).textContent =
-            priority.name || "Goal";
-
-
-          document.getElementById(
-            "priorityMonthly"
-          ).textContent =
-            ML.formatCurrency(
-              monthly
-            );
-
-
-          let message;
-
-
-          if (days < 0) {
-
-            message =
-              `Your priority goal is past its deadline. Consider extending the deadline or increasing your savings pace.`;
-
-          } else if (days <= 30) {
-
-            message =
-              `You have ${days} days left. To reach this goal, you need roughly ${ML.formatCurrency(monthly)} per month.`;
-
-          } else {
-
-            message =
-              `You need roughly ${ML.formatCurrency(monthly)} per month to reach this goal by ${formatDate(priority.deadline)}.`;
-
-          }
-
-
-          insight.innerHTML = `
-
-            <div class="insight-icon">
-              ✦
-            </div>
-
-            <div>
-
-              <h3>
-                ${escapeHTML(
-                  priority.name ||
-                  "Your priority goal"
-                )}
-              </h3>
-
-              <p>
-                ${escapeHTML(message)}
-              </p>
+                </article>
 
             </div>
 
-          `;
-
-        }
+        </section>
 
 
-        /* =========================
-           SUMMARY
-        ========================== */
+        <!-- ====================================================
+             ALL GOALS
+             ==================================================== -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>Your Goals</h2>
+
+                    <p>
+                        Track every target in one place
+                    </p>
+
+                </div>
+
+            </div>
 
 
-        function renderSummary() {
+            <div
+                id="goalsContainer"
+                class="goals-grid"
+            >
+
+                <div class="empty-state">
+                    You don't have any savings goals yet.
+                </div>
+
+            </div>
+
+        </section>
 
 
-          const goals =
-            ML.getSavingsGoals();
+        <!-- ====================================================
+             SAVINGS ACTIONS
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Build Your Future
+                        </h2>
+
+                        <p>
+                            Small consistent actions compound
+                        </p>
+
+                    </div>
+
+                </div>
 
 
-          const target =
-            goals.reduce(
-              (sum, goal) =>
-                sum +
-                Number(
-                  goal.target || 0
-                ),
-              0
-            );
+                <div class="quick-actions">
+
+                    <a
+                        href="budgets.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            🎯
+                        </div>
+
+                        <strong>
+                            Create a Savings Budget
+                        </strong>
+
+                        <small class="text-muted">
+                            Give savings a fixed place in your budget.
+                        </small>
+
+                    </a>
 
 
-          const saved =
-            goals.reduce(
-              (sum, goal) =>
-                sum +
-                Number(
-                  goal.current || 0
-                ),
-              0
-            );
+                    <a
+                        href="recurring.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            🔄
+                        </div>
+
+                        <strong>
+                            Automate Your Plan
+                        </strong>
+
+                        <small class="text-muted">
+                            Track recurring financial commitments.
+                        </small>
+
+                    </a>
 
 
-          const remaining =
-            Math.max(
-              0,
-              target - saved
-            );
+                    <a
+                        href="analytics.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            📈
+                        </div>
+
+                        <strong>
+                            Analyze Progress
+                        </strong>
+
+                        <small class="text-muted">
+                            Understand your financial trajectory.
+                        </small>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
 
 
-          const progress =
-            target > 0
-              ? Math.min(
-                  100,
-                  (saved / target) * 100
-                )
-              : 0;
+        <footer>
+
+            MoneyLeak Personal Finance OS
+
+            <br>
+
+            Your money. Your decisions. Your future.
+
+        </footer>
+
+    </div>
+
+</main>
 
 
-          const completed =
-            goals.filter(
-              goal =>
-                Number(
-                  goal.current || 0
-                ) >=
-                Number(
-                  goal.target || 0
-                )
-            ).length;
+<!-- ============================================================
+     SEARCH
+     ============================================================ -->
+
+<div
+    id="searchOverlay"
+    hidden
+    aria-hidden="true"
+>
+
+    <div class="search-modal">
+
+        <div class="search-modal-header">
+
+            <strong>
+                Search MoneyLeak
+            </strong>
+
+            <button
+                id="closeSearch"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
 
 
-          document.getElementById(
-            "summaryProgress"
-          ).textContent =
-            `${progress.toFixed(0)}%`;
+        <div class="search-input-wrapper">
+
+            <span>⌕</span>
+
+            <input
+                id="globalSearch"
+                type="search"
+                placeholder="Search transactions, pages..."
+                autocomplete="off"
+            >
+
+        </div>
 
 
-          document.getElementById(
-            "summaryProgressFill"
-          ).style.width =
-            `${progress}%`;
+        <div id="searchResults">
+
+            <p>
+                Start typing to search.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
 
 
-          document.getElementById(
-            "summarySaved"
-          ).textContent =
-            ML.formatCurrency(saved);
+<!-- ============================================================
+     NOTIFICATIONS
+     ============================================================ -->
+
+<div
+    id="notificationPanel"
+    hidden
+    aria-hidden="true"
+>
+
+    <div
+        style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:10px;
+        "
+    >
+
+        <strong>
+            Notifications
+        </strong>
+
+        <button
+            id="closeNotifications"
+            class="close-button"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
 
 
-          document.getElementById(
-            "summaryRemaining"
-          ).textContent =
-            ML.formatCurrency(
-              remaining
-            );
+    <div id="notificationList">
+
+        <p class="text-muted">
+            No new notifications.
+        </p>
+
+    </div>
+
+</div>
 
 
-          document.getElementById(
-            "summaryCompleted"
-          ).textContent =
-            completed;
+<!-- ============================================================
+     MOBILE MENU
+     ============================================================ -->
 
-        }
+<div id="mobileOverlay">
 
+    <div class="mobile-menu">
 
-        /* =========================
-           CREATE GOAL
-        ========================== */
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                margin-bottom:25px;
+            "
+        >
 
+            <strong>
+                MoneyLeak
+            </strong>
 
-        const form =
-          document.getElementById(
-            "goalForm"
-          );
+            <button
+                id="mobileMenuClose"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
 
-
-        form.addEventListener(
-          "submit",
-          function (event) {
-
-
-            event.preventDefault();
-
-
-            const name =
-              document.getElementById(
-                "goalName"
-              ).value.trim();
-
-
-            const target =
-              Number(
-                document.getElementById(
-                  "goalTarget"
-                ).value
-              );
+        </div>
 
 
-            const current =
-              Number(
-                document.getElementById(
-                  "goalCurrent"
-                ).value || 0
-              );
+        <nav class="nav">
+
+            <a href="index.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="income.html">
+                <span class="nav-icon">↗</span>
+                Income
+            </a>
+
+            <a href="expenses.html">
+                <span class="nav-icon">↘</span>
+                Expenses
+            </a>
+
+            <a href="budgets.html">
+                <span class="nav-icon">◫</span>
+                Budgets
+            </a>
+
+            <a href="savings.html" class="active">
+                <span class="nav-icon">◎</span>
+                Savings Goals
+            </a>
+
+            <a href="recurring.html">
+                <span class="nav-icon">↻</span>
+                Recurring
+            </a>
+
+            <a href="analytics.html">
+                <span class="nav-icon">⌁</span>
+                Analytics
+            </a>
+
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+    </div>
+
+</div>
 
 
-            const deadline =
-              document.getElementById(
+<!-- ============================================================
+     SAVINGS PAGE ENGINE
+     ============================================================ -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const ML = () =>
+            window.MoneyLeak;
+
+
+        /* ========================================================
+           DEFAULT DEADLINE
+           ======================================================== */
+
+        const deadline =
+            document.getElementById(
                 "goalDeadline"
-              ).value;
+            );
 
 
-            if (!name) {
-
-              alert(
-                "Please enter a goal name."
-              );
-
-              return;
-
-            }
-
-
-            if (
-              !target ||
-              target <= 0
-            ) {
-
-              alert(
-                "Please enter a valid target amount."
-              );
-
-              return;
-
-            }
-
-
-            if (
-              current < 0
-            ) {
-
-              alert(
-                "Saved amount cannot be negative."
-              );
-
-              return;
-
-            }
-
-
-            if (
-              current > target
-            ) {
-
-              alert(
-                "Already saved cannot be greater than the target."
-              );
-
-              return;
-
-            }
-
-
-            if (!deadline) {
-
-              alert(
-                "Please choose a target date."
-              );
-
-              return;
-
-            }
-
-
-            ML.addSavingsGoal({
-
-              name,
-
-              target,
-
-              current,
-
-              deadline
-
-            });
-
-
-            form.reset();
-
+        if (
+            deadline &&
+            !deadline.value
+        ) {
 
             const future =
-              new Date();
+                new Date();
 
             future.setMonth(
-              future.getMonth() + 6
+                future.getMonth() + 6
             );
 
 
-            document.getElementById(
-              "goalDeadline"
-            ).value =
-              future
+            deadline.value =
+                new Date(
+                    future.getTime() -
+                    future.getTimezoneOffset() *
+                    60000
+                )
                 .toISOString()
                 .split("T")[0];
 
+        }
 
+
+
+        /* ========================================================
+           CREATE GOAL
+           ======================================================== */
+
+        const form =
             document.getElementById(
-              "goalCurrent"
-            ).value =
-              "0";
+                "goalForm"
+            );
+
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+
+                    if (!ML()) {
+
+                        alert(
+                            "MoneyLeak is still loading. Please try again."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const name =
+                        document
+                            .getElementById(
+                                "goalName"
+                            )
+                            .value
+                            .trim();
+
+
+                    const target =
+                        Number(
+                            document
+                                .getElementById(
+                                    "goalTarget"
+                                )
+                                .value
+                        );
+
+
+                    const current =
+                        Number(
+                            document
+                                .getElementById(
+                                    "goalCurrent"
+                                )
+                                .value
+                        ) || 0;
+
+
+                    const goalDeadline =
+                        document
+                            .getElementById(
+                                "goalDeadline"
+                            )
+                            .value;
+
+
+                    const type =
+                        document
+                            .getElementById(
+                                "goalColor"
+                            )
+                            .value;
+
+
+                    const description =
+                        document
+                            .getElementById(
+                                "goalDescription"
+                            )
+                            .value
+                            .trim();
+
+
+                    if (!name) {
+
+                        alert(
+                            "Please enter a goal name."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !target ||
+                        target <= 0
+                    ) {
+
+                        alert(
+                            "Please enter a valid target amount."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        current < 0
+                    ) {
+
+                        alert(
+                            "Saved amount cannot be negative."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        current > target
+                    ) {
+
+                        alert(
+                            "Already saved cannot be greater than the target."
+                        );
+
+                        return;
+
+                    }
+
+
+                    ML().addSavingsGoal({
+
+                        name: name,
+
+                        target: target,
+
+                        current: current,
+
+                        deadline:
+                            goalDeadline || null,
+
+                        category: type,
+
+                        description:
+                            description
+
+                    });
+
+
+                    form.reset();
+
+
+                    if (deadline) {
+
+                        const future =
+                            new Date();
+
+                        future.setMonth(
+                            future.getMonth() + 6
+                        );
+
+
+                        deadline.value =
+                            new Date(
+                                future.getTime() -
+                                future.getTimezoneOffset() *
+                                60000
+                            )
+                            .toISOString()
+                            .split("T")[0];
+
+                    }
+
+
+                    renderPage();
+
+                }
+            );
+
+        }
+
+
+
+        /* ========================================================
+           SCROLL
+           ======================================================== */
+
+        document
+            .getElementById(
+                "scrollToGoalForm"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    document
+                        .getElementById(
+                            "goalFormSection"
+                        )
+                        ?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+
+                    setTimeout(
+                        function () {
+
+                            document
+                                .getElementById(
+                                    "goalName"
+                                )
+                                ?.focus();
+
+                        },
+                        450
+                    );
+
+                }
+            );
+
+
+
+        /* ========================================================
+           UPDATE
+           ======================================================== */
+
+        window.addEventListener(
+            "moneyLeakUpdated",
+            renderPage
+        );
+
+
+        setTimeout(
+            renderPage,
+            150
+        );
+
+
+
+        /* ========================================================
+           MAIN RENDER
+           ======================================================== */
+
+        function renderPage() {
+
+            if (!ML()) {
+                return;
+            }
+
+
+            const goals =
+                ML().getSavingsGoals();
+
+
+            const active =
+                goals.filter(
+                    goal =>
+                        !isGoalComplete(
+                            goal
+                        )
+                );
+
+
+            const totalSaved =
+                goals.reduce(
+                    (
+                        sum,
+                        goal
+                    ) =>
+                        sum +
+                        Number(
+                            goal.current || 0
+                        ),
+                    0
+                );
+
+
+            const totalTarget =
+                goals.reduce(
+                    (
+                        sum,
+                        goal
+                    ) =>
+                        sum +
+                        Number(
+                            goal.target || 0
+                        ),
+                    0
+                );
+
+
+            const progress =
+                totalTarget
+                    ? Math.min(
+                        100,
+                        (
+                            totalSaved /
+                            totalTarget
+                        ) *
+                        100
+                    )
+                    : 0;
+
+
+            setText(
+                "totalSaved",
+                ML().displayCurrency(
+                    totalSaved
+                )
+            );
+
+
+            setText(
+                "totalTarget",
+                ML().displayCurrency(
+                    totalTarget
+                )
+            );
+
+
+            setText(
+                "overallProgress",
+                progress.toFixed(1) + "%"
+            );
+
+
+            setText(
+                "activeGoalCount",
+                active.length
+            );
+
+
+            renderGoals(
+                goals
+            );
+
+
+            renderIntelligence(
+                goals
+            );
+
+
+            renderMilestones(
+                goals
+            );
+
+        }
+
+
+
+        /* ========================================================
+           GOALS
+           ======================================================== */
+
+        function renderGoals(
+            goals
+        ) {
+
+            const container =
+                document.getElementById(
+                    "goalsContainer"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (!goals.length) {
+
+                container.innerHTML =
+                    `
+                    <div class="empty-state">
+                        <strong>No savings goals yet.</strong>
+                        <br>
+                        Create your first goal above and give your money a mission.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                goals
+                .map(
+                    goal => {
+
+                        const target =
+                            Number(
+                                goal.target || 0
+                            );
+
+
+                        const current =
+                            Number(
+                                goal.current || 0
+                            );
+
+
+                        const percent =
+                            target
+                                ? Math.min(
+                                    100,
+                                    (
+                                        current /
+                                        target
+                                    ) *
+                                    100
+                                )
+                                : 0;
+
+
+                        const remaining =
+                            Math.max(
+                                0,
+                                target -
+                                current
+                            );
+
+
+                        const complete =
+                            percent >= 100;
+
+
+                        const monthly =
+                            calculateMonthlyRequired(
+                                goal
+                            );
+
+
+                        const days =
+                            daysUntil(
+                                goal.deadline
+                            );
+
+
+                        let deadlineText =
+                            "No deadline";
+
+
+                        if (
+                            goal.deadline
+                        ) {
+
+                            if (
+                                days < 0 &&
+                                !complete
+                            ) {
+
+                                deadlineText =
+                                    "Deadline passed";
+
+                            } else if (
+                                days === 0
+                            ) {
+
+                                deadlineText =
+                                    "Due today";
+
+                            } else {
+
+                                deadlineText =
+                                    days +
+                                    " days remaining";
+
+                            }
+
+                        }
+
+
+                        return `
+                        <article
+                            class="goal-card"
+                            style="
+                                padding:20px;
+                                border:1px solid var(--ml-border);
+                                border-radius:18px;
+                                background:var(--ml-card);
+                            "
+                        >
+
+                            <div
+                                style="
+                                    display:flex;
+                                    align-items:flex-start;
+                                    justify-content:space-between;
+                                    gap:15px;
+                                "
+                            >
+
+                                <div>
+
+                                    <span
+                                        class="text-muted"
+                                        style="
+                                            font-size:11px;
+                                            text-transform:uppercase;
+                                            letter-spacing:.08em;
+                                        "
+                                    >
+                                        ${escapeHTML(
+                                            goal.category ||
+                                            "Goal"
+                                        )}
+                                    </span>
+
+                                    <h3
+                                        style="
+                                            margin:4px 0 0;
+                                        "
+                                    >
+                                        ${escapeHTML(
+                                            goal.name
+                                        )}
+                                    </h3>
+
+                                </div>
+
+
+                                <span
+                                    style="
+                                        font-size:25px;
+                                    "
+                                >
+                                    ${complete ? "🏆" : "🎯"}
+                                </span>
+
+                            </div>
+
+
+                            ${
+                                goal.description
+                                    ? `
+                                    <p
+                                        class="text-muted"
+                                        style="
+                                            font-size:12px;
+                                            margin:8px 0 14px;
+                                        "
+                                    >
+                                        ${escapeHTML(
+                                            goal.description
+                                        )}
+                                    </p>
+                                    `
+                                    : ""
+                            }
+
+
+                            <div
+                                style="
+                                    display:flex;
+                                    justify-content:space-between;
+                                    gap:12px;
+                                    margin:16px 0 7px;
+                                "
+                            >
+
+                                <strong>
+                                    ${ML().displayCurrency(current)}
+                                </strong>
+
+                                <span class="text-muted">
+                                    ${ML().displayCurrency(target)}
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress-bar progress-large">
+
+                                <span
+                                    style="
+                                        width:${percent}%;
+                                    "
+                                ></span>
+
+                            </div>
+
+
+                            <div
+                                style="
+                                    display:flex;
+                                    justify-content:space-between;
+                                    gap:10px;
+                                    margin-top:7px;
+                                "
+                            >
+
+                                <small class="text-muted">
+                                    ${percent.toFixed(1)}% complete
+                                </small>
+
+                                <small class="text-muted">
+                                    ${ML().displayCurrency(remaining)} left
+                                </small>
+
+                            </div>
+
+
+                            <div
+                                style="
+                                    display:grid;
+                                    grid-template-columns:1fr 1fr;
+                                    gap:10px;
+                                    margin-top:18px;
+                                "
+                            >
+
+                                <div class="mini-stat">
+
+                                    <span>
+                                        Monthly Needed
+                                    </span>
+
+                                    <strong>
+                                        ${ML().displayCurrency(monthly)}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="mini-stat">
+
+                                    <span>
+                                        Timeline
+                                    </span>
+
+                                    <strong>
+                                        ${deadlineText}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                style="
+                                    display:flex;
+                                    gap:8px;
+                                    flex-wrap:wrap;
+                                    margin-top:15px;
+                                "
+                            >
+
+                                <button
+                                    type="button"
+                                    class="btn btn-primary btn-sm"
+                                    data-add-goal="${goal.id}"
+                                >
+                                    + Add Savings
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary btn-sm"
+                                    data-edit-goal="${goal.id}"
+                                >
+                                    Edit
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    data-delete-goal="${goal.id}"
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </article>
+                        `;
+
+                    }
+                )
+                .join("");
+
+
+            bindGoalButtons();
+
+        }
+
+
+
+        /* ========================================================
+           BUTTONS
+           ======================================================== */
+
+        function bindGoalButtons() {
+
+            document
+                .querySelectorAll(
+                    "[data-add-goal]"
+                )
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const goal =
+                                    ML()
+                                        .getSavingsGoals()
+                                        .find(
+                                            item =>
+                                                String(
+                                                    item.id
+                                                ) ===
+                                                String(
+                                                    this.dataset.addGoal
+                                                )
+                                        );
+
+
+                                if (!goal) {
+                                    return;
+                                }
+
+
+                                const amountText =
+                                    prompt(
+                                        "How much would you like to add to " +
+                                        goal.name +
+                                        "?"
+                                    );
+
+
+                                if (
+                                    amountText ===
+                                    null
+                                ) {
+                                    return;
+                                }
+
+
+                                const amount =
+                                    Number(
+                                        amountText
+                                            .replace(
+                                                /,/g,
+                                                ""
+                                            )
+                                    );
+
+
+                                if (
+                                    !amount ||
+                                    amount <= 0
+                                ) {
+
+                                    alert(
+                                        "Please enter a valid amount."
+                                    );
+
+                                    return;
+
+                                }
+
+
+                                const newCurrent =
+                                    Number(
+                                        goal.current || 0
+                                    ) +
+                                    amount;
+
+
+                                ML()
+                                    .updateSavingsGoal(
+                                        goal.id,
+                                        {
+                                            current:
+                                                Math.min(
+                                                    goal.target,
+                                                    newCurrent
+                                                )
+                                        }
+                                    );
+
+
+                                renderPage();
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            document
+                .querySelectorAll(
+                    "[data-delete-goal]"
+                )
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const goal =
+                                    ML()
+                                        .getSavingsGoals()
+                                        .find(
+                                            item =>
+                                                String(
+                                                    item.id
+                                                ) ===
+                                                String(
+                                                    this.dataset.deleteGoal
+                                                )
+                                        );
+
+
+                                if (!goal) {
+                                    return;
+                                }
+
+
+                                const confirmed =
+                                    confirm(
+                                        "Delete the savings goal \"" +
+                                        goal.name +
+                                        "\"?"
+                                    );
+
+
+                                if (!confirmed) {
+                                    return;
+                                }
+
+
+                                ML()
+                                    .deleteSavingsGoal(
+                                        goal.id
+                                    );
+
+
+                                renderPage();
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            document
+                .querySelectorAll(
+                    "[data-edit-goal]"
+                )
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                editGoal(
+                                    this.dataset
+                                        .editGoal
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
+
+
+        /* ========================================================
+           EDIT GOAL
+           ======================================================== */
+
+        function editGoal(
+            id
+        ) {
+
+            const goal =
+                ML()
+                    .getSavingsGoals()
+                    .find(
+                        item =>
+                            String(
+                                item.id
+                            ) ===
+                            String(id)
+                    );
+
+
+            if (!goal) {
+                return;
+            }
+
+
+            const newName =
+                prompt(
+                    "Goal name:",
+                    goal.name
+                );
+
+
+            if (
+                newName ===
+                null
+            ) {
+                return;
+            }
+
+
+            const newTarget =
+                prompt(
+                    "Target amount:",
+                    goal.target
+                );
+
+
+            if (
+                newTarget ===
+                null
+            ) {
+                return;
+            }
+
+
+            const target =
+                Number(
+                    newTarget.replace(
+                        /,/g,
+                        ""
+                    )
+                );
+
+
+            if (
+                !target ||
+                target <= 0
+            ) {
+
+                alert(
+                    "Invalid target amount."
+                );
+
+                return;
+
+            }
+
+
+            ML()
+                .updateSavingsGoal(
+                    goal.id,
+                    {
+                        name:
+                            newName.trim() ||
+                            goal.name,
+
+                        target:
+                            target
+                    }
+                );
 
 
             renderPage();
 
-
-            alert(
-              "Savings goal created successfully."
-            );
-
-          }
-        );
+        }
 
 
-        /* =========================
-           SCROLL
-        ========================== */
+
+        /* ========================================================
+           INTELLIGENCE
+           ======================================================== */
+
+        function renderIntelligence(
+            goals
+        ) {
+
+            const active =
+                goals.filter(
+                    goal =>
+                        !isGoalComplete(
+                            goal
+                        )
+                );
 
 
-        document
-          .getElementById(
-            "scrollToGoalForm"
-          )
-          .addEventListener(
-            "click",
-            function () {
+            if (!active.length) {
 
-              document
-                .getElementById(
-                  "goalFormPanel"
-                )
-                .scrollIntoView({
-                  behavior: "smooth",
-                  block: "start"
-                });
+                setText(
+                    "closestGoal",
+                    goals.length
+                        ? "All complete 🎉"
+                        : "—"
+                );
+
+
+                setText(
+                    "urgentGoal",
+                    goals.length
+                        ? "All complete 🎉"
+                        : "—"
+                );
+
+
+                setText(
+                    "monthlySavingsNeeded",
+                    ML().displayCurrency(0)
+                );
+
+
+                setText(
+                    "goalInsight",
+                    goals.length
+                        ? "Amazing work. Every savings goal has been completed."
+                        : "Create a savings goal and MoneyLeak will calculate your path toward it."
+                );
+
+                return;
 
             }
-          );
 
 
-        /* =========================
-           PAGE REFRESH
-        ========================== */
+            const closest =
+                [...active]
+                    .sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            goalPercent(b) -
+                            goalPercent(a)
+                    )[0];
 
 
-        function renderPage() {
+            const urgent =
+                [...active]
+                    .sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            daysUntil(
+                                a.deadline
+                            ) -
+                            daysUntil(
+                                b.deadline
+                            )
+                    )[0];
 
-          renderOverview();
 
-          renderGoals();
+            const monthly =
+                active.reduce(
+                    (
+                        total,
+                        goal
+                    ) =>
+                        total +
+                        calculateMonthlyRequired(
+                            goal
+                        ),
+                    0
+                );
 
-          renderInsight();
 
-          renderSummary();
+            setText(
+                "closestGoal",
+                closest
+                    ? closest.name
+                    : "—"
+            );
+
+
+            setText(
+                "urgentGoal",
+                urgent
+                    ? urgent.name
+                    : "—"
+            );
+
+
+            setText(
+                "monthlySavingsNeeded",
+                ML().displayCurrency(
+                    monthly
+                )
+            );
+
+
+            const insight =
+                document.getElementById(
+                    "goalInsight"
+                );
+
+
+            if (!insight) {
+                return;
+            }
+
+
+            if (
+                urgent &&
+                urgent.deadline
+            ) {
+
+                const days =
+                    daysUntil(
+                        urgent.deadline
+                    );
+
+
+                if (
+                    days >= 0 &&
+                    days <= 30
+                ) {
+
+                    insight.textContent =
+                        urgent.name +
+                        " is your most time-sensitive goal. You need roughly " +
+                        ML().displayCurrency(
+                            calculateMonthlyRequired(
+                                urgent
+                            )
+                        ) +
+                        " per month to stay on track.";
+
+                    return;
+
+                }
+
+            }
+
+
+            insight.textContent =
+                "You need roughly " +
+                ML().displayCurrency(
+                    monthly
+                ) +
+                " per month across your active goals to stay on target.";
 
         }
 
 
-        /* =========================
-           CONNECT ENGINE
-        ========================== */
+
+        /* ========================================================
+           MILESTONES
+           ======================================================== */
+
+        function renderMilestones(
+            goals
+        ) {
+
+            const container =
+                document.getElementById(
+                    "goalMilestones"
+                );
 
 
-        window.moneyLeakPageUpdate =
-          renderPage;
+            if (!container) {
+                return;
+            }
 
 
-        /* =========================
-           INITIAL RENDER
-        ========================== */
+            if (!goals.length) {
+
+                container.innerHTML =
+                    `
+                    <div class="empty-state">
+                        Create a goal to unlock milestones.
+                    </div>
+                    `;
+
+                return;
+
+            }
 
 
-        renderPage();
+            const milestones =
+                goals
+                    .flatMap(
+                        goal => {
+
+                            const percent =
+                                goalPercent(
+                                    goal
+                                );
 
 
-      }
-    );
+                            return [
+                                {
+                                    goal,
+                                    level:25,
+                                    label:"25%"
+                                },
+                                {
+                                    goal,
+                                    level:50,
+                                    label:"50%"
+                                },
+                                {
+                                    goal,
+                                    level:75,
+                                    label:"75%"
+                                },
+                                {
+                                    goal,
+                                    level:100,
+                                    label:"100%"
+                                }
+                            ];
 
-  </script>
+                        }
+                    )
+                    .filter(
+                        milestone =>
+                            goalPercent(
+                                milestone.goal
+                            ) <
+                            milestone.level
+                    )
+                    .sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            (
+                                a.level -
+                                goalPercent(
+                                    a.goal
+                                )
+                            ) -
+                            (
+                                b.level -
+                                goalPercent(
+                                    b.goal
+                                )
+                            )
+                    )
+                    .slice(
+                        0,
+                        4
+                    );
+
+
+            if (!milestones.length) {
+
+                container.innerHTML =
+                    `
+                    <div class="smart-insight">
+                        <strong>🏆 Milestones unlocked</strong>
+                        <p>
+                            You're at or beyond all displayed milestones.
+                            Keep going!
+                        </p>
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                milestones
+                    .map(
+                        milestone => {
+
+                            return `
+                            <div
+                                class="mini-stat"
+                                style="
+                                    margin-bottom:10px;
+                                "
+                            >
+
+                                <span>
+                                    ${escapeHTML(
+                                        milestone.goal.name
+                                    )}
+                                    ·
+                                    ${milestone.label}
+                                </span>
+
+                                <strong>
+                                    ${(
+                                        milestone.level -
+                                        goalPercent(
+                                            milestone.goal
+                                        )
+                                    ).toFixed(1)}
+                                    pts away
+                                </strong>
+
+                            </div>
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+
+
+
+        /* ========================================================
+           CALCULATIONS
+           ======================================================== */
+
+        function goalPercent(
+            goal
+        ) {
+
+            const target =
+                Number(
+                    goal.target || 0
+                );
+
+
+            const current =
+                Number(
+                    goal.current || 0
+                );
+
+
+            if (!target) {
+                return 0;
+            }
+
+
+            return Math.min(
+                100,
+                (
+                    current /
+                    target
+                ) *
+                100
+            );
+
+        }
+
+
+        function isGoalComplete(
+            goal
+        ) {
+
+            return (
+                Number(
+                    goal.current || 0
+                ) >=
+                Number(
+                    goal.target || 0
+                )
+            );
+
+        }
+
+
+        function daysUntil(
+            deadlineValue
+        ) {
+
+            if (!deadlineValue) {
+                return Infinity;
+            }
+
+
+            const today =
+                new Date();
+
+            today.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+
+            const deadline =
+                new Date(
+                    deadlineValue
+                );
+
+
+            deadline.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+
+            return Math.ceil(
+                (
+                    deadline -
+                    today
+                ) /
+                86400000
+            );
+
+        }
+
+
+        function calculateMonthlyRequired(
+            goal
+        ) {
+
+            const remaining =
+                Math.max(
+                    0,
+                    Number(
+                        goal.target || 0
+                    ) -
+                    Number(
+                        goal.current || 0
+                    )
+                );
+
+
+            if (
+                remaining <= 0
+            ) {
+                return 0;
+            }
+
+
+            const days =
+                daysUntil(
+                    goal.deadline
+                );
+
+
+            if (
+                !Number.isFinite(
+                    days
+                )
+            ) {
+
+                return remaining;
+
+            }
+
+
+            if (
+                days <= 0
+            ) {
+
+                return remaining;
+
+            }
+
+
+            return (
+                remaining /
+                days
+            ) *
+            30.4375;
+
+        }
+
+
+
+        /* ========================================================
+           HELPERS
+           ======================================================== */
+
+        function setText(
+            id,
+            value
+        ) {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    value;
+
+            }
+
+        }
+
+
+        function escapeHTML(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+<!-- ============================================================
+     MONEY LEAK ENGINE
+     ============================================================ -->
+
+<script src="app.js"></script>
 
 </body>
 </html>
