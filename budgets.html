@@ -1,1839 +1,2635 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MoneyLeak budgets and spending limits.">
-  <title>Budgets — MoneyLeak</title>
-  <link rel="stylesheet" href="style.css">
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="MoneyLeak Budgets — control your spending with intelligent budgets."
+    >
+
+    <title>MoneyLeak — Budgets</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-  <aside class="sidebar" id="sidebar">
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+
+<aside class="sidebar">
 
     <div class="brand">
-      <div class="brand-mark">M</div>
 
-      <div>
-        <strong>MoneyLeak</strong>
-        <span>Personal Finance OS</span>
-      </div>
-    </div>
-
-    <nav class="nav-menu">
-
-      <a href="index.html" class="nav-item">
-        <span>⌂</span>
-        <span>Dashboard</span>
-      </a>
-
-      <a href="income.html" class="nav-item">
-        <span>↗</span>
-        <span>Income</span>
-      </a>
-
-      <a href="expenses.html" class="nav-item">
-        <span>↘</span>
-        <span>Expenses</span>
-      </a>
-
-      <a href="budgets.html" class="nav-item active">
-        <span>◫</span>
-        <span>Budgets</span>
-      </a>
-
-      <a href="savings.html" class="nav-item">
-        <span>◎</span>
-        <span>Goals</span>
-      </a>
-
-      <a href="recurring.html" class="nav-item">
-        <span>↻</span>
-        <span>Recurring</span>
-      </a>
-
-      <a href="analytics.html" class="nav-item">
-        <span>◒</span>
-        <span>Analytics</span>
-      </a>
-
-      <a href="settings.html" class="nav-item">
-        <span>⚙</span>
-        <span>Settings</span>
-      </a>
-
-    </nav>
-
-    <div class="sidebar-bottom">
-
-      <div class="sidebar-tip">
-
-        <span class="tip-icon">✦</span>
-
-        <div>
-          <strong>Money insight</strong>
-          <p>A budget gives every naira a job.</p>
+        <div class="brand-logo">
+            M
         </div>
 
-      </div>
+        <div>
+            <strong>MoneyLeak</strong>
+            <small>Personal Finance OS</small>
+        </div>
 
     </div>
 
-  </aside>
 
+    <nav class="nav">
 
-  <main class="main-content">
+        <a href="index.html">
 
-    <!-- TOPBAR -->
-    <header class="topbar">
+            <span class="nav-icon">⌂</span>
 
-      <button
-        class="mobile-menu-btn"
-        id="mobileMenuBtn"
-        aria-label="Open menu">
-        ☰
-      </button>
-
-      <div class="topbar-search">
-
-        <button
-          id="globalSearchBtn"
-          class="search-button">
-
-          <span>⌕</span>
-          <span>Search MoneyLeak...</span>
-          <kbd>/</kbd>
-
-        </button>
-
-      </div>
-
-      <div class="topbar-actions">
-
-        <button
-          class="icon-button"
-          id="notificationBtn"
-          aria-label="Notifications">
-
-          ♢
-          <span
-            class="notification-dot"
-            id="notificationDot">
-          </span>
-
-        </button>
-
-        <a href="settings.html" class="profile-button">
-
-          <div class="profile-avatar">
-            M
-          </div>
-
-          <div class="profile-info">
-
-            <strong id="profileName">
-              My Money
-            </strong>
-
-            <span>
-              Finance
-            </span>
-
-          </div>
+            <span>Dashboard</span>
 
         </a>
 
-      </div>
+
+        <a href="income.html">
+
+            <span class="nav-icon">↗</span>
+
+            <span>Income</span>
+
+        </a>
+
+
+        <a href="expenses.html">
+
+            <span class="nav-icon">↘</span>
+
+            <span>Expenses</span>
+
+        </a>
+
+
+        <a
+            href="budgets.html"
+            class="active"
+        >
+
+            <span class="nav-icon">◫</span>
+
+            <span>Budgets</span>
+
+        </a>
+
+
+        <a href="savings.html">
+
+            <span class="nav-icon">◎</span>
+
+            <span>Savings Goals</span>
+
+        </a>
+
+
+        <a href="recurring.html">
+
+            <span class="nav-icon">↻</span>
+
+            <span>Recurring</span>
+
+        </a>
+
+
+        <a href="analytics.html">
+
+            <span class="nav-icon">⌁</span>
+
+            <span>Analytics</span>
+
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <nav class="nav">
+
+            <a href="settings.html">
+
+                <span class="nav-icon">⚙</span>
+
+                <span>Settings</span>
+
+            </a>
+
+        </nav>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+
+<main class="main">
+
+
+    <!-- ========================================================
+         TOPBAR
+         ======================================================== -->
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+
+            <button
+                id="mobileMenuButton"
+                class="mobile-menu-button"
+                type="button"
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
+
+
+            <button
+                id="searchButton"
+                class="search-button"
+                type="button"
+                aria-label="Search"
+            >
+                ⌕
+            </button>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+            <button
+                id="notificationButton"
+                class="notification-button"
+                type="button"
+                aria-label="Notifications"
+            >
+                🔔
+            </button>
+
+
+            <a
+                href="settings.html"
+                class="profile-button"
+            >
+
+                <span class="profile-avatar">
+                    ML
+                </span>
+
+                <span data-money-name>
+                    My Money
+                </span>
+
+            </a>
+
+        </div>
 
     </header>
 
 
+
+    <!-- ========================================================
+         PAGE
+         ======================================================== -->
+
     <div class="page-container">
 
-      <!-- HERO -->
-      <section class="page-hero">
 
-        <div>
+        <!-- ====================================================
+             HERO
+             ==================================================== -->
 
-          <span class="eyebrow">
-            BUDGET CONTROL
-          </span>
+        <section class="dashboard-hero">
 
-          <h1>
-            Give your spending a limit.
-          </h1>
-
-          <p>
-            Set boundaries for your money and know
-            before you overspend.
-          </p>
-
-        </div>
-
-        <button
-          class="primary-button"
-          id="scrollToBudgetForm">
-
-          <span>＋</span>
-          Set Budget
-
-        </button>
-
-      </section>
-
-
-      <!-- OVERVIEW -->
-      <section class="overview-grid">
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            ◫
-          </div>
-
-          <div class="card-label">
-            Monthly Budget
-          </div>
-
-          <div
-            class="card-value"
-            id="monthlyBudgetDisplay">
-
-            ₦0
-
-          </div>
-
-          <div class="card-meta">
-            Current month's limit
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            ↘
-          </div>
-
-          <div class="card-label">
-            Spent This Month
-          </div>
-
-          <div
-            class="card-value"
-            id="monthlySpentDisplay">
-
-            ₦0
-
-          </div>
-
-          <div class="card-meta">
-            Recorded expenses
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            %
-          </div>
-
-          <div class="card-label">
-            Budget Used
-          </div>
-
-          <div
-            class="card-value"
-            id="budgetUsedDisplay">
-
-            0%
-
-          </div>
-
-          <div class="card-meta">
-            Monthly usage
-          </div>
-
-        </div>
-
-
-        <div class="overview-card">
-
-          <div class="card-icon">
-            ₦
-          </div>
-
-          <div class="card-label">
-            Remaining
-          </div>
-
-          <div
-            class="card-value"
-            id="budgetRemainingDisplay">
-
-            ₦0
-
-          </div>
-
-          <div
-            class="card-meta"
-            id="budgetRemainingLabel">
-
-            Set a budget to begin
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- BUDGET FORM + INSIGHT -->
-      <section class="two-column-section">
-
-
-        <div
-          class="panel"
-          id="budgetFormPanel">
-
-          <div class="panel-header">
-
-            <div>
-
-              <span class="panel-eyebrow">
-                MONTHLY BUDGET
-              </span>
-
-              <h2>
-                Set your spending limit
-              </h2>
-
-            </div>
-
-          </div>
-
-
-          <form
-            id="monthlyBudgetForm"
-            class="finance-form">
-
-
-            <div class="form-group">
-
-              <label for="monthlyBudgetInput">
-                Monthly spending limit
-              </label>
-
-
-              <div class="amount-input">
-
-                <span id="budgetCurrencySymbol">
-                  ₦
-                </span>
-
-                <input
-                  type="number"
-                  id="monthlyBudgetInput"
-                  min="0"
-                  step="0.01"
-                  placeholder="e.g. 200000"
-                  required>
-
-              </div>
-
-            </div>
-
-
-            <button
-              type="submit"
-              class="primary-button full-width">
-
-              Save Monthly Budget
-
-            </button>
-
-
-          </form>
-
-        </div>
-
-
-        <div class="panel insight-panel">
-
-
-          <div class="panel-header">
-
-            <div>
-
-              <span class="panel-eyebrow">
-                SMART BUDGET
-              </span>
-
-              <h2>
-                Budget intelligence
-              </h2>
-
-            </div>
-
-            <span class="insight-badge">
-              AI
-            </span>
-
-          </div>
-
-
-          <div
-            class="large-insight"
-            id="budgetInsight">
-
-            <div class="insight-icon">
-              ✦
-            </div>
-
-            <div>
-
-              <h3>
-                Set a monthly budget to get started.
-              </h3>
-
-              <p>
-                MoneyLeak will compare your spending
-                against your limit and warn you before
-                things get out of control.
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="insight-stat-row">
-
-            <div>
-
-              <span>
-                Daily allowance
-              </span>
-
-              <strong id="dailyAllowance">
-                ₦0
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Status
-              </span>
-
-              <strong id="budgetStatus">
-                Not set
-              </strong>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- MAIN BUDGET PROGRESS -->
-      <section class="panel">
-
-
-        <div class="panel-header">
-
-          <div>
-
-            <span class="panel-eyebrow">
-              MONTHLY PROGRESS
-            </span>
-
-            <h2>
-              Budget health
-            </h2>
-
-          </div>
-
-          <span
-            class="panel-subtitle"
-            id="budgetMonthLabel">
-            Current month
-          </span>
-
-        </div>
-
-
-        <div class="budget-progress-card">
-
-
-          <div class="budget-progress-header">
-
-            <div>
-
-              <span>
-                Spent
-              </span>
-
-              <strong id="progressSpent">
-                ₦0
-              </strong>
-
-            </div>
-
-
-            <div class="budget-progress-center">
-
-              <strong id="progressPercent">
-                0%
-              </strong>
-
-              <span>
-                used
-              </span>
-
-            </div>
-
-
-            <div>
-
-              <span>
-                Limit
-              </span>
-
-              <strong id="progressLimit">
-                ₦0
-              </strong>
-
-            </div>
-
-          </div>
-
-
-          <div class="category-bar budget-main-bar">
-
-            <div
-              class="category-bar-fill"
-              id="mainBudgetFill"
-              style="width:0%">
-            </div>
-
-          </div>
-
-
-          <div
-            class="budget-progress-message"
-            id="budgetProgressMessage">
-
-            Set your monthly budget to begin tracking.
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
-      <!-- CATEGORY BUDGETS -->
-      <section class="panel">
-
-
-        <div class="panel-header">
-
-          <div>
-
-            <span class="panel-eyebrow">
-              CATEGORY LIMITS
-            </span>
-
-            <h2>
-              Control each spending category
-            </h2>
-
-          </div>
-
-          <span class="panel-subtitle">
-            Optional
-          </span>
-
-        </div>
-
-
-        <form
-          id="categoryBudgetForm"
-          class="category-budget-form">
-
-
-          <div class="form-row">
-
-
-            <div class="form-group">
-
-              <label for="categoryBudgetCategory">
-                Category
-              </label>
-
-              <select
-                id="categoryBudgetCategory"
-                required>
-
-                <option value="">
-                  Choose category
-                </option>
-
-                <option value="Food">
-                  Food
-                </option>
-
-                <option value="Transport">
-                  Transport
-                </option>
-
-                <option value="Shopping">
-                  Shopping
-                </option>
-
-                <option value="Bills">
-                  Bills
-                </option>
-
-                <option value="Housing">
-                  Housing
-                </option>
-
-                <option value="Health">
-                  Health
-                </option>
-
-                <option value="Education">
-                  Education
-                </option>
-
-                <option value="Entertainment">
-                  Entertainment
-                </option>
-
-                <option value="Subscriptions">
-                  Subscriptions
-                </option>
-
-                <option value="Family">
-                  Family
-                </option>
-
-                <option value="Travel">
-                  Travel
-                </option>
-
-                <option value="Utilities">
-                  Utilities
-                </option>
-
-                <option value="Business">
-                  Business
-                </option>
-
-                <option value="Other">
-                  Other
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="categoryBudgetAmount">
-                Monthly limit
-              </label>
-
-              <div class="amount-input">
-
-                <span>
-                  ₦
-                </span>
-
-                <input
-                  type="number"
-                  id="categoryBudgetAmount"
-                  min="1"
-                  step="0.01"
-                  placeholder="e.g. 50000"
-                  required>
-
-              </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label>
-                &nbsp;
-              </label>
-
-              <button
-                type="submit"
-                class="secondary-button">
-
-                Add Category Budget
-
-              </button>
-
-            </div>
-
-
-          </div>
-
-
-        </form>
-
-
-        <div
-          id="categoryBudgetsList"
-          class="budget-category-list">
-
-
-          <div class="empty-state">
-
-            <div class="empty-icon">
-              ◫
-            </div>
-
-            <h3>
-              No category budgets
-            </h3>
+            <h1>
+                Budget Command Center
+            </h1>
 
             <p>
-              Set limits for categories where you
-              want more control.
+                Give every naira a job. Set spending limits,
+                monitor your progress and know when you're
+                getting close to a financial boundary.
             </p>
 
-          </div>
 
+            <div
+                style="
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:10px;
+                    margin-top:20px;
+                    position:relative;
+                    z-index:2;
+                "
+            >
+
+                <button
+                    id="scrollToBudgetForm"
+                    class="btn"
+                    type="button"
+                    style="
+                        background:#fff;
+                        color:#086c47;
+                    "
+                >
+                    + Set Budget
+                </button>
+
+
+                <a
+                    href="expenses.html"
+                    class="btn"
+                    style="
+                        background:rgba(255,255,255,.12);
+                        color:#fff;
+                        border-color:rgba(255,255,255,.18);
+                    "
+                >
+                    Review Expenses
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             BUDGET OVERVIEW
+             ==================================================== -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Budget Overview
+                    </h2>
+
+                    <p>
+                        Your spending limits this month
+                    </p>
 
-        </div>
-
-
-      </section>
-
-
-      <footer class="site-footer">
-
-        <span>
-          MoneyLeak
-        </span>
-
-        <span>
-          •
-        </span>
-
-        <span>
-          Spend with intention.
-        </span>
-
-      </footer>
-
-
-    </div>
-
-  </main>
-
-
-  <!-- SEARCH -->
-  <div
-    class="search-overlay"
-    id="searchOverlay">
-
-    <div class="search-modal">
-
-      <div class="search-modal-header">
-
-        <h2>
-          Search MoneyLeak
-        </h2>
-
-        <button
-          id="closeSearchBtn"
-          class="close-button">
-
-          ×
-
-        </button>
-
-      </div>
-
-
-      <div class="search-modal-input">
-
-        <span>
-          ⌕
-        </span>
-
-        <input
-          type="search"
-          id="globalSearchInput"
-          placeholder="Search pages, transactions..."
-          autocomplete="off">
-
-      </div>
-
-
-      <div
-        id="globalSearchResults"
-        class="search-results">
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- NOTIFICATIONS -->
-  <div
-    class="notification-panel"
-    id="notificationPanel">
-
-    <div class="notification-header">
-
-      <div>
-
-        <strong>
-          Notifications
-        </strong>
-
-        <span>
-          MoneyLeak alerts
-        </span>
-
-      </div>
-
-      <button
-        id="closeNotificationBtn"
-        class="close-button">
-
-        ×
-
-      </button>
-
-    </div>
-
-
-    <div
-      id="notificationList"
-      class="notification-list">
-    </div>
-
-  </div>
-
-
-  <div
-    class="mobile-overlay"
-    id="mobileOverlay">
-  </div>
-
-
-  <!-- MAIN ENGINE -->
-  <script src="app.js"></script>
-
-
-  <!-- BUDGET PAGE ENGINE -->
-  <script>
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      function () {
-
-
-        const ML =
-          window.MoneyLeak;
-
-
-        if (!ML) {
-
-          console.error(
-            "MoneyLeak engine was not loaded."
-          );
-
-          return;
-
-        }
-
-
-        /* =========================
-           HELPERS
-        ========================== */
-
-
-        function getMonthName() {
-
-          return new Date()
-            .toLocaleDateString(
-              undefined,
-              {
-                month: "long",
-                year: "numeric"
-              }
-            );
-
-        }
-
-
-        /* =========================
-           MONTHLY BUDGET
-        ========================== */
-
-
-        function renderMonthlyBudget() {
-
-
-          const budget =
-            Number(
-              ML.getMonthlyBudget() || 0
-            );
-
-
-          const transactions =
-            ML.getTransactions();
-
-
-          const now =
-            new Date();
-
-
-          const month =
-            now.getMonth();
-
-
-          const year =
-            now.getFullYear();
-
-
-          const expenses =
-            transactions.filter(
-              transaction => {
-
-                if (
-                  transaction.type !==
-                  "expense"
-                ) {
-
-                  return false;
-
-                }
-
-
-                const date =
-                  new Date(
-                    transaction.date +
-                    "T00:00:00"
-                  );
-
-
-                return (
-                  date.getMonth() === month &&
-                  date.getFullYear() === year
-                );
-
-              }
-            );
-
-
-          const spent =
-            expenses.reduce(
-              (sum, transaction) =>
-                sum +
-                Number(
-                  transaction.amount || 0
-                ),
-              0
-            );
-
-
-          const remaining =
-            budget > 0
-              ? budget - spent
-              : 0;
-
-
-          const percentage =
-            budget > 0
-              ? (spent / budget) * 100
-              : 0;
-
-
-          document.getElementById(
-            "monthlyBudgetDisplay"
-          ).textContent =
-            ML.formatCurrency(
-              budget
-            );
-
-
-          document.getElementById(
-            "monthlySpentDisplay"
-          ).textContent =
-            ML.formatCurrency(
-              spent
-            );
-
-
-          document.getElementById(
-            "budgetUsedDisplay"
-          ).textContent =
-            budget > 0
-              ? `${percentage.toFixed(0)}%`
-              : "0%";
-
-
-          document.getElementById(
-            "budgetRemainingDisplay"
-          ).textContent =
-            ML.formatCurrency(
-              Math.max(
-                0,
-                remaining
-              )
-            );
-
-
-          document.getElementById(
-            "budgetRemainingLabel"
-          ).textContent =
-            budget > 0
-              ? remaining >= 0
-                ? "Available to spend"
-                : "Budget exceeded"
-              : "Set a budget to begin";
-
-
-          document.getElementById(
-            "progressSpent"
-          ).textContent =
-            ML.formatCurrency(
-              spent
-            );
-
-
-          document.getElementById(
-            "progressLimit"
-          ).textContent =
-            ML.formatCurrency(
-              budget
-            );
-
-
-          const displayPercentage =
-            budget > 0
-              ? Math.min(
-                  100,
-                  percentage
-                )
-              : 0;
-
-
-          document.getElementById(
-            "progressPercent"
-          ).textContent =
-            `${percentage.toFixed(0)}%`;
-
-
-          document.getElementById(
-            "mainBudgetFill"
-          ).style.width =
-            `${displayPercentage}%`;
-
-
-          document.getElementById(
-            "budgetMonthLabel"
-          ).textContent =
-            getMonthName();
-
-
-          /* DAILY ALLOWANCE */
-
-
-          const today =
-            now.getDate();
-
-
-          const daysInMonth =
-            new Date(
-              year,
-              month + 1,
-              0
-            ).getDate();
-
-
-          const daysRemaining =
-            Math.max(
-              1,
-              daysInMonth -
-              today +
-              1
-            );
-
-
-          const dailyAllowance =
-            budget > 0
-              ? Math.max(
-                  0,
-                  remaining /
-                  daysRemaining
-                )
-              : 0;
-
-
-          document.getElementById(
-            "dailyAllowance"
-          ).textContent =
-            ML.formatCurrency(
-              dailyAllowance
-            );
-
-
-          /* STATUS */
-
-
-          let status =
-            "Not set";
-
-
-          if (budget > 0) {
-
-            if (percentage >= 100) {
-
-              status =
-                "Over budget";
-
-            } else if (
-              percentage >= 80
-            ) {
-
-              status =
-                "Near limit";
-
-            } else if (
-              percentage >= 50
-            ) {
-
-              status =
-                "Watch spending";
-
-            } else {
-
-              status =
-                "On track";
-
-            }
-
-          }
-
-
-          document.getElementById(
-            "budgetStatus"
-          ).textContent =
-            status;
-
-
-          /* MESSAGE */
-
-
-          const message =
-            document.getElementById(
-              "budgetProgressMessage"
-            );
-
-
-          if (!budget) {
-
-            message.textContent =
-              "Set your monthly budget to begin tracking.";
-
-          } else if (
-            percentage >= 100
-          ) {
-
-            message.textContent =
-              `You've exceeded your monthly budget by ${ML.formatCurrency(Math.abs(remaining))}.`;
-
-          } else if (
-            percentage >= 80
-          ) {
-
-            message.textContent =
-              `You've used ${percentage.toFixed(0)}% of your budget. Slow down and protect the remaining ${ML.formatCurrency(remaining)}.`;
-
-          } else {
-
-            message.textContent =
-              `You're using ${percentage.toFixed(0)}% of your monthly budget. You have ${ML.formatCurrency(remaining)} remaining.`;
-
-          }
-
-
-          renderInsight(
-            budget,
-            spent,
-            percentage,
-            remaining
-          );
-
-        }
-
-
-        /* =========================
-           SMART INSIGHT
-        ========================== */
-
-
-        function renderInsight(
-          budget,
-          spent,
-          percentage,
-          remaining
-        ) {
-
-
-          const box =
-            document.getElementById(
-              "budgetInsight"
-            );
-
-
-          if (!budget) {
-
-            box.innerHTML = `
-
-              <div class="insight-icon">
-                ✦
-              </div>
-
-              <div>
-
-                <h3>
-                  Set a monthly budget to get started.
-                </h3>
-
-                <p>
-                  MoneyLeak will compare your spending
-                  against your limit and warn you before
-                  things get out of control.
-                </p>
-
-              </div>
-
-            `;
-
-            return;
-
-          }
-
-
-          if (
-            percentage >= 100
-          ) {
-
-            box.innerHTML = `
-
-              <div class="insight-icon">
-                !
-              </div>
-
-              <div>
-
-                <h3>
-                  Your budget has been exceeded.
-                </h3>
-
-                <p>
-                  You've spent
-                  ${ML.formatCurrency(spent)}
-                  against a
-                  ${ML.formatCurrency(budget)}
-                  limit. Consider reducing
-                  non-essential spending.
-                </p>
-
-              </div>
-
-            `;
-
-          } else if (
-            percentage >= 80
-          ) {
-
-            box.innerHTML = `
-
-              <div class="insight-icon">
-                ⚠
-              </div>
-
-              <div>
-
-                <h3>
-                  You're getting close to your limit.
-                </h3>
-
-                <p>
-                  You've used
-                  ${percentage.toFixed(0)}%
-                  of your budget with
-                  ${ML.formatCurrency(remaining)}
-                  remaining.
-                </p>
-
-              </div>
-
-            `;
-
-          } else {
-
-            box.innerHTML = `
-
-              <div class="insight-icon">
-                ✓
-              </div>
-
-              <div>
-
-                <h3>
-                  Your spending is under control.
-                </h3>
-
-                <p>
-                  You've used only
-                  ${percentage.toFixed(0)}%
-                  of your budget. Keep this pace
-                  and you'll have money left over.
-                </p>
-
-              </div>
-
-            `;
-
-          }
-
-        }
-
-
-        /* =========================
-           CATEGORY BUDGETS
-        ========================== */
-
-
-        function renderCategoryBudgets() {
-
-
-          const container =
-            document.getElementById(
-              "categoryBudgetsList"
-            );
-
-
-          const budgets =
-            ML.getCategoryBudgets();
-
-
-          const transactions =
-            ML.getTransactions();
-
-
-          if (
-            !budgets ||
-            !Object.keys(budgets).length
-          ) {
-
-            container.innerHTML = `
-
-              <div class="empty-state">
-
-                <div class="empty-icon">
-                  ◫
                 </div>
 
-                <h3>
-                  No category budgets
-                </h3>
-
-                <p>
-                  Set limits for categories where
-                  you want more control.
-                </p>
-
-              </div>
-
-            `;
-
-            return;
-
-          }
+            </div>
 
 
-          const now =
-            new Date();
+            <div class="overview-grid">
 
 
-          const month =
-            now.getMonth();
+                <article class="overview-card">
 
-
-          const year =
-            now.getFullYear();
-
-
-          container.innerHTML =
-            Object.entries(
-              budgets
-            )
-              .map(
-                ([category, limit]) => {
-
-
-                  const monthlySpent =
-                    transactions
-                      .filter(
-                        transaction => {
-
-                          if (
-                            transaction.type !==
-                            "expense"
-                          ) {
-
-                            return false;
-
-                          }
-
-
-                          if (
-                            transaction.category !==
-                            category
-                          ) {
-
-                            return false;
-
-                          }
-
-
-                          const date =
-                            new Date(
-                              transaction.date +
-                              "T00:00:00"
-                            );
-
-
-                          return (
-                            date.getMonth() === month &&
-                            date.getFullYear() === year
-                          );
-
-                        }
-                      )
-                      .reduce(
-                        (
-                          sum,
-                          transaction
-                        ) =>
-                          sum +
-                          Number(
-                            transaction.amount ||
-                            0
-                          ),
-                        0
-                      );
-
-
-                  const numericLimit =
-                    Number(
-                      limit || 0
-                    );
-
-
-                  const percentage =
-                    numericLimit > 0
-                      ? (
-                          monthlySpent /
-                          numericLimit
-                        ) *
-                        100
-                      : 0;
-
-
-                  const remaining =
-                    numericLimit -
-                    monthlySpent;
-
-
-                  let status =
-                    "On track";
-
-
-                  if (
-                    percentage >= 100
-                  ) {
-
-                    status =
-                      "Over budget";
-
-                  } else if (
-                    percentage >= 80
-                  ) {
-
-                    status =
-                      "Near limit";
-
-                  }
-
-
-                  return `
+                    <div class="overview-label">
+                        Monthly Budget
+                    </div>
 
                     <div
-                      class="budget-category-card">
+                        id="budgetTotal"
+                        class="overview-value"
+                    >
+                        ₦0
+                    </div>
+
+                    <div class="card-change">
+                        Total spending limit
+                    </div>
+
+                </article>
 
 
-                      <div
-                        class="budget-category-top">
+                <article class="overview-card">
 
-                        <div>
+                    <div class="overview-label">
+                        Spent
+                    </div>
 
-                          <span
-                            class="budget-category-status">
+                    <div
+                        id="budgetSpent"
+                        class="overview-value expense"
+                    >
+                        ₦0
+                    </div>
 
-                            ${status}
+                    <div class="card-change">
+                        Current month
+                    </div>
 
-                          </span>
-
-                          <h3>
-                            ${category}
-                          </h3>
-
-                        </div>
-
-
-                        <button
-                          class="goal-delete"
-                          data-delete-category="${category}"
-                          title="Delete category budget">
-
-                          ×
-
-                        </button>
-
-                      </div>
+                </article>
 
 
-                      <div
-                        class="budget-category-amount">
+                <article class="overview-card">
 
-                        <strong>
-                          ${ML.formatCurrency(
-                            monthlySpent
-                          )}
-                        </strong>
+                    <div class="overview-label">
+                        Remaining
+                    </div>
 
-                        <span>
-                          of
-                          ${ML.formatCurrency(
-                            numericLimit
-                          )}
-                        </span>
+                    <div
+                        id="budgetRemaining"
+                        class="overview-value income"
+                    >
+                        ₦0
+                    </div>
 
-                      </div>
+                    <div class="card-change">
+                        Available budget
+                    </div>
 
-
-                      <div class="category-bar">
-
-                        <div
-                          class="category-bar-fill"
-                          style="width:${Math.min(
-                            100,
-                            Math.max(
-                              percentage,
-                              percentage > 0
-                                ? 2
-                                : 0
-                            )
-                          )}%">
-                        </div>
-
-                      </div>
+                </article>
 
 
-                      <div
-                        class="budget-category-bottom">
+                <article class="overview-card">
 
-                        <span>
-                          ${percentage.toFixed(0)}% used
-                        </span>
+                    <div class="overview-label">
+                        Used
+                    </div>
 
-                        <span>
-                          ${
-                            remaining >= 0
-                              ? ML.formatCurrency(
-                                  remaining
-                                ) +
-                                " left"
-                              : ML.formatCurrency(
-                                  Math.abs(
-                                    remaining
-                                  )
-                                ) +
-                                " over"
-                          }
-                        </span>
+                    <div
+                        id="budgetUsage"
+                        class="overview-value"
+                    >
+                        0%
+                    </div>
 
-                      </div>
+                    <div
+                        id="budgetStatus"
+                        class="card-change"
+                    >
+                        No budget set
+                    </div>
 
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             MONTHLY BUDGET
+             ==================================================== -->
+
+        <section
+            id="budgetFormSection"
+            class="section"
+        >
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Monthly Budget
+                        </h2>
+
+                        <p>
+                            Set your total spending limit
+                        </p>
 
                     </div>
 
-                  `;
+                    <span style="font-size:24px;">
+                        🎯
+                    </span>
 
-                }
-              )
-              .join("");
+                </div>
 
 
-          container
-            .querySelectorAll(
-              "[data-delete-category]"
+                <form id="monthlyBudgetForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="monthlyBudgetAmount">
+                                Monthly Budget
+                            </label>
+
+                            <input
+                                id="monthlyBudgetAmount"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="e.g. 250000"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="budgetMonth">
+                                Month
+                            </label>
+
+                            <input
+                                id="budgetMonth"
+                                type="month"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            flex-wrap:wrap;
+                            gap:10px;
+                            margin-top:18px;
+                        "
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Save Monthly Budget
+                        </button>
+
+
+                        <button
+                            id="clearMonthlyBudget"
+                            type="button"
+                            class="btn btn-danger"
+                        >
+                            Remove Budget
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             BUDGET PROGRESS
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Budget Progress
+                        </h2>
+
+                        <p>
+                            How much of your limit you've used
+                        </p>
+
+                    </div>
+
+                    <strong id="budgetProgressLabel">
+                        0%
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar progress-large">
+
+                    <span
+                        id="budgetProgressFill"
+                        style="width:0%;"
+                    ></span>
+
+                </div>
+
+
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        gap:15px;
+                        margin-top:10px;
+                    "
+                >
+
+                    <small class="text-muted">
+                        Spent
+                    </small>
+
+                    <small class="text-muted">
+                        Budget limit
+                    </small>
+
+                </div>
+
+
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        gap:15px;
+                        margin-top:4px;
+                    "
+                >
+
+                    <strong id="budgetProgressSpent">
+                        ₦0
+                    </strong>
+
+                    <strong id="budgetProgressLimit">
+                        ₦0
+                    </strong>
+
+                </div>
+
+
+                <div
+                    id="budgetProgressMessage"
+                    class="smart-insight"
+                    style="margin-top:18px;"
+                >
+
+                    <strong>
+                        ✦ Budget Intelligence
+                    </strong>
+
+                    <p>
+                        Set a budget to start tracking your spending boundary.
+                    </p>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             BUDGET INTELLIGENCE
+             ==================================================== -->
+
+        <section class="section">
+
+            <div class="two-column">
+
+
+                <article class="panel">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Budget Intelligence
+                            </h2>
+
+                            <p>
+                                MoneyLeak's financial diagnosis
+                            </p>
+
+                        </div>
+
+                        <span style="font-size:24px;">
+                            🧠
+                        </span>
+
+                    </div>
+
+
+                    <div class="smart-insight">
+
+                        <strong>
+                            ✦ Smart Recommendation
+                        </strong>
+
+                        <p id="budgetInsight">
+                            Set your monthly budget to receive
+                            personalized recommendations.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:grid;
+                            gap:12px;
+                            margin-top:15px;
+                        "
+                    >
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Largest Budget Leak
+                            </span>
+
+                            <strong id="largestBudgetCategory">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Category Over Budget
+                            </span>
+
+                            <strong id="overBudgetCount">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Budget Health
+                            </span>
+
+                            <strong id="budgetHealth">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <article class="panel">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Spending Pace
+                            </h2>
+
+                            <p>
+                                Are you spending too quickly?
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            text-align:center;
+                            padding:20px 0;
+                        "
+                    >
+
+                        <div
+                            id="spendingPace"
+                            style="
+                                font-size:30px;
+                                font-weight:850;
+                            "
+                        >
+                            —
+                        </div>
+
+                        <p
+                            id="spendingPaceMessage"
+                            class="text-muted"
+                        >
+                            Add a budget and expenses to calculate your pace.
+                        </p>
+
+                    </div>
+
+
+                    <div class="smart-insight">
+
+                        <strong>
+                            💡 MoneyLeak Tip
+                        </strong>
+
+                        <p id="paceAdvice">
+                            Your ideal spending pace depends on how much of the month has passed.
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             CATEGORY BUDGET
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Category Budgets
+                        </h2>
+
+                        <p>
+                            Control individual spending categories
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="categoryBudgetForm">
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="categoryBudgetCategory">
+                                Category
+                            </label>
+
+                            <select
+                                id="categoryBudgetCategory"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                                <option value="Food">
+                                    Food
+                                </option>
+
+                                <option value="Transport">
+                                    Transport
+                                </option>
+
+                                <option value="Housing">
+                                    Housing
+                                </option>
+
+                                <option value="Utilities">
+                                    Utilities
+                                </option>
+
+                                <option value="Shopping">
+                                    Shopping
+                                </option>
+
+                                <option value="Entertainment">
+                                    Entertainment
+                                </option>
+
+                                <option value="Health">
+                                    Health
+                                </option>
+
+                                <option value="Education">
+                                    Education
+                                </option>
+
+                                <option value="Bills">
+                                    Bills
+                                </option>
+
+                                <option value="Subscriptions">
+                                    Subscriptions
+                                </option>
+
+                                <option value="Family">
+                                    Family
+                                </option>
+
+                                <option value="Travel">
+                                    Travel
+                                </option>
+
+                                <option value="Debt">
+                                    Debt
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="categoryBudgetAmount">
+                                Category Limit
+                            </label>
+
+                            <input
+                                id="categoryBudgetAmount"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="e.g. 50000"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            gap:10px;
+                            flex-wrap:wrap;
+                            margin-top:18px;
+                        "
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Save Category Budget
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             CATEGORY BUDGET LIST
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Category Performance
+                        </h2>
+
+                        <p>
+                            Monitor each spending limit
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div id="categoryBudgetList">
+
+                    <div class="empty-state">
+                        No category budgets configured yet.
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             SMART ACTIONS
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Take Control
+                        </h2>
+
+                        <p>
+                            Turn your budget into a financial system
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <a
+                        href="expenses.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            💸
+                        </div>
+
+                        <strong>
+                            Review Spending
+                        </strong>
+
+                        <small class="text-muted">
+                            Find unnecessary leaks.
+                        </small>
+
+                    </a>
+
+
+                    <a
+                        href="savings.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            🎯
+                        </div>
+
+                        <strong>
+                            Protect Savings
+                        </strong>
+
+                        <small class="text-muted">
+                            Move your remaining money toward goals.
+                        </small>
+
+                    </a>
+
+
+                    <a
+                        href="analytics.html"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-action-icon">
+                            📊
+                        </div>
+
+                        <strong>
+                            Analyze Trends
+                        </strong>
+
+                        <small class="text-muted">
+                            See how your spending changes over time.
+                        </small>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            MoneyLeak Personal Finance OS
+
+            <br>
+
+            Your money. Your decisions. Your future.
+
+        </footer>
+
+    </div>
+
+</main>
+
+
+
+<!-- ============================================================
+     SEARCH
+     ============================================================ -->
+
+<div
+    id="searchOverlay"
+    hidden
+    aria-hidden="true"
+>
+
+    <div class="search-modal">
+
+        <div class="search-modal-header">
+
+            <strong>
+                Search MoneyLeak
+            </strong>
+
+            <button
+                id="closeSearch"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="search-input-wrapper">
+
+            <span>⌕</span>
+
+            <input
+                id="globalSearch"
+                type="search"
+                placeholder="Search transactions, pages..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div id="searchResults">
+
+            <p>
+                Start typing to search.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     NOTIFICATIONS
+     ============================================================ -->
+
+<div
+    id="notificationPanel"
+    hidden
+    aria-hidden="true"
+>
+
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:10px;
+        "
+    >
+
+        <strong>
+            Notifications
+        </strong>
+
+        <button
+            id="closeNotifications"
+            class="close-button"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div id="notificationList">
+
+        <p class="text-muted">
+            No new notifications.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     MOBILE MENU
+     ============================================================ -->
+
+<div id="mobileOverlay">
+
+    <div class="mobile-menu">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                margin-bottom:25px;
+            "
+        >
+
+            <strong>
+                MoneyLeak
+            </strong>
+
+            <button
+                id="mobileMenuClose"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="index.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="income.html">
+                <span class="nav-icon">↗</span>
+                Income
+            </a>
+
+            <a href="expenses.html">
+                <span class="nav-icon">↘</span>
+                Expenses
+            </a>
+
+            <a href="budgets.html" class="active">
+                <span class="nav-icon">◫</span>
+                Budgets
+            </a>
+
+            <a href="savings.html">
+                <span class="nav-icon">◎</span>
+                Savings Goals
+            </a>
+
+            <a href="recurring.html">
+                <span class="nav-icon">↻</span>
+                Recurring
+            </a>
+
+            <a href="analytics.html">
+                <span class="nav-icon">⌁</span>
+                Analytics
+            </a>
+
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     BUDGET PAGE ENGINE
+     ============================================================ -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const ML =
+            () => window.MoneyLeak;
+
+
+        /* ========================================================
+           DEFAULT MONTH
+           ======================================================== */
+
+        const monthInput =
+            document.getElementById(
+                "budgetMonth"
+            );
+
+
+        if (
+            monthInput &&
+            !monthInput.value
+        ) {
+
+            const now =
+                new Date();
+
+
+            monthInput.value =
+                now.getFullYear() +
+                "-" +
+                String(
+                    now.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+        }
+
+
+
+        /* ========================================================
+           MONTHLY BUDGET FORM
+           ======================================================== */
+
+        document
+            .getElementById(
+                "monthlyBudgetForm"
             )
-            .forEach(
-              button => {
+            ?.addEventListener(
+                "submit",
+                function (event) {
 
-                button.addEventListener(
-                  "click",
-                  function () {
+                    event.preventDefault();
 
 
-                    const category =
-                      this.dataset.deleteCategory;
+                    if (!ML()) {
+                        return;
+                    }
+
+
+                    const amount =
+                        Number(
+                            document
+                                .getElementById(
+                                    "monthlyBudgetAmount"
+                                )
+                                .value
+                        );
+
+
+                    const month =
+                        document
+                            .getElementById(
+                                "budgetMonth"
+                            )
+                            .value;
 
 
                     if (
-                      !window.confirm(
-                        `Remove the ${category} budget?`
-                      )
+                        !amount ||
+                        amount <= 0
                     ) {
 
-                      return;
+                        alert(
+                            "Please enter a valid monthly budget."
+                        );
+
+                        return;
 
                     }
 
 
-                    ML.deleteCategoryBudget(
-                      category
+                    ML().setMonthlyBudget(
+                        amount
                     );
 
 
                     renderPage();
 
-                  }
+                }
+            );
+
+
+
+        /* ========================================================
+           REMOVE MONTHLY BUDGET
+           ======================================================== */
+
+        document
+            .getElementById(
+                "clearMonthlyBudget"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    if (!ML()) {
+                        return;
+                    }
+
+
+                    const confirmed =
+                        confirm(
+                            "Remove your monthly budget?"
+                        );
+
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+
+                    ML().setMonthlyBudget(
+                        0
+                    );
+
+
+                    renderPage();
+
+                }
+            );
+
+
+
+        /* ========================================================
+           CATEGORY BUDGET FORM
+           ======================================================== */
+
+        document
+            .getElementById(
+                "categoryBudgetForm"
+            )
+            ?.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+
+                    if (!ML()) {
+                        return;
+                    }
+
+
+                    const category =
+                        document
+                            .getElementById(
+                                "categoryBudgetCategory"
+                            )
+                            .value;
+
+
+                    const amount =
+                        Number(
+                            document
+                                .getElementById(
+                                    "categoryBudgetAmount"
+                                )
+                                .value
+                        );
+
+
+                    if (!category) {
+
+                        alert(
+                            "Please select a category."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !amount ||
+                        amount <= 0
+                    ) {
+
+                        alert(
+                            "Please enter a valid category budget."
+                        );
+
+                        return;
+
+                    }
+
+
+                    ML().setCategoryBudget(
+                        category,
+                        amount
+                    );
+
+
+                    document
+                        .getElementById(
+                            "categoryBudgetForm"
+                        )
+                        .reset();
+
+
+                    renderPage();
+
+                }
+            );
+
+
+
+        /* ========================================================
+           SCROLL
+           ======================================================== */
+
+        document
+            .getElementById(
+                "scrollToBudgetForm"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    document
+                        .getElementById(
+                            "budgetFormSection"
+                        )
+                        ?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+
+                    setTimeout(
+                        function () {
+
+                            document
+                                .getElementById(
+                                    "monthlyBudgetAmount"
+                                )
+                                ?.focus();
+
+                        },
+                        400
+                    );
+
+                }
+            );
+
+
+
+        /* ========================================================
+           DATA UPDATE
+           ======================================================== */
+
+        window.addEventListener(
+            "moneyLeakUpdated",
+            renderPage
+        );
+
+
+        setTimeout(
+            renderPage,
+            150
+        );
+
+
+
+        /* ========================================================
+           RENDER
+           ======================================================== */
+
+        function renderPage() {
+
+            if (!ML()) {
+                return;
+            }
+
+
+            const budget =
+                Number(
+                    ML().getMonthlyBudget() ||
+                    0
                 );
 
-              }
+
+            const expenses =
+                ML()
+                    .getPeriodTransactions(
+                        "month"
+                    )
+                    .filter(
+                        transaction =>
+                            transaction.type ===
+                            "expense"
+                    );
+
+
+            const spent =
+                expenses.reduce(
+                    (
+                        total,
+                        transaction
+                    ) =>
+                        total +
+                        Number(
+                            transaction.amount
+                        ),
+                    0
+                );
+
+
+            const remaining =
+                Math.max(
+                    0,
+                    budget -
+                    spent
+                );
+
+
+            const usage =
+                budget
+                    ? (
+                        spent /
+                        budget
+                    ) *
+                    100
+                    : 0;
+
+
+            setText(
+                "budgetTotal",
+                ML().displayCurrency(
+                    budget
+                )
+            );
+
+
+            setText(
+                "budgetSpent",
+                ML().displayCurrency(
+                    spent
+                )
+            );
+
+
+            setText(
+                "budgetRemaining",
+                ML().displayCurrency(
+                    remaining
+                )
+            );
+
+
+            setText(
+                "budgetUsage",
+                Math.min(
+                    100,
+                    usage
+                ).toFixed(1) +
+                "%"
+            );
+
+
+            setText(
+                "budgetProgressLabel",
+                Math.min(
+                    100,
+                    usage
+                ).toFixed(1) +
+                "%"
+            );
+
+
+            setText(
+                "budgetProgressSpent",
+                ML().displayCurrency(
+                    spent
+                )
+            );
+
+
+            setText(
+                "budgetProgressLimit",
+                ML().displayCurrency(
+                    budget
+                )
+            );
+
+
+            const fill =
+                document.getElementById(
+                    "budgetProgressFill"
+                );
+
+
+            if (fill) {
+
+                fill.style.width =
+                    Math.min(
+                        100,
+                        usage
+                    ) +
+                    "%";
+
+            }
+
+
+            updateBudgetStatus(
+                budget,
+                spent,
+                usage
+            );
+
+
+            renderBudgetInsight(
+                budget,
+                spent,
+                usage,
+                expenses
+            );
+
+
+            renderPace(
+                budget,
+                spent
+            );
+
+
+            renderCategoryBudgets();
+
+        }
+
+
+
+        /* ========================================================
+           STATUS
+           ======================================================== */
+
+        function updateBudgetStatus(
+            budget,
+            spent,
+            usage
+        ) {
+
+            const status =
+                document.getElementById(
+                    "budgetStatus"
+                );
+
+
+            if (!status) {
+                return;
+            }
+
+
+            if (!budget) {
+
+                status.textContent =
+                    "No budget set";
+
+                return;
+
+            }
+
+
+            if (
+                spent >
+                budget
+            ) {
+
+                status.textContent =
+                    "Over budget";
+
+            } else if (
+                usage >= 90
+            ) {
+
+                status.textContent =
+                    "Almost reached";
+
+            } else if (
+                usage >= 75
+            ) {
+
+                status.textContent =
+                    "Watch spending";
+
+            } else {
+
+                status.textContent =
+                    "On track";
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           BUDGET INSIGHT
+           ======================================================== */
+
+        function renderBudgetInsight(
+            budget,
+            spent,
+            usage,
+            expenses
+        ) {
+
+            const insight =
+                document.getElementById(
+                    "budgetInsight"
+                );
+
+
+            const progressMessage =
+                document.getElementById(
+                    "budgetProgressMessage"
+                );
+
+
+            if (!budget) {
+
+                if (insight) {
+
+                    insight.textContent =
+                        "You don't have a monthly spending limit yet. Set one based on your income and financial goals.";
+
+                }
+
+
+                if (progressMessage) {
+
+                    progressMessage.innerHTML =
+                        `
+                        <strong>
+                            ✦ Budget Intelligence
+                        </strong>
+
+                        <p>
+                            Set a budget to start measuring your spending against a clear financial boundary.
+                        </p>
+                        `;
+
+                }
+
+
+                return;
+
+            }
+
+
+            if (
+                spent >
+                budget
+            ) {
+
+                if (insight) {
+
+                    insight.textContent =
+                        "You've exceeded your monthly budget by " +
+                        ML().displayCurrency(
+                            spent - budget
+                        ) +
+                        ". Your first priority should be reducing non-essential spending.";
+
+                }
+
+
+                if (progressMessage) {
+
+                    progressMessage.innerHTML =
+                        `
+                        <strong>
+                            ⚠ Budget Exceeded
+                        </strong>
+
+                        <p>
+                            You're ${ML().displayCurrency(
+                                spent - budget
+                            )} over your monthly limit.
+                            Review your largest categories immediately.
+                        </p>
+                        `;
+
+                }
+
+
+                return;
+
+            }
+
+
+            if (
+                usage >= 90
+            ) {
+
+                if (insight) {
+
+                    insight.textContent =
+                        "You've used " +
+                        usage.toFixed(1) +
+                        "% of your monthly budget. Slow down discretionary spending for the rest of the month.";
+
+                }
+
+
+                if (progressMessage) {
+
+                    progressMessage.innerHTML =
+                        `
+                        <strong>
+                            ⚠ Almost at the Limit
+                        </strong>
+
+                        <p>
+                            Only ${ML().displayCurrency(
+                                budget - spent
+                            )} remains in your monthly budget.
+                        </p>
+                        `;
+
+                }
+
+
+                return;
+
+            }
+
+
+            if (
+                usage >= 75
+            ) {
+
+                if (insight) {
+
+                    insight.textContent =
+                        "You're using " +
+                        usage.toFixed(1) +
+                        "% of your budget. Keep an eye on discretionary purchases.";
+
+                }
+
+
+                if (progressMessage) {
+
+                    progressMessage.innerHTML =
+                        `
+                        <strong>
+                            👀 Watch Your Pace
+                        </strong>
+
+                        <p>
+                            You have ${ML().displayCurrency(
+                                budget - spent
+                            )} remaining.
+                        </p>
+                        `;
+
+                }
+
+
+                return;
+
+            }
+
+
+            if (insight) {
+
+                insight.textContent =
+                    "You're currently using " +
+                    usage.toFixed(1) +
+                    "% of your monthly budget. Your spending is within the current limit.";
+
+            }
+
+
+            if (progressMessage) {
+
+                progressMessage.innerHTML =
+                    `
+                    <strong>
+                        ✓ Budget On Track
+                    </strong>
+
+                    <p>
+                        You still have ${ML().displayCurrency(
+                            budget - spent
+                        )} available.
+                        Keep protecting your savings.
+                    </p>
+                    `;
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           SPENDING PACE
+           ======================================================== */
+
+        function renderPace(
+            budget,
+            spent
+        ) {
+
+            const pace =
+                document.getElementById(
+                    "spendingPace"
+                );
+
+
+            const message =
+                document.getElementById(
+                    "spendingPaceMessage"
+                );
+
+
+            const advice =
+                document.getElementById(
+                    "paceAdvice"
+                );
+
+
+            if (!budget) {
+
+                setText(
+                    "spendingPace",
+                    "—"
+                );
+
+
+                setText(
+                    "spendingPaceMessage",
+                    "Set a budget to calculate your spending pace."
+                );
+
+
+                setText(
+                    "paceAdvice",
+                    "A good budget should balance today's needs with your future goals."
+                );
+
+                return;
+
+            }
+
+
+            const now =
+                new Date();
+
+
+            const daysInMonth =
+                new Date(
+                    now.getFullYear(),
+                    now.getMonth() + 1,
+                    0
+                ).getDate();
+
+
+            const day =
+                now.getDate();
+
+
+            const monthProgress =
+                day /
+                daysInMonth;
+
+
+            const expectedSpend =
+                budget *
+                monthProgress;
+
+
+            const difference =
+                spent -
+                expectedSpend;
+
+
+            if (difference > 0) {
+
+                setText(
+                    "spendingPace",
+                    "Too Fast"
+                );
+
+
+                setText(
+                    "spendingPaceMessage",
+                    "You're spending faster than your monthly budget allows."
+                );
+
+
+                setText(
+                    "paceAdvice",
+                    "Consider reducing discretionary purchases until your spending catches up with your planned pace."
+                );
+
+            } else if (
+                difference <
+                -budget * 0.15
+            ) {
+
+                setText(
+                    "spendingPace",
+                    "Excellent"
+                );
+
+
+                setText(
+                    "spendingPaceMessage",
+                    "You're spending below your expected monthly pace."
+                );
+
+
+                setText(
+                    "paceAdvice",
+                    "Protect the difference by directing some of it toward your savings goals."
+                );
+
+            } else {
+
+                setText(
+                    "spendingPace",
+                    "On Track"
+                );
+
+
+                setText(
+                    "spendingPaceMessage",
+                    "Your spending pace is broadly aligned with your budget."
+                );
+
+
+                setText(
+                    "paceAdvice",
+                    "Continue checking your largest categories before making major purchases."
+                );
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           CATEGORY BUDGETS
+           ======================================================== */
+
+        function renderCategoryBudgets() {
+
+            const container =
+                document.getElementById(
+                    "categoryBudgetList"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            const budgets =
+                ML().getCategoryBudgets() ||
+                {};
+
+
+            const expenses =
+                ML()
+                    .getPeriodTransactions(
+                        "month"
+                    )
+                    .filter(
+                        transaction =>
+                            transaction.type ===
+                            "expense"
+                    );
+
+
+            const categories =
+                Object.keys(
+                    budgets
+                );
+
+
+            let overBudget =
+                0;
+
+
+            let largestLeak =
+                null;
+
+
+            if (!categories.length) {
+
+                container.innerHTML =
+                    `
+                    <div class="empty-state">
+                        No category budgets configured yet.
+                        Add one above to start controlling individual spending categories.
+                    </div>
+                    `;
+
+                setText(
+                    "overBudgetCount",
+                    "0"
+                );
+
+
+                setText(
+                    "largestBudgetCategory",
+                    "—"
+                );
+
+
+                setText(
+                    "budgetHealth",
+                    "Not set"
+                );
+
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                categories
+                    .map(
+                        category => {
+
+                            const limit =
+                                Number(
+                                    budgets[
+                                        category
+                                    ] ||
+                                    0
+                                );
+
+
+                            const spent =
+                                expenses
+                                    .filter(
+                                        transaction =>
+                                            transaction.category ===
+                                            category
+                                    )
+                                    .reduce(
+                                        (
+                                            sum,
+                                            transaction
+                                        ) =>
+                                            sum +
+                                            Number(
+                                                transaction.amount
+                                            ),
+                                        0
+                                    );
+
+
+                            const usage =
+                                limit
+                                    ? (
+                                        spent /
+                                        limit
+                                    ) *
+                                    100
+                                    : 0;
+
+
+                            const remaining =
+                                Math.max(
+                                    0,
+                                    limit -
+                                    spent
+                                );
+
+
+                            const isOver =
+                                spent >
+                                limit;
+
+
+                            if (isOver) {
+                                overBudget++;
+                            }
+
+
+                            const leakAmount =
+                                spent;
+
+
+                            if (
+                                !largestLeak ||
+                                leakAmount >
+                                largestLeak.amount
+                            ) {
+
+                                largestLeak = {
+
+                                    category:
+                                        category,
+
+                                    amount:
+                                        leakAmount
+
+                                };
+
+                            }
+
+
+                            let status =
+                                "On track";
+
+
+                            if (
+                                isOver
+                            ) {
+
+                                status =
+                                    "Over budget";
+
+                            } else if (
+                                usage >= 90
+                            ) {
+
+                                status =
+                                    "Almost full";
+
+                            } else if (
+                                usage >= 75
+                            ) {
+
+                                status =
+                                    "Watch";
+
+                            }
+
+
+                            return `
+                            <div
+                                style="
+                                    padding:17px 0;
+                                    border-bottom:1px solid var(--ml-border);
+                                "
+                            >
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        align-items:flex-start;
+                                        gap:15px;
+                                    "
+                                >
+
+                                    <div>
+
+                                        <strong>
+                                            ${escapeHTML(category)}
+                                        </strong>
+
+                                        <small
+                                            class="text-muted"
+                                            style="
+                                                display:block;
+                                                margin-top:3px;
+                                            "
+                                        >
+                                            ${status}
+                                        </small>
+
+                                    </div>
+
+
+                                    <div style="text-align:right;">
+
+                                        <strong>
+                                            ${ML().displayCurrency(spent)}
+                                        </strong>
+
+                                        <small
+                                            class="text-muted"
+                                            style="
+                                                display:block;
+                                            "
+                                        >
+                                            of ${ML().displayCurrency(limit)}
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div
+                                    class="progress-bar"
+                                    style="
+                                        margin-top:12px;
+                                    "
+                                >
+
+                                    <span
+                                        style="
+                                            width:${Math.min(100, usage)}%;
+                                        "
+                                    ></span>
+
+                                </div>
+
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        gap:10px;
+                                        margin-top:7px;
+                                    "
+                                >
+
+                                    <small class="text-muted">
+
+                                        ${Math.min(
+                                            100,
+                                            usage
+                                        ).toFixed(1)}%
+
+                                    </small>
+
+
+                                    <small class="text-muted">
+
+                                        ${
+                                            isOver
+                                                ? ML().displayCurrency(
+                                                    spent - limit
+                                                ) +
+                                                " over"
+                                                : ML().displayCurrency(
+                                                    remaining
+                                                ) +
+                                                " remaining"
+                                        }
+
+                                    </small>
+
+                                </div>
+
+
+                                <div
+                                    style="
+                                        margin-top:10px;
+                                    "
+                                >
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-remove-category-budget="${escapeAttribute(category)}"
+                                    >
+                                        Remove
+                                    </button>
+
+                                </div>
+
+                            </div>
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+
+            setText(
+                "overBudgetCount",
+                overBudget
+            );
+
+
+            if (
+                largestLeak &&
+                largestLeak.amount > 0
+            ) {
+
+                setText(
+                    "largestBudgetCategory",
+                    largestLeak.category
+                );
+
+            } else {
+
+                setText(
+                    "largestBudgetCategory",
+                    "No spending"
+                );
+
+            }
+
+
+            let health =
+                "Good";
+
+
+            if (
+                overBudget >= 3
+            ) {
+
+                health =
+                    "Needs attention";
+
+            } else if (
+                overBudget > 0
+            ) {
+
+                health =
+                    "Watch";
+
+            }
+
+
+            setText(
+                "budgetHealth",
+                health
+            );
+
+
+            container
+                .querySelectorAll(
+                    "[data-remove-category-budget]"
+                )
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const category =
+                                    this.dataset
+                                        .removeCategoryBudget;
+
+
+                                const confirmed =
+                                    confirm(
+                                        "Remove the " +
+                                        category +
+                                        " budget?"
+                                    );
+
+
+                                if (
+                                    !confirmed
+                                ) {
+                                    return;
+                                }
+
+
+                                ML()
+                                    .setCategoryBudget(
+                                        category,
+                                        0
+                                    );
+
+
+                                renderPage();
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
+
+
+        /* ========================================================
+           HELPERS
+           ======================================================== */
+
+        function setText(
+            id,
+            value
+        ) {
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    value;
+
+            }
+
+        }
+
+
+        function escapeHTML(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
             );
 
         }
 
 
-        /* =========================
-           MONTHLY FORM
-        ========================== */
+        function escapeAttribute(
+            value
+        ) {
 
-
-        document
-          .getElementById(
-            "monthlyBudgetForm"
-          )
-          .addEventListener(
-            "submit",
-            function (event) {
-
-
-              event.preventDefault();
-
-
-              const amount =
-                Number(
-                  document.getElementById(
-                    "monthlyBudgetInput"
-                  ).value
-                );
-
-
-              if (
-                !amount ||
-                amount <= 0
-              ) {
-
-                alert(
-                  "Please enter a valid monthly budget."
-                );
-
-                return;
-
-              }
-
-
-              ML.setMonthlyBudget(
-                amount
-              );
-
-
-              renderPage();
-
-
-              alert(
-                "Monthly budget saved successfully."
-              );
-
-            }
-          );
-
-
-        /* =========================
-           CATEGORY FORM
-        ========================== */
-
-
-        document
-          .getElementById(
-            "categoryBudgetForm"
-          )
-          .addEventListener(
-            "submit",
-            function (event) {
-
-
-              event.preventDefault();
-
-
-              const category =
-                document.getElementById(
-                  "categoryBudgetCategory"
-                ).value;
-
-
-              const amount =
-                Number(
-                  document.getElementById(
-                    "categoryBudgetAmount"
-                  ).value
-                );
-
-
-              if (!category) {
-
-                alert(
-                  "Please choose a category."
-                );
-
-                return;
-
-              }
-
-
-              if (
-                !amount ||
-                amount <= 0
-              ) {
-
-                alert(
-                  "Please enter a valid category budget."
-                );
-
-                return;
-
-              }
-
-
-              ML.setCategoryBudget(
-                category,
-                amount
-              );
-
-
-              document
-                .getElementById(
-                  "categoryBudgetForm"
-                )
-                .reset();
-
-
-              renderPage();
-
-
-              alert(
-                `${category} budget saved successfully.`
-              );
-
-            }
-          );
-
-
-        /* =========================
-           SCROLL
-        ========================== */
-
-
-        document
-          .getElementById(
-            "scrollToBudgetForm"
-          )
-          .addEventListener(
-            "click",
-            function () {
-
-              document
-                .getElementById(
-                  "budgetFormPanel"
-                )
-                .scrollIntoView({
-                  behavior: "smooth",
-                  block: "start"
-                });
-
-            }
-          );
-
-
-        /* =========================
-           PAGE REFRESH
-        ========================== */
-
-
-        function renderPage() {
-
-          renderMonthlyBudget();
-
-          renderCategoryBudgets();
+            return escapeHTML(
+                value
+            );
 
         }
 
+    }
+);
 
-        window.moneyLeakPageUpdate =
-          renderPage;
-
-
-        renderPage();
+</script>
 
 
-      }
-    );
 
-  </script>
+<!-- ============================================================
+     MONEY LEAK ENGINE
+     ============================================================ -->
+
+<script src="app.js"></script>
+
 
 </body>
 </html>
