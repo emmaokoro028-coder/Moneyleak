@@ -1,1234 +1,2458 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MoneyLeak expense management and spending analysis.">
-  <title>Expenses — MoneyLeak</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="MoneyLeak Expenses — understand where your money goes and find your biggest leaks."
+    >
+
+    <title>MoneyLeak — Expenses</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <aside class="sidebar" id="sidebar">
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+
+<aside class="sidebar">
+
     <div class="brand">
-      <div class="brand-mark">M</div>
-      <div>
-        <strong>MoneyLeak</strong>
-        <span>Personal Finance OS</span>
-      </div>
+
+        <div class="brand-logo">M</div>
+
+        <div>
+            <strong>MoneyLeak</strong>
+            <small>Personal Finance OS</small>
+        </div>
+
     </div>
 
-    <nav class="nav-menu">
 
-      <a href="index.html" class="nav-item">
-        <span>⌂</span>
-        <span>Dashboard</span>
-      </a>
+    <nav class="nav">
 
-      <a href="income.html" class="nav-item">
-        <span>↗</span>
-        <span>Income</span>
-      </a>
+        <a href="index.html">
+            <span class="nav-icon">⌂</span>
+            <span>Dashboard</span>
+        </a>
 
-      <a href="expenses.html" class="nav-item active">
-        <span>↘</span>
-        <span>Expenses</span>
-      </a>
+        <a href="income.html">
+            <span class="nav-icon">↗</span>
+            <span>Income</span>
+        </a>
 
-      <a href="budgets.html" class="nav-item">
-        <span>◫</span>
-        <span>Budgets</span>
-      </a>
+        <a href="expenses.html" class="active">
+            <span class="nav-icon">↘</span>
+            <span>Expenses</span>
+        </a>
 
-      <a href="savings.html" class="nav-item">
-        <span>◎</span>
-        <span>Goals</span>
-      </a>
+        <a href="budgets.html">
+            <span class="nav-icon">◫</span>
+            <span>Budgets</span>
+        </a>
 
-      <a href="recurring.html" class="nav-item">
-        <span>↻</span>
-        <span>Recurring</span>
-      </a>
+        <a href="savings.html">
+            <span class="nav-icon">◎</span>
+            <span>Savings Goals</span>
+        </a>
 
-      <a href="analytics.html" class="nav-item">
-        <span>◒</span>
-        <span>Analytics</span>
-      </a>
+        <a href="recurring.html">
+            <span class="nav-icon">↻</span>
+            <span>Recurring</span>
+        </a>
 
-      <a href="settings.html" class="nav-item">
-        <span>⚙</span>
-        <span>Settings</span>
-      </a>
+        <a href="analytics.html">
+            <span class="nav-icon">⌁</span>
+            <span>Analytics</span>
+        </a>
 
     </nav>
 
+
     <div class="sidebar-bottom">
-      <div class="sidebar-tip">
-        <span class="tip-icon">✦</span>
-        <div>
-          <strong>Money insight</strong>
-          <p>Small leaks become big expenses.</p>
-        </div>
-      </div>
+
+        <nav class="nav">
+
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
     </div>
-  </aside>
+
+</aside>
 
 
-  <main class="main-content">
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+
+<main class="main">
 
     <!-- TOPBAR -->
+
     <header class="topbar">
 
-      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
-        ☰
-      </button>
+        <div class="topbar-left">
 
-      <div class="topbar-search">
-        <button id="globalSearchBtn" class="search-button">
-          <span>⌕</span>
-          <span>Search MoneyLeak...</span>
-          <kbd>/</kbd>
-        </button>
-      </div>
+            <button
+                id="mobileMenuButton"
+                class="mobile-menu-button"
+                type="button"
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
 
-      <div class="topbar-actions">
+            <button
+                id="searchButton"
+                class="search-button"
+                type="button"
+                aria-label="Search"
+            >
+                ⌕
+            </button>
 
-        <button class="icon-button" id="notificationBtn" aria-label="Notifications">
-          ♢
-          <span class="notification-dot" id="notificationDot"></span>
-        </button>
+        </div>
 
-        <a href="settings.html" class="profile-button">
-          <div class="profile-avatar">M</div>
-          <div class="profile-info">
-            <strong id="profileName">My Money</strong>
-            <span>Finance</span>
-          </div>
-        </a>
 
-      </div>
+        <div class="topbar-right">
+
+            <button
+                id="notificationButton"
+                class="notification-button"
+                type="button"
+                aria-label="Notifications"
+            >
+                🔔
+            </button>
+
+            <a href="settings.html" class="profile-button">
+
+                <span class="profile-avatar">
+                    ML
+                </span>
+
+                <span data-money-name>
+                    My Money
+                </span>
+
+            </a>
+
+        </div>
+
     </header>
 
 
-    <!-- PAGE -->
+    <!-- ========================================================
+         PAGE CONTENT
+         ======================================================== -->
+
     <div class="page-container">
 
-      <section class="page-hero">
-        <div>
-          <span class="eyebrow">SPENDING COMMAND CENTER</span>
 
-          <h1>Where is your money going?</h1>
+        <!-- HERO -->
 
-          <p>
-            Track every expense, understand your spending habits,
-            and find the leaks draining your money.
-          </p>
-        </div>
+        <section class="dashboard-hero">
 
-        <button class="primary-button" id="scrollToExpenseForm">
-          <span>＋</span>
-          Add Expense
-        </button>
-      </section>
+            <h1>
+                Spending Intelligence
+            </h1>
+
+            <p>
+                See exactly where your money is going.
+                MoneyLeak analyzes your spending patterns so
+                you can identify unnecessary leaks and take
+                control of your cash flow.
+            </p>
 
 
-      <!-- OVERVIEW -->
-      <section class="overview-grid">
+            <div
+                style="
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:10px;
+                    margin-top:20px;
+                    position:relative;
+                    z-index:2;
+                "
+            >
 
-        <div class="overview-card">
-          <div class="card-icon expense-icon">↘</div>
-
-          <div class="card-label">Total Expenses</div>
-
-          <div class="card-value" id="expenseTotal">
-            ₦0
-          </div>
-
-          <div class="card-meta">
-            All recorded expenses
-          </div>
-        </div>
-
-
-        <div class="overview-card">
-          <div class="card-icon calendar-icon">◷</div>
-
-          <div class="card-label">This Month</div>
-
-          <div class="card-value" id="expenseMonth">
-            ₦0
-          </div>
-
-          <div class="card-meta">
-            Current month spending
-          </div>
-        </div>
+                <button
+                    id="scrollToExpenseForm"
+                    class="btn"
+                    type="button"
+                    style="
+                        background:#fff;
+                        color:#086c47;
+                    "
+                >
+                    + Add Expense
+                </button>
 
 
-        <div class="overview-card">
-          <div class="card-icon average-icon">≈</div>
+                <a
+                    href="budgets.html"
+                    class="btn"
+                    style="
+                        background:rgba(255,255,255,.12);
+                        color:#fff;
+                        border-color:rgba(255,255,255,.18);
+                    "
+                >
+                    Set Budget
+                </a>
 
-          <div class="card-label">Average Expense</div>
-
-          <div class="card-value" id="expenseAverage">
-            ₦0
-          </div>
-
-          <div class="card-meta">
-            Per recorded transaction
-          </div>
-        </div>
-
-
-        <div class="overview-card">
-          <div class="card-icon warning-icon">!</div>
-
-          <div class="card-label">Largest Expense</div>
-
-          <div class="card-value" id="expenseLargest">
-            ₦0
-          </div>
-
-          <div class="card-meta" id="expenseLargestLabel">
-            No expenses yet
-          </div>
-        </div>
-
-      </section>
-
-
-      <!-- ADD EXPENSE + INSIGHT -->
-      <section class="two-column-section">
-
-        <div class="panel" id="expenseFormPanel">
-
-          <div class="panel-header">
-            <div>
-              <span class="panel-eyebrow">RECORD SPENDING</span>
-              <h2>Add an expense</h2>
             </div>
-          </div>
+
+        </section>
 
 
-          <form id="expenseForm" class="finance-form">
+        <!-- ====================================================
+             SPENDING OVERVIEW
+             ==================================================== -->
 
-            <div class="form-row">
+        <section class="section">
 
-              <div class="form-group">
-                <label for="expenseAmount">Amount</label>
+            <div class="section-header">
 
-                <div class="amount-input">
-                  <span id="expenseCurrencySymbol">₦</span>
+                <div>
+                    <h2>Spending Overview</h2>
 
-                  <input
-                    type="number"
-                    id="expenseAmount"
-                    min="0"
-                    step="0.01"
-                    placeholder="0.00"
-                    required
-                  >
+                    <p>
+                        Your expense picture this month
+                    </p>
                 </div>
-              </div>
-
-
-              <div class="form-group">
-                <label for="expenseCategory">Category</label>
-
-                <select id="expenseCategory" required>
-                  <option value="">Choose category</option>
-                  <option value="Food">Food</option>
-                  <option value="Transport">Transport</option>
-                  <option value="Shopping">Shopping</option>
-                  <option value="Bills">Bills</option>
-                  <option value="Housing">Housing</option>
-                  <option value="Health">Health</option>
-                  <option value="Education">Education</option>
-                  <option value="Entertainment">Entertainment</option>
-                  <option value="Subscriptions">Subscriptions</option>
-                  <option value="Family">Family</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Utilities">Utilities</option>
-                  <option value="Business">Business</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
 
             </div>
 
 
-            <div class="form-row">
+            <div class="overview-grid">
 
-              <div class="form-group">
-                <label for="expenseDescription">What did you spend on?</label>
 
-                <input
-                  type="text"
-                  id="expenseDescription"
-                  placeholder="e.g. Lunch, Uber, Netflix..."
-                  required
+                <article class="overview-card">
+
+                    <div class="overview-label">
+                        This Month
+                    </div>
+
+                    <div
+                        id="expenseThisMonth"
+                        class="overview-value expense"
+                    >
+                        ₦0
+                    </div>
+
+                    <div class="card-change">
+                        Total spending
+                    </div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="overview-label">
+                        Previous Month
+                    </div>
+
+                    <div
+                        id="expensePreviousMonth"
+                        class="overview-value"
+                    >
+                        ₦0
+                    </div>
+
+                    <div
+                        id="expenseMonthComparison"
+                        class="card-change"
+                    >
+                        No comparison yet
+                    </div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="overview-label">
+                        Daily Average
+                    </div>
+
+                    <div
+                        id="expenseDailyAverage"
+                        class="overview-value"
+                    >
+                        ₦0
+                    </div>
+
+                    <div class="card-change">
+                        Current month
+                    </div>
+
+                </article>
+
+
+                <article class="overview-card">
+
+                    <div class="overview-label">
+                        Transactions
+                    </div>
+
+                    <div
+                        id="expenseTransactionCount"
+                        class="overview-value"
+                    >
+                        0
+                    </div>
+
+                    <div class="card-change">
+                        Recorded expenses
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             ADD EXPENSE
+             ==================================================== -->
+
+        <section
+            id="expenseFormSection"
+            class="section"
+        >
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>Add Expense</h2>
+
+                        <p>
+                            Record where your money went
+                        </p>
+
+                    </div>
+
+                    <span style="font-size:24px;">
+                        💸
+                    </span>
+
+                </div>
+
+
+                <form id="expenseForm">
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="expenseAmount">
+                                Amount
+                            </label>
+
+                            <input
+                                id="expenseAmount"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="e.g. 15000"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="expenseCategory">
+                                Category
+                            </label>
+
+                            <select
+                                id="expenseCategory"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                                <option value="Food">
+                                    Food
+                                </option>
+
+                                <option value="Transport">
+                                    Transport
+                                </option>
+
+                                <option value="Housing">
+                                    Housing
+                                </option>
+
+                                <option value="Utilities">
+                                    Utilities
+                                </option>
+
+                                <option value="Shopping">
+                                    Shopping
+                                </option>
+
+                                <option value="Entertainment">
+                                    Entertainment
+                                </option>
+
+                                <option value="Health">
+                                    Health
+                                </option>
+
+                                <option value="Education">
+                                    Education
+                                </option>
+
+                                <option value="Bills">
+                                    Bills
+                                </option>
+
+                                <option value="Subscriptions">
+                                    Subscriptions
+                                </option>
+
+                                <option value="Family">
+                                    Family
+                                </option>
+
+                                <option value="Travel">
+                                    Travel
+                                </option>
+
+                                <option value="Debt">
+                                    Debt
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="expenseDate">
+                                Date
+                            </label>
+
+                            <input
+                                id="expenseDate"
+                                type="date"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="expenseDescription">
+                                Description
+                            </label>
+
+                            <input
+                                id="expenseDescription"
+                                type="text"
+                                placeholder="e.g. Dinner"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            flex-wrap:wrap;
+                            gap:10px;
+                            margin-top:18px;
+                        "
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Add Expense
+                        </button>
+
+                        <button
+                            type="reset"
+                            class="btn btn-secondary"
+                        >
+                            Clear
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </article>
+
+        </section>
+
+
+        <!-- ====================================================
+             MONEY LEAK ANALYSIS
+             ==================================================== -->
+
+        <section class="section">
+
+            <div class="two-column">
+
+
+                <!-- BIGGEST LEAK -->
+
+                <article class="panel">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Biggest Leak
+                            </h2>
+
+                            <p>
+                                Your largest spending category
+                            </p>
+
+                        </div>
+
+                        <span style="font-size:24px;">
+                            🔎
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            text-align:center;
+                            padding:20px 0;
+                        "
+                    >
+
+                        <div
+                            id="biggestLeakCategory"
+                            style="
+                                font-size:25px;
+                                font-weight:850;
+                            "
+                        >
+                            —
+                        </div>
+
+
+                        <div
+                            id="biggestLeakAmount"
+                            class="expense"
+                            style="
+                                font-size:30px;
+                                font-weight:850;
+                                margin-top:5px;
+                            "
+                        >
+                            ₦0
+                        </div>
+
+
+                        <p
+                            id="biggestLeakPercentage"
+                            class="text-muted"
+                            style="
+                                margin-top:7px;
+                            "
+                        >
+                            No spending data yet.
+                        </p>
+
+                    </div>
+
+
+                    <div class="smart-insight">
+
+                        <strong>
+                            ✦ MoneyLeak Diagnosis
+                        </strong>
+
+                        <p id="biggestLeakAdvice">
+                            Record your expenses to discover
+                            where your biggest financial leaks are.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <!-- SPENDING BEHAVIOR -->
+
+                <article class="panel">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Spending Behavior
+                            </h2>
+
+                            <p>
+                                Your current spending signals
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:grid;
+                            gap:12px;
+                        "
+                    >
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Most Expensive Day
+                            </span>
+
+                            <strong id="mostExpensiveDay">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Largest Transaction
+                            </span>
+
+                            <strong id="largestExpense">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Average Transaction
+                            </span>
+
+                            <strong id="averageExpense">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mini-stat">
+
+                            <span>
+                                Spending Status
+                            </span>
+
+                            <strong id="spendingStatus">
+                                No data
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             CATEGORY BREAKDOWN
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Spending by Category
+                        </h2>
+
+                        <p>
+                            See how your expenses are distributed
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="expenseCategories"
                 >
-              </div>
+
+                    <div class="empty-state">
+                        No expense data yet.
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
 
 
-              <div class="form-group">
-                <label for="expenseDate">Date</label>
+        <!-- ====================================================
+             EXPENSE HISTORY
+             ==================================================== -->
 
-                <input
-                  type="date"
-                  id="expenseDate"
-                  required
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Expense History
+                        </h2>
+
+                        <p>
+                            Search and manage your expenses
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            gap:8px;
+                            flex-wrap:wrap;
+                        "
+                    >
+
+                        <select
+                            id="expenseFilterCategory"
+                            style="max-width:180px;"
+                        >
+
+                            <option value="all">
+                                All Categories
+                            </option>
+
+                            <option value="Food">
+                                Food
+                            </option>
+
+                            <option value="Transport">
+                                Transport
+                            </option>
+
+                            <option value="Housing">
+                                Housing
+                            </option>
+
+                            <option value="Utilities">
+                                Utilities
+                            </option>
+
+                            <option value="Shopping">
+                                Shopping
+                            </option>
+
+                            <option value="Entertainment">
+                                Entertainment
+                            </option>
+
+                            <option value="Health">
+                                Health
+                            </option>
+
+                            <option value="Education">
+                                Education
+                            </option>
+
+                            <option value="Bills">
+                                Bills
+                            </option>
+
+                            <option value="Subscriptions">
+                                Subscriptions
+                            </option>
+
+                            <option value="Family">
+                                Family
+                            </option>
+
+                            <option value="Travel">
+                                Travel
+                            </option>
+
+                            <option value="Debt">
+                                Debt
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+
+                        <input
+                            id="expenseSearch"
+                            type="search"
+                            placeholder="Search expenses..."
+                            style="max-width:200px;"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="expenseHistory"
+                    class="transaction-list"
                 >
-              </div>
 
-            </div>
+                    <div class="empty-state">
+                        No expenses recorded yet.
+                    </div>
 
+                </div>
 
-            <div class="form-group">
-              <label for="expenseNote">
-                Note <span class="optional-label">Optional</span>
-              </label>
+            </article>
 
-              <textarea
-                id="expenseNote"
-                rows="3"
-                placeholder="Add any details you want to remember..."
-              ></textarea>
-            </div>
+        </section>
 
 
-            <button type="submit" class="primary-button full-width">
-              Save Expense
-            </button>
+        <!-- ====================================================
+             SMART ACTIONS
+             ==================================================== -->
 
-          </form>
+        <section class="section">
 
-        </div>
+            <article class="panel">
 
+                <div class="section-header">
 
-        <div class="panel insight-panel">
+                    <div>
 
-          <div class="panel-header">
-            <div>
-              <span class="panel-eyebrow">SMART INSIGHT</span>
-              <h2>Your spending</h2>
-            </div>
+                        <h2>
+                            Stop the Leaks
+                        </h2>
 
-            <span class="insight-badge">AI</span>
-          </div>
+                        <p>
+                            Turn your spending data into action
+                        </p>
 
+                    </div>
 
-          <div class="large-insight" id="expenseInsight">
-            <div class="insight-icon">✦</div>
-
-            <div>
-              <h3>Let's discover your spending pattern.</h3>
-
-              <p>
-                Add a few expenses and MoneyLeak will analyze
-                your spending habits automatically.
-              </p>
-            </div>
-          </div>
+                </div>
 
 
-          <div class="insight-stat-row">
-
-            <div>
-              <span>Top category</span>
-              <strong id="expenseTopCategory">—</strong>
-            </div>
-
-            <div>
-              <span>Transactions</span>
-              <strong id="expenseTransactionCount">0</strong>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
+                <div class="quick-actions">
 
 
-      <!-- SPENDING BREAKDOWN -->
-      <section class="panel">
+                    <a
+                        href="budgets.html"
+                        class="quick-action"
+                    >
 
-        <div class="panel-header">
+                        <div class="quick-action-icon">
+                            🎯
+                        </div>
 
-          <div>
-            <span class="panel-eyebrow">SPENDING BREAKDOWN</span>
-            <h2>Where your money goes</h2>
-          </div>
+                        <strong>
+                            Set Spending Limits
+                        </strong>
 
-          <span class="panel-subtitle">
-            All expenses
-          </span>
+                        <small class="text-muted">
+                            Create category budgets.
+                        </small>
 
-        </div>
-
-
-        <div id="expenseCategoryBreakdown" class="category-list">
-
-          <div class="empty-state">
-            <div class="empty-icon">◒</div>
-
-            <h3>No spending data yet</h3>
-
-            <p>
-              Add your first expense to see your spending
-              broken down by category.
-            </p>
-          </div>
-
-        </div>
-
-      </section>
+                    </a>
 
 
-      <!-- EXPENSE HISTORY -->
-      <section class="panel">
+                    <a
+                        href="recurring.html"
+                        class="quick-action"
+                    >
 
-        <div class="panel-header history-header">
+                        <div class="quick-action-icon">
+                            🔄
+                        </div>
 
-          <div>
-            <span class="panel-eyebrow">TRANSACTION HISTORY</span>
-            <h2>Your expenses</h2>
-          </div>
+                        <strong>
+                            Review Recurring Bills
+                        </strong>
 
-          <div class="history-controls">
+                        <small class="text-muted">
+                            Find subscriptions and commitments.
+                        </small>
 
-            <div class="mini-search">
-              <span>⌕</span>
-
-              <input
-                type="search"
-                id="expenseSearch"
-                placeholder="Search expenses..."
-              >
-            </div>
+                    </a>
 
 
-            <select id="expenseFilter">
-              <option value="all">All categories</option>
-              <option value="Food">Food</option>
-              <option value="Transport">Transport</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Bills">Bills</option>
-              <option value="Housing">Housing</option>
-              <option value="Health">Health</option>
-              <option value="Education">Education</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Subscriptions">Subscriptions</option>
-              <option value="Family">Family</option>
-              <option value="Travel">Travel</option>
-              <option value="Utilities">Utilities</option>
-              <option value="Business">Business</option>
-              <option value="Other">Other</option>
-            </select>
+                    <a
+                        href="analytics.html"
+                        class="quick-action"
+                    >
 
-          </div>
+                        <div class="quick-action-icon">
+                            📊
+                        </div>
 
-        </div>
+                        <strong>
+                            Deep Analysis
+                        </strong>
 
+                        <small class="text-muted">
+                            Explore your spending patterns.
+                        </small>
 
-        <div id="expenseHistory" class="transaction-list">
+                    </a>
 
-          <div class="empty-state">
-            <div class="empty-icon">↘</div>
+                </div>
 
-            <h3>No expenses recorded</h3>
+            </article>
 
-            <p>
-              Your expense history will appear here.
-            </p>
-          </div>
-
-        </div>
-
-      </section>
+        </section>
 
 
-      <!-- FOOTER -->
-      <footer class="site-footer">
-        <span>MoneyLeak</span>
-        <span>•</span>
-        <span>Know your money. Control your future.</span>
-      </footer>
+        <!-- FOOTER -->
+
+        <footer>
+
+            MoneyLeak Personal Finance OS
+
+            <br>
+
+            Your money. Your decisions. Your future.
+
+        </footer>
 
     </div>
 
-  </main>
+</main>
 
 
-  <!-- SEARCH OVERLAY -->
-  <div class="search-overlay" id="searchOverlay">
+
+<!-- ============================================================
+     SEARCH
+     ============================================================ -->
+
+<div
+    id="searchOverlay"
+    hidden
+    aria-hidden="true"
+>
 
     <div class="search-modal">
 
-      <div class="search-modal-header">
-        <h2>Search MoneyLeak</h2>
+        <div class="search-modal-header">
 
-        <button id="closeSearchBtn" class="close-button">
-          ×
+            <strong>
+                Search MoneyLeak
+            </strong>
+
+            <button
+                id="closeSearch"
+                class="close-button"
+                type="button"
+                aria-label="Close search"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="search-input-wrapper">
+
+            <span>⌕</span>
+
+            <input
+                id="globalSearch"
+                type="search"
+                placeholder="Search transactions, pages..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div id="searchResults">
+
+            <p>
+                Start typing to search.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     NOTIFICATIONS
+     ============================================================ -->
+
+<div
+    id="notificationPanel"
+    hidden
+    aria-hidden="true"
+>
+
+    <div
+        style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:10px;
+        "
+    >
+
+        <strong>
+            Notifications
+        </strong>
+
+        <button
+            id="closeNotifications"
+            class="close-button"
+            type="button"
+            aria-label="Close notifications"
+        >
+            ×
         </button>
-      </div>
 
-      <div class="search-modal-input">
+    </div>
 
-        <span>⌕</span>
 
-        <input
-          type="search"
-          id="globalSearchInput"
-          placeholder="Search pages, transactions..."
-          autocomplete="off"
+    <div id="notificationList">
+
+        <p class="text-muted">
+            No new notifications.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     MOBILE MENU
+     ============================================================ -->
+
+<div id="mobileOverlay">
+
+    <div class="mobile-menu">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                margin-bottom:25px;
+            "
         >
 
-      </div>
+            <strong>
+                MoneyLeak
+            </strong>
 
-      <div id="globalSearchResults" class="search-results"></div>
+            <button
+                id="mobileMenuClose"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="index.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="income.html">
+                <span class="nav-icon">↗</span>
+                Income
+            </a>
+
+            <a href="expenses.html" class="active">
+                <span class="nav-icon">↘</span>
+                Expenses
+            </a>
+
+            <a href="budgets.html">
+                <span class="nav-icon">◫</span>
+                Budgets
+            </a>
+
+            <a href="savings.html">
+                <span class="nav-icon">◎</span>
+                Savings Goals
+            </a>
+
+            <a href="recurring.html">
+                <span class="nav-icon">↻</span>
+                Recurring
+            </a>
+
+            <a href="analytics.html">
+                <span class="nav-icon">⌁</span>
+                Analytics
+            </a>
+
+            <a href="settings.html">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
 
     </div>
 
-  </div>
+</div>
 
 
-  <!-- NOTIFICATION PANEL -->
-  <div class="notification-panel" id="notificationPanel">
 
-    <div class="notification-header">
-      <div>
-        <strong>Notifications</strong>
-        <span>MoneyLeak alerts</span>
-      </div>
+<!-- ============================================================
+     EXPENSE ENGINE
+     ============================================================ -->
 
-      <button id="closeNotificationBtn" class="close-button">
-        ×
-      </button>
-    </div>
+<script>
 
-    <div id="notificationList" class="notification-list"></div>
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-  </div>
 
+        /* ========================================================
+           DATE
+           ======================================================== */
 
-  <!-- MOBILE OVERLAY -->
-  <div class="mobile-overlay" id="mobileOverlay"></div>
-
-
-  <!-- IMPORTANT:
-       app.js loads BEFORE this page engine
-       so MoneyLeak is ready when this page initializes.
-  -->
-  <script src="app.js"></script>
-
-
-  <!-- EXPENSE PAGE ENGINE -->
-  <script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-      const ML = window.MoneyLeak;
-
-      if (!ML) {
-        console.error("MoneyLeak engine was not loaded.");
-        return;
-      }
-
-
-      /* =========================
-         HELPERS
-      ========================== */
-
-      function todayString() {
-        const now = new Date();
-
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, "0");
-        const day = String(now.getDate()).padStart(2, "0");
-
-        return `${year}-${month}-${day}`;
-      }
-
-
-      function formatDate(dateValue) {
-
-        if (!dateValue) {
-          return "Unknown date";
-        }
-
-        const date = new Date(dateValue + "T00:00:00");
-
-        if (Number.isNaN(date.getTime())) {
-          return dateValue;
-        }
-
-        return date.toLocaleDateString(undefined, {
-          day: "numeric",
-          month: "short",
-          year: "numeric"
-        });
-      }
-
-
-      function escapeHTML(value) {
-
-        return String(value || "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
-
-
-      /* =========================
-         DEFAULT DATE
-      ========================== */
-
-      const dateInput = document.getElementById("expenseDate");
-
-      if (dateInput && !dateInput.value) {
-        dateInput.value = todayString();
-      }
-
-
-      /* =========================
-         OVERVIEW
-      ========================== */
-
-      function renderOverview() {
-
-        const transactions = ML.getTransactions();
-
-        const expenses = transactions.filter(
-          transaction => transaction.type === "expense"
-        );
-
-
-        const total = expenses.reduce(
-          (sum, transaction) => sum + Number(transaction.amount || 0),
-          0
-        );
-
-
-        const now = new Date();
-
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
-
-
-        const monthlyExpenses = expenses.filter(transaction => {
-
-          const date = new Date(transaction.date + "T00:00:00");
-
-          return (
-            date.getMonth() === currentMonth &&
-            date.getFullYear() === currentYear
-          );
-
-        });
-
-
-        const monthTotal = monthlyExpenses.reduce(
-          (sum, transaction) => sum + Number(transaction.amount || 0),
-          0
-        );
-
-
-        const average = expenses.length
-          ? total / expenses.length
-          : 0;
-
-
-        const largest = expenses.length
-          ? expenses.reduce((largestExpense, transaction) => {
-
-              return Number(transaction.amount) >
-                Number(largestExpense.amount)
-                ? transaction
-                : largestExpense;
-
-            })
-          : null;
-
-
-        document.getElementById("expenseTotal").textContent =
-          ML.formatCurrency(total);
-
-
-        document.getElementById("expenseMonth").textContent =
-          ML.formatCurrency(monthTotal);
-
-
-        document.getElementById("expenseAverage").textContent =
-          ML.formatCurrency(average);
-
-
-        document.getElementById("expenseLargest").textContent =
-          ML.formatCurrency(largest ? largest.amount : 0);
-
-
-        document.getElementById("expenseLargestLabel").textContent =
-          largest
-            ? largest.description || largest.category || "Largest expense"
-            : "No expenses yet";
-
-
-        document.getElementById("expenseTransactionCount").textContent =
-          expenses.length;
-
-      }
-
-
-      /* =========================
-         CATEGORY BREAKDOWN
-      ========================== */
-
-      function renderCategoryBreakdown() {
-
-        const container =
-          document.getElementById("expenseCategoryBreakdown");
-
-
-        const expenses = ML.getTransactions().filter(
-          transaction => transaction.type === "expense"
-        );
-
-
-        if (!expenses.length) {
-
-          container.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-icon">◒</div>
-              <h3>No spending data yet</h3>
-              <p>
-                Add your first expense to see your spending
-                broken down by category.
-              </p>
-            </div>
-          `;
-
-          document.getElementById("expenseTopCategory").textContent = "—";
-
-          return;
-        }
-
-
-        const totals = {};
-
-
-        expenses.forEach(transaction => {
-
-          const category =
-            transaction.category || "Other";
-
-          totals[category] =
-            (totals[category] || 0) +
-            Number(transaction.amount || 0);
-
-        });
-
-
-        const sorted = Object.entries(totals)
-          .sort((a, b) => b[1] - a[1]);
-
-
-        const overallTotal = sorted.reduce(
-          (sum, item) => sum + item[1],
-          0
-        );
-
-
-        document.getElementById("expenseTopCategory").textContent =
-          sorted[0] ? sorted[0][0] : "—";
-
-
-        container.innerHTML = sorted
-          .map(([category, amount]) => {
-
-            const percentage =
-              overallTotal > 0
-                ? (amount / overallTotal) * 100
-                : 0;
-
-
-            return `
-              <div class="category-row">
-
-                <div class="category-info">
-                  <div class="category-name">
-                    ${escapeHTML(category)}
-                  </div>
-
-                  <div class="category-percent">
-                    ${percentage.toFixed(1)}%
-                  </div>
-                </div>
-
-                <div class="category-bar">
-                  <div
-                    class="category-bar-fill"
-                    style="width:${Math.max(percentage, 2)}%"
-                  ></div>
-                </div>
-
-                <div class="category-amount">
-                  ${ML.formatCurrency(amount)}
-                </div>
-
-              </div>
-            `;
-
-          })
-          .join("");
-
-      }
-
-
-      /* =========================
-         SMART INSIGHT
-      ========================== */
-
-      function renderInsight() {
-
-        const box =
-          document.getElementById("expenseInsight");
-
-
-        const expenses = ML.getTransactions().filter(
-          transaction => transaction.type === "expense"
-        );
-
-
-        if (!expenses.length) {
-
-          box.innerHTML = `
-            <div class="insight-icon">✦</div>
-
-            <div>
-              <h3>Let's discover your spending pattern.</h3>
-
-              <p>
-                Add a few expenses and MoneyLeak will analyze
-                your spending habits automatically.
-              </p>
-            </div>
-          `;
-
-          return;
-        }
-
-
-        const totals = {};
-
-
-        expenses.forEach(transaction => {
-
-          const category =
-            transaction.category || "Other";
-
-          totals[category] =
-            (totals[category] || 0) +
-            Number(transaction.amount || 0);
-
-        });
-
-
-        const sorted =
-          Object.entries(totals)
-            .sort((a, b) => b[1] - a[1]);
-
-
-        const topCategory =
-          sorted[0] || ["Other", 0];
-
-
-        const total =
-          expenses.reduce(
-            (sum, transaction) =>
-              sum + Number(transaction.amount || 0),
-            0
-          );
-
-
-        const percentage =
-          total > 0
-            ? (topCategory[1] / total) * 100
-            : 0;
-
-
-        let message;
-
-
-        if (percentage >= 50) {
-
-          message =
-            `${topCategory[0]} is taking up ${percentage.toFixed(0)}% of your recorded spending. This is the first category worth reviewing for potential savings.`;
-
-        } else if (percentage >= 30) {
-
-          message =
-            `${topCategory[0]} is currently your biggest spending category at ${percentage.toFixed(0)}%. Keep an eye on it to prevent it becoming a money leak.`;
-
-        } else {
-
-          message =
-            `Your spending is spread across several categories. Keep recording expenses and MoneyLeak will identify patterns as your data grows.`;
-
-        }
-
-
-        box.innerHTML = `
-          <div class="insight-icon">✦</div>
-
-          <div>
-            <h3>Your biggest spending area is ${escapeHTML(topCategory[0])}.</h3>
-
-            <p>${escapeHTML(message)}</p>
-          </div>
-        `;
-
-      }
-
-
-      /* =========================
-         HISTORY
-      ========================== */
-
-      function renderHistory() {
-
-        const container =
-          document.getElementById("expenseHistory");
-
-
-        const search =
-          document.getElementById("expenseSearch")
-            .value
-            .trim()
-            .toLowerCase();
-
-
-        const filter =
-          document.getElementById("expenseFilter")
-            .value;
-
-
-        let expenses =
-          ML.getTransactions()
-            .filter(transaction =>
-              transaction.type === "expense"
+        const dateInput =
+            document.getElementById(
+                "expenseDate"
             );
 
 
-        if (filter !== "all") {
+        if (
+            dateInput &&
+            !dateInput.value
+        ) {
 
-          expenses =
-            expenses.filter(
-              transaction =>
-                transaction.category === filter
+            const now =
+                new Date();
+
+            dateInput.value =
+                new Date(
+                    now.getTime() -
+                    now.getTimezoneOffset() *
+                    60000
+                )
+                .toISOString()
+                .split("T")[0];
+
+        }
+
+
+
+        /* ========================================================
+           FORM
+           ======================================================== */
+
+        const form =
+            document.getElementById(
+                "expenseForm"
+            );
+
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+
+                    if (
+                        !window.MoneyLeak
+                    ) {
+
+                        alert(
+                            "MoneyLeak is still loading. Please try again."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const amount =
+                        Number(
+                            document.getElementById(
+                                "expenseAmount"
+                            ).value
+                        );
+
+
+                    const category =
+                        document.getElementById(
+                            "expenseCategory"
+                        ).value;
+
+
+                    const date =
+                        document.getElementById(
+                            "expenseDate"
+                        ).value;
+
+
+                    const description =
+                        document.getElementById(
+                            "expenseDescription"
+                        ).value
+                        .trim();
+
+
+                    if (
+                        !amount ||
+                        amount <= 0
+                    ) {
+
+                        alert(
+                            "Please enter a valid expense amount."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!category) {
+
+                        alert(
+                            "Please choose an expense category."
+                        );
+
+                        return;
+
+                    }
+
+
+                    window.MoneyLeak.addTransaction({
+
+                        type: "expense",
+
+                        amount: amount,
+
+                        category: category,
+
+                        description:
+                            description ||
+                            category,
+
+                        date:
+                            date ||
+                            new Date().toISOString()
+
+                    });
+
+
+                    form.reset();
+
+
+                    if (dateInput) {
+
+                        dateInput.value =
+                            new Date()
+                                .toISOString()
+                                .split("T")[0];
+
+                    }
+
+
+                    renderExpensePage();
+
+                }
             );
 
         }
 
 
-        if (search) {
 
-          expenses =
-            expenses.filter(transaction => {
+        /* ========================================================
+           SCROLL TO FORM
+           ======================================================== */
 
-              const text = [
+        document
+            .getElementById(
+                "scrollToExpenseForm"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
 
-                transaction.description,
-                transaction.category,
-                transaction.note
-
-              ]
-                .filter(Boolean)
-                .join(" ")
-                .toLowerCase();
-
-
-              return text.includes(search);
-
-            });
-
-        }
+                    document
+                        .getElementById(
+                            "expenseFormSection"
+                        )
+                        ?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
 
 
-        expenses.sort(
-          (a, b) =>
-            new Date(b.date) -
-            new Date(a.date)
+                    setTimeout(
+                        function () {
+
+                            document
+                                .getElementById(
+                                    "expenseAmount"
+                                )
+                                ?.focus();
+
+                        },
+                        450
+                    );
+
+                }
+            );
+
+
+
+        /* ========================================================
+           FILTERS
+           ======================================================== */
+
+        document
+            .getElementById(
+                "expenseFilterCategory"
+            )
+            ?.addEventListener(
+                "change",
+                renderExpenseHistory
+            );
+
+
+        document
+            .getElementById(
+                "expenseSearch"
+            )
+            ?.addEventListener(
+                "input",
+                renderExpenseHistory
+            );
+
+
+
+        /* ========================================================
+           DATA UPDATE
+           ======================================================== */
+
+        window.addEventListener(
+            "moneyLeakUpdated",
+            renderExpensePage
         );
 
 
-        if (!expenses.length) {
-
-          container.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-icon">↘</div>
-
-              <h3>No matching expenses</h3>
-
-              <p>
-                Try changing your search or category filter.
-              </p>
-            </div>
-          `;
-
-          return;
-        }
+        setTimeout(
+            renderExpensePage,
+            150
+        );
 
 
-        container.innerHTML = expenses
-          .map(transaction => {
 
-            const category =
-              transaction.category || "Other";
+        /* ========================================================
+           MAIN RENDER
+           ======================================================== */
 
+        function renderExpensePage() {
 
-            return `
-              <div class="transaction-item">
-
-                <div class="transaction-icon expense-transaction">
-                  ↘
-                </div>
-
-                <div class="transaction-main">
-
-                  <strong>
-                    ${escapeHTML(
-                      transaction.description ||
-                      category
-                    )}
-                  </strong>
-
-                  <span>
-                    ${escapeHTML(category)}
-                    •
-                    ${formatDate(transaction.date)}
-                  </span>
-
-                </div>
-
-                <div class="transaction-amount expense-amount">
-                  −${ML.formatCurrency(transaction.amount)}
-                </div>
-
-                <button
-                  class="transaction-delete"
-                  data-delete-id="${escapeHTML(transaction.id)}"
-                  title="Delete expense"
-                  aria-label="Delete expense"
-                >
-                  ×
-                </button>
-
-              </div>
-            `;
-
-          })
-          .join("");
+            if (
+                !window.MoneyLeak
+            ) {
+                return;
+            }
 
 
-        container
-          .querySelectorAll("[data-delete-id]")
-          .forEach(button => {
+            const expenses =
+                getExpenses();
 
-            button.addEventListener("click", function () {
 
-              const id = this.dataset.deleteId;
+            const now =
+                new Date();
 
-              const confirmed =
-                window.confirm(
-                  "Delete this expense?"
+
+            const currentMonth =
+                getMonthTotal(
+                    now.getFullYear(),
+                    now.getMonth()
                 );
 
 
-              if (!confirmed) {
+            const previousDate =
+                new Date(
+                    now.getFullYear(),
+                    now.getMonth() - 1,
+                    1
+                );
+
+
+            const previousMonth =
+                getMonthTotal(
+                    previousDate.getFullYear(),
+                    previousDate.getMonth()
+                );
+
+
+            const daysPassed =
+                now.getDate();
+
+
+            const dailyAverage =
+                daysPassed
+                    ? currentMonth /
+                      daysPassed
+                    : 0;
+
+
+            setText(
+                "expenseThisMonth",
+                ML().displayCurrency(
+                    currentMonth
+                )
+            );
+
+
+            setText(
+                "expensePreviousMonth",
+                ML().displayCurrency(
+                    previousMonth
+                )
+            );
+
+
+            setText(
+                "expenseDailyAverage",
+                ML().displayCurrency(
+                    dailyAverage
+                )
+            );
+
+
+            setText(
+                "expenseTransactionCount",
+                expenses.length
+            );
+
+
+            const comparison =
+                document.getElementById(
+                    "expenseMonthComparison"
+                );
+
+
+            if (comparison) {
+
+                if (
+                    previousMonth === 0 &&
+                    currentMonth > 0
+                ) {
+
+                    comparison.textContent =
+                        "New spending this month";
+
+                } else if (
+                    previousMonth === 0
+                ) {
+
+                    comparison.textContent =
+                        "No previous spending";
+
+                } else {
+
+                    const change =
+                        (
+                            (
+                                currentMonth -
+                                previousMonth
+                            ) /
+                            previousMonth
+                        ) *
+                        100;
+
+
+                    comparison.textContent =
+                        (
+                            change >= 0
+                                ? "↑ "
+                                : "↓ "
+                        ) +
+                        Math.abs(
+                            change
+                        ).toFixed(1) +
+                        "% vs previous month";
+
+                }
+
+            }
+
+
+            renderLeakAnalysis(
+                expenses
+            );
+
+
+            renderCategories(
+                expenses
+            );
+
+
+            renderExpenseHistory();
+
+        }
+
+
+
+        /* ========================================================
+           EXPENSE DATA
+           ======================================================== */
+
+        function getExpenses() {
+
+            return ML()
+                .getTransactions()
+                .filter(
+                    transaction =>
+                        transaction.type ===
+                        "expense"
+                );
+
+        }
+
+
+        function getMonthTotal(
+            year,
+            month
+        ) {
+
+            return getExpenses()
+                .filter(
+                    transaction => {
+
+                        const date =
+                            new Date(
+                                transaction.date
+                            );
+
+                        return (
+                            date.getFullYear() ===
+                                year &&
+                            date.getMonth() ===
+                                month
+                        );
+
+                    }
+                )
+                .reduce(
+                    (
+                        total,
+                        transaction
+                    ) =>
+                        total +
+                        Number(
+                            transaction.amount
+                        ),
+                    0
+                );
+
+        }
+
+
+
+        /* ========================================================
+           LEAK ANALYSIS
+           ======================================================== */
+
+        function renderLeakAnalysis(
+            expenses
+        ) {
+
+            const totals = {};
+
+
+            expenses.forEach(
+                transaction => {
+
+                    const category =
+                        transaction.category ||
+                        "Other";
+
+
+                    totals[category] =
+                        (
+                            totals[category] ||
+                            0
+                        ) +
+                        Number(
+                            transaction.amount
+                        );
+
+                }
+            );
+
+
+            const sorted =
+                Object.entries(
+                    totals
+                )
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        b[1] -
+                        a[1]
+                );
+
+
+            const total =
+                expenses.reduce(
+                    (
+                        sum,
+                        transaction
+                    ) =>
+                        sum +
+                        Number(
+                            transaction.amount
+                        ),
+                    0
+                );
+
+
+            const biggest =
+                sorted[0];
+
+
+            if (biggest) {
+
+                const percentage =
+                    total
+                        ? (
+                            biggest[1] /
+                            total
+                        ) *
+                        100
+                        : 0;
+
+
+                setText(
+                    "biggestLeakCategory",
+                    biggest[0]
+                );
+
+
+                setText(
+                    "biggestLeakAmount",
+                    ML().displayCurrency(
+                        biggest[1]
+                    )
+                );
+
+
+                setText(
+                    "biggestLeakPercentage",
+                    percentage.toFixed(1) +
+                    "% of your recorded spending"
+                );
+
+
+                const advice =
+                    document.getElementById(
+                        "biggestLeakAdvice"
+                    );
+
+
+                if (advice) {
+
+                    if (
+                        percentage >= 40
+                    ) {
+
+                        advice.textContent =
+                            biggest[0] +
+                            " represents a very large share of your spending. This category deserves your first review.";
+
+                    } else if (
+                        percentage >= 25
+                    ) {
+
+                        advice.textContent =
+                            biggest[0] +
+                            " is currently your largest spending category. Look for ways to reduce unnecessary purchases here.";
+
+                    } else {
+
+                        advice.textContent =
+                            "Your spending is relatively distributed, but " +
+                            biggest[0] +
+                            " is still your largest category.";
+
+                    }
+
+                }
+
+            } else {
+
+                setText(
+                    "biggestLeakCategory",
+                    "—"
+                );
+
+
+                setText(
+                    "biggestLeakAmount",
+                    ML().displayCurrency(0)
+                );
+
+
+                setText(
+                    "biggestLeakPercentage",
+                    "No spending data yet."
+                );
+
+            }
+
+
+            const largest =
+                expenses.length
+                    ? Math.max(
+                        ...expenses.map(
+                            transaction =>
+                                Number(
+                                    transaction.amount
+                                )
+                        )
+                    )
+                    : 0;
+
+
+            const average =
+                expenses.length
+                    ? total /
+                      expenses.length
+                    : 0;
+
+
+            const dailyTotals = {};
+
+
+            expenses.forEach(
+                transaction => {
+
+                    const key =
+                        transaction.date
+                            ?.slice(
+                                0,
+                                10
+                            ) ||
+                        "Unknown";
+
+
+                    dailyTotals[key] =
+                        (
+                            dailyTotals[key] ||
+                            0
+                        ) +
+                        Number(
+                            transaction.amount
+                        );
+
+                }
+            );
+
+
+            const mostExpensive =
+                Object.entries(
+                    dailyTotals
+                )
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        b[1] -
+                        a[1]
+                )[0];
+
+
+            setText(
+                "largestExpense",
+                ML().displayCurrency(
+                    largest
+                )
+            );
+
+
+            setText(
+                "averageExpense",
+                ML().displayCurrency(
+                    average
+                )
+            );
+
+
+            if (mostExpensive) {
+
+                setText(
+                    "mostExpensiveDay",
+                    formatDate(
+                        mostExpensive[0]
+                    )
+                );
+
+            } else {
+
+                setText(
+                    "mostExpensiveDay",
+                    "—"
+                );
+
+            }
+
+
+            const status =
+                document.getElementById(
+                    "spendingStatus"
+                );
+
+
+            if (status) {
+
+                if (!expenses.length) {
+
+                    status.textContent =
+                        "No data";
+
+                } else if (
+                    biggest &&
+                    total > 0 &&
+                    biggest[1] / total >= 0.5
+                ) {
+
+                    status.textContent =
+                        "Concentrated";
+
+                } else if (
+                    expenses.length >= 15
+                ) {
+
+                    status.textContent =
+                        "High activity";
+
+                } else {
+
+                    status.textContent =
+                        "Active";
+
+                }
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           CATEGORY BREAKDOWN
+           ======================================================== */
+
+        function renderCategories(
+            expenses
+        ) {
+
+            const container =
+                document.getElementById(
+                    "expenseCategories"
+                );
+
+
+            if (!container) {
                 return;
-              }
+            }
 
 
-              ML.deleteTransaction(id);
+            if (!expenses.length) {
 
-              renderPage();
+                container.innerHTML =
+                    `
+                    <div class="empty-state">
+                        No expense data yet.
+                    </div>
+                    `;
 
-            });
+                return;
 
-          });
-
-      }
-
-
-      /* =========================
-         FORM
-      ========================== */
-
-      const form =
-        document.getElementById("expenseForm");
+            }
 
 
-      form.addEventListener("submit", function (event) {
-
-        event.preventDefault();
+            const totals = {};
 
 
-        const amount =
-          Number(
-            document.getElementById("expenseAmount").value
-          );
+            expenses.forEach(
+                transaction => {
+
+                    const category =
+                        transaction.category ||
+                        "Other";
 
 
-        const category =
-          document.getElementById("expenseCategory").value;
+                    totals[category] =
+                        (
+                            totals[category] ||
+                            0
+                        ) +
+                        Number(
+                            transaction.amount
+                        );
+
+                }
+            );
 
 
-        const description =
-          document.getElementById("expenseDescription").value.trim();
+            const entries =
+                Object.entries(
+                    totals
+                )
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        b[1] -
+                        a[1]
+                );
 
 
-        const date =
-          document.getElementById("expenseDate").value;
+            const total =
+                entries.reduce(
+                    (
+                        sum,
+                        item
+                    ) =>
+                        sum +
+                        item[1],
+                    0
+                );
 
 
-        const note =
-          document.getElementById("expenseNote").value.trim();
+            container.innerHTML =
+                entries
+                .map(
+                    item => {
+
+                        const percentage =
+                            total
+                                ? (
+                                    item[1] /
+                                    total
+                                ) *
+                                100
+                                : 0;
 
 
-        if (!amount || amount <= 0) {
+                        return `
+                        <div
+                            style="
+                                padding:13px 0;
+                                border-bottom:1px solid var(--ml-border);
+                            "
+                        >
 
-          alert("Please enter a valid expense amount.");
+                            <div
+                                style="
+                                    display:flex;
+                                    justify-content:space-between;
+                                    gap:12px;
+                                    margin-bottom:7px;
+                                "
+                            >
 
-          return;
+                                <strong>
+                                    ${escapeHTML(item[0])}
+                                </strong>
+
+                                <strong class="expense">
+                                    ${ML().displayCurrency(item[1])}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="progress-bar">
+
+                                <span
+                                    style="
+                                        width:${Math.min(100, percentage)}%;
+                                    "
+                                ></span>
+
+                            </div>
+
+
+                            <small class="text-muted">
+
+                                ${percentage.toFixed(1)}%
+
+                                of recorded spending
+
+                            </small>
+
+                        </div>
+                        `;
+
+                    }
+                )
+                .join("");
 
         }
 
 
-        if (!category) {
 
-          alert("Please choose an expense category.");
+        /* ========================================================
+           HISTORY
+           ======================================================== */
 
-          return;
+        function renderExpenseHistory() {
+
+            const container =
+                document.getElementById(
+                    "expenseHistory"
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            const categoryFilter =
+                document.getElementById(
+                    "expenseFilterCategory"
+                )?.value ||
+                "all";
+
+
+            const search =
+                (
+                    document.getElementById(
+                        "expenseSearch"
+                    )?.value ||
+                    ""
+                )
+                .trim()
+                .toLowerCase();
+
+
+            let expenses =
+                getExpenses()
+                .sort(
+                    (
+                        a,
+                        b
+                    ) =>
+                        new Date(
+                            b.date
+                        ) -
+                        new Date(
+                            a.date
+                        )
+                );
+
+
+            if (
+                categoryFilter !==
+                "all"
+            ) {
+
+                expenses =
+                    expenses.filter(
+                        transaction =>
+                            (
+                                transaction.category ||
+                                "Other"
+                            ) ===
+                            categoryFilter
+                    );
+
+            }
+
+
+            if (search) {
+
+                expenses =
+                    expenses.filter(
+                        transaction => {
+
+                            const text =
+                                (
+                                    (
+                                        transaction.description ||
+                                        ""
+                                    ) +
+                                    " " +
+                                    (
+                                        transaction.category ||
+                                        ""
+                                    )
+                                )
+                                .toLowerCase();
+
+
+                            return text.includes(
+                                search
+                            );
+
+                        }
+                    );
+
+            }
+
+
+            if (!expenses.length) {
+
+                container.innerHTML =
+                    `
+                    <div class="empty-state">
+                        No matching expenses.
+                    </div>
+                    `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                expenses
+                .map(
+                    transaction => {
+
+                        const category =
+                            transaction.category ||
+                            "Other";
+
+
+                        return `
+                        <div
+                            class="transaction-item"
+                            style="
+                                display:flex;
+                                align-items:center;
+                                justify-content:space-between;
+                                gap:15px;
+                                padding:14px 0;
+                                border-bottom:1px solid var(--ml-border);
+                            "
+                        >
+
+                            <div
+                                style="
+                                    display:flex;
+                                    align-items:center;
+                                    gap:12px;
+                                    min-width:0;
+                                "
+                            >
+
+                                <div
+                                    style="
+                                        width:40px;
+                                        height:40px;
+                                        display:grid;
+                                        place-items:center;
+                                        border-radius:12px;
+                                        background:rgba(214,75,75,.10);
+                                        flex-shrink:0;
+                                    "
+                                >
+                                    ↘
+                                </div>
+
+
+                                <div style="min-width:0;">
+
+                                    <strong
+                                        style="
+                                            display:block;
+                                            overflow:hidden;
+                                            text-overflow:ellipsis;
+                                            white-space:nowrap;
+                                        "
+                                    >
+                                        ${escapeHTML(
+                                            transaction.description ||
+                                            category
+                                        )}
+                                    </strong>
+
+
+                                    <small class="text-muted">
+
+                                        ${escapeHTML(category)}
+
+                                        ·
+
+                                        ${formatDate(
+                                            transaction.date
+                                        )}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                style="
+                                    display:flex;
+                                    align-items:center;
+                                    gap:10px;
+                                    flex-shrink:0;
+                                "
+                            >
+
+                                <strong class="expense">
+
+                                    -${ML().displayCurrency(
+                                        transaction.amount
+                                    )}
+
+                                </strong>
+
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm"
+                                    data-delete-expense="${transaction.id}"
+                                    title="Delete expense"
+                                >
+                                    ×
+                                </button>
+
+                            </div>
+
+                        </div>
+                        `;
+
+                    }
+                )
+                .join("");
+
+
+            container
+                .querySelectorAll(
+                    "[data-delete-expense]"
+                )
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                const confirmed =
+                                    confirm(
+                                        "Delete this expense?"
+                                    );
+
+
+                                if (
+                                    !confirmed
+                                ) {
+                                    return;
+                                }
+
+
+                                ML()
+                                    .deleteTransaction(
+                                        this.dataset
+                                            .deleteExpense
+                                    );
+
+
+                                renderExpensePage();
+
+                            }
+                        );
+
+                    }
+                );
 
         }
 
 
-        if (!description) {
 
-          alert("Please describe what you spent money on.");
+        /* ========================================================
+           HELPERS
+           ======================================================== */
 
-          return;
+        function ML() {
+
+            return window.MoneyLeak;
 
         }
 
 
-        ML.addTransaction({
+        function setText(
+            id,
+            value
+        ) {
 
-          type: "expense",
-
-          amount,
-
-          category,
-
-          description,
-
-          date,
-
-          note
-
-        });
+            const element =
+                document.getElementById(
+                    id
+                );
 
 
-        form.reset();
+            if (element) {
 
-        document.getElementById("expenseDate").value =
-          todayString();
+                element.textContent =
+                    value;
 
+            }
 
-        renderPage();
-
-
-        alert("Expense saved successfully.");
-
-      });
+        }
 
 
-      /* =========================
-         FILTERS
-      ========================== */
+        function formatDate(
+            value
+        ) {
 
-      document
-        .getElementById("expenseSearch")
-        .addEventListener(
-          "input",
-          renderHistory
-        );
+            const date =
+                new Date(
+                    value
+                );
 
 
-      document
-        .getElementById("expenseFilter")
-        .addEventListener(
-          "change",
-          renderHistory
-        );
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return "Unknown date";
+
+            }
 
 
-      /* =========================
-         SCROLL BUTTON
-      ========================== */
+            return date.toLocaleDateString(
+                undefined,
+                {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
 
-      document
-        .getElementById("scrollToExpenseForm")
-        .addEventListener("click", function () {
-
-          document
-            .getElementById("expenseFormPanel")
-            .scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
-
-        });
+        }
 
 
-      /* =========================
-         FULL PAGE REFRESH
-      ========================== */
+        function escapeHTML(
+            value
+        ) {
 
-      function renderPage() {
+            return String(
+                value ?? ""
+            )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
 
-        renderOverview();
+        }
 
-        renderCategoryBreakdown();
+    }
+);
 
-        renderInsight();
-
-        renderHistory();
-
-      }
+</script>
 
 
-      /* =========================
-         CONNECT TO MAIN ENGINE
-      ========================== */
+<!-- ============================================================
+     MONEY LEAK ENGINE
+     ============================================================ -->
 
-      window.moneyLeakPageUpdate =
-        renderPage;
-
-
-      /* =========================
-         INITIAL RENDER
-      ========================== */
-
-      renderPage();
-
-    });
-
-  </script>
+<script src="app.js"></script>
 
 </body>
 </html>
