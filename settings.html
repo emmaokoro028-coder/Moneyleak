@@ -1,1375 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Settings | MoneyLeak</title>
+    <meta charset="UTF-8">
 
-<style>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-* {
-    box-sizing: border-box;
-}
+    <meta
+        name="description"
+        content="MoneyLeak Settings — configure your personal finance system."
+    >
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-    background: #f4f7f6;
-    color: #17231f;
-}
+    <title>MoneyLeak — Settings</title>
 
-button,
-input,
-select {
-    font: inherit;
-}
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-button {
-    cursor: pointer;
-}
-
-
-/* =========================================================
-   APP
-   ========================================================= */
-
-.app {
-    min-height: 100vh;
-    display: flex;
-}
-
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
-
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 255px;
-
-    background: #ffffff;
-    border-right: 1px solid #e2e9e6;
-
-    padding: 24px 16px;
-
-    display: flex;
-    flex-direction: column;
-
-    z-index: 100;
-}
-
-
-/* BRAND */
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    padding: 0 8px 25px;
-
-    border-bottom: 1px solid #edf1ef;
-}
-
-.logo {
-    width: 45px;
-    height: 45px;
-
-    border-radius: 14px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: linear-gradient(
-        145deg,
-        #07996b,
-        #056746
-    );
-
-    color: white;
-
-    font-size: 19px;
-    font-weight: 900;
-
-    box-shadow:
-        0 8px 20px rgba(5,110,75,.18);
-}
-
-.brand-name {
-    font-size: 16px;
-    font-weight: 800;
-}
-
-.brand-subtitle {
-    margin-top: 3px;
-
-    font-size: 8px;
-    font-weight: 800;
-
-    color: #89958f;
-
-    letter-spacing: .12em;
-}
-
-
-/* NAV */
-
-.nav {
-    padding-top: 25px;
-}
-
-.nav-title {
-    margin: 0 10px 9px;
-
-    color: #9aa59f;
-
-    font-size: 9px;
-    font-weight: 900;
-
-    letter-spacing: .14em;
-}
-
-.nav-title:not(:first-child) {
-    margin-top: 23px;
-}
-
-.nav a {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    width: 100%;
-
-    min-height: 43px;
-
-    padding: 0 12px;
-
-    margin-bottom: 3px;
-
-    border-radius: 11px;
-
-    color: #617069;
-
-    text-decoration: none;
-
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.nav a:hover {
-    background: #f0f7f4;
-    color: #07865c;
-}
-
-.nav a.active {
-    background: #e4f7ef;
-    color: #056a4a;
-}
-
-.nav-icon {
-    width: 20px;
-
-    text-align: center;
-
-    font-size: 14px;
-}
-
-
-/* SIDEBAR BOTTOM */
-
-.sidebar-bottom {
-    margin-top: auto;
-
-    padding: 15px;
-
-    border-radius: 15px;
-
-    background: #eff9f5;
-
-    border: 1px solid #d9eee6;
-}
-
-.sidebar-bottom strong {
-    display: block;
-
-    color: #075e45;
-
-    font-size: 11px;
-
-    margin-bottom: 5px;
-}
-
-.sidebar-bottom span {
-    color: #789089;
-
-    font-size: 9px;
-
-    line-height: 1.55;
-}
-
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.main {
-    width: calc(100% - 255px);
-
-    margin-left: 255px;
-
-    min-height: 100vh;
-}
-
-
-/* TOPBAR */
-
-.topbar {
-    height: 76px;
-
-    background: white;
-
-    border-bottom: 1px solid #e2e9e6;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 0 32px;
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 50;
-}
-
-.search {
-    width: 330px;
-
-    height: 41px;
-
-    border: 1px solid #dfe8e4;
-
-    border-radius: 11px;
-
-    background: #f8fbfa;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    padding: 0 12px;
-
-    color: #89958f;
-
-    font-size: 12px;
-}
-
-.search-icon {
-    color: #07865c;
-
-    font-size: 17px;
-}
-
-.search kbd {
-    margin-left: auto;
-
-    background: white;
-
-    border: 1px solid #dfe7e3;
-
-    border-radius: 5px;
-
-    padding: 3px 6px;
-
-    font-size: 9px;
-
-    color: #8a9691;
-}
-
-.profile {
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-}
-
-.avatar {
-    width: 37px;
-    height: 37px;
-
-    border-radius: 11px;
-
-    background: #07865c;
-
-    color: white;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 13px;
-
-    font-weight: 900;
-}
-
-.profile-name {
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.profile-label {
-    margin-top: 2px;
-
-    color: #8a9691;
-
-    font-size: 9px;
-}
-
-
-/* =========================================================
-   CONTENT
-   ========================================================= */
-
-.content {
-    width: min(1160px, calc(100% - 55px));
-
-    margin: 0 auto;
-
-    padding: 43px 0 80px;
-}
-
-
-/* HERO */
-
-.hero {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: flex-end;
-
-    gap: 25px;
-
-    margin-bottom: 28px;
-}
-
-.eyebrow {
-    display: inline-block;
-
-    padding: 7px 11px;
-
-    margin-bottom: 12px;
-
-    border-radius: 999px;
-
-    background: #e8f8f2;
-
-    color: #07865c;
-
-    font-size: 9px;
-
-    font-weight: 900;
-
-    letter-spacing: .08em;
-
-    text-transform: uppercase;
-}
-
-h1 {
-    margin: 0;
-
-    font-size: 44px;
-
-    line-height: 1;
-
-    letter-spacing: -.045em;
-}
-
-.hero-text {
-    margin: 12px 0 0;
-
-    max-width: 650px;
-
-    color: #78867f;
-
-    font-size: 13px;
-
-    line-height: 1.7;
-}
-
-.status {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    padding: 10px 13px;
-
-    background: white;
-
-    border: 1px solid #dfe8e4;
-
-    border-radius: 11px;
-
-    color: #617069;
-
-    font-size: 10px;
-
-    font-weight: 800;
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-
-    border-radius: 50%;
-
-    background: #09a36e;
-}
-
-
-/* =========================================================
-   GRID
-   ========================================================= */
-
-.grid {
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 1fr)
-        310px;
-
-    gap: 20px;
-
-    align-items: start;
-}
-
-.left {
-    display: grid;
-
-    gap: 18px;
-}
-
-.right {
-    display: grid;
-
-    gap: 18px;
-
-    position: sticky;
-
-    top: 98px;
-}
-
-
-/* =========================================================
-   CARD
-   ========================================================= */
-
-.card {
-    background: white;
-
-    border: 1px solid #e1e9e5;
-
-    border-radius: 19px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 10px 30px rgba(25,65,49,.04);
-}
-
-.card-header {
-    padding: 21px 23px 16px;
-
-    border-bottom: 1px solid #edf2f0;
-}
-
-.card-header h2 {
-    margin: 0 0 5px;
-
-    font-size: 16px;
-
-    letter-spacing: -.02em;
-}
-
-.card-header p {
-    margin: 0;
-
-    color: #84918b;
-
-    font-size: 10px;
-
-    line-height: 1.6;
-}
-
-.card-body {
-    padding: 22px;
-}
-
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-.profile-editor {
-    display: grid;
-
-    grid-template-columns: 70px 1fr;
-
-    gap: 18px;
-
-    align-items: center;
-}
-
-.big-avatar {
-    width: 70px;
-    height: 70px;
-
-    border-radius: 19px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background:
-        linear-gradient(
-            145deg,
-            #07996b,
-            #056746
-        );
-
-    color: white;
-
-    font-size: 25px;
-
-    font-weight: 900;
-}
-
-.label {
-    display: block;
-
-    margin-bottom: 7px;
-
-    color: #53615b;
-
-    font-size: 10px;
-
-    font-weight: 900;
-}
-
-.input,
-.select {
-    width: 100%;
-
-    height: 45px;
-
-    padding: 0 12px;
-
-    border: 1px solid #dce6e2;
-
-    border-radius: 10px;
-
-    background: #fbfdfc;
-
-    color: #25332e;
-
-    outline: none;
-
-    font-size: 12px;
-}
-
-.input:focus,
-.select:focus {
-    border-color: #07865c;
-
-    box-shadow:
-        0 0 0 3px rgba(7,134,92,.08);
-}
-
-.help {
-    margin-top: 7px;
-
-    color: #929d98;
-
-    font-size: 9px;
-}
-
-
-/* BUTTON */
-
-.primary {
-    height: 42px;
-
-    padding: 0 16px;
-
-    margin-top: 16px;
-
-    border: 0;
-
-    border-radius: 10px;
-
-    background: #07865c;
-
-    color: white;
-
-    font-size: 11px;
-
-    font-weight: 900;
-
-    box-shadow:
-        0 8px 18px rgba(7,134,92,.15);
-}
-
-.primary:hover {
-    background: #056b4a;
-}
-
-
-/* =========================================================
-   PREFERENCES
-   ========================================================= */
-
-.preference {
-    min-height: 69px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 20px;
-
-    border-bottom: 1px solid #edf2f0;
-}
-
-.preference:last-child {
-    border-bottom: 0;
-}
-
-.preference strong {
-    display: block;
-
-    margin-bottom: 4px;
-
-    font-size: 12px;
-}
-
-.preference span {
-    color: #818e88;
-
-    font-size: 9px;
-
-    line-height: 1.5;
-}
-
-.preference-control {
-    width: 170px;
-}
-
-
-/* TOGGLE */
-
-.toggle {
-    position: relative;
-
-    width: 46px;
-
-    height: 26px;
-
-    flex: 0 0 auto;
-}
-
-.toggle input {
-    opacity: 0;
-
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-
-    inset: 0;
-
-    background: #d5dfdb;
-
-    border-radius: 999px;
-
-    transition: .2s;
-}
-
-.slider:before {
-    content: "";
-
-    position: absolute;
-
-    width: 18px;
-    height: 18px;
-
-    left: 4px;
-    top: 4px;
-
-    background: white;
-
-    border-radius: 50%;
-
-    transition: .2s;
-
-    box-shadow: 0 2px 5px rgba(0,0,0,.15);
-}
-
-.toggle input:checked + .slider {
-    background: #07865c;
-}
-
-.toggle input:checked + .slider:before {
-    transform: translateX(20px);
-}
-
-
-/* =========================================================
-   THEME
-   ========================================================= */
-
-.theme-grid {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 12px;
-}
-
-.theme {
-    padding: 14px;
-
-    border: 1px solid #dfe8e4;
-
-    border-radius: 13px;
-
-    background: #fbfdfc;
-
-    cursor: pointer;
-}
-
-.theme:hover {
-    border-color: #9acdbb;
-}
-
-.theme.active {
-    border-color: #07865c;
-
-    background: #effaf6;
-
-    box-shadow:
-        0 0 0 3px rgba(7,134,92,.06);
-}
-
-.theme-title {
-    display: block;
-
-    margin-top: 10px;
-
-    font-size: 11px;
-
-    font-weight: 900;
-}
-
-.theme-description {
-    display: block;
-
-    margin-top: 3px;
-
-    color: #89958f;
-
-    font-size: 9px;
-}
-
-
-/* =========================================================
-   DATA
-   ========================================================= */
-
-.data-grid {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 12px;
-}
-
-.data-button {
-    padding: 17px;
-
-    text-align: left;
-
-    background: #fbfdfc;
-
-    border: 1px solid #dfe8e4;
-
-    border-radius: 13px;
-
-    transition: .2s;
-}
-
-.data-button:hover {
-    border-color: #9acdbb;
-
-    transform: translateY(-1px);
-}
-
-.data-icon {
-    width: 37px;
-    height: 37px;
-
-    border-radius: 10px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background: #e8f7f1;
-
-    color: #07865c;
-
-    font-size: 16px;
-
-    font-weight: 900;
-}
-
-.data-button strong {
-    display: block;
-
-    margin-top: 11px;
-
-    font-size: 11px;
-}
-
-.data-button span {
-    display: block;
-
-    margin-top: 5px;
-
-    color: #85918c;
-
-    font-size: 9px;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   PRIVACY
-   ========================================================= */
-
-.privacy {
-    display: flex;
-
-    gap: 12px;
-
-    padding: 15px;
-
-    border-radius: 13px;
-
-    background: #eff9f5;
-
-    border: 1px solid #d9eee6;
-}
-
-.privacy-icon {
-    width: 37px;
-    height: 37px;
-
-    flex: 0 0 37px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 10px;
-
-    background: #dcefe8;
-
-    color: #07865c;
-
-    font-weight: 900;
-}
-
-.privacy strong {
-    display: block;
-
-    color: #285a4a;
-
-    font-size: 11px;
-
-    margin-bottom: 4px;
-}
-
-.privacy p {
-    margin: 0;
-
-    color: #758b83;
-
-    font-size: 9px;
-
-    line-height: 1.6;
-}
-
-
-/* =========================================================
-   RIGHT CARDS
-   ========================================================= */
-
-.workspace {
-    padding: 22px;
-
-    border-radius: 19px;
-
-    color: white;
-
-    background:
-        linear-gradient(
-            145deg,
-            #06422f,
-            #07805a
-        );
-
-    box-shadow:
-        0 18px 35px rgba(5,75,53,.18);
-}
-
-.workspace-logo {
-    width: 51px;
-    height: 51px;
-
-    border-radius: 15px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background: rgba(255,255,255,.13);
-
-    border: 1px solid rgba(255,255,255,.13);
-
-    font-size: 19px;
-
-    font-weight: 900;
-
-    margin-bottom: 20px;
-}
-
-.workspace-label {
-    color: rgba(255,255,255,.62);
-
-    font-size: 8px;
-
-    font-weight: 900;
-
-    letter-spacing: .13em;
-}
-
-.workspace h3 {
-    margin: 7px 0 4px;
-
-    font-size: 20px;
-}
-
-.workspace p {
-    margin: 0;
-
-    color: rgba(255,255,255,.7);
-
-    font-size: 9px;
-}
-
-
-/* SNAPSHOT */
-
-.snapshot-header {
-    padding: 18px 19px 13px;
-}
-
-.snapshot-header h3 {
-    margin: 0 0 4px;
-
-    font-size: 14px;
-}
-
-.snapshot-header p {
-    margin: 0;
-
-    color: #8b9792;
-
-    font-size: 9px;
-}
-
-.stat {
-    padding: 13px 19px;
-
-    border-top: 1px solid #edf2f0;
-}
-
-.stat-label {
-    display: block;
-
-    margin-bottom: 4px;
-
-    color: #89958f;
-
-    font-size: 8px;
-
-    text-transform: uppercase;
-
-    font-weight: 800;
-
-    letter-spacing: .05em;
-}
-
-.stat-value {
-    font-size: 16px;
-
-    font-weight: 900;
-}
-
-.green {
-    color: #07865c;
-}
-
-.red {
-    color: #c84c58;
-}
-
-
-/* SYSTEM */
-
-.system {
-    padding: 0 19px 17px;
-}
-
-.system-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    padding: 11px 0;
-
-    border-top: 1px solid #edf2f0;
-}
-
-.system-row span {
-    color: #84918b;
-
-    font-size: 9px;
-}
-
-.system-row strong {
-    font-size: 9px;
-}
-
-.online {
-    color: #07865c;
-}
-
-
-/* DANGER */
-
-.danger {
-    border-color: #f0dfe1;
-}
-
-.danger .card-header {
-    background: #fffafb;
-}
-
-.danger-text {
-    margin: 0;
-
-    color: #7d7275;
-
-    font-size: 9px;
-
-    line-height: 1.7;
-}
-
-.danger-button {
-    margin-top: 14px;
-
-    height: 39px;
-
-    padding: 0 13px;
-
-    border: 0;
-
-    border-radius: 9px;
-
-    background: #fff0f2;
-
-    color: #c34b57;
-
-    font-size: 10px;
-
-    font-weight: 900;
-}
-
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-.toast {
-    position: fixed;
-
-    right: 24px;
-
-    bottom: 24px;
-
-    padding: 13px 16px;
-
-    border-radius: 11px;
-
-    background: #17231f;
-
-    color: white;
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.2);
-
-    opacity: 0;
-
-    transform: translateY(10px);
-
-    pointer-events: none;
-
-    transition: .25s;
-
-    z-index: 9999;
-}
-
-.toast.show {
-    opacity: 1;
-
-    transform: translateY(0);
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-.mobile-button {
-    display: none;
-
-    width: 40px;
-    height: 40px;
-
-    border: 1px solid #dfe8e4;
-
-    border-radius: 10px;
-
-    background: white;
-}
-
-
-@media (max-width: 1000px) {
-
-    .sidebar {
-        width: 220px;
-    }
-
-    .main {
-        width: calc(100% - 220px);
-        margin-left: 220px;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .right {
-        position: static;
-
-        grid-template-columns:
-            1fr 1fr;
-    }
-
-    .workspace {
-        grid-column: 1 / -1;
-    }
-}
-
-
-@media (max-width: 720px) {
-
-    .sidebar {
-        transform: translateX(-100%);
-
-        transition: transform .25s ease;
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
-    }
-
-    .main {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    .mobile-button {
-        display: block;
-    }
-
-    .topbar {
-        padding: 0 15px;
-
-        gap: 10px;
-    }
-
-    .search {
-        flex: 1;
-
-        width: auto;
-    }
-
-    .content {
-        width: calc(100% - 28px);
-
-        padding-top: 28px;
-    }
-
-    .hero {
-        display: block;
-    }
-
-    .status {
-        display: inline-flex;
-
-        margin-top: 14px;
-    }
-
-    h1 {
-        font-size: 36px;
-    }
-
-    .right {
-        grid-template-columns: 1fr;
-    }
-
-    .workspace {
-        grid-column: auto;
-    }
-
-    .profile-editor {
-        grid-template-columns: 1fr;
-    }
-
-    .theme-grid,
-    .data-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .preference {
-        align-items: flex-start;
-
-        flex-direction: column;
-
-        padding: 17px 0;
-    }
-
-    .preference-control {
-        width: 100%;
-    }
-
-    .preference .toggle {
-        align-self: flex-start;
-    }
-}
-
-
-@media (max-width: 460px) {
-
-    .profile-name,
-    .profile-label {
-        display: none;
-    }
-
-    .topbar {
-        justify-content: space-between;
-    }
-
-    .search {
-        max-width: 260px;
-    }
-
-    .card-body {
-        padding: 17px;
-    }
-}
-
-</style>
 </head>
 
 
 <body>
 
 
-<div class="app">
-
-
-<!-- ========================================================
+<!-- ============================================================
      SIDEBAR
-     ======================================================== -->
+     ============================================================ -->
 
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar">
 
     <div class="brand">
 
-        <div class="logo">
-            ₦
+        <div class="brand-logo">
+            M
         </div>
 
         <div>
 
-            <div class="brand-name">
+            <strong>
                 MoneyLeak
-            </div>
+            </strong>
 
-            <div class="brand-subtitle">
-                PERSONAL FINANCE OS
-            </div>
+            <small>
+                Personal Finance OS
+            </small>
 
         </div>
 
@@ -1378,61 +57,94 @@ h1 {
 
     <nav class="nav">
 
-        <div class="nav-title">
-            MAIN
-        </div>
-
         <a href="index.html">
-            <span class="nav-icon">⌂</span>
-            Dashboard
+
+            <span class="nav-icon">
+                ⌂
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
         </a>
+
 
         <a href="income.html">
-            <span class="nav-icon">↗</span>
-            Income
+
+            <span class="nav-icon">
+                ↗
+            </span>
+
+            <span>
+                Income
+            </span>
+
         </a>
+
 
         <a href="expenses.html">
-            <span class="nav-icon">↘</span>
-            Expenses
+
+            <span class="nav-icon">
+                ↘
+            </span>
+
+            <span>
+                Expenses
+            </span>
+
         </a>
+
 
         <a href="budgets.html">
-            <span class="nav-icon">▣</span>
-            Budgets
+
+            <span class="nav-icon">
+                ◫
+            </span>
+
+            <span>
+                Budgets
+            </span>
+
         </a>
+
 
         <a href="savings.html">
-            <span class="nav-icon">◎</span>
-            Savings Goals
+
+            <span class="nav-icon">
+                ◎
+            </span>
+
+            <span>
+                Savings Goals
+            </span>
+
         </a>
 
-
-        <div class="nav-title">
-            PLANNING
-        </div>
 
         <a href="recurring.html">
-            <span class="nav-icon">◷</span>
-            Recurring
+
+            <span class="nav-icon">
+                ↻
+            </span>
+
+            <span>
+                Recurring
+            </span>
+
         </a>
+
 
         <a href="analytics.html">
-            <span class="nav-icon">▥</span>
-            Analytics
-        </a>
 
+            <span class="nav-icon">
+                ⌁
+            </span>
 
-        <div class="nav-title">
-            SYSTEM
-        </div>
+            <span>
+                Analytics
+            </span>
 
-        <a
-            href="settings.html"
-            class="active"
-        >
-            <span class="nav-icon">⚙</span>
-            Settings
         </a>
 
     </nav>
@@ -1440,1492 +152,2142 @@ h1 {
 
     <div class="sidebar-bottom">
 
-        <strong>
-            ✦ Smart Money
-        </strong>
+        <nav class="nav">
 
-        <span>
-            Your financial data stays in
-            this browser unless you export it.
-        </span>
+            <a
+                href="settings.html"
+                class="active"
+            >
+
+                <span class="nav-icon">
+                    ⚙
+                </span>
+
+                <span>
+                    Settings
+                </span>
+
+            </a>
+
+        </nav>
 
     </div>
 
 </aside>
 
 
-<!-- ========================================================
+
+<!-- ============================================================
      MAIN
-     ======================================================== -->
+     ============================================================ -->
 
 <main class="main">
 
 
-<header class="topbar">
+    <!-- ========================================================
+         TOPBAR
+         ======================================================== -->
 
-    <button
-        class="mobile-button"
-        id="mobileButton"
-        type="button"
-    >
-        ☰
-    </button>
+    <header class="topbar">
 
-
-    <div class="search">
-
-        <span class="search-icon">
-            ⌕
-        </span>
-
-        <span>
-            Search MoneyLeak
-        </span>
-
-        <kbd>/</kbd>
-
-    </div>
-
-
-    <div class="profile">
-
-        <div
-            class="avatar"
-            id="topAvatar"
-        >
-            M
-        </div>
-
-        <div>
-
-            <div
-                class="profile-name"
-                id="topName"
-            >
-                My Money
-            </div>
-
-            <div class="profile-label">
-                Settings
-            </div>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-<div class="content">
-
-
-<!-- HERO -->
-
-<section class="hero">
-
-    <div>
-
-        <div class="eyebrow">
-            ⚙ Control Center
-        </div>
-
-        <h1>
-            Settings
-        </h1>
-
-        <p class="hero-text">
-            Personalize your MoneyLeak workspace,
-            manage your preferences, protect your
-            financial data and control your experience.
-        </p>
-
-    </div>
-
-
-    <div class="status">
-
-        <span class="status-dot"></span>
-
-        MoneyLeak is running locally
-
-    </div>
-
-</section>
-
-
-<div class="grid">
-
-
-<!-- ======================================================
-     LEFT
-     ====================================================== -->
-
-<div class="left">
-
-
-<!-- PROFILE -->
-
-<section class="card">
-
-    <div class="card-header">
-
-        <h2>
-            Your Profile
-        </h2>
-
-        <p>
-            Personalize how MoneyLeak identifies
-            your financial workspace.
-        </p>
-
-    </div>
-
-
-    <div class="card-body">
-
-        <div class="profile-editor">
-
-            <div
-                class="big-avatar"
-                id="bigAvatar"
-            >
-                M
-            </div>
-
-
-            <div>
-
-                <label
-                    class="label"
-                    for="nameInput"
-                >
-                    DISPLAY NAME
-                </label>
-
-                <input
-                    class="input"
-                    id="nameInput"
-                    type="text"
-                    maxlength="50"
-                    value="My Money"
-                    placeholder="My Money"
-                >
-
-                <div class="help">
-                    This name appears throughout your MoneyLeak workspace.
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <button
-            class="primary"
-            id="saveProfile"
-            type="button"
-        >
-            Save Profile
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- PREFERENCES -->
-
-<section class="card">
-
-    <div class="card-header">
-
-        <h2>
-            Preferences
-        </h2>
-
-        <p>
-            Configure your financial display and
-            notification preferences.
-        </p>
-
-    </div>
-
-
-    <div class="card-body">
-
-
-        <div class="preference">
-
-            <div>
-
-                <strong>
-                    Currency
-                </strong>
-
-                <span>
-                    Choose the currency used throughout MoneyLeak.
-                </span>
-
-            </div>
-
-
-            <div class="preference-control">
-
-                <select
-                    class="select"
-                    id="currency"
-                >
-
-                    <option value="NGN">
-                        🇳🇬 Nigerian Naira (₦)
-                    </option>
-
-                    <option value="USD">
-                        🇺🇸 US Dollar ($)
-                    </option>
-
-                    <option value="GBP">
-                        🇬🇧 British Pound (£)
-                    </option>
-
-                    <option value="EUR">
-                        🇪🇺 Euro (€)
-                    </option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-
-        <div class="preference">
-
-            <div>
-
-                <strong>
-                    Smart Notifications
-                </strong>
-
-                <span>
-                    Receive intelligent financial warnings and insights.
-                </span>
-
-            </div>
-
-
-            <label class="toggle">
-
-                <input
-                    id="notifications"
-                    type="checkbox"
-                    checked
-                >
-
-                <span class="slider"></span>
-
-            </label>
-
-        </div>
-
-
-        <div class="preference">
-
-            <div>
-
-                <strong>
-                    Compact Numbers
-                </strong>
-
-                <span>
-                    Display large amounts in shorter formats.
-                </span>
-
-            </div>
-
-
-            <label class="toggle">
-
-                <input
-                    id="compact"
-                    type="checkbox"
-                >
-
-                <span class="slider"></span>
-
-            </label>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- APPEARANCE -->
-
-<section class="card">
-
-    <div class="card-header">
-
-        <h2>
-            Appearance
-        </h2>
-
-        <p>
-            Choose the visual experience for your workspace.
-        </p>
-
-    </div>
-
-
-    <div class="card-body">
-
-        <div class="theme-grid">
-
-
-            <div
-                class="theme active"
-                id="lightTheme"
-            >
-
-                <div style="font-size:22px;">
-                    ☀️
-                </div>
-
-                <span class="theme-title">
-                    Light Mode
-                </span>
-
-                <span class="theme-description">
-                    Clean and bright
-                </span>
-
-            </div>
-
-
-            <div
-                class="theme"
-                id="darkTheme"
-            >
-
-                <div style="font-size:22px;">
-                    🌙
-                </div>
-
-                <span class="theme-title">
-                    Dark Mode
-                </span>
-
-                <span class="theme-description">
-                    Comfortable at night
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- DATA -->
-
-<section class="card">
-
-    <div class="card-header">
-
-        <h2>
-            Data Management
-        </h2>
-
-        <p>
-            Back up or restore your MoneyLeak workspace.
-        </p>
-
-    </div>
-
-
-    <div class="card-body">
-
-        <div class="data-grid">
-
+        <div class="topbar-left">
 
             <button
-                class="data-button"
-                id="exportButton"
+                id="mobileMenuButton"
+                class="mobile-menu-button"
                 type="button"
+                aria-label="Open menu"
             >
-
-                <div class="data-icon">
-                    ↓
-                </div>
-
-                <strong>
-                    Export Backup
-                </strong>
-
-                <span>
-                    Download your MoneyLeak data as a backup file.
-                </span>
-
+                ☰
             </button>
 
 
             <button
-                class="data-button"
-                id="importButton"
+                id="searchButton"
+                class="search-button"
                 type="button"
+                aria-label="Search"
             >
-
-                <div class="data-icon">
-                    ↑
-                </div>
-
-                <strong>
-                    Restore Backup
-                </strong>
-
-                <span>
-                    Restore data from a previous MoneyLeak backup.
-                </span>
-
+                ⌕
             </button>
 
         </div>
 
 
-        <input
-            type="file"
-            id="importFile"
-            accept=".json,application/json"
-            style="display:none"
-        >
+        <div class="topbar-right">
+
+            <button
+                id="notificationButton"
+                class="notification-button"
+                type="button"
+                aria-label="Notifications"
+            >
+                🔔
+            </button>
 
 
-    </div>
+            <a
+                href="settings.html"
+                class="profile-button"
+            >
 
-</section>
+                <span
+                    id="topProfileAvatar"
+                    class="profile-avatar"
+                >
+                    ML
+                </span>
+
+                <span
+                    id="topProfileName"
+                    data-money-name
+                >
+                    My Money
+                </span>
+
+            </a>
+
+        </div>
+
+    </header>
 
 
-<!-- PRIVACY -->
 
-<section class="card">
+    <!-- ========================================================
+         PAGE
+         ======================================================== -->
 
-    <div class="card-header">
-
-        <h2>
-            Privacy & Security
-        </h2>
-
-        <p>
-            Understand how your financial information is handled.
-        </p>
-
-    </div>
+    <div class="page-container">
 
 
-    <div class="card-body">
+        <!-- ====================================================
+             HERO
+             ==================================================== -->
 
-        <div class="privacy">
+        <section class="dashboard-hero">
 
-            <div class="privacy-icon">
-                ✓
+            <h1>
+                MoneyLeak Control Center
+            </h1>
+
+            <p>
+                Customize how MoneyLeak looks, behaves and
+                manages your personal financial data.
+            </p>
+
+
+            <div
+                style="
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:10px;
+                    margin-top:20px;
+                    position:relative;
+                    z-index:2;
+                "
+            >
+
+                <button
+                    id="saveAllSettings"
+                    type="button"
+                    class="btn"
+                    style="
+                        background:#fff;
+                        color:#086c47;
+                    "
+                >
+                    Save Settings
+                </button>
+
+
+                <a
+                    href="index.html"
+                    class="btn"
+                    style="
+                        background:rgba(255,255,255,.12);
+                        color:#fff;
+                        border-color:rgba(255,255,255,.18);
+                    "
+                >
+                    Back to Dashboard
+                </a>
+
             </div>
 
-            <div>
+        </section>
 
-                <strong>
-                    Your data stays on your device
-                </strong>
 
-                <p>
-                    MoneyLeak currently stores your financial
-                    information locally in your browser.
-                    Your information is not uploaded by this
-                    page unless you intentionally connect it
-                    to another service.
-                </p>
 
-            </div>
+        <!-- ====================================================
+             PROFILE
+             ==================================================== -->
 
-        </div>
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Personal Profile
+                        </h2>
+
+                        <p>
+                            Personalize your MoneyLeak experience.
+                        </p>
+
+                    </div>
+
+
+                    <span style="font-size:25px;">
+                        👤
+                    </span>
+
+                </div>
+
+
+                <form id="profileForm">
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label for="settingsName">
+                                Your Name
+                            </label>
+
+                            <input
+                                id="settingsName"
+                                type="text"
+                                placeholder="e.g. Emma"
+                                maxlength="60"
+                            >
+
+                            <small class="text-muted">
+                                This name is used throughout the MoneyLeak interface.
+                            </small>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="settingsCurrency">
+                                Currency
+                            </label>
+
+                            <select
+                                id="settingsCurrency"
+                            >
+
+                                <option value="NGN">
+                                    Nigerian Naira (₦)
+                                </option>
+
+                                <option value="USD">
+                                    US Dollar ($)
+                                </option>
+
+                                <option value="GBP">
+                                    British Pound (£)
+                                </option>
+
+                                <option value="EUR">
+                                    Euro (€)
+                                </option>
+
+                                <option value="CAD">
+                                    Canadian Dollar (C$)
+                                </option>
+
+                                <option value="AUD">
+                                    Australian Dollar (A$)
+                                </option>
+
+                                <option value="GHS">
+                                    Ghanaian Cedi (GH₵)
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             APPEARANCE
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Appearance
+                        </h2>
+
+                        <p>
+                            Choose how MoneyLeak looks.
+                        </p>
+
+                    </div>
+
+
+                    <span style="font-size:25px;">
+                        🎨
+                    </span>
+
+                </div>
+
+
+                <div
+                    style="
+                        display:grid;
+                        gap:15px;
+                    "
+                >
+
+                    <label
+                        class="quick-action"
+                        style="
+                            cursor:pointer;
+                            display:flex;
+                            align-items:center;
+                            gap:15px;
+                        "
+                    >
+
+                        <input
+                            type="radio"
+                            name="theme"
+                            value="light"
+                            id="themeLight"
+                        >
+
+                        <div>
+
+                            <strong>
+                                ☀️ Light Mode
+                            </strong>
+
+                            <small
+                                class="text-muted"
+                                style="display:block;"
+                            >
+                                Clean and bright interface.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+
+                    <label
+                        class="quick-action"
+                        style="
+                            cursor:pointer;
+                            display:flex;
+                            align-items:center;
+                            gap:15px;
+                        "
+                    >
+
+                        <input
+                            type="radio"
+                            name="theme"
+                            value="dark"
+                            id="themeDark"
+                        >
+
+                        <div>
+
+                            <strong>
+                                🌙 Dark Mode
+                            </strong>
+
+                            <small
+                                class="text-muted"
+                                style="display:block;"
+                            >
+                                Easier on the eyes in darker environments.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+
+                    <label
+                        class="quick-action"
+                        style="
+                            cursor:pointer;
+                            display:flex;
+                            align-items:center;
+                            gap:15px;
+                        "
+                    >
+
+                        <input
+                            type="radio"
+                            name="theme"
+                            value="system"
+                            id="themeSystem"
+                        >
+
+                        <div>
+
+                            <strong>
+                                💻 System
+                            </strong>
+
+                            <small
+                                class="text-muted"
+                                style="display:block;"
+                            >
+                                Follow your device appearance.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             PREFERENCES
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Preferences
+                        </h2>
+
+                        <p>
+                            Control MoneyLeak's behavior.
+                        </p>
+
+                    </div>
+
+
+                    <span style="font-size:25px;">
+                        ⚙️
+                    </span>
+
+                </div>
+
+
+                <div
+                    style="
+                        display:grid;
+                        gap:12px;
+                    "
+                >
+
+
+                    <label
+                        class="mini-stat"
+                        style="
+                            cursor:pointer;
+                            display:flex;
+                            align-items:center;
+                            justify-content:space-between;
+                            gap:20px;
+                        "
+                    >
+
+                        <span>
+
+                            <strong>
+                                Notifications
+                            </strong>
+
+                            <small
+                                class="text-muted"
+                                style="display:block;margin-top:3px;"
+                            >
+                                Show MoneyLeak financial alerts.
+                            </small>
+
+                        </span>
+
+
+                        <input
+                            id="settingsNotifications"
+                            type="checkbox"
+                        >
+
+                    </label>
+
+
+                    <label
+                        class="mini-stat"
+                        style="
+                            cursor:pointer;
+                            display:flex;
+                            align-items:center;
+                            justify-content:space-between;
+                            gap:20px;
+                        "
+                    >
+
+                        <span>
+
+                            <strong>
+                                Compact Numbers
+                            </strong>
+
+                            <small
+                                class="text-muted"
+                                style="display:block;margin-top:3px;"
+                            >
+                                Use shorter numbers where supported.
+                            </small>
+
+                        </span>
+
+
+                        <input
+                            id="settingsCompactNumbers"
+                            type="checkbox"
+                        >
+
+                    </label>
+
+
+                    <label
+                        class="mini-stat"
+                        style="
+                            cursor:pointer;
+                            display:flex;
+                            align-items:center;
+                            justify-content:space-between;
+                            gap:20px;
+                        "
+                    >
+
+                        <span>
+
+                            <strong>
+                                Voice Assistant
+                            </strong>
+
+                            <small
+                                class="text-muted"
+                                style="display:block;margin-top:3px;"
+                            >
+                                Enable the MoneyLeak voice assistant.
+                            </small>
+
+                        </span>
+
+
+                        <input
+                            id="settingsVoiceAssistant"
+                            type="checkbox"
+                        >
+
+                    </label>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             VOICE
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Voice Assistant
+                        </h2>
+
+                        <p>
+                            Configure MoneyLeak's voice responses.
+                        </p>
+
+                    </div>
+
+
+                    <span style="font-size:25px;">
+                        🎙️
+                    </span>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="voiceRate">
+                            Speech Speed
+                        </label>
+
+                        <input
+                            id="voiceRate"
+                            type="range"
+                            min="0.5"
+                            max="2"
+                            step="0.1"
+                            value="1"
+                        >
+
+                        <small
+                            id="voiceRateValue"
+                            class="text-muted"
+                        >
+                            1.0×
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="voicePitch">
+                            Voice Pitch
+                        </label>
+
+                        <input
+                            id="voicePitch"
+                            type="range"
+                            min="0.5"
+                            max="2"
+                            step="0.1"
+                            value="1"
+                        >
+
+                        <small
+                            id="voicePitchValue"
+                            class="text-muted"
+                        >
+                            1.0
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    style="
+                        margin-top:18px;
+                        display:flex;
+                        flex-wrap:wrap;
+                        gap:10px;
+                    "
+                >
+
+                    <button
+                        id="testVoice"
+                        type="button"
+                        class="btn btn-primary"
+                    >
+                        🔊 Test Voice
+                    </button>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             DATA
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Your Financial Data
+                        </h2>
+
+                        <p>
+                            Back up or restore your MoneyLeak data.
+                        </p>
+
+                    </div>
+
+
+                    <span style="font-size:25px;">
+                        💾
+                    </span>
+
+                </div>
+
+
+                <div class="smart-insight">
+
+                    <strong>
+                        🔐 Local Data
+                    </strong>
+
+                    <p>
+                        MoneyLeak currently stores your financial
+                        information in your browser's local storage.
+                        Export your data regularly so you have a backup.
+                    </p>
+
+                </div>
+
+
+                <div
+                    style="
+                        display:flex;
+                        flex-wrap:wrap;
+                        gap:10px;
+                        margin-top:18px;
+                    "
+                >
+
+                    <button
+                        id="exportData"
+                        type="button"
+                        class="btn btn-primary"
+                    >
+                        📦 Export Backup
+                    </button>
+
+
+                    <button
+                        id="importData"
+                        type="button"
+                        class="btn"
+                    >
+                        📥 Import Backup
+                    </button>
+
+                </div>
+
+
+                <input
+                    id="importFile"
+                    type="file"
+                    accept=".json,application/json"
+                    hidden
+                >
+
+
+                <div
+                    id="dataStatus"
+                    class="text-muted"
+                    style="margin-top:15px;"
+                >
+                    Your data is stored locally on this device.
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             DATA SUMMARY
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Data Summary
+                        </h2>
+
+                        <p>
+                            See how much information MoneyLeak currently has.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overview-grid">
+
+
+                    <div class="overview-card">
+
+                        <div class="overview-label">
+                            Transactions
+                        </div>
+
+                        <div
+                            id="dataTransactionCount"
+                            class="overview-value"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="overview-card">
+
+                        <div class="overview-label">
+                            Savings Goals
+                        </div>
+
+                        <div
+                            id="dataGoalCount"
+                            class="overview-value"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="overview-card">
+
+                        <div class="overview-label">
+                            Recurring Items
+                        </div>
+
+                        <div
+                            id="dataRecurringCount"
+                            class="overview-value"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+
+                    <div class="overview-card">
+
+                        <div class="overview-label">
+                            Storage Status
+                        </div>
+
+                        <div
+                            id="storageStatus"
+                            class="overview-value"
+                        >
+                            Ready
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             DANGER ZONE
+             ==================================================== -->
+
+        <section class="section">
+
+            <article
+                class="panel"
+                style="
+                    border:1px solid rgba(220,70,70,.35);
+                "
+            >
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Danger Zone
+                        </h2>
+
+                        <p>
+                            These actions can permanently remove your local data.
+                        </p>
+
+                    </div>
+
+
+                    <span style="font-size:25px;">
+                        ⚠️
+                    </span>
+
+                </div>
+
+
+                <div class="smart-insight">
+
+                    <strong>
+                        ⚠ Important
+                    </strong>
+
+                    <p>
+                        Export a backup before resetting MoneyLeak.
+                        Resetting cannot be undone unless you have a backup.
+                    </p>
+
+                </div>
+
+
+                <div
+                    style="
+                        display:flex;
+                        flex-wrap:wrap;
+                        gap:10px;
+                        margin-top:18px;
+                    "
+                >
+
+                    <button
+                        id="resetData"
+                        type="button"
+                        class="btn btn-danger"
+                    >
+                        🗑 Reset All Data
+                    </button>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- ====================================================
+             ABOUT
+             ==================================================== -->
+
+        <section class="section">
+
+            <article class="panel">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            About MoneyLeak
+                        </h2>
+
+                        <p>
+                            Your personal financial operating system.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    style="
+                        display:grid;
+                        gap:12px;
+                    "
+                >
+
+                    <div class="mini-stat">
+
+                        <span>
+                            Version
+                        </span>
+
+                        <strong>
+                            3.0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-stat">
+
+                        <span>
+                            Architecture
+                        </span>
+
+                        <strong>
+                            Local-first
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-stat">
+
+                        <span>
+                            Platform
+                        </span>
+
+                        <strong>
+                            Web
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <footer>
+
+            MoneyLeak Personal Finance OS
+
+            <br>
+
+            Your money. Your decisions. Your future.
+
+        </footer>
 
     </div>
-
-</section>
-
-
-</div>
-
-
-<!-- ======================================================
-     RIGHT
-     ====================================================== -->
-
-<aside class="right">
-
-
-<!-- WORKSPACE -->
-
-<div class="workspace">
-
-    <div
-        class="workspace-logo"
-        id="workspaceAvatar"
-    >
-        M
-    </div>
-
-    <div class="workspace-label">
-        MONEYLeak WORKSPACE
-    </div>
-
-    <h3 id="workspaceName">
-        My Money
-    </h3>
-
-    <p>
-        Personal finance command center
-    </p>
-
-</div>
-
-
-<!-- SNAPSHOT -->
-
-<div class="card">
-
-    <div class="snapshot-header">
-
-        <h3>
-            Financial Snapshot
-        </h3>
-
-        <p>
-            Current recorded position
-        </p>
-
-    </div>
-
-
-    <div class="stat">
-
-        <span class="stat-label">
-            Balance
-        </span>
-
-        <strong
-            class="stat-value"
-            id="balance"
-        >
-            ₦0
-        </strong>
-
-    </div>
-
-
-    <div class="stat">
-
-        <span class="stat-label">
-            Total Income
-        </span>
-
-        <strong
-            class="stat-value green"
-            id="income"
-        >
-            ₦0
-        </strong>
-
-    </div>
-
-
-    <div class="stat">
-
-        <span class="stat-label">
-            Total Expenses
-        </span>
-
-        <strong
-            class="stat-value red"
-            id="expenses"
-        >
-            ₦0
-        </strong>
-
-    </div>
-
-
-    <div class="stat">
-
-        <span class="stat-label">
-            Savings Rate
-        </span>
-
-        <strong
-            class="stat-value"
-            id="savings"
-        >
-            0%
-        </strong>
-
-    </div>
-
-
-    <div class="stat">
-
-        <span class="stat-label">
-            Transactions
-        </span>
-
-        <strong
-            class="stat-value"
-            id="transactionCount"
-        >
-            0
-        </strong>
-
-    </div>
-
-</div>
-
-
-<!-- SYSTEM -->
-
-<div class="card">
-
-    <div class="snapshot-header">
-
-        <h3>
-            System Status
-        </h3>
-
-        <p>
-            MoneyLeak workspace health
-        </p>
-
-    </div>
-
-
-    <div class="system">
-
-        <div class="system-row">
-
-            <span>
-                Storage
-            </span>
-
-            <strong class="online">
-                Local
-            </strong>
-
-        </div>
-
-
-        <div class="system-row">
-
-            <span>
-                Data Engine
-            </span>
-
-            <strong class="online">
-                Active
-            </strong>
-
-        </div>
-
-
-        <div class="system-row">
-
-            <span>
-                Backup
-            </span>
-
-            <strong>
-                Manual
-            </strong>
-
-        </div>
-
-
-        <div class="system-row">
-
-            <span>
-                Version
-            </span>
-
-            <strong>
-                2.0
-            </strong>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- DANGER -->
-
-<section class="card danger">
-
-    <div class="card-header">
-
-        <h2>
-            Danger Zone
-        </h2>
-
-        <p>
-            Permanent actions for this browser.
-        </p>
-
-    </div>
-
-
-    <div class="card-body">
-
-        <p class="danger-text">
-            Resetting MoneyLeak removes transactions,
-            budgets, savings goals, recurring items and
-            saved settings from this browser.
-        </p>
-
-
-        <button
-            class="danger-button"
-            id="resetButton"
-            type="button"
-        >
-            Reset All Data
-        </button>
-
-    </div>
-
-</section>
-
-
-</aside>
-
-
-</div>
-
-</div>
 
 </main>
 
+
+
+<!-- ============================================================
+     SEARCH
+     ============================================================ -->
+
+<div
+    id="searchOverlay"
+    hidden
+    aria-hidden="true"
+>
+
+    <div class="search-modal">
+
+        <div class="search-modal-header">
+
+            <strong>
+                Search MoneyLeak
+            </strong>
+
+            <button
+                id="closeSearch"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="search-input-wrapper">
+
+            <span>
+                ⌕
+            </span>
+
+            <input
+                id="globalSearch"
+                type="search"
+                placeholder="Search transactions, pages..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div id="searchResults">
+
+            <p>
+                Start typing to search.
+            </p>
+
+        </div>
+
+    </div>
+
 </div>
 
 
-<!-- TOAST -->
+
+<!-- ============================================================
+     NOTIFICATIONS
+     ============================================================ -->
 
 <div
-    class="toast"
-    id="toast"
-></div>
+    id="notificationPanel"
+    hidden
+    aria-hidden="true"
+>
 
+    <div
+        style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:10px;
+        "
+    >
+
+        <strong>
+            Notifications
+        </strong>
+
+
+        <button
+            id="closeNotifications"
+            class="close-button"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div id="notificationList">
+
+        <p class="text-muted">
+            No new notifications.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     MOBILE MENU
+     ============================================================ -->
+
+<div id="mobileOverlay">
+
+    <div class="mobile-menu">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                margin-bottom:25px;
+            "
+        >
+
+            <strong>
+                MoneyLeak
+            </strong>
+
+
+            <button
+                id="mobileMenuClose"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="index.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="income.html">
+                <span class="nav-icon">↗</span>
+                Income
+            </a>
+
+            <a href="expenses.html">
+                <span class="nav-icon">↘</span>
+                Expenses
+            </a>
+
+            <a href="budgets.html">
+                <span class="nav-icon">◫</span>
+                Budgets
+            </a>
+
+            <a href="savings.html">
+                <span class="nav-icon">◎</span>
+                Savings Goals
+            </a>
+
+            <a href="recurring.html">
+                <span class="nav-icon">↻</span>
+                Recurring
+            </a>
+
+            <a href="analytics.html">
+                <span class="nav-icon">⌁</span>
+                Analytics
+            </a>
+
+            <a
+                href="settings.html"
+                class="active"
+            >
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     MONEY LEAK ENGINE
+     ============================================================ -->
+
+<script src="app.js"></script>
+
+
+
+<!-- ============================================================
+     SETTINGS ENGINE
+     ============================================================ -->
 
 <script>
 
-(function () {
-
-    "use strict";
-
-
-    /* =====================================================
-       STORAGE
-       ===================================================== */
-
-    const STORAGE = {
-
-        transactions:
-            "moneyLeakTransactions",
-
-        settings:
-            "moneyLeakSettings",
-
-        goals:
-            "moneyLeakSavingsGoals",
-
-        oldGoal:
-            "moneyLeakSavingsGoal",
-
-        budget:
-            "moneyLeakMonthlyBudget",
-
-        categoryBudgets:
-            "moneyLeakCategoryBudgets",
-
-        recurring:
-            "moneyLeakRecurringTransactions",
-
-        alerts:
-            "moneyLeakAlerts"
-
-    };
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-    /* =====================================================
-       HELPERS
-       ===================================================== */
-
-    function getJSON(key, fallback) {
-
-        try {
-
-            const value =
-                localStorage.getItem(key);
-
-            if (!value) {
-                return fallback;
-            }
-
-            return JSON.parse(value);
-
-        } catch {
-
-            return fallback;
-
-        }
-
-    }
+        const ML =
+            () => window.MoneyLeak;
 
 
-    function money(value, currency) {
+        /* ========================================================
+           ELEMENTS
+           ======================================================== */
 
-        const symbols = {
-
-            NGN: "₦",
-
-            USD: "$",
-
-            GBP: "£",
-
-            EUR: "€"
-
-        };
-
-
-        return (
-            symbols[currency] || "₦"
-        ) +
-        Number(
-            value || 0
-        ).toLocaleString(
-            "en-US",
-            {
-                maximumFractionDigits: 0
-            }
-        );
-
-    }
-
-
-    function showToast(message) {
-
-        const toast =
+        const nameInput =
             document.getElementById(
-                "toast"
+                "settingsName"
             );
 
 
-        toast.textContent =
-            message;
-
-
-        toast.classList.add(
-            "show"
-        );
-
-
-        clearTimeout(
-            window.__toastTimer
-        );
-
-
-        window.__toastTimer =
-            setTimeout(
-                function () {
-
-                    toast.classList.remove(
-                        "show"
-                    );
-
-                },
-                2500
-            );
-
-    }
-
-
-    /* =====================================================
-       SETTINGS
-       ===================================================== */
-
-    function getSettings() {
-
-        return getJSON(
-            STORAGE.settings,
-            {
-                name: "My Money",
-                currency: "NGN",
-                theme: "light",
-                notifications: true,
-                compactNumbers: false
-            }
-        );
-
-    }
-
-
-    function saveSettings(settings) {
-
-        const current =
-            getSettings();
-
-
-        const merged = {
-
-            ...current,
-
-            ...settings
-
-        };
-
-
-        localStorage.setItem(
-            STORAGE.settings,
-            JSON.stringify(
-                merged
-            )
-        );
-
-
-        return merged;
-
-    }
-
-
-    /* =====================================================
-       PROFILE
-       ===================================================== */
-
-    function updateProfileVisuals(
-        name
-    ) {
-
-        const clean =
-            String(
-                name ||
-                "My Money"
-            ).trim() ||
-            "My Money";
-
-
-        const initial =
-            clean
-                .charAt(0)
-                .toUpperCase();
-
-
-        document
-            .getElementById(
-                "bigAvatar"
-            )
-            .textContent =
-            initial;
-
-
-        document
-            .getElementById(
-                "topAvatar"
-            )
-            .textContent =
-            initial;
-
-
-        document
-            .getElementById(
-                "workspaceAvatar"
-            )
-            .textContent =
-            initial;
-
-
-        document
-            .getElementById(
-                "topName"
-            )
-            .textContent =
-            clean;
-
-
-        document
-            .getElementById(
-                "workspaceName"
-            )
-            .textContent =
-            clean;
-
-    }
-
-
-    function loadSettings() {
-
-        const settings =
-            getSettings();
-
-
-        document
-            .getElementById(
-                "nameInput"
-            )
-            .value =
-            settings.name ||
-            "My Money";
-
-
-        document
-            .getElementById(
-                "currency"
-            )
-            .value =
-            settings.currency ||
-            "NGN";
-
-
-        document
-            .getElementById(
-                "notifications"
-            )
-            .checked =
-            settings.notifications !==
-            false;
-
-
-        document
-            .getElementById(
-                "compact"
-            )
-            .checked =
-            settings.compactNumbers ===
-            true;
-
-
-        updateProfileVisuals(
-            settings.name
-        );
-
-
-        setTheme(
-            settings.theme ||
-            "light",
-            false
-        );
-
-    }
-
-
-    /* =====================================================
-       THEME
-       ===================================================== */
-
-    function setTheme(
-        theme,
-        save
-    ) {
-
-        if (theme === "dark") {
-
-            document.body.style.background =
-                "#0e1714";
-
-            document.body.style.color =
-                "#edf5f1";
-
-        } else {
-
-            document.body.style.background =
-                "#f4f7f6";
-
-            document.body.style.color =
-                "#17231f";
-
-        }
-
-
-        document
-            .getElementById(
-                "lightTheme"
-            )
-            .classList.toggle(
-                "active",
-                theme !== "dark"
+        const currencyInput =
+            document.getElementById(
+                "settingsCurrency"
             );
 
 
-        document
-            .getElementById(
-                "darkTheme"
-            )
-            .classList.toggle(
-                "active",
-                theme === "dark"
+        const notificationsInput =
+            document.getElementById(
+                "settingsNotifications"
             );
 
 
-        if (save) {
-
-            saveSettings({
-                theme
-            });
-
-        }
-
-    }
-
-
-    /* =====================================================
-       FINANCIAL SNAPSHOT
-       ===================================================== */
-
-    function updateSnapshot() {
-
-        const transactions =
-            getJSON(
-                STORAGE.transactions,
-                []
+        const compactInput =
+            document.getElementById(
+                "settingsCompactNumbers"
             );
 
 
-        let income = 0;
-
-        let expenses = 0;
-
-
-        transactions.forEach(
-            function (transaction) {
-
-                const amount =
-                    Math.abs(
-                        Number(
-                            transaction.amount
-                        ) || 0
-                    );
-
-
-                const type =
-                    String(
-                        transaction.type ||
-                        ""
-                    ).toLowerCase();
-
-
-                if (type === "income") {
-
-                    income += amount;
-
-                }
-
-
-                if (type === "expense") {
-
-                    expenses += amount;
-
-                }
-
-            }
-        );
-
-
-        const balance =
-            income -
-            expenses;
-
-
-        const savingsRate =
-            income > 0
-                ? ((balance / income) * 100)
-                : 0;
-
-
-        const settings =
-            getSettings();
-
-
-        const currency =
-            settings.currency ||
-            "NGN";
-
-
-        document
-            .getElementById(
-                "balance"
-            )
-            .textContent =
-            money(
-                balance,
-                currency
+        const voiceInput =
+            document.getElementById(
+                "settingsVoiceAssistant"
             );
 
 
-        document
-            .getElementById(
-                "income"
-            )
-            .textContent =
-            money(
-                income,
-                currency
+        const rateInput =
+            document.getElementById(
+                "voiceRate"
             );
 
 
-        document
-            .getElementById(
-                "expenses"
-            )
-            .textContent =
-            money(
-                expenses,
-                currency
+        const pitchInput =
+            document.getElementById(
+                "voicePitch"
             );
 
 
-        document
-            .getElementById(
-                "savings"
-            )
-            .textContent =
-            Math.round(
-                savingsRate
-            ) +
-            "%";
+
+        /* ========================================================
+           LOAD SETTINGS
+           ======================================================== */
+
+        function loadSettings() {
+
+            let settings = {};
 
 
-        document
-            .getElementById(
-                "transactionCount"
-            )
-            .textContent =
-            transactions.length;
+            if (
+                ML() &&
+                typeof ML()
+                    .getSettings ===
+                "function"
+            ) {
 
-    }
+                settings =
+                    ML()
+                        .getSettings() ||
+                    {};
 
-
-    /* =====================================================
-       EXPORT
-       ===================================================== */
-
-    function exportData() {
-
-        const backup = {
-
-            app:
-                "MoneyLeak",
-
-            version:
-                "2.0",
-
-            exportedAt:
-                new Date()
-                    .toISOString(),
-
-            data: {}
-
-        };
-
-
-        Object.keys(
-            STORAGE
-        ).forEach(
-            function (key) {
-
-                const storageKey =
-                    STORAGE[key];
-
-
-                const raw =
-                    localStorage.getItem(
-                        storageKey
-                    );
-
-
-                if (raw !== null) {
-
-                    try {
-
-                        backup.data[
-                            storageKey
-                        ] =
-                            JSON.parse(
-                                raw
-                            );
-
-                    } catch {
-
-                        backup.data[
-                            storageKey
-                        ] =
-                            raw;
-
-                    }
-
-                }
-
-            }
-        );
-
-
-        const blob =
-            new Blob(
-                [
-                    JSON.stringify(
-                        backup,
-                        null,
-                        2
-                    )
-                ],
-                {
-                    type:
-                        "application/json"
-                }
-            );
-
-
-        const url =
-            URL.createObjectURL(
-                blob
-            );
-
-
-        const link =
-            document.createElement(
-                "a"
-            );
-
-
-        link.href =
-            url;
-
-
-        link.download =
-            "MoneyLeak-backup-" +
-            new Date()
-                .toISOString()
-                .slice(
-                    0,
-                    10
-                ) +
-            ".json";
-
-
-        document.body.appendChild(
-            link
-        );
-
-
-        link.click();
-
-
-        link.remove();
-
-
-        URL.revokeObjectURL(
-            url
-        );
-
-
-        showToast(
-            "Backup exported successfully."
-        );
-
-    }
-
-
-    /* =====================================================
-       IMPORT
-       ===================================================== */
-
-    function importBackup(
-        file
-    ) {
-
-        if (!file) {
-            return;
-        }
-
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload =
-            function (event) {
+            } else {
 
                 try {
 
-                    const backup =
+                    settings =
                         JSON.parse(
-                            event.target.result
+                            localStorage.getItem(
+                                "moneyLeakSettings"
+                            ) ||
+                            "{}"
                         );
 
+                } catch (
+                    error
+                ) {
 
-                    const data =
-                        backup.data ||
-                        backup;
+                    settings =
+                        {};
 
+                }
 
-                    let restored = 0;
-
-
-                    Object.keys(
-                        STORAGE
-                    ).forEach(
-                        function (key) {
-
-                            const storageKey =
-                                STORAGE[key];
+            }
 
 
-                            if (
-                                Object.prototype
-                                    .hasOwnProperty
-                                    .call(
-                                        data,
-                                        storageKey
-                                    )
-                            ) {
+            if (nameInput) {
 
-                                localStorage.setItem(
-                                    storageKey,
-                                    JSON.stringify(
-                                        data[
-                                            storageKey
-                                        ]
-                                    )
-                                );
+                nameInput.value =
+                    settings.name ||
+                    "My Money";
+
+            }
 
 
-                                restored++;
+            if (currencyInput) {
 
-                            }
+                currencyInput.value =
+                    settings.currency ||
+                    "NGN";
+
+            }
+
+
+            if (notificationsInput) {
+
+                notificationsInput.checked =
+                    settings.notifications !==
+                    false;
+
+            }
+
+
+            if (compactInput) {
+
+                compactInput.checked =
+                    settings.compactNumbers ===
+                    true;
+
+            }
+
+
+            if (voiceInput) {
+
+                voiceInput.checked =
+                    settings.voiceAssistant !==
+                    false;
+
+            }
+
+
+            if (rateInput) {
+
+                rateInput.value =
+                    settings.voiceRate ||
+                    1;
+
+            }
+
+
+            if (pitchInput) {
+
+                pitchInput.value =
+                    settings.voicePitch ||
+                    1;
+
+            }
+
+
+            const theme =
+                settings.theme ||
+                "light";
+
+
+            const themeInput =
+                document.querySelector(
+                    'input[name="theme"][value="' +
+                    theme +
+                    '"]'
+                );
+
+
+            if (themeInput) {
+
+                themeInput.checked =
+                    true;
+
+            } else {
+
+                const light =
+                    document.getElementById(
+                        "themeLight"
+                    );
+
+
+                if (light) {
+
+                    light.checked =
+                        true;
+
+                }
+
+            }
+
+
+            updateRangeLabels();
+
+        }
+
+
+
+        /* ========================================================
+           SAVE SETTINGS
+           ======================================================== */
+
+        function saveSettings() {
+
+            const existing =
+                ML() &&
+                typeof ML()
+                    .getSettings ===
+                "function"
+                    ? ML()
+                        .getSettings()
+                    : {};
+
+
+            const theme =
+                document.querySelector(
+                    'input[name="theme"]:checked'
+                )?.value ||
+                existing.theme ||
+                "light";
+
+
+            const settings = {
+
+                ...existing,
+
+                name:
+                    nameInput?.value
+                        ?.trim() ||
+                    "My Money",
+
+                currency:
+                    currencyInput?.value ||
+                    "NGN",
+
+                notifications:
+                    notificationsInput
+                        ?.checked !== false,
+
+                compactNumbers:
+                    compactInput
+                        ?.checked === true,
+
+                voiceAssistant:
+                    voiceInput
+                        ?.checked !== false,
+
+                voiceRate:
+                    Number(
+                        rateInput?.value ||
+                        1
+                    ),
+
+                voicePitch:
+                    Number(
+                        pitchInput?.value ||
+                        1
+                    ),
+
+                theme:
+                    theme
+
+            };
+
+
+            if (
+                ML() &&
+                typeof ML()
+                    .saveSettings ===
+                "function"
+            ) {
+
+                ML()
+                    .saveSettings(
+                        settings
+                    );
+
+            } else {
+
+                localStorage.setItem(
+                    "moneyLeakSettings",
+                    JSON.stringify(
+                        settings
+                    )
+                );
+
+            }
+
+
+            if (
+                ML() &&
+                typeof ML()
+                    .applySettings ===
+                "function"
+            ) {
+
+                ML()
+                    .applySettings();
+
+            }
+
+
+            showStatus(
+                "Settings saved successfully."
+            );
+
+
+            updateHeader();
+
+        }
+
+
+
+        /* ========================================================
+           SAVE BUTTON
+           ======================================================== */
+
+        document
+            .getElementById(
+                "saveAllSettings"
+            )
+            ?.addEventListener(
+                "click",
+                saveSettings
+            );
+
+
+
+        /* ========================================================
+           PROFILE FORM
+           ======================================================== */
+
+        document
+            .getElementById(
+                "profileForm"
+            )
+            ?.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+                    saveSettings();
+
+                }
+            );
+
+
+
+        /* ========================================================
+           THEME
+           ======================================================== */
+
+        document
+            .querySelectorAll(
+                'input[name="theme"]'
+            )
+            .forEach(
+                input => {
+
+                    input.addEventListener(
+                        "change",
+                        function () {
+
+                            saveSettings();
 
                         }
                     );
 
+                }
+            );
 
-                    if (!restored) {
 
-                        throw new Error(
-                            "This does not appear to be a MoneyLeak backup."
+
+        /* ========================================================
+           RANGE LABELS
+           ======================================================== */
+
+        rateInput
+            ?.addEventListener(
+                "input",
+                updateRangeLabels
+            );
+
+
+        pitchInput
+            ?.addEventListener(
+                "input",
+                updateRangeLabels
+            );
+
+
+        function updateRangeLabels() {
+
+            const rate =
+                Number(
+                    rateInput?.value ||
+                    1
+                );
+
+
+            const pitch =
+                Number(
+                    pitchInput?.value ||
+                    1
+                );
+
+
+            const rateLabel =
+                document.getElementById(
+                    "voiceRateValue"
+                );
+
+
+            const pitchLabel =
+                document.getElementById(
+                    "voicePitchValue"
+                );
+
+
+            if (rateLabel) {
+
+                rateLabel.textContent =
+                    rate.toFixed(1) +
+                    "×";
+
+            }
+
+
+            if (pitchLabel) {
+
+                pitchLabel.textContent =
+                    pitch.toFixed(1);
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           TEST VOICE
+           ======================================================== */
+
+        document
+            .getElementById(
+                "testVoice"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    const text =
+                        "Hello. This is MoneyLeak. Your finances are under your control.";
+
+
+                    if (
+                        typeof speechSynthesis ===
+                        "undefined"
+                    ) {
+
+                        alert(
+                            "Speech synthesis is not supported by this browser."
                         );
+
+                        return;
 
                     }
 
 
-                    showToast(
-                        "Backup restored. Reloading..."
+                    speechSynthesis.cancel();
+
+
+                    const utterance =
+                        new SpeechSynthesisUtterance(
+                            text
+                        );
+
+
+                    utterance.rate =
+                        Number(
+                            rateInput?.value ||
+                            1
+                        );
+
+
+                    utterance.pitch =
+                        Number(
+                            pitchInput?.value ||
+                            1
+                        );
+
+
+                    speechSynthesis.speak(
+                        utterance
+                    );
+
+                }
+            );
+
+
+
+        /* ========================================================
+           EXPORT
+           ======================================================== */
+
+        document
+            .getElementById(
+                "exportData"
+            )
+            ?.addEventListener(
+                "click",
+                exportData
+            );
+
+
+        function exportData() {
+
+            const keys = [
+
+                "moneyLeakTransactions",
+
+                "moneyLeakSavingsGoals",
+
+                "moneyLeakSavingsGoal",
+
+                "moneyLeakMonthlyBudget",
+
+                "moneyLeakCategoryBudgets",
+
+                "moneyLeakRecurringTransactions",
+
+                "moneyLeakSettings",
+
+                "moneyLeakAlerts",
+
+                "moneyLeakAssistantHistory"
+
+            ];
+
+
+            const backup = {
+
+                app:
+                    "MoneyLeak",
+
+                version:
+                    "3.0",
+
+                exportedAt:
+                    new Date()
+                        .toISOString(),
+
+                data:
+                    {}
+
+            };
+
+
+            keys.forEach(
+                key => {
+
+                    const value =
+                        localStorage.getItem(
+                            key
+                        );
+
+
+                    if (
+                        value !==
+                        null
+                    ) {
+
+                        try {
+
+                            backup.data[
+                                key
+                            ] =
+                                JSON.parse(
+                                    value
+                                );
+
+                        } catch (
+                            error
+                        ) {
+
+                            backup.data[
+                                key
+                            ] =
+                                value;
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            const blob =
+                new Blob(
+                    [
+                        JSON.stringify(
+                            backup,
+                            null,
+                            2
+                        )
+                    ],
+                    {
+                        type:
+                            "application/json"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            const date =
+                new Date()
+                    .toISOString()
+                    .slice(
+                        0,
+                        10
+                    );
+
+
+            link.href =
+                url;
+
+
+            link.download =
+                "moneyleak-backup-" +
+                date +
+                ".json";
+
+
+            document
+                .body
+                .appendChild(
+                    link
+                );
+
+
+            link.click();
+
+
+            link.remove();
+
+
+            URL.revokeObjectURL(
+                url
+            );
+
+
+            showStatus(
+                "Backup exported successfully."
+            );
+
+        }
+
+
+
+        /* ========================================================
+           IMPORT
+           ======================================================== */
+
+        document
+            .getElementById(
+                "importData"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    document
+                        .getElementById(
+                            "importFile"
+                        )
+                        ?.click();
+
+                }
+            );
+
+
+        document
+            .getElementById(
+                "importFile"
+            )
+            ?.addEventListener(
+                "change",
+                function () {
+
+                    const file =
+                        this.files?.[0];
+
+
+                    if (!file) {
+                        return;
+                    }
+
+
+                    const reader =
+                        new FileReader();
+
+
+                    reader.onload =
+                        function (event) {
+
+                            try {
+
+                                const backup =
+                                    JSON.parse(
+                                        event
+                                            .target
+                                            .result
+                                    );
+
+
+                                if (
+                                    !backup ||
+                                    !backup.data
+                                ) {
+
+                                    throw new Error(
+                                        "Invalid backup"
+                                    );
+
+                                }
+
+
+                                if (
+                                    !confirm(
+                                        "Import this backup? Existing MoneyLeak data with matching keys will be replaced."
+                                    )
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                Object.entries(
+                                    backup.data
+                                )
+                                .forEach(
+                                    ([
+                                        key,
+                                        value
+                                    ]) => {
+
+                                        localStorage.setItem(
+                                            key,
+                                            typeof value ===
+                                            "string"
+                                                ? value
+                                                : JSON.stringify(
+                                                    value
+                                                )
+                                        );
+
+                                    }
+                                );
+
+
+                                showStatus(
+                                    "Backup imported. Reloading MoneyLeak..."
+                                );
+
+
+                                setTimeout(
+                                    function () {
+
+                                        location.reload();
+
+                                    },
+                                    900
+                                );
+
+                            } catch (
+                                error
+                            ) {
+
+                                alert(
+                                    "This file is not a valid MoneyLeak backup."
+                                );
+
+                            }
+
+                        };
+
+
+                    reader.readAsText(
+                        file
+                    );
+
+                }
+            );
+
+
+
+        /* ========================================================
+           RESET
+           ======================================================== */
+
+        document
+            .getElementById(
+                "resetData"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    const first =
+                        confirm(
+                            "WARNING: This will remove your MoneyLeak financial data from this browser."
+                        );
+
+
+                    if (!first) {
+                        return;
+                    }
+
+
+                    const second =
+                        confirm(
+                            "Are you absolutely sure? This cannot be undone without a backup."
+                        );
+
+
+                    if (!second) {
+                        return;
+                    }
+
+
+                    const keys = [
+
+                        "moneyLeakTransactions",
+
+                        "moneyLeakSavingsGoals",
+
+                        "moneyLeakSavingsGoal",
+
+                        "moneyLeakMonthlyBudget",
+
+                        "moneyLeakCategoryBudgets",
+
+                        "moneyLeakRecurringTransactions",
+
+                        "moneyLeakAlerts",
+
+                        "moneyLeakAssistantHistory",
+
+                        "moneyLeakInitialized"
+
+                    ];
+
+
+                    keys.forEach(
+                        key =>
+                            localStorage.removeItem(
+                                key
+                            )
+                    );
+
+
+                    showStatus(
+                        "Financial data reset."
                     );
 
 
@@ -2935,372 +2297,246 @@ h1 {
                             location.reload();
 
                         },
-                        900
-                    );
-
-
-                } catch (error) {
-
-                    showToast(
-                        error.message ||
-                        "Unable to restore backup."
+                        700
                     );
 
                 }
-
-            };
-
-
-        reader.readAsText(
-            file
-        );
-
-    }
-
-
-    /* =====================================================
-       RESET
-       ===================================================== */
-
-    function resetAllData() {
-
-        const first =
-            confirm(
-                "Are you sure you want to reset MoneyLeak?"
             );
 
 
-        if (!first) {
-            return;
-        }
+
+        /* ========================================================
+           DATA SUMMARY
+           ======================================================== */
+
+        function updateDataSummary() {
+
+            const transactions =
+                getArray(
+                    "moneyLeakTransactions"
+                );
 
 
-        const second =
-            confirm(
-                "This will permanently remove your MoneyLeak data from this browser. Continue?"
+            const goals =
+                getArray(
+                    "moneyLeakSavingsGoals"
+                );
+
+
+            const recurring =
+                getArray(
+                    "moneyLeakRecurringTransactions"
+                );
+
+
+            setText(
+                "dataTransactionCount",
+                transactions.length
             );
 
 
-        if (!second) {
-            return;
+            setText(
+                "dataGoalCount",
+                goals.length
+            );
+
+
+            setText(
+                "dataRecurringCount",
+                recurring.length
+            );
+
+
+            setText(
+                "storageStatus",
+                "Ready"
+            );
+
         }
 
 
-        Object.keys(
-            STORAGE
-        ).forEach(
-            function (key) {
 
-                localStorage.removeItem(
-                    STORAGE[key]
-                );
+        /* ========================================================
+           HEADER
+           ======================================================== */
 
-            }
-        );
+        function updateHeader() {
 
-
-        showToast(
-            "MoneyLeak data has been reset."
-        );
-
-
-        setTimeout(
-            function () {
-
-                location.reload();
-
-            },
-            900
-        );
-
-    }
+            const settings =
+                ML() &&
+                typeof ML()
+                    .getSettings ===
+                "function"
+                    ? ML()
+                        .getSettings()
+                    : {};
 
 
-    /* =====================================================
-       EVENTS
-       ===================================================== */
-
-    document
-        .getElementById(
-            "saveProfile"
-        )
-        .addEventListener(
-            "click",
-            function () {
-
-                const name =
-                    document
-                        .getElementById(
-                            "nameInput"
-                        )
-                        .value
-                        .trim();
+            const name =
+                settings.name ||
+                nameInput?.value ||
+                "My Money";
 
 
-                if (!name) {
-
-                    showToast(
-                        "Please enter a name."
-                    );
-
-                    return;
-
-                }
+            setText(
+                "topProfileName",
+                name
+            );
 
 
-                saveSettings({
-                    name
-                });
-
-
-                updateProfileVisuals(
-                    name
-                );
-
-
-                showToast(
-                    "Profile saved successfully."
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "currency"
-        )
-        .addEventListener(
-            "change",
-            function () {
-
-                saveSettings({
-                    currency:
-                        this.value
-                });
-
-
-                updateSnapshot();
-
-
-                showToast(
-                    "Currency updated."
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "notifications"
-        )
-        .addEventListener(
-            "change",
-            function () {
-
-                saveSettings({
-                    notifications:
-                        this.checked
-                });
-
-
-                showToast(
-                    this.checked
-                        ? "Notifications enabled."
-                        : "Notifications disabled."
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "compact"
-        )
-        .addEventListener(
-            "change",
-            function () {
-
-                saveSettings({
-                    compactNumbers:
-                        this.checked
-                });
-
-
-                showToast(
-                    this.checked
-                        ? "Compact numbers enabled."
-                        : "Compact numbers disabled."
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "lightTheme"
-        )
-        .addEventListener(
-            "click",
-            function () {
-
-                setTheme(
-                    "light",
-                    true
-                );
-
-
-                showToast(
-                    "Light mode enabled."
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "darkTheme"
-        )
-        .addEventListener(
-            "click",
-            function () {
-
-                setTheme(
-                    "dark",
-                    true
-                );
-
-
-                showToast(
-                    "Dark mode enabled."
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "exportButton"
-        )
-        .addEventListener(
-            "click",
-            exportData
-        );
-
-
-    document
-        .getElementById(
-            "importButton"
-        )
-        .addEventListener(
-            "click",
-            function () {
-
-                document
-                    .getElementById(
-                        "importFile"
+            const initials =
+                name
+                    .trim()
+                    .split(
+                        /\s+/
                     )
-                    .click();
+                    .slice(
+                        0,
+                        2
+                    )
+                    .map(
+                        part =>
+                            part
+                                .charAt(
+                                    0
+                                )
+                                .toUpperCase()
+                    )
+                    .join("") ||
+                "ML";
 
-            }
-        );
+
+            setText(
+                "topProfileAvatar",
+                initials
+            );
+
+        }
 
 
-    document
-        .getElementById(
-            "importFile"
-        )
-        .addEventListener(
-            "change",
-            function () {
 
-                importBackup(
-                    this.files[0]
+        /* ========================================================
+           STATUS
+           ======================================================== */
+
+        function showStatus(
+            message
+        ) {
+
+            const element =
+                document.getElementById(
+                    "dataStatus"
                 );
 
-                this.value =
-                    "";
 
+            if (!element) {
+                return;
             }
-        );
 
 
-    document
-        .getElementById(
-            "resetButton"
-        )
-        .addEventListener(
-            "click",
-            resetAllData
-        );
+            element.textContent =
+                message;
 
 
-    /* =====================================================
-       MOBILE
-       ===================================================== */
+            setTimeout(
+                function () {
 
-    document
-        .getElementById(
-            "mobileButton"
-        )
-        .addEventListener(
-            "click",
-            function () {
+                    if (
+                        element
+                    ) {
 
-                document
-                    .getElementById(
-                        "sidebar"
-                    )
-                    .classList.toggle(
-                        "open"
-                    );
-
-            }
-        );
-
-
-    document
-        .querySelectorAll(
-            ".nav a"
-        )
-        .forEach(
-            function (link) {
-
-                link.addEventListener(
-                    "click",
-                    function () {
-
-                        document
-                            .getElementById(
-                                "sidebar"
-                            )
-                            .classList.remove(
-                                "open"
-                            );
+                        element.textContent =
+                            "Your data is stored locally on this device.";
 
                     }
-                );
+
+                },
+                3500
+            );
+
+        }
+
+
+
+        /* ========================================================
+           STORAGE
+           ======================================================== */
+
+        function getArray(
+            key
+        ) {
+
+            try {
+
+                const value =
+                    JSON.parse(
+                        localStorage.getItem(
+                            key
+                        ) ||
+                        "[]"
+                    );
+
+
+                return Array.isArray(
+                    value
+                )
+                    ? value
+                    : [];
+
+            } catch (
+                error
+            ) {
+
+                return [];
 
             }
-        );
+
+        }
 
 
-    /* =====================================================
-       START
-       ===================================================== */
 
-    loadSettings();
+        /* ========================================================
+           TEXT
+           ======================================================== */
 
-    updateSnapshot();
+        function setText(
+            id,
+            value
+        ) {
 
-})();
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    value;
+
+            }
+
+        }
+
+
+
+        /* ========================================================
+           INITIALIZE
+           ======================================================== */
+
+        loadSettings();
+
+        updateDataSummary();
+
+        updateHeader();
+
+    }
+);
 
 </script>
 
+
 </body>
+
 </html>
