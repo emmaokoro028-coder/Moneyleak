@@ -2928,3 +2928,479 @@ canvas {
       0.01ms !important;
   }
 }
+
+/* =========================================================
+   MONEYLEAK — SMART SEARCH SUGGESTIONS
+   ========================================================= */
+
+#searchOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 120px 24px 40px;
+    background: rgba(8, 25, 19, 0.48);
+    backdrop-filter: blur(18px) saturate(130%);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+#searchOverlay.open,
+#searchOverlay.active {
+    display: flex !important;
+}
+
+#searchOverlay > * {
+    box-sizing: border-box;
+}
+
+.search-modal,
+#searchOverlay .search-modal {
+    width: min(760px, 100%);
+    max-height: min(720px, calc(100vh - 160px));
+    overflow-y: auto;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid rgba(8, 122, 90, 0.16);
+    border-radius: 24px;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.18),
+        0 8px 30px rgba(0, 80, 60, 0.08);
+}
+
+/* Search input area */
+
+#searchOverlay .search-box,
+#searchOverlay .search-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px;
+    background: var(--card-bg, #ffffff);
+    border-bottom: 1px solid rgba(8, 122, 90, 0.10);
+}
+
+#globalSearch {
+    width: 100%;
+    height: 54px;
+    padding: 0 18px;
+    border: 2px solid rgba(8, 122, 90, 0.22);
+    border-radius: 16px;
+    outline: none;
+    background: var(--input-bg, #ffffff);
+    color: var(--text-primary, #10261f);
+    font-size: 16px;
+    transition: 0.2s ease;
+}
+
+#globalSearch:focus {
+    border-color: #087a5a;
+    box-shadow: 0 0 0 4px rgba(8, 122, 90, 0.10);
+}
+
+#closeSearch {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border: 1px solid rgba(8, 122, 90, 0.14);
+    border-radius: 13px;
+    background: transparent;
+    color: var(--text-secondary, #64756f);
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.2s ease;
+}
+
+#closeSearch:hover {
+    background: rgba(8, 122, 90, 0.08);
+    color: #087a5a;
+}
+
+/* Results area */
+
+#searchResults {
+    padding: 8px 18px 20px;
+}
+
+/* Section labels */
+
+.search-section-label {
+    margin: 18px 4px 10px;
+    color: #7a8a84;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+/* =========================================================
+   QUICK ACTION GRID
+   ========================================================= */
+
+.search-suggestion-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.search-suggestion {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px;
+    border: 1px solid rgba(8, 122, 90, 0.12);
+    border-radius: 16px;
+    background: var(--card-bg, #fff);
+    color: var(--text-primary, #10261f);
+    text-align: left;
+    cursor: pointer;
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.search-suggestion:hover {
+    transform: translateY(-2px);
+    border-color: rgba(8, 122, 90, 0.32);
+    background: rgba(8, 122, 90, 0.035);
+    box-shadow: 0 10px 25px rgba(8, 122, 90, 0.08);
+}
+
+.search-suggestion:active {
+    transform: translateY(0);
+}
+
+.search-suggestion-icon {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: rgba(8, 122, 90, 0.10);
+    color: #087a5a;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.search-suggestion-text {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.search-suggestion-text strong {
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.search-suggestion-text small {
+    color: #82908b;
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.search-arrow {
+    color: #8a9994;
+    font-size: 18px;
+    transition: transform 0.18s ease;
+}
+
+.search-suggestion:hover .search-arrow,
+.search-smart-item:hover .search-arrow,
+.search-result-item:hover .search-arrow {
+    transform: translateX(3px);
+    color: #087a5a;
+}
+
+/* =========================================================
+   SMART MONEY QUESTIONS
+   ========================================================= */
+
+.search-smart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.search-smart-item {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 13px;
+    border: 1px solid rgba(8, 122, 90, 0.10);
+    border-radius: 15px;
+    background: rgba(8, 122, 90, 0.025);
+    color: var(--text-primary, #10261f);
+    text-align: left;
+    cursor: pointer;
+    transition: 0.18s ease;
+}
+
+.search-smart-item:hover {
+    background: rgba(8, 122, 90, 0.075);
+    border-color: rgba(8, 122, 90, 0.25);
+    transform: translateX(2px);
+}
+
+.search-smart-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(8, 122, 90, 0.10);
+    color: #087a5a;
+    font-weight: 800;
+}
+
+.search-smart-item > span:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.search-smart-item strong {
+    font-size: 13px;
+}
+
+.search-smart-item small {
+    color: #82908b;
+    font-size: 11px;
+}
+
+/* =========================================================
+   SEARCH RESULT LIST
+   ========================================================= */
+
+.search-result-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.search-result-item {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 13px;
+    border: 1px solid rgba(8, 122, 90, 0.10);
+    border-radius: 15px;
+    background: var(--card-bg, #fff);
+    color: var(--text-primary, #10261f);
+    text-align: left;
+    cursor: pointer;
+    transition: 0.18s ease;
+}
+
+.search-result-item:hover {
+    background: rgba(8, 122, 90, 0.05);
+    border-color: rgba(8, 122, 90, 0.25);
+}
+
+.search-result-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(8, 122, 90, 0.09);
+    color: #087a5a;
+    font-weight: 700;
+}
+
+.search-result-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.search-result-text strong {
+    font-size: 13px;
+}
+
+.search-result-text small {
+    color: #82908b;
+    font-size: 11px;
+}
+
+.search-transaction-result {
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 13px;
+    border: 1px solid rgba(8, 122, 90, 0.08);
+    border-radius: 15px;
+    background: var(--card-bg, #fff);
+}
+
+.search-income {
+    color: #087a5a;
+    white-space: nowrap;
+}
+
+.search-expense {
+    color: #dc4c4c;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   NO RESULTS
+   ========================================================= */
+
+.search-no-results {
+    padding: 45px 20px;
+    text-align: center;
+}
+
+.search-no-results-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    display: grid;
+    place-items: center;
+    border-radius: 18px;
+    background: rgba(8, 122, 90, 0.08);
+    color: #087a5a;
+    font-size: 26px;
+}
+
+.search-no-results strong {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 17px;
+}
+
+.search-no-results p {
+    max-width: 420px;
+    margin: 0 auto;
+    color: #82908b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.search-example {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 18px;
+    color: #82908b;
+    font-size: 11px;
+}
+
+.search-example span {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(8, 122, 90, 0.07);
+    color: #087a5a;
+    font-weight: 700;
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+[data-theme="dark"] #searchOverlay {
+    background: rgba(0, 0, 0, 0.65);
+}
+
+[data-theme="dark"] .search-modal,
+[data-theme="dark"] #searchOverlay .search-modal,
+[data-theme="dark"] #searchOverlay .search-box,
+[data-theme="dark"] #searchOverlay .search-header {
+    background: #101b17;
+}
+
+[data-theme="dark"] #globalSearch {
+    background: #16231e;
+    color: #f2f7f4;
+    border-color: rgba(100, 190, 160, 0.25);
+}
+
+[data-theme="dark"] .search-suggestion,
+[data-theme="dark"] .search-result-item,
+[data-theme="dark"] .search-transaction-result {
+    background: #121f1a;
+    color: #f2f7f4;
+    border-color: rgba(100, 190, 160, 0.12);
+}
+
+[data-theme="dark"] .search-smart-item {
+    background: rgba(100, 190, 160, 0.045);
+    color: #f2f7f4;
+}
+
+[data-theme="dark"] .search-suggestion:hover,
+[data-theme="dark"] .search-result-item:hover {
+    background: rgba(100, 190, 160, 0.08);
+}
+
+[data-theme="dark"] .search-suggestion-text small,
+[data-theme="dark"] .search-smart-item small,
+[data-theme="dark"] .search-result-text small,
+[data-theme="dark"] .search-section-label {
+    color: #81958d;
+}
+
+/* =========================================================
+   MOBILE SEARCH
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    #searchOverlay {
+        padding:
+            70px
+            12px
+            20px;
+    }
+
+    #searchOverlay .search-modal {
+        max-height:
+            calc(100vh - 90px);
+        border-radius: 20px;
+    }
+
+    #searchResults {
+        padding:
+            6px
+            12px
+            16px;
+    }
+
+    .search-suggestion-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .search-suggestion {
+        min-height: 68px;
+    }
+
+}
