@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Settings — MoneyLeak</title>
+
     <meta
         name="description"
-        content="Customize your MoneyLeak personal finance experience."
+        content="Manage your MoneyLeak profile, preferences, appearance and financial data."
     >
 
     <link rel="stylesheet" href="./style.css">
@@ -17,26 +18,30 @@
 
 <div class="app-shell">
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
 
         <div class="sidebar-brand">
             <a href="./index.html" class="brand-link">
+
                 <span class="brand-mark" data-brand-logo>M</span>
 
                 <span class="brand-copy">
                     <strong>MoneyLeak</strong>
                     <small>Personal Finance OS</small>
                 </span>
+
             </a>
         </div>
 
-        <nav class="sidebar-nav" aria-label="Main navigation">
+
+        <nav class="sidebar-nav">
 
             <div class="nav-section">
-                <span class="nav-section-title">Overview</span>
+
+                <span class="nav-section-title">
+                    Overview
+                </span>
 
                 <a href="./index.html" class="nav-link">
                     <span class="nav-icon">⌂</span>
@@ -47,10 +52,15 @@
                     <span class="nav-icon">◈</span>
                     <span>Analytics</span>
                 </a>
+
             </div>
 
+
             <div class="nav-section">
-                <span class="nav-section-title">Money</span>
+
+                <span class="nav-section-title">
+                    Money
+                </span>
 
                 <a href="./income.html" class="nav-link">
                     <span class="nav-icon">↗</span>
@@ -71,54 +81,70 @@
                     <span class="nav-icon">↻</span>
                     <span>Recurring</span>
                 </a>
+
             </div>
 
+
             <div class="nav-section">
-                <span class="nav-section-title">Planning</span>
+
+                <span class="nav-section-title">
+                    Planning
+                </span>
 
                 <a href="./savings.html" class="nav-link">
                     <span class="nav-icon">◎</span>
                     <span>Goals</span>
                 </a>
+
             </div>
 
-            <div class="nav-section">
-                <span class="nav-section-title">System</span>
 
-                <a href="./settings.html" class="nav-link active">
+            <div class="nav-section">
+
+                <span class="nav-section-title">
+                    System
+                </span>
+
+                <a
+                    href="./settings.html"
+                    class="nav-link active"
+                >
                     <span class="nav-icon">⚙</span>
                     <span>Settings</span>
                 </a>
+
             </div>
 
         </nav>
 
+
         <div class="sidebar-bottom">
+
             <div class="sidebar-status">
+
                 <span class="status-dot"></span>
+
                 <div>
-                    <strong>MoneyLeak is ready</strong>
-                    <small>Your data stays on this device.</small>
+                    <strong>System protected</strong>
+                    <small>
+                        Your data stays on this device.
+                    </small>
                 </div>
+
             </div>
+
         </div>
 
     </aside>
 
 
-    <!-- =========================
-         MOBILE OVERLAY
-    ========================== -->
     <div
         class="mobile-overlay"
         id="mobileOverlay"
-        aria-hidden="true"
     ></div>
 
 
-    <!-- =========================
-         MAIN
-    ========================== -->
+    <!-- MAIN -->
     <main class="main-content">
 
         <!-- TOPBAR -->
@@ -130,17 +156,22 @@
                     class="mobile-menu-button"
                     id="mobileMenuButton"
                     type="button"
-                    aria-label="Open menu"
                 >
                     ☰
                 </button>
 
                 <div>
-                    <span class="topbar-eyebrow">Control Center</span>
+
+                    <span class="topbar-eyebrow">
+                        CONTROL CENTER
+                    </span>
+
                     <h1>Settings</h1>
+
                 </div>
 
             </div>
+
 
             <div class="topbar-actions">
 
@@ -160,99 +191,100 @@
                     aria-label="Notifications"
                 >
                     ♢
+
                     <span
                         class="notification-badge"
                         id="notificationBadge"
                         hidden
-                    >0</span>
+                    >
+                        0
+                    </span>
+
                 </button>
 
-                <a
-                    href="./settings.html"
-                    class="topbar-profile"
-                    aria-label="Settings"
-                >
-                    <span class="topbar-avatar" id="topbarAvatar">M</span>
-                </a>
+                <span class="topbar-profile">
+
+                    <span class="topbar-avatar">
+                        M
+                    </span>
+
+                </span>
 
             </div>
 
         </header>
 
 
-        <!-- =========================
-             SETTINGS PAGE
-        ========================== -->
+        <!-- PAGE -->
         <section class="page-container settings-page">
 
             <!-- HERO -->
             <section class="settings-hero">
 
-                <div class="settings-hero-copy">
+                <div>
 
                     <span class="settings-eyebrow">
-                        MONEY MANAGEMENT
+                        PERSONAL CONTROL CENTER
                     </span>
 
                     <h2>
-                        Make MoneyLeak
-                        <span>work your way.</span>
+                        Make MoneyLeak work your way.
                     </h2>
 
                     <p>
-                        Personalize your finance workspace, manage your
-                        preferences, and keep your financial data under
-                        your control.
+                        Control your profile, currency,
+                        appearance, preferences and data
+                        from one secure place.
                     </p>
 
                 </div>
 
-                <div class="settings-hero-status">
 
-                    <span class="status-pill success">
-                        <span class="status-dot"></span>
-                        System ready
-                    </span>
+                <div class="settings-status">
 
-                    <small>
-                        Your financial data is stored locally.
-                    </small>
+                    <span class="status-dot"></span>
+
+                    <div>
+                        <strong>
+                            Everything is running normally
+                        </strong>
+
+                        <small>
+                            Your MoneyLeak workspace is ready.
+                        </small>
+                    </div>
 
                 </div>
 
             </section>
 
 
-            <!-- =========================
-                 SETTINGS GRID
-            ========================== -->
+            <!-- SETTINGS GRID -->
             <div class="settings-grid">
 
-                <!-- =====================
-                     LEFT COLUMN
-                ====================== -->
                 <div class="settings-column">
 
                     <!-- PROFILE -->
-                    <section class="settings-card">
+                    <article class="settings-card">
 
                         <div class="settings-card-header">
 
                             <div class="settings-card-heading">
 
                                 <span class="settings-card-icon">
-                                    ◎
+                                    ◉
                                 </span>
 
                                 <div>
+
                                     <h3 class="settings-card-title">
-                                        Your profile
+                                        Profile
                                     </h3>
 
                                     <p class="settings-card-description">
-                                        Personalize how MoneyLeak identifies
-                                        your workspace.
+                                        Personalize your MoneyLeak workspace.
                                     </p>
+
                                 </div>
 
                             </div>
@@ -264,79 +296,102 @@
 
                             <div
                                 class="profile-preview-avatar"
-                                id="settingsAvatar"
+                                id="profilePreviewAvatar"
                             >
                                 M
                             </div>
 
-                            <div class="profile-preview-info">
+                            <div>
 
-                                <strong id="profilePreviewName">
+                                <strong
+                                    id="profilePreviewName"
+                                >
                                     MoneyLeak User
                                 </strong>
 
-                                <span>
-                                    Personal finance workspace
-                                </span>
+                                <small>
+                                    Personal Finance Workspace
+                                </small>
 
                             </div>
 
                         </div>
 
 
-                        <form id="settingsProfileForm">
+                        <form
+                            id="settingsProfileForm"
+                            class="settings-form"
+                        >
 
-                            <div class="form-group">
+                            <div class="form-field">
 
                                 <label for="settingsName">
                                     Display name
                                 </label>
 
                                 <input
-                                    type="text"
                                     id="settingsName"
-                                    name="name"
+                                    type="text"
                                     placeholder="Your name"
-                                    autocomplete="name"
+                                    maxlength="40"
                                 >
 
                             </div>
 
 
-                            <div class="form-group">
+                            <div class="form-row">
 
-                                <label for="settingsCurrency">
-                                    Currency
-                                </label>
+                                <div class="form-field">
 
-                                <select
-                                    id="settingsCurrency"
-                                    name="currency"
-                                >
-                                    <option value="NGN">
-                                        ₦ Nigerian Naira
-                                    </option>
+                                    <label for="settingsCurrency">
+                                        Currency
+                                    </label>
 
-                                    <option value="USD">
-                                        $ US Dollar
-                                    </option>
+                                    <select id="settingsCurrency">
 
-                                    <option value="GBP">
-                                        £ British Pound
-                                    </option>
+                                        <option value="NGN">
+                                            Nigerian Naira — ₦
+                                        </option>
 
-                                    <option value="EUR">
-                                        € Euro
-                                    </option>
+                                        <option value="USD">
+                                            US Dollar — $
+                                        </option>
 
-                                    <option value="CAD">
-                                        $ Canadian Dollar
-                                    </option>
+                                        <option value="GBP">
+                                            British Pound — £
+                                        </option>
 
-                                    <option value="AUD">
-                                        $ Australian Dollar
-                                    </option>
-                                </select>
+                                        <option value="EUR">
+                                            Euro — €
+                                        </option>
+
+                                        <option value="CAD">
+                                            Canadian Dollar — $
+                                        </option>
+
+                                        <option value="AUD">
+                                            Australian Dollar — $
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="form-field">
+
+                                    <label for="settingsAvatar">
+                                        Initial
+                                    </label>
+
+                                    <input
+                                        id="settingsAvatar"
+                                        type="text"
+                                        maxlength="2"
+                                        placeholder="M"
+                                    >
+
+                                </div>
 
                             </div>
 
@@ -350,11 +405,11 @@
 
                         </form>
 
-                    </section>
+                    </article>
 
 
                     <!-- APPEARANCE -->
-                    <section class="settings-card">
+                    <article class="settings-card">
 
                         <div class="settings-card-header">
 
@@ -365,14 +420,15 @@
                                 </span>
 
                                 <div>
+
                                     <h3 class="settings-card-title">
                                         Appearance
                                     </h3>
 
                                     <p class="settings-card-description">
-                                        Choose how MoneyLeak looks across
-                                        your devices.
+                                        Choose how MoneyLeak looks.
                                     </p>
+
                                 </div>
 
                             </div>
@@ -380,10 +436,7 @@
                         </div>
 
 
-                        <div
-                            class="theme-options"
-                            id="settingsTheme"
-                        >
+                        <div class="theme-options">
 
                             <button
                                 type="button"
@@ -392,19 +445,16 @@
                             >
 
                                 <span class="theme-preview light-preview">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                                    ☀
                                 </span>
 
-                                <span class="theme-option-text">
-                                    <strong>Light</strong>
-                                    <small>Clean and bright</small>
-                                </span>
+                                <strong>
+                                    Light
+                                </strong>
 
-                                <span class="theme-check">
-                                    ✓
-                                </span>
+                                <small>
+                                    Clean and bright
+                                </small>
 
                             </button>
 
@@ -416,19 +466,16 @@
                             >
 
                                 <span class="theme-preview dark-preview">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                                    ◐
                                 </span>
 
-                                <span class="theme-option-text">
-                                    <strong>Dark</strong>
-                                    <small>Focused and calm</small>
-                                </span>
+                                <strong>
+                                    Dark
+                                </strong>
 
-                                <span class="theme-check">
-                                    ✓
-                                </span>
+                                <small>
+                                    Easier on the eyes
+                                </small>
 
                             </button>
 
@@ -440,29 +487,26 @@
                             >
 
                                 <span class="theme-preview system-preview">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                                    ◌
                                 </span>
 
-                                <span class="theme-option-text">
-                                    <strong>System</strong>
-                                    <small>Follow device settings</small>
-                                </span>
+                                <strong>
+                                    System
+                                </strong>
 
-                                <span class="theme-check">
-                                    ✓
-                                </span>
+                                <small>
+                                    Follow your device
+                                </small>
 
                             </button>
 
                         </div>
 
-                    </section>
+                    </article>
 
 
                     <!-- PREFERENCES -->
-                    <section class="settings-card">
+                    <article class="settings-card">
 
                         <div class="settings-card-header">
 
@@ -473,13 +517,15 @@
                                 </span>
 
                                 <div>
+
                                     <h3 class="settings-card-title">
                                         Preferences
                                     </h3>
 
                                     <p class="settings-card-description">
-                                        Control your MoneyLeak experience.
+                                        Fine-tune your MoneyLeak experience.
                                     </p>
+
                                 </div>
 
                             </div>
@@ -489,7 +535,6 @@
 
                         <div class="preference-list">
 
-                            <!-- COMPACT NUMBERS -->
                             <div class="preference-row">
 
                                 <div class="preference-main">
@@ -498,18 +543,17 @@
                                         #
                                     </span>
 
-                                    <span class="preference-text">
+                                    <div class="preference-text">
 
                                         <strong>
                                             Compact numbers
                                         </strong>
 
                                         <small>
-                                            Show ₦1.2M instead of
-                                            ₦1,200,000 where possible.
+                                            Show large amounts in a shorter format.
                                         </small>
 
-                                    </span>
+                                    </div>
 
                                 </div>
 
@@ -528,7 +572,6 @@
                             </div>
 
 
-                            <!-- NOTIFICATIONS -->
                             <div class="preference-row">
 
                                 <div class="preference-main">
@@ -537,18 +580,17 @@
                                         ♢
                                     </span>
 
-                                    <span class="preference-text">
+                                    <div class="preference-text">
 
                                         <strong>
                                             Smart notifications
                                         </strong>
 
                                         <small>
-                                            Get useful alerts about spending,
-                                            budgets, and goals.
+                                            Receive important financial alerts.
                                         </small>
 
-                                    </span>
+                                    </div>
 
                                 </div>
 
@@ -558,7 +600,6 @@
                                     <input
                                         type="checkbox"
                                         id="settingsNotifications"
-                                        checked
                                     >
 
                                     <span class="switch-slider"></span>
@@ -568,7 +609,6 @@
                             </div>
 
 
-                            <!-- SMART INSIGHTS -->
                             <div class="preference-row">
 
                                 <div class="preference-main">
@@ -577,18 +617,17 @@
                                         ✦
                                     </span>
 
-                                    <span class="preference-text">
+                                    <div class="preference-text">
 
                                         <strong>
-                                            MoneyLeak Intelligence
+                                            Financial insights
                                         </strong>
 
                                         <small>
-                                            Show financial insights and
-                                            recommendations.
+                                            Allow MoneyLeak to generate useful insights.
                                         </small>
 
-                                    </span>
+                                    </div>
 
                                 </div>
 
@@ -598,7 +637,6 @@
                                     <input
                                         type="checkbox"
                                         id="settingsInsights"
-                                        checked
                                     >
 
                                     <span class="switch-slider"></span>
@@ -609,123 +647,16 @@
 
                         </div>
 
-                    </section>
+                    </article>
 
                 </div>
 
 
-                <!-- =====================
-                     RIGHT COLUMN
-                ====================== -->
+                <!-- RIGHT COLUMN -->
                 <div class="settings-column">
 
-                    <!-- ACCOUNT STATUS -->
-                    <section class="settings-card">
-
-                        <div class="settings-card-header">
-
-                            <div class="settings-card-heading">
-
-                                <span class="settings-card-icon">
-                                    ✓
-                                </span>
-
-                                <div>
-                                    <h3 class="settings-card-title">
-                                        Account status
-                                    </h3>
-
-                                    <p class="settings-card-description">
-                                        Everything is running normally.
-                                    </p>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="status-summary">
-
-                            <div class="status-summary-row">
-
-                                <span>
-                                    Workspace
-                                </span>
-
-                                <strong>
-                                    Personal
-                                </strong>
-
-                            </div>
-
-                            <div class="status-summary-row">
-
-                                <span>
-                                    Data storage
-                                </span>
-
-                                <strong>
-                                    Local device
-                                </strong>
-
-                            </div>
-
-                            <div class="status-summary-row">
-
-                                <span>
-                                    Intelligence
-                                </span>
-
-                                <strong class="status-positive">
-                                    Active
-                                </strong>
-
-                            </div>
-
-                            <div class="status-summary-row">
-
-                                <span>
-                                    Sync status
-                                </span>
-
-                                <strong class="status-positive">
-                                    Up to date
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="privacy-box">
-
-                            <span class="privacy-box-icon">
-                                🔒
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Your data belongs to you.
-                                </strong>
-
-                                <p>
-                                    MoneyLeak stores your financial
-                                    information in your browser's local
-                                    storage. Nothing is sent to a server
-                                    by the core app.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-
-                    <!-- DATA MANAGEMENT -->
-                    <section class="settings-card">
+                    <!-- DATA -->
+                    <article class="settings-card">
 
                         <div class="settings-card-header">
 
@@ -736,14 +667,15 @@
                                 </span>
 
                                 <div>
+
                                     <h3 class="settings-card-title">
                                         Data management
                                     </h3>
 
                                     <p class="settings-card-description">
-                                        Back up or restore your MoneyLeak
-                                        information.
+                                        Backup or restore your MoneyLeak workspace.
                                     </p>
+
                                 </div>
 
                             </div>
@@ -770,13 +702,12 @@
                                     </strong>
 
                                     <small>
-                                        Download a backup of your
-                                        MoneyLeak data.
+                                        Download a complete backup.
                                     </small>
 
                                 </span>
 
-                                <span class="data-action-arrow">
+                                <span>
                                     →
                                 </span>
 
@@ -800,13 +731,12 @@
                                     </strong>
 
                                     <small>
-                                        Restore a previous MoneyLeak
-                                        backup.
+                                        Restore a MoneyLeak backup.
                                     </small>
 
                                 </span>
 
-                                <span class="data-action-arrow">
+                                <span>
                                     →
                                 </span>
 
@@ -821,29 +751,125 @@
 
                         </div>
 
-                    </section>
+
+                        <div class="privacy-box">
+
+                            <span class="privacy-icon">
+                                ✓
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Your data stays private
+                                </strong>
+
+                                <p>
+                                    MoneyLeak stores your financial
+                                    information locally in your browser.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </article>
 
 
-                    <!-- DANGER ZONE -->
-                    <section class="settings-card danger-card">
+                    <!-- ACCOUNT -->
+                    <article class="settings-card">
 
                         <div class="settings-card-header">
 
                             <div class="settings-card-heading">
 
-                                <span class="settings-card-icon danger-icon">
+                                <span class="settings-card-icon">
+                                    ◈
+                                </span>
+
+                                <div>
+
+                                    <h3 class="settings-card-title">
+                                        Workspace status
+                                    </h3>
+
+                                    <p class="settings-card-description">
+                                        Overview of your local MoneyLeak system.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="status-summary">
+
+                            <div>
+
+                                <span>
+                                    Storage
+                                </span>
+
+                                <strong>
+                                    Local browser
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Intelligence
+                                </span>
+
+                                <strong>
+                                    Active
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Version
+                                </span>
+
+                                <strong>
+                                    MoneyLeak 10
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- DANGER -->
+                    <article class="settings-card danger-card">
+
+                        <div class="settings-card-header">
+
+                            <div class="settings-card-heading">
+
+                                <span class="settings-card-icon">
                                     !
                                 </span>
 
                                 <div>
+
                                     <h3 class="settings-card-title">
                                         Danger zone
                                     </h3>
 
                                     <p class="settings-card-description">
-                                        Actions here can permanently change
-                                        your financial workspace.
+                                        Permanently remove your MoneyLeak data.
                                     </p>
+
                                 </div>
 
                             </div>
@@ -860,9 +886,9 @@
                                 </strong>
 
                                 <p>
-                                    Delete your saved transactions,
-                                    goals, budgets, recurring items,
-                                    settings, and notification history.
+                                    This removes transactions, goals,
+                                    budgets, recurring records and
+                                    preferences from this browser.
                                 </p>
 
                             </div>
@@ -873,12 +899,12 @@
                                 class="danger-button"
                                 id="resetDataButton"
                             >
-                                Reset data
+                                Reset all data
                             </button>
 
                         </div>
 
-                    </section>
+                    </article>
 
                 </div>
 
@@ -889,12 +915,19 @@
             <footer class="app-footer">
 
                 <div>
-                    <strong>MoneyLeak</strong>
-                    <span>Personal Finance OS</span>
+
+                    <strong>
+                        MoneyLeak
+                    </strong>
+
+                    <span>
+                        Personal Finance OS
+                    </span>
+
                 </div>
 
                 <span>
-                    Built for smarter money decisions.
+                    Built for financial clarity.
                 </span>
 
             </footer>
@@ -906,9 +939,7 @@
 </div>
 
 
-<!-- =========================
-     SEARCH OVERLAY
-========================== -->
+<!-- SEARCH -->
 <div
     class="search-overlay"
     id="searchOverlay"
@@ -920,6 +951,7 @@
         <div class="search-modal-header">
 
             <div>
+
                 <span class="search-modal-eyebrow">
                     MONEYLEAK SEARCH
                 </span>
@@ -927,13 +959,14 @@
                 <h2>
                     What are you looking for?
                 </h2>
+
             </div>
+
 
             <button
                 type="button"
                 class="search-close"
                 id="closeSearch"
-                aria-label="Close search"
             >
                 ×
             </button>
@@ -967,9 +1000,7 @@
 </div>
 
 
-<!-- =========================
-     NOTIFICATION CENTER
-========================== -->
+<!-- NOTIFICATIONS -->
 <aside
     class="notification-panel"
     id="notificationPanel"
@@ -997,7 +1028,7 @@
             </div>
 
             <small>
-                Your latest MoneyLeak intelligence
+                MoneyLeak intelligence
             </small>
 
         </div>
@@ -1007,7 +1038,6 @@
             type="button"
             class="notification-close"
             id="closeNotifications"
-            aria-label="Close notifications"
         >
             ×
         </button>
@@ -1020,17 +1050,17 @@
         <div class="notification-tabs">
 
             <button
-                type="button"
                 class="notification-tab active"
                 data-notification-tab="all"
+                type="button"
             >
                 All
             </button>
 
             <button
-                type="button"
                 class="notification-tab"
                 data-notification-tab="unread"
+                type="button"
             >
                 Unread
             </button>
@@ -1069,798 +1099,6 @@
 </aside>
 
 
-<!-- =========================
-     PAGE SCRIPT
-========================== -->
-<script>
-
-(function () {
-
-    function getStoredSettings() {
-
-        try {
-
-            return JSON.parse(
-                localStorage.getItem("moneyLeakSettings")
-            ) || {};
-
-        } catch (error) {
-
-            return {};
-
-        }
-
-    }
-
-
-    function saveFallbackSettings(settings) {
-
-        localStorage.setItem(
-            "moneyLeakSettings",
-            JSON.stringify(settings)
-        );
-
-    }
-
-
-    function getSettingsFromApp() {
-
-        if (
-            window.MoneyLeak &&
-            typeof window.MoneyLeak.getSettings === "function"
-        ) {
-            return window.MoneyLeak.getSettings();
-        }
-
-        return getStoredSettings();
-
-    }
-
-
-    function applyFallbackTheme(theme) {
-
-        let selectedTheme = theme || "light";
-
-        if (selectedTheme === "system") {
-
-            selectedTheme =
-                window.matchMedia &&
-                window.matchMedia("(prefers-color-scheme: dark)").matches
-                    ? "dark"
-                    : "light";
-
-        }
-
-        document.documentElement.setAttribute(
-            "data-theme",
-            selectedTheme
-        );
-
-    }
-
-
-    function refreshProfilePreview(name) {
-
-        const cleanName =
-            String(name || "MoneyLeak User").trim() ||
-            "MoneyLeak User";
-
-        const firstLetter =
-            cleanName.charAt(0).toUpperCase() || "M";
-
-        const previewName =
-            document.getElementById("profilePreviewName");
-
-        const avatar =
-            document.getElementById("settingsAvatar");
-
-        const topAvatar =
-            document.getElementById("topbarAvatar");
-
-        if (previewName) {
-            previewName.textContent = cleanName;
-        }
-
-        if (avatar) {
-            avatar.textContent = firstLetter;
-        }
-
-        if (topAvatar) {
-            topAvatar.textContent = firstLetter;
-        }
-
-    }
-
-
-    function updateThemeButtons(theme) {
-
-        document
-            .querySelectorAll("[data-theme-option]")
-            .forEach(function (button) {
-
-                button.classList.toggle(
-                    "selected",
-                    button.dataset.themeOption === theme
-                );
-
-            });
-
-    }
-
-
-    function loadSettings() {
-
-        const settings = getSettingsFromApp() || {};
-
-        const name =
-            settings.name ||
-            settings.profileName ||
-            "MoneyLeak User";
-
-        const currency =
-            settings.currency ||
-            "NGN";
-
-        const theme =
-            settings.theme ||
-            "light";
-
-        const compactNumbers =
-            Boolean(settings.compactNumbers);
-
-        const notifications =
-            settings.notifications !== false;
-
-        const insights =
-            settings.insights !== false;
-
-
-        const nameInput =
-            document.getElementById("settingsName");
-
-        const currencyInput =
-            document.getElementById("settingsCurrency");
-
-        const compactInput =
-            document.getElementById("settingsCompactNumbers");
-
-        const notificationsInput =
-            document.getElementById("settingsNotifications");
-
-        const insightsInput =
-            document.getElementById("settingsInsights");
-
-
-        if (nameInput) {
-            nameInput.value = name;
-        }
-
-        if (currencyInput) {
-            currencyInput.value = currency;
-        }
-
-        if (compactInput) {
-            compactInput.checked = compactNumbers;
-        }
-
-        if (notificationsInput) {
-            notificationsInput.checked = notifications;
-        }
-
-        if (insightsInput) {
-            insightsInput.checked = insights;
-        }
-
-
-        refreshProfilePreview(name);
-
-        updateThemeButtons(theme);
-
-        applyFallbackTheme(theme);
-
-    }
-
-
-    function saveSettingsFromForm() {
-
-        const existing =
-            getSettingsFromApp() || {};
-
-        const nameInput =
-            document.getElementById("settingsName");
-
-        const currencyInput =
-            document.getElementById("settingsCurrency");
-
-        const compactInput =
-            document.getElementById("settingsCompactNumbers");
-
-        const notificationsInput =
-            document.getElementById("settingsNotifications");
-
-        const insightsInput =
-            document.getElementById("settingsInsights");
-
-
-        const settings = {
-
-            ...existing,
-
-            name:
-                nameInput
-                    ? nameInput.value.trim()
-                    : existing.name || "MoneyLeak User",
-
-            currency:
-                currencyInput
-                    ? currencyInput.value
-                    : existing.currency || "NGN",
-
-            compactNumbers:
-                compactInput
-                    ? compactInput.checked
-                    : Boolean(existing.compactNumbers),
-
-            notifications:
-                notificationsInput
-                    ? notificationsInput.checked
-                    : existing.notifications !== false,
-
-            insights:
-                insightsInput
-                    ? insightsInput.checked
-                    : existing.insights !== false
-
-        };
-
-
-        if (
-            window.MoneyLeak &&
-            typeof window.MoneyLeak.saveSettings === "function"
-        ) {
-
-            window.MoneyLeak.saveSettings(settings);
-
-        } else {
-
-            saveFallbackSettings(settings);
-
-        }
-
-
-        if (
-            window.MoneyLeak &&
-            typeof window.MoneyLeak.applySettings === "function"
-        ) {
-
-            window.MoneyLeak.applySettings();
-
-        } else {
-
-            applyFallbackTheme(
-                settings.theme || "light"
-            );
-
-        }
-
-
-        refreshProfilePreview(settings.name);
-
-
-        document.dispatchEvent(
-            new CustomEvent("moneyLeakUpdated")
-        );
-
-    }
-
-
-    function setupProfileForm() {
-
-        const form =
-            document.getElementById("settingsProfileForm");
-
-        if (!form) {
-            return;
-        }
-
-        form.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-                saveSettingsFromForm();
-
-                const button =
-                    form.querySelector(
-                        'button[type="submit"]'
-                    );
-
-                if (!button) {
-                    return;
-                }
-
-                const original =
-                    button.textContent;
-
-                button.textContent =
-                    "Saved ✓";
-
-                button.disabled = true;
-
-                setTimeout(function () {
-
-                    button.textContent =
-                        original;
-
-                    button.disabled = false;
-
-                }, 1400);
-
-            }
-        );
-
-    }
-
-
-    function setupLivePreferences() {
-
-        [
-            "settingsCompactNumbers",
-            "settingsNotifications",
-            "settingsInsights"
-        ].forEach(function (id) {
-
-            const input =
-                document.getElementById(id);
-
-            if (!input) {
-                return;
-            }
-
-            input.addEventListener(
-                "change",
-                saveSettingsFromForm
-            );
-
-        });
-
-    }
-
-
-    function setupTheme() {
-
-        document
-            .querySelectorAll("[data-theme-option]")
-            .forEach(function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        const theme =
-                            button.dataset.themeOption;
-
-                        const settings =
-                            getSettingsFromApp() || {};
-
-                        settings.theme =
-                            theme;
-
-
-                        if (
-                            window.MoneyLeak &&
-                            typeof window.MoneyLeak.saveSettings === "function"
-                        ) {
-
-                            window.MoneyLeak.saveSettings(
-                                settings
-                            );
-
-                        } else {
-
-                            saveFallbackSettings(
-                                settings
-                            );
-
-                        }
-
-
-                        if (
-                            window.MoneyLeak &&
-                            typeof window.MoneyLeak.applySettings === "function"
-                        ) {
-
-                            window.MoneyLeak.applySettings();
-
-                        } else {
-
-                            applyFallbackTheme(theme);
-
-                        }
-
-
-                        updateThemeButtons(theme);
-
-                    }
-                );
-
-            });
-
-    }
-
-
-    function setupDataManagement() {
-
-        const exportButton =
-            document.getElementById(
-                "exportDataButton"
-            );
-
-        const importButton =
-            document.getElementById(
-                "importDataButton"
-            );
-
-        const importFile =
-            document.getElementById(
-                "importDataFile"
-            );
-
-        const resetButton =
-            document.getElementById(
-                "resetDataButton"
-            );
-
-
-        if (exportButton) {
-
-            exportButton.addEventListener(
-                "click",
-                function () {
-
-                    if (
-                        window.MoneyLeak &&
-                        typeof window.MoneyLeak.exportData === "function"
-                    ) {
-
-                        window.MoneyLeak.exportData();
-
-                    } else {
-
-                        const data = {};
-
-                        Object.keys(localStorage)
-                            .filter(function (key) {
-
-                                return key.startsWith(
-                                    "moneyLeak"
-                                );
-
-                            })
-                            .forEach(function (key) {
-
-                                try {
-
-                                    data[key] =
-                                        JSON.parse(
-                                            localStorage.getItem(key)
-                                        );
-
-                                } catch (error) {
-
-                                    data[key] =
-                                        localStorage.getItem(key);
-
-                                }
-
-                            });
-
-
-                        const blob =
-                            new Blob(
-                                [
-                                    JSON.stringify(
-                                        data,
-                                        null,
-                                        2
-                                    )
-                                ],
-                                {
-                                    type:
-                                        "application/json"
-                                }
-                            );
-
-                        const url =
-                            URL.createObjectURL(blob);
-
-                        const link =
-                            document.createElement("a");
-
-                        link.href = url;
-
-                        link.download =
-                            "moneyleak-backup.json";
-
-                        link.click();
-
-                        URL.revokeObjectURL(url);
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        if (importButton && importFile) {
-
-            importButton.addEventListener(
-                "click",
-                function () {
-
-                    importFile.click();
-
-                }
-            );
-
-
-            importFile.addEventListener(
-                "change",
-                function () {
-
-                    const file =
-                        importFile.files &&
-                        importFile.files[0];
-
-                    if (!file) {
-                        return;
-                    }
-
-
-                    if (
-                        window.MoneyLeak &&
-                        typeof window.MoneyLeak.importData === "function"
-                    ) {
-
-                        window.MoneyLeak.importData(
-                            file
-                        );
-
-                    } else {
-
-                        const reader =
-                            new FileReader();
-
-                        reader.onload =
-                            function () {
-
-                                try {
-
-                                    const data =
-                                        JSON.parse(
-                                            reader.result
-                                        );
-
-                                    Object.keys(data)
-                                        .forEach(
-                                            function (key) {
-
-                                                localStorage.setItem(
-                                                    key,
-                                                    JSON.stringify(
-                                                        data[key]
-                                                    )
-                                                );
-
-                                            }
-                                        );
-
-                                    alert(
-                                        "MoneyLeak data imported successfully."
-                                    );
-
-                                    location.reload();
-
-                                } catch (error) {
-
-                                    alert(
-                                        "This backup file could not be imported."
-                                    );
-
-                                }
-
-                            };
-
-                        reader.readAsText(file);
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        if (resetButton) {
-
-            resetButton.addEventListener(
-                "click",
-                function () {
-
-                    const confirmed =
-                        window.confirm(
-                            "Reset MoneyLeak?\n\nThis will permanently delete your saved transactions, goals, budgets, recurring items, notifications, and settings from this browser."
-                        );
-
-                    if (!confirmed) {
-                        return;
-                    }
-
-
-                    if (
-                        window.MoneyLeak &&
-                        typeof window.MoneyLeak.resetData === "function"
-                    ) {
-
-                        window.MoneyLeak.resetData();
-
-                    } else {
-
-                        Object.keys(localStorage)
-                            .filter(function (key) {
-
-                                return key.startsWith(
-                                    "moneyLeak"
-                                );
-
-                            })
-                            .forEach(function (key) {
-
-                                localStorage.removeItem(key);
-
-                            });
-
-                        location.reload();
-
-                    }
-
-                }
-            );
-
-        }
-
-    }
-
-
-    function setupMobileMenu() {
-
-        const button =
-            document.getElementById(
-                "mobileMenuButton"
-            );
-
-        const overlay =
-            document.getElementById(
-                "mobileOverlay"
-            );
-
-        const sidebar =
-            document.getElementById(
-                "sidebar"
-            );
-
-
-        if (!button || !sidebar) {
-            return;
-        }
-
-
-        function closeMenu() {
-
-            sidebar.classList.remove("open");
-
-            if (overlay) {
-                overlay.classList.remove("open");
-            }
-
-        }
-
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                sidebar.classList.toggle(
-                    "open"
-                );
-
-                if (overlay) {
-                    overlay.classList.toggle(
-                        "open"
-                    );
-                }
-
-            }
-        );
-
-
-        if (overlay) {
-
-            overlay.addEventListener(
-                "click",
-                closeMenu
-            );
-
-        }
-
-
-        sidebar
-            .querySelectorAll("a")
-            .forEach(function (link) {
-
-                link.addEventListener(
-                    "click",
-                    closeMenu
-                );
-
-            });
-
-    }
-
-
-    function setupThemeSystemListener() {
-
-        window.addEventListener(
-            "storage",
-            function (event) {
-
-                if (
-                    event.key ===
-                    "moneyLeakSettings"
-                ) {
-
-                    loadSettings();
-
-                }
-
-            }
-        );
-
-    }
-
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-            loadSettings();
-
-            setupProfileForm();
-
-            setupLivePreferences();
-
-            setupTheme();
-
-            setupDataManagement();
-
-            setupMobileMenu();
-
-            setupThemeSystemListener();
-
-        }
-    );
-
-})();
-
-</script>
-
-
-<!-- =========================
-     MAIN APPLICATION ENGINE
-========================== -->
 <script src="./app.js"></script>
 
 </body>
