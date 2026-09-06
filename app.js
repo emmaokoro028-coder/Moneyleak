@@ -2771,47 +2771,129 @@
     }
 
     function setupSearch() {
-    const overlay = document.getElementById("searchOverlay");
-    const input = document.getElementById("globalSearch");
-    const closeButton = document.getElementById("closeSearch");
-    const searchButton = document.getElementById("searchButton");
+    /*
+     * =====================================================
+     * MONEYLEAK UNIVERSAL SEARCH
+     * Independent search system
+     * =====================================================
+     */
 
-    console.log("MoneyLeak search:", {
-        overlay: !!overlay,
-        input: !!input,
-        closeButton: !!closeButton,
-        searchButton: !!searchButton
-    });
+    let overlay = document.getElementById("searchOverlay");
 
+    /*
+     * If the HTML doesn't contain a search overlay,
+     * create one automatically.
+     */
     if (!overlay) {
-        console.error("MoneyLeak: #searchOverlay not found.");
-        return;
+        overlay = document.createElement("div");
+
+        overlay.id = "searchOverlay";
+        overlay.className = "search-overlay";
+
+        overlay.innerHTML = `
+            <div class="search-modal" role="dialog" aria-modal="true">
+
+                <div class="search-modal-header">
+                    <div>
+                        <div class="search-modal-eyebrow">
+                            MONEYLEAK SEARCH
+                        </div>
+
+                        <h2>Search MoneyLeak</h2>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="search-close"
+                        id="closeSearch"
+                        aria-label="Close search"
+                    >
+                        ×
+                    </button>
+                </div>
+
+                <div class="search-input-wrapper">
+                    <span>⌕</span>
+
+                    <input
+                        id="globalSearch"
+                        type="search"
+                        placeholder="Search transactions, pages, goals..."
+                        autocomplete="off"
+                    />
+
+                    <kbd>ESC</kbd>
+                </div>
+
+                <div
+                    id="searchResults"
+                    class="search-results"
+                ></div>
+
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
     }
 
+    const modal =
+        overlay.querySelector(".search-modal");
+
+    const input =
+        document.getElementById("globalSearch");
+
+    const closeButton =
+        document.getElementById("closeSearch");
+
+    const results =
+        document.getElementById("searchResults");
+
+
+    /*
+     * =====================================================
+     * OPEN
+     * =====================================================
+     */
+
     function openSearch() {
+
         overlay.classList.add("open");
         overlay.classList.add("active");
 
-        overlay.setAttribute("aria-hidden", "false");
+        overlay.style.display = "flex";
+
+        overlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
 
         document.body.style.overflow = "hidden";
 
-        if (typeof renderSearchResults === "function") {
-            renderSearchResults("");
-        }
+        renderResults("");
 
         setTimeout(() => {
-            if (input) {
-                input.focus();
-            }
+            input?.focus();
         }, 100);
     }
 
+
+    /*
+     * =====================================================
+     * CLOSE
+     * =====================================================
+     */
+
     function closeSearch() {
+
         overlay.classList.remove("open");
         overlay.classList.remove("active");
 
-        overlay.setAttribute("aria-hidden", "true");
+        overlay.style.display = "none";
+
+        overlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
 
         document.body.style.overflow = "";
 
@@ -2820,85 +2902,788 @@
         }
     }
 
-    if (searchButton) {
-        searchButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
 
-            openSearch();
-        });
-    }
+    /*
+     * =====================================================
+     * NAVIGATION DATA
+     * =====================================================
+     */
 
-    if (closeButton) {
-        closeButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            closeSearch();
-        });
-    }
-
-    overlay.addEventListener("click", function (event) {
-        if (event.target === overlay) {
-            closeSearch();
+    const pages = [
+        {
+            name: "Dashboard",
+            description: "Your financial overview",
+            icon: "⌂",
+            url: "index.html"
+        },
+        {
+            name: "Income",
+            description: "Manage your income",
+            icon: "↗",
+            url: "income.html"
+        },
+        {
+            name: "Expenses",
+            description: "Track your spending",
+            icon: "↘",
+            url: "expenses.html"
+        },
+        {
+            name: "Savings Goals",
+            description: "Manage your savings goals",
+            icon: "◎",
+            url: "savings.html"
+        },
+        {
+            name: "Budgets",
+            description: "Manage monthly budgets",
+            icon: "▣",
+            url: "budgets.html"
+        },
+        {
+            name: "Recurring",
+            description: "Bills and recurring transactions",
+            icon: "↻",
+            url: "recurring.html"
+        },
+        {
+            name: "Analytics",
+            description: "Analyze your finances",
+            icon: "⌁",
+            url: "analytics.html"
+        },
+        {
+            name: "Settings",
+            description: "App preferences",
+            icon: "⚙",
+            url: "settings.html"
         }
-    });
+    ];
 
-    if (input) {
-        input.addEventListener("input", function (event) {
-            const query = event.target.value.trim();
 
-            if (typeof renderSearchResults === "function") {
-                renderSearchResults(query);
+    /*
+     * =====================================================
+     * SEARCH DATA
+     * =====================================================
+     */
+
+    function getTransactions() {
+
+        try {
+
+            const raw =
+                localStorage.getItem(
+                    "moneyLeakTransactions"
+                );
+
+            if (!raw) {
+                return [];
             }
-        });
-    }
 
-    document.addEventListener("keydown", function (event) {
+            const data =
+                JSON.parse(raw);
 
-        if (event.key === "Escape") {
-            if (
-                overlay.classList.contains("open") ||
-                overlay.classList.contains("active")
-            ) {
-                closeSearch();
-            }
-        }
+            return Array.isArray(data)
+                ? data
+                : [];
 
-        if (
-            (event.metaKey || event.ctrlKey) &&
-            event.key.toLowerCase() === "k"
-        ) {
-            event.preventDefault();
+        } catch (error) {
 
-            if (
-                overlay.classList.contains("open") ||
-                overlay.classList.contains("active")
-            ) {
-                closeSearch();
-            } else {
-                openSearch();
-            }
-        }
-
-        const active = document.activeElement;
-
-        const typing =
-            active &&
-            (
-                active.tagName === "INPUT" ||
-                active.tagName === "TEXTAREA" ||
-                active.tagName === "SELECT" ||
-                active.isContentEditable
+            console.error(
+                "MoneyLeak search transaction error:",
+                error
             );
 
-        if (event.key === "/" && !typing) {
-            event.preventDefault();
-            openSearch();
+            return [];
         }
+    }
+
+
+    function getGoals() {
+
+        try {
+
+            const raw =
+                localStorage.getItem(
+                    "moneyLeakSavingsGoals"
+                );
+
+            if (!raw) {
+                return [];
+            }
+
+            const data =
+                JSON.parse(raw);
+
+            return Array.isArray(data)
+                ? data
+                : [];
+
+        } catch (error) {
+
+            return [];
+        }
+    }
+
+
+    /*
+     * =====================================================
+     * RENDER RESULTS
+     * =====================================================
+     */
+
+    function renderResults(query) {
+
+        if (!results) {
+            return;
+        }
+
+        const q =
+            String(query || "")
+                .trim()
+                .toLowerCase();
+
+
+        /*
+         * Empty search
+         */
+
+        if (!q) {
+
+            results.innerHTML = `
+                <div class="search-section">
+
+                    <div class="search-section-title">
+                        QUICK ACCESS
+                    </div>
+
+                    <div class="search-suggestion-grid">
+
+                        ${pages.map(page => `
+                            <button
+                                type="button"
+                                class="search-result-item"
+                                data-search-url="${page.url}"
+                            >
+
+                                <span class="search-result-icon">
+                                    ${page.icon}
+                                </span>
+
+                                <span class="search-result-main">
+
+                                    <span class="search-result-value">
+                                        ${page.name}
+                                    </span>
+
+                                    <small>
+                                        ${page.description}
+                                    </small>
+
+                                </span>
+
+                                <span class="search-result-arrow">
+                                    →
+                                </span>
+
+                            </button>
+                        `).join("")}
+
+                    </div>
+
+                </div>
+            `;
+
+            bindResults();
+
+            return;
+        }
+
+
+        const matches = [];
+
+
+        /*
+         * PAGE SEARCH
+         */
+
+        pages.forEach(page => {
+
+            const text =
+                (
+                    page.name +
+                    " " +
+                    page.description
+                ).toLowerCase();
+
+            if (text.includes(q)) {
+
+                matches.push({
+                    type: "page",
+                    title: page.name,
+                    description: page.description,
+                    icon: page.icon,
+                    url: page.url
+                });
+            }
+        });
+
+
+        /*
+         * TRANSACTION SEARCH
+         */
+
+        const transactions =
+            getTransactions();
+
+        transactions.forEach(transaction => {
+
+            const text =
+                JSON.stringify(
+                    transaction
+                ).toLowerCase();
+
+            if (text.includes(q)) {
+
+                const type =
+                    transaction.type ||
+                    (
+                        transaction.amount < 0
+                            ? "expense"
+                            : "income"
+                    );
+
+                matches.push({
+                    type: "transaction",
+                    title:
+                        transaction.description ||
+                        transaction.note ||
+                        transaction.category ||
+                        "Transaction",
+
+                    description:
+                        `${type} • ${transaction.category || "General"}`,
+
+                    icon:
+                        type === "income"
+                            ? "↗"
+                            : "↘",
+
+                    transaction
+                });
+            }
+        });
+
+
+        /*
+         * SAVINGS GOALS
+         */
+
+        const goals =
+            getGoals();
+
+        goals.forEach(goal => {
+
+            const text =
+                JSON.stringify(
+                    goal
+                ).toLowerCase();
+
+            if (text.includes(q)) {
+
+                matches.push({
+                    type: "goal",
+                    title:
+                        goal.name ||
+                        goal.title ||
+                        "Savings Goal",
+
+                    description:
+                        "Savings goal",
+
+                    icon: "◎"
+                });
+            }
+        });
+
+
+        /*
+         * NO RESULTS
+         */
+
+        if (!matches.length) {
+
+            results.innerHTML = `
+                <div class="search-empty">
+
+                    <div style="
+                        font-size:32px;
+                        margin-bottom:10px;
+                    ">
+                        ⌕
+                    </div>
+
+                    <strong>
+                        No results found
+                    </strong>
+
+                    <div style="
+                        margin-top:6px;
+                    ">
+                        Try another search term.
+                    </div>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        /*
+         * RESULTS
+         */
+
+        results.innerHTML = `
+            <div class="search-section">
+
+                <div class="search-section-title">
+                    SEARCH RESULTS
+                </div>
+
+                ${matches.slice(0, 25).map((item, index) => {
+
+                    if (item.type === "page") {
+
+                        return `
+                            <button
+                                type="button"
+                                class="search-result-item"
+                                data-search-url="${item.url}"
+                            >
+
+                                <span class="search-result-icon">
+                                    ${item.icon}
+                                </span>
+
+                                <span class="search-result-main">
+
+                                    <span class="search-result-value">
+                                        ${escapeSearchHTML(item.title)}
+                                    </span>
+
+                                    <small>
+                                        ${escapeSearchHTML(item.description)}
+                                    </small>
+
+                                </span>
+
+                                <span class="search-result-arrow">
+                                    →
+                                </span>
+
+                            </button>
+                        `;
+                    }
+
+
+                    return `
+                        <div
+                            class="search-result-item"
+                            data-result-index="${index}"
+                        >
+
+                            <span class="search-result-icon">
+                                ${item.icon}
+                            </span>
+
+                            <span class="search-result-main">
+
+                                <span class="search-result-value">
+                                    ${escapeSearchHTML(item.title)}
+                                </span>
+
+                                <small>
+                                    ${escapeSearchHTML(item.description)}
+                                </small>
+
+                            </span>
+
+                        </div>
+                    `;
+
+                }).join("")}
+
+            </div>
+        `;
+
+        bindResults();
+    }
+
+
+    /*
+     * =====================================================
+     * HTML SAFETY
+     * =====================================================
+     */
+
+    function escapeSearchHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /*
+     * =====================================================
+     * RESULT CLICK
+     * =====================================================
+     */
+
+    function bindResults() {
+
+        const links =
+            results.querySelectorAll(
+                "[data-search-url]"
+            );
+
+        links.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const url =
+                        this.getAttribute(
+                            "data-search-url"
+                        );
+
+                    if (url) {
+                        window.location.href =
+                            url;
+                    }
+                }
+            );
+
+        });
+    }
+
+
+    /*
+     * =====================================================
+     * FIND THE SEARCH BUTTON
+     * =====================================================
+     */
+
+    function findSearchButtons() {
+
+        const selectors = [
+            "#searchButton",
+            ".search-trigger",
+            "[data-search]",
+            "[aria-label*='Search']",
+            "[title*='Search']"
+        ];
+
+        const found = [];
+
+        selectors.forEach(selector => {
+
+            document
+                .querySelectorAll(selector)
+                .forEach(element => {
+
+                    if (!found.includes(element)) {
+                        found.push(element);
+                    }
+
+                });
+
+        });
+
+        /*
+         * Also detect a button/link containing
+         * the word "Search".
+         */
+
+        document
+            .querySelectorAll(
+                "button, a"
+            )
+            .forEach(element => {
+
+                const text =
+                    element.textContent
+                        .trim()
+                        .toLowerCase();
+
+                if (
+                    text === "search" ||
+                    text.includes("search")
+                ) {
+
+                    if (!found.includes(element)) {
+                        found.push(element);
+                    }
+                }
+
+            });
+
+        return found;
+    }
+
+
+    /*
+     * =====================================================
+     * CONNECT SEARCH BUTTONS
+     * =====================================================
+     */
+
+    const searchButtons =
+        findSearchButtons();
+
+    searchButtons.forEach(button => {
+
+        if (
+            button.dataset.moneyLeakSearchBound
+        ) {
+            return;
+        }
+
+        button.dataset.moneyLeakSearchBound =
+            "true";
+
+        button.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                openSearch();
+            }
+        );
+
     });
 
-    console.log("MoneyLeak search system ready.");
+
+    /*
+     * =====================================================
+     * CLOSE
+     * =====================================================
+     */
+
+    closeButton?.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeSearch();
+        }
+    );
+
+
+    /*
+     * CLICK OUTSIDE
+     */
+
+    overlay.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target === overlay
+            ) {
+                closeSearch();
+            }
+
+        }
+    );
+
+
+    /*
+     * PREVENT MODAL CLICK FROM CLOSING
+     */
+
+    modal?.addEventListener(
+        "click",
+        function (event) {
+            event.stopPropagation();
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * LIVE SEARCH
+     * =====================================================
+     */
+
+    input?.addEventListener(
+        "input",
+        function () {
+
+            renderResults(
+                input.value
+            );
+
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * KEYBOARD
+     * =====================================================
+     */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            /*
+             * ESC
+             */
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                if (
+                    overlay.classList.contains("open") ||
+                    overlay.classList.contains("active")
+                ) {
+                    closeSearch();
+                }
+
+                return;
+            }
+
+
+            /*
+             * CMD + K
+             * CTRL + K
+             */
+
+            if (
+                (event.metaKey ||
+                    event.ctrlKey) &&
+                event.key.toLowerCase() === "k"
+            ) {
+
+                event.preventDefault();
+
+                if (
+                    overlay.classList.contains("open") ||
+                    overlay.classList.contains("active")
+                ) {
+                    closeSearch();
+                } else {
+                    openSearch();
+                }
+
+                return;
+            }
+
+
+            /*
+             * /
+             */
+
+            const active =
+                document.activeElement;
+
+            const typing =
+                active &&
+                (
+                    active.tagName === "INPUT" ||
+                    active.tagName === "TEXTAREA" ||
+                    active.tagName === "SELECT" ||
+                    active.isContentEditable
+                );
+
+            if (
+                event.key === "/" &&
+                !typing
+            ) {
+
+                event.preventDefault();
+
+                openSearch();
+            }
+
+        }
+    );
+
+
+    /*
+     * =====================================================
+     * FINAL SAFETY BUTTON
+     * =====================================================
+     *
+     * If the existing website has no detectable
+     * search button at all, create a small floating
+     * search button so the feature can ALWAYS open.
+     */
+
+    if (!searchButtons.length) {
+
+        const floating =
+            document.createElement("button");
+
+        floating.type = "button";
+
+        floating.innerHTML = "⌕";
+
+        floating.title =
+            "Search MoneyLeak";
+
+        floating.setAttribute(
+            "aria-label",
+            "Search MoneyLeak"
+        );
+
+        floating.style.cssText = `
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 50px;
+            height: 50px;
+            border: 0;
+            border-radius: 15px;
+            background: #087856;
+            color: white;
+            font-size: 23px;
+            font-weight: 800;
+            cursor: pointer;
+            z-index: 5000;
+            box-shadow: 0 12px 30px rgba(8,120,86,.28);
+        `;
+
+        floating.addEventListener(
+            "click",
+            openSearch
+        );
+
+        document.body.appendChild(
+            floating
+        );
+
+        console.log(
+            "MoneyLeak: fallback search button created."
+        );
+    }
+
+
+    console.log(
+        "MoneyLeak Universal Search Ready."
+    );
 }
 
     /* =====================================================
