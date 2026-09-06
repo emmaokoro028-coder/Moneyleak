@@ -2,22 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MoneyLeak — Dashboard</title>
+    <title>Dashboard — MoneyLeak</title>
 
     <meta
         name="description"
-        content="MoneyLeak personal finance dashboard"
+        content="MoneyLeak personal finance dashboard."
     >
 
-    <link
-        rel="stylesheet"
-        href="./style.css"
-    >
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
@@ -32,10 +26,7 @@
 
         <div class="brand">
 
-            <a
-                href="./index.html"
-                class="brand-link"
-            >
+            <a href="./index.html" class="brand-link">
 
                 <div
                     class="brand-mark"
@@ -165,13 +156,8 @@
             </div>
 
             <div>
-                <strong id="sidebarUserName">
-                    My Money
-                </strong>
-
-                <span>
-                    Personal account
-                </span>
+                <strong>My Money</strong>
+                <span>Personal account</span>
             </div>
 
         </div>
@@ -179,11 +165,13 @@
     </aside>
 
 
+
     <!-- =====================================================
          MAIN
     ====================================================== -->
 
     <main class="main-content">
+
 
         <!-- TOPBAR -->
 
@@ -212,11 +200,13 @@
                 <button
                     type="button"
                     class="topbar-search"
-                    id="openSearch"
+                    id="searchButton"
+                    data-search
+                    aria-label="Search MoneyLeak"
                 >
                     <span>⌕</span>
                     Search MoneyLeak
-                    <kbd>⌘K</kbd>
+                    <kbd>⌘ K</kbd>
                 </button>
 
 
@@ -234,6 +224,7 @@
                     >
                         0
                     </span>
+
                 </button>
 
             </div>
@@ -241,16 +232,15 @@
         </header>
 
 
-        <!-- =================================================
+
+        <!-- =====================================================
              PAGE
-        ================================================== -->
+        ====================================================== -->
 
-        <section class="page-content dashboard-v2">
+        <section class="page-content">
 
 
-            <!-- =================================================
-                 HERO
-            ================================================== -->
+            <!-- HERO -->
 
             <section class="dashboard-hero">
 
@@ -260,15 +250,16 @@
                         PERSONAL FINANCE OS
                     </div>
 
-                    <h1 id="greeting">
-                        Good morning.
+                    <h1>
+                        Good morning,
+                        <span id="dashboardGreetingName">
+                            MoneyLeak User
+                        </span>.
                     </h1>
 
                     <p>
-                        Your money at a glance.
-                        See what is happening,
-                        what needs attention,
-                        and where you're heading.
+                        Your money at a glance. See what's happening,
+                        what needs attention, and where you're heading.
                     </p>
 
                 </div>
@@ -295,9 +286,10 @@
             </section>
 
 
-            <!-- =================================================
-                 CORE METRICS
-            ================================================== -->
+
+            <!-- =====================================================
+                 FINANCIAL METRICS
+            ====================================================== -->
 
             <section class="dashboard-metrics">
 
@@ -307,7 +299,7 @@
                 <article class="dashboard-metric">
 
                     <div class="dashboard-metric-icon">
-                        ₦
+                        ◉
                     </div>
 
                     <div class="dashboard-metric-label">
@@ -321,11 +313,8 @@
                         ₦0
                     </div>
 
-                    <div
-                        class="dashboard-metric-meta"
-                        id="periodCashFlow"
-                    >
-                        Current month cash flow
+                    <div class="dashboard-metric-meta">
+                        Current cash flow
                     </div>
 
                 </article>
@@ -350,10 +339,7 @@
                         ₦0
                     </div>
 
-                    <div
-                        class="dashboard-metric-meta positive"
-                        id="periodIncome"
-                    >
+                    <div class="dashboard-metric-meta">
                         This month
                     </div>
 
@@ -379,10 +365,7 @@
                         ₦0
                     </div>
 
-                    <div
-                        class="dashboard-metric-meta negative"
-                        id="periodExpenses"
-                    >
+                    <div class="dashboard-metric-meta">
                         This month
                     </div>
 
@@ -394,7 +377,7 @@
                 <article class="dashboard-metric">
 
                     <div class="dashboard-metric-icon">
-                        %
+                        ✦
                     </div>
 
                     <div class="dashboard-metric-label">
@@ -409,7 +392,7 @@
                     </div>
 
                     <div class="dashboard-metric-meta">
-                        Amount you're keeping
+                        Money kept this month
                     </div>
 
                 </article>
@@ -417,9 +400,10 @@
             </section>
 
 
-            <!-- =================================================
-                 CASH FLOW + MONEYLEAK SCORE
-            ================================================== -->
+
+            <!-- =====================================================
+                 MAIN DASHBOARD GRID
+            ====================================================== -->
 
             <section class="dashboard-main-grid">
 
@@ -444,7 +428,7 @@
 
                         <a
                             href="./analytics.html"
-                            class="text-link"
+                            class="panel-action"
                         >
                             View analytics →
                         </a>
@@ -452,49 +436,54 @@
                     </div>
 
 
-                    <div
-                        class="cash-flow-visual"
-                        id="dashboardCashFlowChart"
-                    >
+                    <div class="cash-flow-summary">
+
+                        <div>
+                            <span>Income</span>
+
+                            <strong id="periodIncome">
+                                ₦0
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>Expenses</span>
+
+                            <strong id="periodExpenses">
+                                ₦0
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>Cash flow</span>
+
+                            <strong id="periodCashFlow">
+                                ₦0
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="cash-flow-visual">
 
                         <div class="cash-flow-bar-group">
 
                             <div
-                                class="cash-flow-bar"
-                                style="height:28%"
+                                class="cash-flow-bar income"
+                                style="height:70%"
                             ></div>
-
-                            <div class="cash-flow-label">
-                                W1
-                            </div>
-
-                        </div>
-
-
-                        <div class="cash-flow-bar-group">
-
-                            <div
-                                class="cash-flow-bar"
-                                style="height:42%"
-                            ></div>
-
-                            <div class="cash-flow-label">
-                                W2
-                            </div>
-
-                        </div>
-
-
-                        <div class="cash-flow-bar-group">
 
                             <div
                                 class="cash-flow-bar expense"
-                                style="height:24%"
+                                style="height:38%"
                             ></div>
 
-                            <div class="cash-flow-label">
-                                W3
-                            </div>
+                            <span class="cash-flow-label">
+                                W1
+                            </span>
 
                         </div>
 
@@ -502,13 +491,56 @@
                         <div class="cash-flow-bar-group">
 
                             <div
-                                class="cash-flow-bar"
-                                style="height:52%"
+                                class="cash-flow-bar income"
+                                style="height:84%"
                             ></div>
 
-                            <div class="cash-flow-label">
+                            <div
+                                class="cash-flow-bar expense"
+                                style="height:50%"
+                            ></div>
+
+                            <span class="cash-flow-label">
+                                W2
+                            </span>
+
+                        </div>
+
+
+                        <div class="cash-flow-bar-group">
+
+                            <div
+                                class="cash-flow-bar income"
+                                style="height:58%"
+                            ></div>
+
+                            <div
+                                class="cash-flow-bar expense"
+                                style="height:32%"
+                            ></div>
+
+                            <span class="cash-flow-label">
+                                W3
+                            </span>
+
+                        </div>
+
+
+                        <div class="cash-flow-bar-group">
+
+                            <div
+                                class="cash-flow-bar income"
+                                style="height:96%"
+                            ></div>
+
+                            <div
+                                class="cash-flow-bar expense"
+                                style="height:56%"
+                            ></div>
+
+                            <span class="cash-flow-label">
                                 W4
-                            </div>
+                            </span>
 
                         </div>
 
@@ -517,29 +549,23 @@
 
                     <div class="chart-legend">
 
-                        <div class="chart-legend-item">
-
-                            <span class="chart-legend-dot"></span>
-
+                        <span>
+                            <i class="legend-dot income"></i>
                             Income
+                        </span>
 
-                        </div>
-
-
-                        <div class="chart-legend-item">
-
-                            <span class="chart-legend-dot expense"></span>
-
+                        <span>
+                            <i class="legend-dot expense"></i>
                             Expenses
-
-                        </div>
+                        </span>
 
                     </div>
 
                 </article>
 
 
-                <!-- MONEYLEAK SCORE -->
+
+                <!-- MONEY SCORE -->
 
                 <article class="dashboard-panel">
 
@@ -560,196 +586,72 @@
                     </div>
 
 
-                    <div class="money-leak-score">
+                    <div class="score-layout">
 
-                        <div
-                            class="money-leak-score-ring"
-                            id="moneyLeakScoreRing"
-                            style="--score:0%"
-                        >
+                        <div class="score-ring">
 
-                            <div class="money-leak-score-number">
-
-                                <strong
-                                    id="moneyLeakScore"
-                                >
-                                    0
-                                </strong>
-
-                                <span>
-                                    / 100
-                                </span>
-
+                            <div
+                                class="score-ring-value"
+                                id="healthScore"
+                            >
+                                0
                             </div>
+
+                            <span>
+                                / 100
+                            </span>
 
                         </div>
 
 
-                        <div class="money-leak-score-copy">
+                        <div class="score-copy">
 
-                            <strong
-                                id="moneyLeakGrade"
-                            >
+                            <strong id="overviewHealthStatus">
                                 Building
                             </strong>
 
-                            <p
-                                id="moneyLeakScoreMessage"
-                            >
-                                Add financial activity to receive
-                                your personalized MoneyLeak Score.
+                            <p id="healthMessage">
+                                Add your financial information
+                                to calculate your score.
                             </p>
 
-                        </div>
+                            <div class="score-factors">
 
-                    </div>
+                                <div>
+                                    <span>Spending</span>
 
-                </article>
+                                    <b id="healthIncomeFactor">
+                                        0
+                                    </b>
+                                </div>
 
-            </section>
+                                <div>
+                                    <span>Budget</span>
 
+                                    <b id="healthBudgetFactor">
+                                        0
+                                    </b>
+                                </div>
 
-            <!-- =================================================
-                 SMART COACH
-            ================================================== -->
+                                <div>
+                                    <span>Savings</span>
 
-            <section class="smart-coach">
+                                    <b id="healthSavingsFactor">
+                                        0
+                                    </b>
+                                </div>
 
-                <div class="smart-coach-header">
+                                <div>
+                                    <span>Recurring</span>
 
-                    <div class="smart-coach-icon">
-                        ✦
-                    </div>
+                                    <b id="healthRecurringFactor">
+                                        0
+                                    </b>
+                                </div>
 
-                    <div>
-
-                        <div class="smart-coach-label">
-                            Money Coach
-                        </div>
-
-                        <h2>
-                            Your next best move
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div class="smart-coach-body">
-
-                    <strong
-                        id="overviewInsightTitle"
-                    >
-                        Your financial picture
-                    </strong>
-
-                    <p
-                        id="overviewInsightText"
-                    >
-                        Add income and expenses to let MoneyLeak
-                        analyze your financial position.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <br>
-
-
-            <!-- =================================================
-                 SAFE TO SPEND + HEALTH
-            ================================================== -->
-
-            <section class="dashboard-main-grid">
-
-
-                <!-- SAFE TO SPEND -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                Safe to spend
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                A daily spending guide
                             </div>
 
                         </div>
-
-                    </div>
-
-
-                    <div class="dashboard-budget-summary">
-
-                        <div>
-
-                            <div
-                                class="dashboard-budget-percent"
-                                id="safeToSpendDashboard"
-                            >
-                                ₦0
-                            </div>
-
-                            <div class="dashboard-budget-label">
-                                per day
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <p
-                        id="safeToSpendMessage"
-                        class="muted"
-                    >
-                        Add your income and expenses
-                        to calculate this.
-                    </p>
-
-                    <p
-                        id="safeToSpendAdvice"
-                        class="muted"
-                    >
-                        Use this as a guide rather than
-                        a permission to spend.
-                    </p>
-
-                </article>
-
-
-                <!-- FINANCIAL HEALTH -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                Financial health
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                Your current financial score
-                            </div>
-
-                        </div>
-
-                        <strong
-                            id="overviewHealthScore"
-                            class="dashboard-health-score"
-                        >
-                            0
-                        </strong>
 
                     </div>
 
@@ -764,45 +666,19 @@
 
                     </div>
 
-
-                    <div class="dashboard-health-meta">
-
-                        <strong
-                            id="overviewHealthStatus"
-                        >
-                            Building
-                        </strong>
-
-                        <span
-                            id="healthMessage"
-                        >
-                            Add financial activity to begin.
-                        </span>
-
-                    </div>
-
-
                     <p
+                        class="panel-note"
                         id="healthExplanation"
-                        class="muted"
                     >
-                        MoneyLeak will explain
-                        what is helping or hurting your score.
+                        MoneyLeak will explain your score as
+                        your financial data grows.
                     </p>
 
                 </article>
 
-            </section>
 
 
-            <!-- =================================================
-                 BUDGET + CATEGORIES
-            ================================================== -->
-
-            <section class="dashboard-main-grid">
-
-
-                <!-- BUDGET -->
+                <!-- MONEY COACH -->
 
                 <article class="dashboard-panel">
 
@@ -811,52 +687,140 @@
                         <div>
 
                             <div class="dashboard-panel-title">
-                                Monthly budget
+                                Money Coach
                             </div>
 
                             <div class="dashboard-panel-subtitle">
-                                How much of your plan you've used
+                                Your next best move
                             </div>
 
                         </div>
 
-                        <a
-                            href="./budgets.html"
-                            class="text-link"
-                        >
-                            Manage →
-                        </a>
-
                     </div>
 
 
-                    <div class="dashboard-budget-summary">
+                    <div class="smart-coach">
+
+                        <div class="smart-coach-icon">
+                            ✦
+                        </div>
 
                         <div>
 
-                            <div
-                                class="dashboard-budget-percent"
-                                id="dashboardBudgetPercent"
-                            >
-                                0%
-                            </div>
+                            <strong id="overviewInsightTitle">
+                                Your financial insight
+                            </strong>
 
-                            <div class="dashboard-budget-label">
-                                used
-                            </div>
+                            <p id="overviewInsightText">
+                                Add income and expenses to let
+                                MoneyLeak understand your habits.
+                            </p>
 
-                        </div>
-
-
-                        <div
-                            class="dashboard-budget-amount"
-                            id="dashboardBudgetLimit"
-                        >
-                            ₦0
                         </div>
 
                     </div>
 
+
+                    <a
+                        href="./savings.html"
+                        class="button button-primary coach-button"
+                    >
+                        View savings goals
+                    </a>
+
+                </article>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 SECONDARY METRICS
+            ====================================================== -->
+
+            <section class="dashboard-metrics dashboard-metrics-small">
+
+
+                <!-- SAFE TO SPEND -->
+
+                <article class="dashboard-metric">
+
+                    <div class="dashboard-metric-label">
+                        Safe to spend
+                    </div>
+
+                    <div
+                        class="dashboard-metric-value"
+                        id="safeToSpendDashboard"
+                    >
+                        ₦0
+                    </div>
+
+                    <div
+                        class="dashboard-metric-meta"
+                        id="safeToSpendMessage"
+                    >
+                        Daily spending guide
+                    </div>
+
+                    <p
+                        class="metric-advice"
+                        id="safeToSpendAdvice"
+                    ></p>
+
+                </article>
+
+
+                <!-- FINANCIAL HEALTH -->
+
+                <article class="dashboard-metric">
+
+                    <div class="dashboard-metric-label">
+                        Financial health
+                    </div>
+
+                    <div
+                        class="dashboard-metric-value"
+                        id="overviewHealthScore"
+                    >
+                        0
+                    </div>
+
+                    <div class="dashboard-metric-meta">
+                        Current financial score
+                    </div>
+
+                </article>
+
+
+                <!-- MONTHLY BUDGET -->
+
+                <article class="dashboard-metric">
+
+                    <div class="dashboard-metric-label">
+                        Monthly budget
+                    </div>
+
+                    <div
+                        class="dashboard-metric-value"
+                        id="dashboardBudgetPercent"
+                    >
+                        0%
+                    </div>
+
+                    <div class="dashboard-metric-meta">
+
+                        <span id="dashboardBudgetSpent">
+                            ₦0
+                        </span>
+
+                        /
+
+                        <span id="dashboardBudgetLimit">
+                            ₦0
+                        </span>
+
+                    </div>
 
                     <div class="progress-track">
 
@@ -868,37 +832,105 @@
 
                     </div>
 
+                    <small id="dashboardBudgetRemaining">
+                        ₦0 remaining
+                    </small>
 
-                    <div class="dashboard-health-meta">
+                </article>
 
-                        <span>
-                            Spent
-                        </span>
 
-                        <strong
-                            id="dashboardBudgetSpent"
-                        >
-                            ₦0
-                        </strong>
+                <!-- GOAL PROGRESS -->
 
+                <article class="dashboard-metric">
+
+                    <div class="dashboard-metric-label">
+                        Goal progress
                     </div>
 
+                    <div
+                        class="dashboard-metric-value"
+                        id="overviewGoalProgress"
+                    >
+                        0%
+                    </div>
 
-                    <div class="dashboard-health-meta">
+                    <div class="dashboard-metric-meta">
+                        Across your savings goals
+                    </div>
 
-                        <span>
-                            Remaining
-                        </span>
+                    <div class="progress-track">
 
-                        <strong
-                            id="dashboardBudgetRemaining"
-                        >
-                            ₦0
-                        </strong>
+                        <div
+                            class="progress-fill"
+                            id="overviewGoalFill"
+                            style="width:0%"
+                        ></div>
 
                     </div>
 
                 </article>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 GOALS + TOP CATEGORIES
+            ====================================================== -->
+
+            <section class="dashboard-main-grid">
+
+
+                <!-- SAVINGS GOALS -->
+
+                <article class="dashboard-panel">
+
+                    <div class="dashboard-panel-header">
+
+                        <div>
+
+                            <div class="dashboard-panel-title">
+                                Savings goals
+                            </div>
+
+                            <div class="dashboard-panel-subtitle">
+                                Keep your biggest goals visible.
+                            </div>
+
+                        </div>
+
+                        <a
+                            href="./savings.html"
+                            class="panel-action"
+                        >
+                            View all →
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        id="dashboardGoals"
+                        class="goals-grid"
+                    >
+
+                        <div class="empty-state">
+
+                            <strong>
+                                No savings goals yet
+                            </strong>
+
+                            <p>
+                                Create your first goal to start
+                                building toward something meaningful.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
 
 
                 <!-- TOP CATEGORIES -->
@@ -910,20 +942,20 @@
                         <div>
 
                             <div class="dashboard-panel-title">
-                                Spending leaks
+                                Top spending categories
                             </div>
 
                             <div class="dashboard-panel-subtitle">
-                                Your biggest spending categories
+                                Your biggest spending areas.
                             </div>
 
                         </div>
 
                         <a
                             href="./expenses.html"
-                            class="text-link"
+                            class="panel-action"
                         >
-                            View all →
+                            See expenses →
                         </a>
 
                     </div>
@@ -931,6 +963,7 @@
 
                     <div
                         id="topSpendingCategories"
+                        class="category-list"
                     >
 
                         <div class="empty-state">
@@ -940,8 +973,7 @@
                             </strong>
 
                             <p>
-                                Add expenses to see
-                                your biggest categories.
+                                Your biggest categories will appear here.
                             </p>
 
                         </div>
@@ -953,217 +985,75 @@
             </section>
 
 
-            <!-- =================================================
-                 GOALS
-            ================================================== -->
 
-            <article class="dashboard-panel">
+            <!-- =====================================================
+                 RECENT TRANSACTIONS
+            ====================================================== -->
+
+            <section class="dashboard-panel">
 
                 <div class="dashboard-panel-header">
 
                     <div>
 
                         <div class="dashboard-panel-title">
-                            Savings goals
+                            Recent transactions
                         </div>
 
                         <div class="dashboard-panel-subtitle">
-                            Keep moving toward what matters
+                            Your latest financial activity.
                         </div>
 
                     </div>
 
                     <a
-                        href="./savings.html"
-                        class="text-link"
+                        href="./expenses.html"
+                        class="panel-action"
                     >
-                        Manage goals →
+                        View expenses →
                     </a>
 
                 </div>
 
 
-                <div
-                    class="dashboard-goals-grid"
-                    id="dashboardGoals"
-                >
+                <div id="recentTransactions">
 
                     <div class="empty-state">
 
                         <strong>
-                            No savings goals yet
+                            No transactions yet
                         </strong>
 
                         <p>
-                            Create a goal to start
-                            building toward something meaningful.
+                            Your latest income and expenses
+                            will appear here.
                         </p>
 
                     </div>
 
                 </div>
 
-
-                <div
-                    class="dashboard-goal-summary"
-                >
-
-                    <span>
-                        Overall goal progress
-                    </span>
-
-                    <strong
-                        id="overviewGoalProgress"
-                    >
-                        0%
-                    </strong>
-
-                </div>
-
-
-                <div class="progress-track">
-
-                    <div
-                        class="progress-fill"
-                        id="overviewGoalFill"
-                        style="width:0%"
-                    ></div>
-
-                </div>
-
-            </article>
-
-
-            <br>
-
-
-            <!-- =================================================
-                 RECENT TRANSACTIONS + ALERTS
-            ================================================== -->
-
-            <section class="dashboard-main-grid">
-
-
-                <!-- TRANSACTIONS -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                Recent transactions
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                Your latest money activity
-                            </div>
-
-                        </div>
-
-                        <a
-                            href="./expenses.html"
-                            class="text-link"
-                        >
-                            View all →
-                        </a>
-
-                    </div>
-
-
-                    <div
-                        id="recentTransactions"
-                    >
-
-                        <div class="empty-state">
-
-                            <strong>
-                                No transactions yet
-                            </strong>
-
-                            <p>
-                                Your latest income and
-                                expenses will appear here.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <!-- ALERTS -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                Financial alerts
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                Things worth your attention
-                            </div>
-
-                        </div>
-
-                        <button
-                            type="button"
-                            class="text-button"
-                            id="openNotifications"
-                        >
-                            See all
-                        </button>
-
-                    </div>
-
-
-                    <div
-                        id="financialAlerts"
-                    >
-
-                        <div class="empty-state">
-
-                            <strong>
-                                Everything looks good
-                            </strong>
-
-                            <p>
-                                MoneyLeak will show useful
-                                alerts here when something
-                                needs your attention.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
             </section>
 
 
-            <!-- =================================================
-                 HEALTH FACTORS
-            ================================================== -->
 
-            <article class="dashboard-panel">
+            <!-- =====================================================
+                 ALERTS
+            ====================================================== -->
+
+            <section class="dashboard-panel">
 
                 <div class="dashboard-panel-header">
 
                     <div>
 
                         <div class="dashboard-panel-title">
-                            Financial health breakdown
+                            Smart alerts
                         </div>
 
                         <div class="dashboard-panel-subtitle">
-                            What is driving your score
+                            MoneyLeak will highlight things
+                            that deserve your attention.
                         </div>
 
                     </div>
@@ -1171,160 +1061,59 @@
                 </div>
 
 
-                <div class="health-factor-list">
+                <div
+                    id="financialAlerts"
+                    class="alert-list"
+                >
 
+                    <div class="empty-state">
 
-                    <div class="health-factor">
+                        <strong>
+                            You're all caught up
+                        </strong>
 
-                        <div class="health-factor-header">
-
-                            <span>
-                                Spending
-                            </span>
-
-                            <strong
-                                id="healthIncomeFactor"
-                            >
-                                0
-                            </strong>
-
-                        </div>
-
-                        <div class="progress-track">
-
-                            <div
-                                class="progress-fill"
-                                id="healthIncomeBar"
-                                style="width:0%"
-                            ></div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="health-factor">
-
-                        <div class="health-factor-header">
-
-                            <span>
-                                Budget
-                            </span>
-
-                            <strong
-                                id="healthBudgetFactor"
-                            >
-                                0
-                            </strong>
-
-                        </div>
-
-                        <div class="progress-track">
-
-                            <div
-                                class="progress-fill"
-                                id="healthBudgetBar"
-                                style="width:0%"
-                            ></div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="health-factor">
-
-                        <div class="health-factor-header">
-
-                            <span>
-                                Savings
-                            </span>
-
-                            <strong
-                                id="healthSavingsFactor"
-                            >
-                                0
-                            </strong>
-
-                        </div>
-
-                        <div class="progress-track">
-
-                            <div
-                                class="progress-fill"
-                                id="healthSavingsBar"
-                                style="width:0%"
-                            ></div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="health-factor">
-
-                        <div class="health-factor-header">
-
-                            <span>
-                                Recurring commitments
-                            </span>
-
-                            <strong
-                                id="healthRecurringFactor"
-                            >
-                                0
-                            </strong>
-
-                        </div>
-
-                        <div class="progress-track">
-
-                            <div
-                                class="progress-fill"
-                                id="healthRecurringBar"
-                                style="width:0%"
-                            ></div>
-
-                        </div>
+                        <p>
+                            MoneyLeak will show important
+                            financial alerts here.
+                        </p>
 
                     </div>
 
                 </div>
 
-            </article>
+            </section>
 
+
+
+            <!-- FOOTER -->
+
+            <footer class="page-footer">
+
+                <strong>
+                    MoneyLeak
+                </strong>
+
+                <span>
+                    Your money. A better future.
+                </span>
+
+            </footer>
 
         </section>
-
-
-        <!-- =====================================================
-             FOOTER
-        ====================================================== -->
-
-        <footer class="app-footer">
-
-            <span>
-                MoneyLeak
-            </span>
-
-            <span>
-                Personal Finance OS
-            </span>
-
-        </footer>
 
     </main>
 
 </div>
 
 
+
 <!-- =========================================================
-     SEARCH OVERLAY
-========================================================= -->
+     SEARCH
+========================================================== -->
 
 <div
-    class="search-overlay"
     id="searchOverlay"
+    class="search-overlay"
     aria-hidden="true"
 >
 
@@ -1334,21 +1123,20 @@
 
             <div>
 
-                <div class="search-modal-eyebrow">
-                    MONEYLEAK
-                </div>
-
                 <strong>
-                    Search
+                    Search MoneyLeak
                 </strong>
+
+                <span>
+                    Find pages, transactions and goals.
+                </span>
 
             </div>
 
-
             <button
                 type="button"
-                class="search-close"
                 id="closeSearch"
+                class="search-close"
                 aria-label="Close search"
             >
                 ×
@@ -1357,16 +1145,14 @@
         </div>
 
 
-        <div class="search-input-wrapper">
+        <div class="search-input-wrap">
 
-            <span>
-                ⌕
-            </span>
+            <span>⌕</span>
 
             <input
+                id="globalSearch"
                 type="search"
-                id="globalSearchInput"
-                placeholder="Search pages, actions, transactions..."
+                placeholder="Search anything..."
                 autocomplete="off"
             >
 
@@ -1374,69 +1160,45 @@
 
 
         <div
-            class="search-results"
             id="searchResults"
-        >
-
-            <div class="search-empty">
-
-                <strong>
-                    Search MoneyLeak
-                </strong>
-
-                <span>
-                    Find pages and actions instantly.
-                </span>
-
-            </div>
-
-        </div>
+            class="search-results"
+        ></div>
 
     </div>
 
 </div>
 
 
+
 <!-- =========================================================
-     NOTIFICATION PANEL
-========================================================= -->
+     NOTIFICATIONS
+========================================================== -->
 
 <div
-    class="notification-panel"
-    id="notificationPanel"
+    id="notificationCenter"
+    class="notification-center"
     aria-hidden="true"
 >
 
-    <div class="notification-panel-header">
+    <div class="notification-center-header">
 
         <div>
 
-            <div class="notification-heading">
-                MoneyLeak
-            </div>
+            <strong>
+                Notifications
+            </strong>
 
-            <div class="notification-title-row">
-
-                <strong>
-                    Notifications
-                </strong>
-
-                <span
-                    class="notification-unread-badge"
-                    id="notificationUnreadCount"
-                >
-                    0
-                </span>
-
-            </div>
+            <span>
+                MoneyLeak intelligence
+            </span>
 
         </div>
 
 
         <button
             type="button"
-            class="notification-close"
             id="closeNotifications"
+            aria-label="Close notifications"
         >
             ×
         </button>
@@ -1444,865 +1206,57 @@
     </div>
 
 
-    <div class="notification-toolbar">
+    <div class="notification-tabs">
 
-        <div class="notification-tabs">
+        <button
+            type="button"
+            class="notification-tab active"
+            data-notification-tab="all"
+        >
+            All
+        </button>
 
-            <button
-                type="button"
-                class="notification-tab active"
-                data-notification-tab="all"
-            >
-                All
-            </button>
-
-            <button
-                type="button"
-                class="notification-tab"
-                data-notification-tab="unread"
-            >
-                Unread
-            </button>
-
-        </div>
-
-
-        <div class="notification-actions">
-
-            <button
-                type="button"
-                class="notification-action"
-                id="markNotificationsRead"
-            >
-                Mark read
-            </button>
-
-            <button
-                type="button"
-                class="notification-action"
-                id="clearNotifications"
-            >
-                Clear
-            </button>
-
-        </div>
+        <button
+            type="button"
+            class="notification-tab"
+            data-notification-tab="unread"
+        >
+            Unread
+        </button>
 
     </div>
 
 
     <div
-        class="notification-list"
         id="notificationList"
+        class="notification-list"
     ></div>
+
+
+    <button
+        type="button"
+        id="clearNotifications"
+        class="button button-secondary notification-clear"
+    >
+        Clear notifications
+    </button>
 
 </div>
 
 
-<!-- =========================================================
-     MOBILE NAV BACKDROP
-========================================================= -->
+
+<!-- MOBILE BACKDROP -->
 
 <div
-    class="mobile-menu-backdrop"
-    id="mobileMenuBackdrop"
+    id="mobileBackdrop"
+    class="mobile-backdrop"
 ></div>
 
 
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
 
-<script
-    src="./app.js"
-    defer
-></script>
+<!-- JAVASCRIPT -->
 
-<script>
-(function () {
-
-    /* =====================================================
-       MONEYLEAK DASHBOARD INTELLIGENCE
-    ===================================================== */
-
-    const TRANSACTION_KEY = "moneyLeakTransactions";
-
-    function getTransactions() {
-
-        try {
-
-            const raw =
-                localStorage.getItem(
-                    TRANSACTION_KEY
-                );
-
-            if (!raw) {
-                return [];
-            }
-
-            const data =
-                JSON.parse(raw);
-
-            return Array.isArray(data)
-                ? data
-                : [];
-
-        } catch (error) {
-
-            console.warn(
-                "MoneyLeak dashboard data error:",
-                error
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    function amount(transaction) {
-
-        return Math.abs(
-            Number(
-                transaction.amount ??
-                transaction.value ??
-                transaction.total ??
-                0
-            )
-        ) || 0;
-
-    }
-
-
-    function transactionType(transaction) {
-
-        return String(
-            transaction.type ??
-            transaction.kind ??
-            transaction.transactionType ??
-            ""
-        ).toLowerCase();
-
-    }
-
-
-    function transactionDate(transaction) {
-
-        const value =
-            transaction.date ??
-            transaction.createdAt ??
-            transaction.created ??
-            transaction.timestamp;
-
-        const date =
-            new Date(value);
-
-        return Number.isNaN(
-            date.getTime()
-        )
-            ? null
-            : date;
-
-    }
-
-
-    function isIncome(transaction) {
-
-        const type =
-            transactionType(
-                transaction
-            );
-
-        return (
-            type === "income" ||
-            type === "credit" ||
-            type === "deposit" ||
-            transaction.income === true
-        );
-
-    }
-
-
-    function isExpense(transaction) {
-
-        const type =
-            transactionType(
-                transaction
-            );
-
-        return (
-            type === "expense" ||
-            type === "debit" ||
-            type === "spending" ||
-            transaction.income === false
-        );
-
-    }
-
-
-    /* =====================================================
-       MONEY LEAK SCORE
-    ===================================================== */
-
-    function calculateMoneyLeakScore() {
-
-        const transactions =
-            getTransactions();
-
-        if (!transactions.length) {
-
-            return {
-                score: 0,
-                grade: "Getting started",
-                message:
-                    "Add income and expenses to unlock your personalized MoneyLeak Score."
-            };
-
-        }
-
-
-        const now =
-            new Date();
-
-
-        const monthStart =
-            new Date(
-                now.getFullYear(),
-                now.getMonth(),
-                1
-            );
-
-
-        const monthTransactions =
-            transactions.filter(
-                transaction => {
-
-                    const date =
-                        transactionDate(
-                            transaction
-                        );
-
-                    return (
-                        date &&
-                        date >= monthStart &&
-                        date <= now
-                    );
-
-                }
-            );
-
-
-        let income = 0;
-        let expenses = 0;
-
-
-        monthTransactions.forEach(
-            transaction => {
-
-                if (
-                    isIncome(
-                        transaction
-                    )
-                ) {
-
-                    income +=
-                        amount(
-                            transaction
-                        );
-
-                }
-
-
-                if (
-                    isExpense(
-                        transaction
-                    )
-                ) {
-
-                    expenses +=
-                        amount(
-                            transaction
-                        );
-
-                }
-
-            }
-        );
-
-
-        /*
-         * If there isn't enough current-month
-         * data, use all available data.
-         */
-
-        if (
-            income === 0 &&
-            expenses === 0
-        ) {
-
-            transactions.forEach(
-                transaction => {
-
-                    if (
-                        isIncome(
-                            transaction
-                        )
-                    ) {
-
-                        income +=
-                            amount(
-                                transaction
-                            );
-
-                    }
-
-
-                    if (
-                        isExpense(
-                            transaction
-                        )
-                    ) {
-
-                        expenses +=
-                            amount(
-                                transaction
-                            );
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        let score = 50;
-
-
-        /* Savings behavior */
-
-        if (income > 0) {
-
-            const savingsRate =
-                (
-                    (income - expenses) /
-                    income
-                ) * 100;
-
-
-            if (
-                savingsRate >= 30
-            ) {
-
-                score += 25;
-
-            } else if (
-                savingsRate >= 20
-            ) {
-
-                score += 18;
-
-            } else if (
-                savingsRate >= 10
-            ) {
-
-                score += 10;
-
-            } else if (
-                savingsRate > 0
-            ) {
-
-                score += 4;
-
-            } else {
-
-                score -= 15;
-
-            }
-
-        }
-
-
-        /* Expense pressure */
-
-        if (
-            income > 0 &&
-            expenses > income
-        ) {
-
-            score -= 20;
-
-        } else if (
-            income > 0 &&
-            expenses >
-                income * 0.8
-        ) {
-
-            score -= 12;
-
-        } else if (
-            income > 0 &&
-            expenses <
-                income * 0.5
-        ) {
-
-            score += 10;
-
-        }
-
-
-        /* Activity bonus */
-
-        if (
-            monthTransactions.length >= 5
-        ) {
-
-            score += 5;
-
-        }
-
-
-        score =
-            Math.max(
-                0,
-                Math.min(
-                    100,
-                    Math.round(score)
-                )
-            );
-
-
-        let grade;
-        let message;
-
-
-        if (
-            score >= 85
-        ) {
-
-            grade = "Excellent";
-
-            message =
-                "Your money habits are looking strong. Keep protecting your savings rate and avoid unnecessary spending.";
-
-        } else if (
-            score >= 70
-        ) {
-
-            grade = "Healthy";
-
-            message =
-                "You're building a healthy financial position. A little more control over spending could push your score higher.";
-
-        } else if (
-            score >= 50
-        ) {
-
-            grade = "Building";
-
-            message =
-                "You're on the way. Focus on keeping expenses below income and consistently putting money aside.";
-
-        } else if (
-            score >= 30
-        ) {
-
-            grade = "Needs attention";
-
-            message =
-                "Your spending is putting pressure on your finances. Start by identifying the biggest leaks this month.";
-
-        } else {
-
-            grade = "Critical";
-
-            message =
-                "Your expenses are currently putting significant pressure on your money. Focus on essential spending first.";
-
-        }
-
-
-        return {
-            score,
-            grade,
-            message
-        };
-
-    }
-
-
-    function updateMoneyLeakScore() {
-
-        const result =
-            calculateMoneyLeakScore();
-
-
-        const scoreElement =
-            document.getElementById(
-                "moneyLeakScore"
-            );
-
-        const gradeElement =
-            document.getElementById(
-                "moneyLeakGrade"
-            );
-
-        const messageElement =
-            document.getElementById(
-                "moneyLeakScoreMessage"
-            );
-
-        const ring =
-            document.getElementById(
-                "moneyLeakScoreRing"
-            );
-
-
-        if (scoreElement) {
-
-            scoreElement.textContent =
-                result.score;
-
-        }
-
-
-        if (gradeElement) {
-
-            gradeElement.textContent =
-                result.grade;
-
-        }
-
-
-        if (messageElement) {
-
-            messageElement.textContent =
-                result.message;
-
-        }
-
-
-        if (ring) {
-
-            ring.style.setProperty(
-                "--score",
-                result.score + "%"
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       REAL CASH FLOW CHART
-    ===================================================== */
-
-    function getWeekStart(date) {
-
-        const result =
-            new Date(date);
-
-        const day =
-            result.getDay();
-
-        const difference =
-            day === 0
-                ? -6
-                : 1 - day;
-
-        result.setDate(
-            result.getDate() +
-            difference
-        );
-
-        result.setHours(
-            0,
-            0,
-            0,
-            0
-        );
-
-        return result;
-
-    }
-
-
-    function updateCashFlowChart() {
-
-        const chart =
-            document.getElementById(
-                "dashboardCashFlowChart"
-            );
-
-        if (!chart) {
-            return;
-        }
-
-
-        const transactions =
-            getTransactions();
-
-
-        const today =
-            new Date();
-
-
-        const currentWeek =
-            getWeekStart(
-                today
-            );
-
-
-        const weeks = [];
-
-
-        for (
-            let i = 3;
-            i >= 0;
-            i--
-        ) {
-
-            const start =
-                new Date(
-                    currentWeek
-                );
-
-            start.setDate(
-                start.getDate() -
-                i * 7
-            );
-
-
-            const end =
-                new Date(
-                    start
-                );
-
-            end.setDate(
-                end.getDate() +
-                6
-            );
-
-            end.setHours(
-                23,
-                59,
-                59,
-                999
-            );
-
-
-            let income = 0;
-            let expenses = 0;
-
-
-            transactions.forEach(
-                transaction => {
-
-                    const date =
-                        transactionDate(
-                            transaction
-                        );
-
-                    if (
-                        !date ||
-                        date < start ||
-                        date > end
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    if (
-                        isIncome(
-                            transaction
-                        )
-                    ) {
-
-                        income +=
-                            amount(
-                                transaction
-                            );
-
-                    }
-
-
-                    if (
-                        isExpense(
-                            transaction
-                        )
-                    ) {
-
-                        expenses +=
-                            amount(
-                                transaction
-                            );
-
-                    }
-
-                }
-            );
-
-
-            weeks.push({
-                income,
-                expenses,
-                label:
-                    "W" +
-                    (4 - i)
-            });
-
-        }
-
-
-        const maximum =
-            Math.max(
-                1,
-                ...weeks.flatMap(
-                    week => [
-                        week.income,
-                        week.expenses
-                    ]
-                )
-            );
-
-
-        chart.innerHTML =
-            weeks.map(
-                week => {
-
-                    const incomeHeight =
-                        Math.max(
-                            week.income
-                                ? 6
-                                : 0,
-                            (
-                                week.income /
-                                maximum
-                            ) * 100
-                        );
-
-
-                    const expenseHeight =
-                        Math.max(
-                            week.expenses
-                                ? 6
-                                : 0,
-                            (
-                                week.expenses /
-                                maximum
-                            ) * 100
-                        );
-
-
-                    return `
-                        <div class="cash-flow-bar-group">
-
-                            <div
-                                class="cash-flow-bars"
-                                style="
-                                    height: 100%;
-                                    display: flex;
-                                    align-items: flex-end;
-                                    justify-content: center;
-                                    gap: 5px;
-                                "
-                            >
-
-                                <div
-                                    class="cash-flow-bar"
-                                    title="Income: ${week.income.toLocaleString()}"
-                                    style="height:${incomeHeight}%"
-                                ></div>
-
-                                <div
-                                    class="cash-flow-bar expense"
-                                    title="Expenses: ${week.expenses.toLocaleString()}"
-                                    style="height:${expenseHeight}%"
-                                ></div>
-
-                            </div>
-
-                            <div class="cash-flow-label">
-                                ${week.label}
-                            </div>
-
-                        </div>
-                    `;
-
-                }
-            ).join("");
-
-    }
-
-
-    /* =====================================================
-       RUN DASHBOARD INTELLIGENCE
-    ===================================================== */
-
-    function refreshDashboardIntelligence() {
-
-        updateMoneyLeakScore();
-
-        updateCashFlowChart();
-
-    }
-
-
-    /*
-     * Wait until the main MoneyLeak application
-     * has finished loading.
-     */
-
-    window.addEventListener(
-        "load",
-        function () {
-
-            setTimeout(
-                refreshDashboardIntelligence,
-                250
-            );
-
-        }
-    );
-
-
-    /*
-     * Refresh if another MoneyLeak page
-     * sends an update event.
-     */
-
-    window.addEventListener(
-        "moneyLeakUpdated",
-        refreshDashboardIntelligence
-    );
-
-
-    /*
-     * Refresh whenever the tab becomes active.
-     */
-
-    document.addEventListener(
-        "visibilitychange",
-        function () {
-
-            if (
-                document.visibilityState ===
-                "visible"
-            ) {
-
-                refreshDashboardIntelligence();
-
-            }
-
-        }
-    );
-
-
-})();
-</script>
+<script src="./app.js"></script>
 
 </body>
 </html>
