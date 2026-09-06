@@ -1,96 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Expenses — MoneyLeak</title>
 
     <meta
         name="description"
-        content="Track expenses, discover spending leaks and understand where your money goes."
+        content="Track, understand and reduce your spending with MoneyLeak."
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    >
+
 </head>
 
-<body data-page="expenses">
+<body>
 
 <div class="app-shell">
 
-    <!-- SIDEBAR -->
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
     <aside class="sidebar" id="sidebar">
 
         <div class="brand">
-            <div class="brand-mark">M</div>
 
-            <div class="brand-copy">
-                <strong>MoneyLeak</strong>
-                <span>Personal Finance OS</span>
-            </div>
+            <a
+                href="./index.html"
+                class="brand-link"
+            >
+
+                <div
+                    class="brand-mark"
+                    data-brand-logo
+                >
+                    M
+                </div>
+
+                <div class="brand-copy">
+
+                    <strong>
+                        MoneyLeak
+                    </strong>
+
+                    <span>
+                        Personal Finance OS
+                    </span>
+
+                </div>
+
+            </a>
+
         </div>
+
 
         <nav class="sidebar-nav">
 
-            <div class="nav-label">Overview</div>
+            <div class="nav-section">
 
-            <a href="index.html" class="nav-item">
-                <span class="nav-icon">⌂</span>
-                <span>Dashboard</span>
-            </a>
+                <div class="nav-section-label">
+                    Overview
+                </div>
 
-            <a href="analytics.html" class="nav-item">
-                <span class="nav-icon">◔</span>
-                <span>Analytics</span>
-            </a>
+                <a
+                    href="./index.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </a>
 
-            <div class="nav-label">Money</div>
+                <a
+                    href="./analytics.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">◈</span>
+                    <span>Analytics</span>
+                </a>
 
-            <a href="income.html" class="nav-item">
-                <span class="nav-icon">↗</span>
-                <span>Income</span>
-            </a>
+            </div>
 
-            <a href="expenses.html" class="nav-item active">
-                <span class="nav-icon">↘</span>
-                <span>Expenses</span>
-            </a>
 
-            <a href="budgets.html" class="nav-item">
-                <span class="nav-icon">▣</span>
-                <span>Budgets</span>
-            </a>
+            <div class="nav-section">
 
-            <a href="recurring.html" class="nav-item">
-                <span class="nav-icon">↻</span>
-                <span>Recurring</span>
-            </a>
+                <div class="nav-section-label">
+                    Money
+                </div>
 
-            <div class="nav-label">Goals</div>
+                <a
+                    href="./income.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">↗</span>
+                    <span>Income</span>
+                </a>
 
-            <a href="savings.html" class="nav-item">
-                <span class="nav-icon">◎</span>
-                <span>Savings Goals</span>
-            </a>
+                <a
+                    href="./expenses.html"
+                    class="nav-link active"
+                >
+                    <span class="nav-icon">↘</span>
+                    <span>Expenses</span>
+                </a>
 
-            <div class="nav-label">System</div>
+                <a
+                    href="./budgets.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">▣</span>
+                    <span>Budgets</span>
+                </a>
 
-            <a href="settings.html" class="nav-item">
-                <span class="nav-icon">⚙</span>
-                <span>Settings</span>
-            </a>
+            </div>
+
+
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Planning
+                </div>
+
+                <a
+                    href="./savings.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">◎</span>
+                    <span>Savings Goals</span>
+                </a>
+
+                <a
+                    href="./recurring.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">↻</span>
+                    <span>Recurring</span>
+                </a>
+
+            </div>
+
+
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    System
+                </div>
+
+                <a
+                    href="./settings.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+            </div>
 
         </nav>
 
-        <div class="sidebar-bottom">
 
-            <div class="sidebar-status">
-                <span class="status-dot"></span>
+        <div class="sidebar-account">
 
-                <div>
-                    <strong>MoneyLeak AI</strong>
-                    <small>Leak detection active</small>
-                </div>
+            <div class="sidebar-account-avatar">
+                M
+            </div>
+
+            <div>
+
+                <strong id="sidebarUserName">
+                    My Money
+                </strong>
+
+                <span>
+                    Personal account
+                </span>
+
             </div>
 
         </div>
@@ -98,99 +192,112 @@
     </aside>
 
 
-    <!-- MAIN -->
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
     <main class="main-content">
 
-        <!-- TOPBAR -->
-        <header class="topbar">
 
-            <button
-                class="mobile-menu-button"
-                id="mobileMenuButton"
-                type="button"
-                aria-label="Open menu"
-            >
-                ☰
-            </button>
+        <!-- TOPBAR -->
+
+        <header class="topbar">
 
             <div class="topbar-left">
 
                 <button
-                    class="search-trigger"
-                    id="openSearch"
                     type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Open menu"
                 >
-                    <span>⌕</span>
-                    <span>Search MoneyLeak</span>
-                    <kbd>⌘ K</kbd>
+                    ☰
                 </button>
+
+                <div class="page-location">
+                    Expenses
+                </div>
 
             </div>
 
-            <div class="topbar-right">
+
+            <div class="topbar-actions">
 
                 <button
-                    class="icon-button"
-                    id="notificationButton"
                     type="button"
+                    class="topbar-search"
+                    id="openSearch"
+                >
+                    <span>⌕</span>
+                    Search MoneyLeak
+                    <kbd>⌘K</kbd>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="notification-button"
+                    id="notificationButton"
                     aria-label="Notifications"
                 >
-                    ♢
+
+                    ♧
+
                     <span
                         class="notification-badge"
                         id="notificationBadge"
-                    ></span>
-                </button>
-
-                <a
-                    href="settings.html"
-                    class="profile-button"
-                >
-                    <span
-                        class="profile-avatar"
-                        id="profileAvatar"
                     >
-                        M
+                        0
                     </span>
-                </a>
+
+                </button>
 
             </div>
 
         </header>
 
 
-        <!-- PAGE CONTENT -->
-        <div class="page-content">
 
-            <!-- HERO -->
-            <section class="hero">
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================== -->
 
-                <div class="hero-copy">
+        <section class="page-content">
 
-                    <div class="eyebrow">
-                        MONEY LEAK DETECTOR
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="dashboard-hero">
+
+                <div class="dashboard-hero-copy">
+
+                    <div class="dashboard-hero-eyebrow">
+                        SPENDING CONTROL
                     </div>
 
                     <h1>
-                        Know where your money goes.
+                        Understand where your money goes.
                     </h1>
 
                     <p>
-                        Track every expense, uncover your
-                        biggest spending leaks and take control
-                        before small purchases become big problems.
+                        Track every expense, identify your biggest
+                        leaks, and make smarter spending decisions.
                     </p>
 
                 </div>
 
-                <div class="hero-actions">
+
+                <div class="dashboard-hero-actions">
 
                     <button
-                        class="button button-primary"
-                        id="openExpenseForm"
                         type="button"
+                        class="button button-primary"
+                        onclick="document.getElementById('expenseAmount').focus()"
                     >
-                        + Add Expense
+                        + Add expense
                     </button>
 
                 </div>
@@ -198,116 +305,105 @@
             </section>
 
 
-            <!-- METRICS -->
-            <section class="metric-grid">
 
-                <article class="metric-card primary-metric">
+            <!-- =================================================
+                 EXPENSE METRICS
+            ================================================== -->
 
-                    <div class="metric-card-top">
+            <section class="dashboard-metrics">
 
-                        <span class="metric-label">
-                            This Month
-                        </span>
 
-                        <span class="metric-icon">
-                            ↓
-                        </span>
+                <article class="dashboard-metric">
 
+                    <div class="dashboard-metric-icon">
+                        ↘
+                    </div>
+
+                    <div class="dashboard-metric-label">
+                        This month
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="expensePageTotal"
+                        class="dashboard-metric-value"
+                        id="expenseThisMonth"
                     >
                         ₦0
                     </div>
 
-                    <div class="metric-footer">
+                    <div class="dashboard-metric-meta negative">
                         Total spending
                     </div>
 
                 </article>
 
 
-                <article class="metric-card">
+                <article class="dashboard-metric">
 
-                    <div class="metric-card-top">
+                    <div class="dashboard-metric-icon">
+                        ◷
+                    </div>
 
-                        <span class="metric-label">
-                            Daily Average
-                        </span>
-
-                        <span class="metric-icon">
-                            ≈
-                        </span>
-
+                    <div class="dashboard-metric-label">
+                        Daily average
                     </div>
 
                     <div
-                        class="metric-value"
+                        class="dashboard-metric-value"
                         id="expenseDailyAverage"
                     >
                         ₦0
                     </div>
 
-                    <div class="metric-footer">
-                        Current spending pace
+                    <div class="dashboard-metric-meta">
+                        Current month pace
                     </div>
 
                 </article>
 
 
-                <article class="metric-card">
+                <article class="dashboard-metric">
 
-                    <div class="metric-card-top">
+                    <div class="dashboard-metric-icon">
+                        #
+                    </div>
 
-                        <span class="metric-label">
-                            Categories
-                        </span>
-
-                        <span class="metric-icon">
-                            ◉
-                        </span>
-
+                    <div class="dashboard-metric-label">
+                        Transactions
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="expenseCategoryCount"
+                        class="dashboard-metric-value"
+                        id="expenseTransactionCount"
                     >
                         0
                     </div>
 
-                    <div class="metric-footer">
-                        Categories used
+                    <div class="dashboard-metric-meta">
+                        Expenses recorded
                     </div>
 
                 </article>
 
 
-                <article class="metric-card">
+                <article class="dashboard-metric">
 
-                    <div class="metric-card-top">
+                    <div class="dashboard-metric-icon">
+                        ↔
+                    </div>
 
-                        <span class="metric-label">
-                            Spending Pace
-                        </span>
-
-                        <span class="metric-icon">
-                            ◔
-                        </span>
-
+                    <div class="dashboard-metric-label">
+                        Month comparison
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="expenseVelocity"
+                        class="dashboard-metric-value"
+                        id="expenseMonthComparison"
                     >
-                        Stable
+                        No change
                     </div>
 
-                    <div class="metric-footer">
-                        Compared with recent history
+                    <div class="dashboard-metric-meta">
+                        Compared with last month
                     </div>
 
                 </article>
@@ -315,662 +411,35 @@
             </section>
 
 
-            <!-- MONEY LEAK INTELLIGENCE -->
-            <section class="dashboard-grid">
 
-                <article class="card">
+            <!-- =================================================
+                 ADD EXPENSE + BIGGEST LEAK
+            ================================================== -->
 
-                    <div class="card-header">
+            <section class="dashboard-main-grid">
+
+
+                <!-- ADD EXPENSE -->
+
+                <article class="dashboard-panel">
+
+                    <div class="dashboard-panel-header">
 
                         <div>
 
-                            <div class="card-kicker">
-                                MONEY LEAK
+                            <div class="dashboard-panel-title">
+                                Record an expense
                             </div>
 
-                            <h2>
-                                Biggest Spending Leak
-                            </h2>
-
-                        </div>
-
-                        <span class="card-header-icon">
-                            ⚠
-                        </span>
-
-                    </div>
-
-                    <div class="safe-amount">
-
-                        <span id="biggestExpenseCategory">
-                            —
-                        </span>
-
-                    </div>
-
-                    <p
-                        class="safe-description"
-                        id="biggestExpenseAmount"
-                    >
-                        Add expenses to discover your
-                        biggest spending category.
-                    </p>
-
-                    <div class="progress-track large">
-
-                        <div
-                            class="progress-fill"
-                            id="biggestExpenseProgress"
-                            style="width:0%"
-                        ></div>
-
-                    </div>
-
-                    <div class="progress-meta">
-
-                        <span>
-                            Share of monthly spending
-                        </span>
-
-                        <strong
-                            id="biggestExpensePercent"
-                        >
-                            0%
-                        </strong>
-
-                    </div>
-
-                </article>
-
-
-                <article class="card">
-
-                    <div class="card-header">
-
-                        <div>
-
-                            <div class="card-kicker">
-                                SPENDING INTELLIGENCE
+                            <div class="dashboard-panel-subtitle">
+                                Keep your financial picture accurate.
                             </div>
 
-                            <h2>
-                                Spending Velocity
-                            </h2>
-
                         </div>
 
-                        <span
-                            class="status-pill"
-                            id="expenseVelocityStatus"
-                        >
-                            Stable
-                        </span>
-
-                    </div>
-
-                    <div class="insight-body">
-
-                        <div
-                            class="insight-title"
-                            id="expenseVelocityTitle"
-                        >
-                            Your spending pace is being analyzed.
-                        </div>
-
-                        <p
-                            id="expenseVelocityText"
-                        >
-                            MoneyLeak compares recent spending
-                            with your longer-term pace to identify
-                            whether expenses are accelerating,
-                            improving or remaining stable.
-                        </p>
-
-                    </div>
-
-                </article>
-
-            </section>
-
-
-            <!-- ADD EXPENSE -->
-            <section
-                class="card"
-                id="expenseFormCard"
-            >
-
-                <div class="card-header">
-
-                    <div>
-
-                        <div class="card-kicker">
-                            NEW EXPENSE
-                        </div>
-
-                        <h2>
-                            Record an Expense
-                        </h2>
-
-                    </div>
-
-                </div>
-
-                <form
-                    id="expenseForm"
-                    class="form-grid"
-                >
-
-                    <div class="form-field">
-
-                        <label for="expenseAmount">
-                            Amount
-                        </label>
-
-                        <input
-                            type="number"
-                            id="expenseAmount"
-                            name="amount"
-                            min="0"
-                            step="0.01"
-                            placeholder="0"
-                            required
-                        >
-
                     </div>
 
 
-                    <div class="form-field">
-
-                        <label for="expenseCategory">
-                            Category
-                        </label>
-
-                        <select
-                            id="expenseCategory"
-                            name="category"
-                            required
-                        >
-
-                            <option value="">
-                                Select category
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="expenseDate">
-                            Date
-                        </label>
-
-                        <input
-                            type="date"
-                            id="expenseDate"
-                            name="date"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="expenseDescription">
-                            Description
-                        </label>
-
-                        <input
-                            type="text"
-                            id="expenseDescription"
-                            name="description"
-                            placeholder="e.g. Groceries"
-                        >
-
-                    </div>
-
-
-                    <div class="form-actions">
-
-                        <button
-                            type="submit"
-                            class="button button-primary"
-                        >
-                            Save Expense
-                        </button>
-
-                        <button
-                            type="reset"
-                            class="button button-secondary"
-                        >
-                            Clear
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </section>
-
-
-            <!-- CATEGORY BREAKDOWN -->
-            <section class="card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <div class="card-kicker">
-                            WHERE IT GOES
-                        </div>
-
-                        <h2>
-                            Spending by Category
-                        </h2>
-
-                    </div>
-
-                </div>
-
-                <div
-                    class="goals-list"
-                    id="expenseCategoryBreakdown"
-                >
-
-                    <div class="empty-state">
-
-                        <div class="empty-state-icon">
-                            ◔
-                        </div>
-
-                        <strong>
-                            No spending data yet
-                        </strong>
-
-                        <p>
-                            Add expenses to see exactly
-                            where your money is going.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- EXPENSE HISTORY -->
-            <section class="card transactions-card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <div class="card-kicker">
-                            TRANSACTION HISTORY
-                        </div>
-
-                        <h2>
-                            Expenses
-                        </h2>
-
-                    </div>
-
-                    <button
-                        class="text-button"
-                        id="clearExpenseFilter"
-                        type="button"
-                    >
-                        Reset
-                    </button>
-
-                </div>
-
-
-                <!-- FILTERS -->
-                <div class="filter-row">
-
-                    <div class="search-input-wrapper compact">
-
-                        <span>⌕</span>
-
-                        <input
-                            type="search"
-                            id="expenseSearch"
-                            placeholder="Search expenses..."
-                        >
-
-                    </div>
-
-
-                    <select
-                        id="expenseCategoryFilter"
-                        class="filter-select"
-                    >
-
-                        <option value="">
-                            All categories
-                        </option>
-
-                    </select>
-
-
-                    <select
-                        id="expensePeriodFilter"
-                        class="filter-select"
-                    >
-
-                        <option value="all">
-                            All time
-                        </option>
-
-                        <option value="month">
-                            This month
-                        </option>
-
-                        <option value="year">
-                            This year
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- TABLE -->
-                <div class="transactions-table-wrap">
-
-                    <table class="transactions-table">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Expense
-                                </th>
-
-                                <th>
-                                    Category
-                                </th>
-
-                                <th>
-                                    Date
-                                </th>
-
-                                <th class="align-right">
-                                    Amount
-                                </th>
-
-                                <th></th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="expenseTransactions">
-
-                            <tr>
-
-                                <td colspan="5">
-
-                                    <div class="table-empty">
-
-                                        <span>
-                                            No expenses recorded yet.
-                                        </span>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-
-            <!-- SPENDING COACH -->
-            <section class="coach-banner">
-
-                <div class="coach-icon">
-                    ✦
-                </div>
-
-                <div class="coach-content">
-
-                    <div class="coach-label">
-                        MONEY COACH
-                    </div>
-
-                    <h2 id="expenseCoachHeadline">
-                        Small leaks become big leaks.
-                    </h2>
-
-                    <p id="expenseCoachMessage">
-                        Track your spending consistently and
-                        MoneyLeak will show you where your money
-                        deserves more attention.
-                    </p>
-
-                </div>
-
-                <div class="coach-action">
-
-                    <a
-                        href="budgets.html"
-                        class="button button-secondary"
-                    >
-                        Set a Budget
-                    </a>
-
-                </div>
-
-            </section>
-
-
-            <!-- FOOTER -->
-            <footer class="app-footer">
-
-                <div>
-                    <strong>MoneyLeak</strong>
-                    <span>
-                        Personal Finance OS
-                    </span>
-                </div>
-
-                <div>
-                    Your financial data stays in your browser.
-                </div>
-
-            </footer>
-
-        </div>
-
-    </main>
-
-</div>
-
-
-<!-- SEARCH OVERLAY -->
-<div
-    class="search-overlay"
-    id="searchOverlay"
-    aria-hidden="true"
->
-
-    <div class="search-modal">
-
-        <div class="search-modal-header">
-
-            <div>
-
-                <div class="search-modal-eyebrow">
-                    MONEYSEARCH
-                </div>
-
-                <h2>
-                    Search MoneyLeak
-                </h2>
-
-            </div>
-
-            <button
-                class="search-close"
-                id="closeSearch"
-                type="button"
-                aria-label="Close search"
-            >
-                ×
-            </button>
-
-        </div>
-
-        <div class="search-input-wrapper">
-
-            <span>⌕</span>
-
-            <input
-                type="search"
-                id="globalSearchInput"
-                placeholder="Search transactions, goals, budgets..."
-                autocomplete="off"
-            >
-
-            <kbd>ESC</kbd>
-
-        </div>
-
-        <div
-            class="search-results"
-            id="searchResults"
-        >
-
-            <div class="search-empty">
-                Start typing to search MoneyLeak.
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- NOTIFICATION PANEL -->
-<div
-    class="notification-panel"
-    id="notificationPanel"
-    aria-hidden="true"
->
-
-    <div class="notification-panel-header">
-
-        <div>
-
-            <div class="notification-heading">
-                NOTIFICATIONS
-            </div>
-
-            <div class="notification-title-row">
-
-                <h2>
-                    Your Money
-                </h2>
-
-                <span
-                    class="notification-unread-badge"
-                    id="notificationUnreadCount"
-                >
-                    0
-                </span>
-
-            </div>
-
-        </div>
-
-        <button
-            class="notification-close"
-            id="closeNotifications"
-            type="button"
-        >
-            ×
-        </button>
-
-    </div>
-
-
-    <div class="notification-toolbar">
-
-        <div class="notification-tabs">
-
-            <button
-                class="notification-tab active"
-                data-notification-filter="all"
-                type="button"
-            >
-                All
-            </button>
-
-            <button
-                class="notification-tab"
-                data-notification-filter="unread"
-                type="button"
-            >
-                Unread
-            </button>
-
-        </div>
-
-        <div class="notification-actions">
-
-            <button
-                class="notification-action"
-                id="markNotificationsRead"
-                type="button"
-            >
-                Mark read
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <div
-        class="notification-list"
-        id="notificationList"
-    ></div>
-
-</div>
-
-
-<!-- MOBILE NAV OVERLAY -->
-<div
-    class="mobile-nav-overlay"
-    id="mobileNavOverlay"
-></div>
-
-
-<!-- TOAST -->
-<div
-    id="toast"
-    class="toast"
-    role="status"
-    aria-live="polite"
->
-    <span id="toastMessage"></span>
-</div>
-
-
-<script src="app.js"></script>
-
-</body>
-</html>
+                    <form
+                        id="expenseForm"
+                        class="
