@@ -2,95 +2,168 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Income — MoneyLeak</title>
 
     <meta
         name="description"
-        content="Track every income stream and understand your earning power with MoneyLeak."
+        content="Track and understand every source of income with MoneyLeak."
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
-<body data-page="income">
+<body>
 
 <div class="app-shell">
 
-    <!-- SIDEBAR -->
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
     <aside class="sidebar" id="sidebar">
 
         <div class="brand">
-            <div class="brand-mark">M</div>
 
-            <div class="brand-copy">
-                <strong>MoneyLeak</strong>
-                <span>Personal Finance OS</span>
-            </div>
+            <a
+                href="./index.html"
+                class="brand-link"
+            >
+
+                <div
+                    class="brand-mark"
+                    data-brand-logo
+                >
+                    M
+                </div>
+
+                <div class="brand-copy">
+                    <strong>MoneyLeak</strong>
+                    <span>Personal Finance OS</span>
+                </div>
+
+            </a>
+
         </div>
+
 
         <nav class="sidebar-nav">
 
-            <div class="nav-label">Overview</div>
+            <div class="nav-section">
 
-            <a href="index.html" class="nav-item">
-                <span class="nav-icon">⌂</span>
-                <span>Dashboard</span>
-            </a>
+                <div class="nav-section-label">
+                    Overview
+                </div>
 
-            <a href="analytics.html" class="nav-item">
-                <span class="nav-icon">◔</span>
-                <span>Analytics</span>
-            </a>
+                <a
+                    href="./index.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </a>
 
-            <div class="nav-label">Money</div>
+                <a
+                    href="./analytics.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">◈</span>
+                    <span>Analytics</span>
+                </a>
 
-            <a href="income.html" class="nav-item active">
-                <span class="nav-icon">↗</span>
-                <span>Income</span>
-            </a>
+            </div>
 
-            <a href="expenses.html" class="nav-item">
-                <span class="nav-icon">↘</span>
-                <span>Expenses</span>
-            </a>
 
-            <a href="budgets.html" class="nav-item">
-                <span class="nav-icon">▣</span>
-                <span>Budgets</span>
-            </a>
+            <div class="nav-section">
 
-            <a href="recurring.html" class="nav-item">
-                <span class="nav-icon">↻</span>
-                <span>Recurring</span>
-            </a>
+                <div class="nav-section-label">
+                    Money
+                </div>
 
-            <div class="nav-label">Goals</div>
+                <a
+                    href="./income.html"
+                    class="nav-link active"
+                >
+                    <span class="nav-icon">↗</span>
+                    <span>Income</span>
+                </a>
 
-            <a href="savings.html" class="nav-item">
-                <span class="nav-icon">◎</span>
-                <span>Savings Goals</span>
-            </a>
+                <a
+                    href="./expenses.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">↘</span>
+                    <span>Expenses</span>
+                </a>
 
-            <div class="nav-label">System</div>
+                <a
+                    href="./budgets.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">▣</span>
+                    <span>Budgets</span>
+                </a>
 
-            <a href="settings.html" class="nav-item">
-                <span class="nav-icon">⚙</span>
-                <span>Settings</span>
-            </a>
+            </div>
+
+
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Planning
+                </div>
+
+                <a
+                    href="./savings.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">◎</span>
+                    <span>Savings Goals</span>
+                </a>
+
+                <a
+                    href="./recurring.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">↻</span>
+                    <span>Recurring</span>
+                </a>
+
+            </div>
+
+
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    System
+                </div>
+
+                <a
+                    href="./settings.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+            </div>
 
         </nav>
 
-        <div class="sidebar-bottom">
 
-            <div class="sidebar-status">
-                <span class="status-dot"></span>
+        <div class="sidebar-account">
 
-                <div>
-                    <strong>MoneyLeak AI</strong>
-                    <small>Intelligence active</small>
-                </div>
+            <div class="sidebar-account-avatar">
+                M
+            </div>
+
+            <div>
+                <strong>My Money</strong>
+                <span>Personal account</span>
             </div>
 
         </div>
@@ -98,378 +171,616 @@
     </aside>
 
 
-    <!-- MAIN -->
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
     <main class="main-content">
 
-        <!-- TOPBAR -->
-        <header class="topbar">
 
-            <button
-                class="mobile-menu-button"
-                id="mobileMenuButton"
-                type="button"
-                aria-label="Open menu"
-            >
-                ☰
-            </button>
+        <!-- TOPBAR -->
+
+        <header class="topbar">
 
             <div class="topbar-left">
 
                 <button
-                    class="search-trigger"
-                    id="openSearch"
                     type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Open menu"
                 >
-                    <span>⌕</span>
-                    <span>Search MoneyLeak</span>
-                    <kbd>⌘ K</kbd>
+                    ☰
                 </button>
+
+                <div class="page-location">
+                    Income
+                </div>
 
             </div>
 
-            <div class="topbar-right">
+
+            <div class="topbar-actions">
 
                 <button
-                    class="icon-button"
-                    id="notificationButton"
                     type="button"
+                    class="topbar-search"
+                    id="searchButton"
+                    data-search
+                    aria-label="Search MoneyLeak"
+                >
+                    <span>⌕</span>
+                    Search MoneyLeak
+                    <kbd>⌘ K</kbd>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="notification-button"
+                    id="notificationButton"
                     aria-label="Notifications"
                 >
-                    ♢
+                    ♧
+
                     <span
                         class="notification-badge"
                         id="notificationBadge"
-                    ></span>
-                </button>
-
-                <a
-                    href="settings.html"
-                    class="profile-button"
-                >
-                    <span
-                        class="profile-avatar"
-                        id="profileAvatar"
                     >
-                        M
+                        0
                     </span>
-                </a>
+
+                </button>
 
             </div>
 
         </header>
 
 
-        <!-- PAGE -->
-        <div class="page-content">
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <section class="page-content">
+
 
             <!-- HERO -->
-            <section class="hero">
 
-                <div class="hero-copy">
+            <section class="dashboard-hero">
 
-                    <div class="eyebrow">
-                        INCOME INTELLIGENCE
+                <div class="dashboard-hero-copy">
+
+                    <div class="dashboard-hero-eyebrow">
+                        MONEY IN
                     </div>
 
                     <h1>
-                        Your earning power.
+                        Understand how your money comes in.
                     </h1>
 
                     <p>
-                        Track every source of income and
-                        understand how consistently money
-                        is coming into your life.
+                        Track salary, freelance work, business income,
+                        investments and every other source of money.
                     </p>
 
                 </div>
 
-                <div class="hero-actions">
 
-                    <button
-                        class="button button-primary"
-                        id="openIncomeForm"
-                        type="button"
+                <div class="dashboard-hero-actions">
+
+                    <a
+                        href="./expenses.html"
+                        class="button button-secondary"
                     >
-                        + Add Income
-                    </button>
+                        View expenses
+                    </a>
 
                 </div>
 
             </section>
 
 
-            <!-- METRICS -->
-            <section class="metric-grid">
 
-                <article class="metric-card primary-metric">
+            <!-- =====================================================
+                 INCOME METRICS
+            ====================================================== -->
 
-                    <div class="metric-card-top">
+            <section class="dashboard-metrics">
 
-                        <span class="metric-label">
-                            This Month
-                        </span>
 
-                        <span class="metric-icon">
-                            ↑
-                        </span>
+                <article class="dashboard-metric">
 
+                    <div class="dashboard-metric-icon">
+                        ↗
+                    </div>
+
+                    <div class="dashboard-metric-label">
+                        Income this month
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="incomePageTotal"
+                        class="dashboard-metric-value"
+                        id="incomeThisMonth"
                     >
                         ₦0
                     </div>
 
-                    <div class="metric-footer">
-                        Total income
+                    <div class="dashboard-metric-meta">
+                        Current month
                     </div>
 
                 </article>
 
 
-                <article class="metric-card">
+                <article class="dashboard-metric">
 
-                    <div class="metric-card-top">
+                    <div class="dashboard-metric-icon">
+                        ◷
+                    </div>
 
-                        <span class="metric-label">
-                            Monthly Average
-                        </span>
-
-                        <span class="metric-icon">
-                            ≈
-                        </span>
-
+                    <div class="dashboard-metric-label">
+                        Previous month
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="incomePageAverage"
+                        class="dashboard-metric-value"
+                        id="incomePreviousMonth"
                     >
                         ₦0
                     </div>
 
-                    <div class="metric-footer">
-                        Based on recent history
+                    <div class="dashboard-metric-meta">
+                        Previous period
                     </div>
 
                 </article>
 
 
-                <article class="metric-card">
+                <article class="dashboard-metric">
 
-                    <div class="metric-card-top">
+                    <div class="dashboard-metric-icon">
+                        ≈
+                    </div>
 
-                        <span class="metric-label">
-                            Income Sources
-                        </span>
-
-                        <span class="metric-icon">
-                            ◉
-                        </span>
-
+                    <div class="dashboard-metric-label">
+                        Average income
                     </div>
 
                     <div
-                        class="metric-value"
+                        class="dashboard-metric-value"
+                        id="incomeAverage"
+                    >
+                        ₦0
+                    </div>
+
+                    <div class="dashboard-metric-meta">
+                        Per income entry
+                    </div>
+
+                </article>
+
+
+                <article class="dashboard-metric">
+
+                    <div class="dashboard-metric-icon">
+                        ✦
+                    </div>
+
+                    <div class="dashboard-metric-label">
+                        Income sources
+                    </div>
+
+                    <div
+                        class="dashboard-metric-value"
                         id="incomeSourceCount"
                     >
                         0
                     </div>
 
-                    <div class="metric-footer">
+                    <div class="dashboard-metric-meta">
                         Active sources
                     </div>
 
                 </article>
 
-
-                <article class="metric-card">
-
-                    <div class="metric-card-top">
-
-                        <span class="metric-label">
-                            Consistency
-                        </span>
-
-                        <span class="metric-icon">
-                            %
-                        </span>
-
-                    </div>
-
-                    <div
-                        class="metric-value"
-                        id="incomeConsistency"
-                    >
-                        0%
-                    </div>
-
-                    <div class="metric-footer">
-                        Income stability score
-                    </div>
-
-                </article>
-
             </section>
 
 
-            <!-- MAIN GRID -->
-            <section class="dashboard-grid">
+
+            <!-- =====================================================
+                 ADD INCOME + INCOME INTELLIGENCE
+            ====================================================== -->
+
+            <section class="dashboard-main-grid">
+
+
+                <!-- ADD INCOME -->
+
+                <article class="dashboard-panel">
+
+                    <div class="dashboard-panel-header">
+
+                        <div>
+
+                            <div class="dashboard-panel-title">
+                                Add income
+                            </div>
+
+                            <div class="dashboard-panel-subtitle">
+                                Record money as soon as it arrives.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <form
+                        id="incomeForm"
+                        class="finance-form"
+                    >
+
+                        <div class="form-grid">
+
+
+                            <div class="form-field">
+
+                                <label for="incomeAmount">
+                                    Amount
+                                </label>
+
+                                <input
+                                    id="incomeAmount"
+                                    name="incomeAmount"
+                                    type="number"
+                                    inputmode="decimal"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="0.00"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="incomeSource">
+                                    Income source
+                                </label>
+
+                                <select
+                                    id="incomeSource"
+                                    name="incomeSource"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select source
+                                    </option>
+
+                                    <option value="Salary">
+                                        Salary
+                                    </option>
+
+                                    <option value="Freelance">
+                                        Freelance
+                                    </option>
+
+                                    <option value="Business">
+                                        Business
+                                    </option>
+
+                                    <option value="Investment">
+                                        Investment
+                                    </option>
+
+                                    <option value="Gift">
+                                        Gift
+                                    </option>
+
+                                    <option value="Bonus">
+                                        Bonus
+                                    </option>
+
+                                    <option value="Side Hustle">
+                                        Side Hustle
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="incomeDate">
+                                    Date
+                                </label>
+
+                                <input
+                                    id="incomeDate"
+                                    name="incomeDate"
+                                    type="date"
+                                >
+
+                            </div>
+
+
+                            <div class="form-field form-field-wide">
+
+                                <label for="incomeDescription">
+                                    Description
+                                </label>
+
+                                <input
+                                    id="incomeDescription"
+                                    name="incomeDescription"
+                                    type="text"
+                                    maxlength="120"
+                                    placeholder="e.g. September salary"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+
+                            <button
+                                type="submit"
+                                class="button button-primary"
+                            >
+                                Add income
+                            </button>
+
+                            <button
+                                type="button"
+                                id="incomeReset"
+                                class="button button-secondary"
+                            >
+                                Reset
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </article>
+
+
 
                 <!-- INCOME INTELLIGENCE -->
-                <article class="card">
 
-                    <div class="card-header">
+                <article class="dashboard-panel">
 
-                        <div>
-
-                            <div class="card-kicker">
-                                MONEY INTELLIGENCE
-                            </div>
-
-                            <h2>
-                                Income Stability
-                            </h2>
-
-                        </div>
-
-                        <span
-                            class="status-pill"
-                            id="incomeStatus"
-                        >
-                            Building
-                        </span>
-
-                    </div>
-
-                    <div class="insight-body">
-
-                        <div
-                            class="insight-title"
-                            id="incomeInsightTitle"
-                        >
-                            Build your income picture
-                        </div>
-
-                        <p
-                            id="incomeInsightText"
-                        >
-                            Add income transactions to help
-                            MoneyLeak understand your earning
-                            consistency and identify changes
-                            over time.
-                        </p>
-
-                    </div>
-
-                </article>
-
-
-                <!-- TOP SOURCE -->
-                <article class="card">
-
-                    <div class="card-header">
+                    <div class="dashboard-panel-header">
 
                         <div>
 
-                            <div class="card-kicker">
-                                LEADING SOURCE
+                            <div class="dashboard-panel-title">
+                                Income intelligence
                             </div>
 
-                            <h2>
-                                Top Income Source
-                            </h2>
+                            <div class="dashboard-panel-subtitle">
+                                MoneyLeak's view of your income.
+                            </div>
 
                         </div>
 
-                        <span class="card-header-icon">
-                            ↗
-                        </span>
+                    </div>
+
+
+                    <div class="intelligence-list">
+
+
+                        <div class="intelligence-item">
+
+                            <span>
+                                Strongest source
+                            </span>
+
+                            <strong id="strongestIncomeSource">
+                                No data
+                            </strong>
+
+                        </div>
+
+
+                        <div class="intelligence-item">
+
+                            <span>
+                                Largest source
+                            </span>
+
+                            <strong id="largestIncome">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="intelligence-item">
+
+                            <span>
+                                Income stability
+                            </span>
+
+                            <strong id="incomeStability">
+                                No data
+                            </strong>
+
+                        </div>
+
+
+                        <div class="intelligence-item">
+
+                            <span>
+                                Month comparison
+                            </span>
+
+                            <strong id="incomeMonthComparison">
+                                0%
+                            </strong>
+
+                        </div>
 
                     </div>
 
-                    <div class="safe-amount">
 
-                        <span id="topIncomeSource">
-                            —
-                        </span>
+                    <div class="smart-coach">
+
+                        <div class="smart-coach-icon">
+                            ✦
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                MoneyLeak insight
+                            </strong>
+
+                            <p id="incomeInsight">
+                                Record your income sources to
+                                understand how your money comes in.
+                            </p>
+
+                        </div>
 
                     </div>
-
-                    <p
-                        class="safe-description"
-                        id="topIncomeSourceAmount"
-                    >
-                        No income data yet.
-                    </p>
 
                 </article>
 
             </section>
 
 
-            <!-- INCOME FORM -->
-            <section
-                class="card"
-                id="incomeFormCard"
-            >
 
-                <div class="card-header">
+            <!-- =====================================================
+                 INCOME SOURCES
+            ====================================================== -->
+
+            <section class="dashboard-panel">
+
+                <div class="dashboard-panel-header">
 
                     <div>
 
-                        <div class="card-kicker">
-                            NEW ENTRY
+                        <div class="dashboard-panel-title">
+                            Income sources
                         </div>
 
-                        <h2>
-                            Record Income
-                        </h2>
+                        <div class="dashboard-panel-subtitle">
+                            See where your money is coming from.
+                        </div>
 
                     </div>
 
                 </div>
 
-                <form
-                    id="incomeForm"
-                    class="form-grid"
+
+                <div
+                    id="incomeSources"
+                    class="source-list"
                 >
 
-                    <div class="form-field">
+                    <div class="empty-state">
 
-                        <label for="incomeAmount">
-                            Amount
-                        </label>
+                        <strong>
+                            No income sources yet
+                        </strong>
 
-                        <input
-                            type="number"
-                            id="incomeAmount"
-                            name="amount"
-                            min="0"
-                            step="0.01"
-                            placeholder="0"
-                            required
-                        >
+                        <p>
+                            Add your first income transaction
+                            to see your source breakdown.
+                        </p>
 
                     </div>
 
+                </div>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 INCOME HISTORY
+            ====================================================== -->
+
+            <section class="dashboard-panel">
+
+                <div class="dashboard-panel-header">
+
+                    <div>
+
+                        <div class="dashboard-panel-title">
+                            Income history
+                        </div>
+
+                        <div class="dashboard-panel-subtitle">
+                            Search and review every income entry.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FILTERS -->
+
+                <div class="filter-bar">
+
 
                     <div class="form-field">
 
-                        <label for="incomeSource">
+                        <label for="incomeFilterSource">
                             Source
                         </label>
 
                         <select
-                            id="incomeSource"
-                            name="source"
-                            required
+                            id="incomeFilterSource"
                         >
 
-                            <option value="">
-                                Select source
+                            <option value="all">
+                                All sources
+                            </option>
+
+                            <option value="Salary">
+                                Salary
+                            </option>
+
+                            <option value="Freelance">
+                                Freelance
+                            </option>
+
+                            <option value="Business">
+                                Business
+                            </option>
+
+                            <option value="Investment">
+                                Investment
+                            </option>
+
+                            <option value="Gift">
+                                Gift
+                            </option>
+
+                            <option value="Bonus">
+                                Bonus
+                            </option>
+
+                            <option value="Side Hustle">
+                                Side Hustle
+                            </option>
+
+                            <option value="Other">
+                                Other
                             </option>
 
                         </select>
@@ -477,98 +788,39 @@
                     </div>
 
 
-                    <div class="form-field">
+                    <div class="form-field filter-search">
 
-                        <label for="incomeDate">
-                            Date
+                        <label for="incomeSearch">
+                            Search
                         </label>
 
                         <input
-                            type="date"
-                            id="incomeDate"
-                            name="date"
-                            required
+                            id="incomeSearch"
+                            type="search"
+                            placeholder="Search income..."
+                            autocomplete="off"
                         >
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="incomeDescription">
-                            Description
-                        </label>
-
-                        <input
-                            type="text"
-                            id="incomeDescription"
-                            name="description"
-                            placeholder="e.g. August salary"
-                        >
-
-                    </div>
-
-
-                    <div class="form-actions">
-
-                        <button
-                            type="submit"
-                            class="button button-primary"
-                        >
-                            Save Income
-                        </button>
-
-                        <button
-                            type="reset"
-                            class="button button-secondary"
-                        >
-                            Clear
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </section>
-
-
-            <!-- SOURCE BREAKDOWN -->
-            <section class="card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <div class="card-kicker">
-                            BREAKDOWN
-                        </div>
-
-                        <h2>
-                            Income Sources
-                        </h2>
 
                     </div>
 
                 </div>
 
+
+                <!-- HISTORY -->
+
                 <div
-                    class="goals-list"
-                    id="incomeSourceBreakdown"
+                    id="incomeHistory"
+                    class="transaction-list"
                 >
 
                     <div class="empty-state">
-
-                        <div class="empty-state-icon">
-                            ↗
-                        </div>
 
                         <strong>
                             No income recorded
                         </strong>
 
                         <p>
-                            Add your first income entry to
-                            see where your money comes from.
+                            Your income history will appear here.
                         </p>
 
                     </div>
@@ -578,175 +830,38 @@
             </section>
 
 
-            <!-- HISTORY -->
-            <section class="card transactions-card">
 
-                <div class="card-header">
+            <!-- =====================================================
+                 FOOTER
+            ====================================================== -->
 
-                    <div>
+            <footer class="page-footer">
 
-                        <div class="card-kicker">
-                            HISTORY
-                        </div>
+                <strong>
+                    MoneyLeak
+                </strong>
 
-                        <h2>
-                            Income History
-                        </h2>
-
-                    </div>
-
-                    <button
-                        class="text-button"
-                        id="clearIncomeFilter"
-                        type="button"
-                    >
-                        Reset
-                    </button>
-
-                </div>
-
-
-                <div class="filter-row">
-
-                    <div class="search-input-wrapper compact">
-
-                        <span>⌕</span>
-
-                        <input
-                            type="search"
-                            id="incomeSearch"
-                            placeholder="Search income..."
-                        >
-
-                    </div>
-
-
-                    <select
-                        id="incomeSourceFilter"
-                        class="filter-select"
-                    >
-
-                        <option value="">
-                            All sources
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="transactions-table-wrap">
-
-                    <table class="transactions-table">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Income
-                                </th>
-
-                                <th>
-                                    Source
-                                </th>
-
-                                <th>
-                                    Date
-                                </th>
-
-                                <th class="align-right">
-                                    Amount
-                                </th>
-
-                                <th></th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="incomeTransactions">
-
-                            <tr>
-
-                                <td colspan="5">
-
-                                    <div class="table-empty">
-
-                                        <span>
-                                            No income transactions yet.
-                                        </span>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-
-            <!-- COACH -->
-            <section class="coach-banner">
-
-                <div class="coach-icon">
-                    ✦
-                </div>
-
-                <div class="coach-content">
-
-                    <div class="coach-label">
-                        MONEY COACH
-                    </div>
-
-                    <h2 id="incomeCoachHeadline">
-                        Build more than one income stream.
-                    </h2>
-
-                    <p id="incomeCoachMessage">
-                        MoneyLeak will help you understand
-                        which income sources are strongest
-                        and how consistent they are.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- FOOTER -->
-            <footer class="app-footer">
-
-                <div>
-                    <strong>MoneyLeak</strong>
-                    <span>
-                        Personal Finance OS
-                    </span>
-                </div>
-
-                <div>
-                    Your financial data stays in your browser.
-                </div>
+                <span>
+                    Your money. A better future.
+                </span>
 
             </footer>
 
-        </div>
+        </section>
 
     </main>
 
 </div>
 
 
-<!-- SEARCH -->
+
+<!-- =========================================================
+     SEARCH OVERLAY
+========================================================== -->
+
 <div
-    class="search-overlay"
     id="searchOverlay"
+    class="search-overlay"
     aria-hidden="true"
 >
 
@@ -756,162 +871,143 @@
 
             <div>
 
-                <div class="search-modal-eyebrow">
-                    MONEYSEARCH
-                </div>
-
-                <h2>
+                <strong>
                     Search MoneyLeak
-                </h2>
+                </strong>
+
+                <span>
+                    Find pages, transactions and goals.
+                </span>
 
             </div>
 
+
             <button
-                class="search-close"
-                id="closeSearch"
                 type="button"
+                id="closeSearch"
+                class="search-close"
+                aria-label="Close search"
             >
                 ×
             </button>
 
         </div>
 
-        <div class="search-input-wrapper">
+
+        <div class="search-input-wrap">
 
             <span>⌕</span>
 
             <input
+                id="globalSearch"
                 type="search"
-                id="globalSearchInput"
-                placeholder="Search transactions, goals, budgets..."
+                placeholder="Search anything..."
                 autocomplete="off"
             >
 
-            <kbd>ESC</kbd>
-
         </div>
+
 
         <div
-            class="search-results"
             id="searchResults"
-        >
-
-            <div class="search-empty">
-                Start typing to search MoneyLeak.
-            </div>
-
-        </div>
+            class="search-results"
+        ></div>
 
     </div>
 
 </div>
 
 
-<!-- NOTIFICATIONS -->
+
+<!-- =========================================================
+     NOTIFICATION CENTER
+========================================================== -->
+
 <div
-    class="notification-panel"
-    id="notificationPanel"
+    id="notificationCenter"
+    class="notification-center"
     aria-hidden="true"
 >
 
-    <div class="notification-panel-header">
+    <div class="notification-center-header">
 
         <div>
 
-            <div class="notification-heading">
-                NOTIFICATIONS
-            </div>
+            <strong>
+                Notifications
+            </strong>
 
-            <div class="notification-title-row">
-
-                <h2>
-                    Your Money
-                </h2>
-
-                <span
-                    class="notification-unread-badge"
-                    id="notificationUnreadCount"
-                >
-                    0
-                </span>
-
-            </div>
+            <span>
+                MoneyLeak intelligence
+            </span>
 
         </div>
 
+
         <button
-            class="notification-close"
-            id="closeNotifications"
             type="button"
+            id="closeNotifications"
+            aria-label="Close notifications"
         >
             ×
         </button>
 
     </div>
 
-    <div class="notification-toolbar">
 
-        <div class="notification-tabs">
+    <div class="notification-tabs">
 
-            <button
-                class="notification-tab active"
-                data-notification-filter="all"
-                type="button"
-            >
-                All
-            </button>
+        <button
+            type="button"
+            class="notification-tab active"
+            data-notification-tab="all"
+        >
+            All
+        </button>
 
-            <button
-                class="notification-tab"
-                data-notification-filter="unread"
-                type="button"
-            >
-                Unread
-            </button>
-
-        </div>
-
-        <div class="notification-actions">
-
-            <button
-                class="notification-action"
-                id="markNotificationsRead"
-                type="button"
-            >
-                Mark read
-            </button>
-
-        </div>
+        <button
+            type="button"
+            class="notification-tab"
+            data-notification-tab="unread"
+        >
+            Unread
+        </button>
 
     </div>
 
+
     <div
-        class="notification-list"
         id="notificationList"
+        class="notification-list"
     ></div>
+
+
+    <button
+        type="button"
+        id="clearNotifications"
+        class="button button-secondary notification-clear"
+    >
+        Clear notifications
+    </button>
 
 </div>
 
 
-<!-- MOBILE OVERLAY -->
+
+<!-- MOBILE BACKDROP -->
+
 <div
-    class="mobile-nav-overlay"
-    id="mobileNavOverlay"
+    id="mobileBackdrop"
+    class="mobile-backdrop"
 ></div>
 
 
-<!-- TOAST -->
-<div
-    id="toast"
-    class="toast"
-    role="status"
-    aria-live="polite"
->
-    <span id="toastMessage"></span>
-</div>
 
+<!-- =========================================================
+     APP
+========================================================== -->
 
-<script src="app.js"></script>
+<script src="./app.js"></script>
 
 </body>
 </html>
