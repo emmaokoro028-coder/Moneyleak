@@ -1517,5 +1517,792 @@
     defer
 ></script>
 
+<script>
+(function () {
+
+    /* =====================================================
+       MONEYLEAK DASHBOARD INTELLIGENCE
+    ===================================================== */
+
+    const TRANSACTION_KEY = "moneyLeakTransactions";
+
+    function getTransactions() {
+
+        try {
+
+            const raw =
+                localStorage.getItem(
+                    TRANSACTION_KEY
+                );
+
+            if (!raw) {
+                return [];
+            }
+
+            const data =
+                JSON.parse(raw);
+
+            return Array.isArray(data)
+                ? data
+                : [];
+
+        } catch (error) {
+
+            console.warn(
+                "MoneyLeak dashboard data error:",
+                error
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    function amount(transaction) {
+
+        return Math.abs(
+            Number(
+                transaction.amount ??
+                transaction.value ??
+                transaction.total ??
+                0
+            )
+        ) || 0;
+
+    }
+
+
+    function transactionType(transaction) {
+
+        return String(
+            transaction.type ??
+            transaction.kind ??
+            transaction.transactionType ??
+            ""
+        ).toLowerCase();
+
+    }
+
+
+    function transactionDate(transaction) {
+
+        const value =
+            transaction.date ??
+            transaction.createdAt ??
+            transaction.created ??
+            transaction.timestamp;
+
+        const date =
+            new Date(value);
+
+        return Number.isNaN(
+            date.getTime()
+        )
+            ? null
+            : date;
+
+    }
+
+
+    function isIncome(transaction) {
+
+        const type =
+            transactionType(
+                transaction
+            );
+
+        return (
+            type === "income" ||
+            type === "credit" ||
+            type === "deposit" ||
+            transaction.income === true
+        );
+
+    }
+
+
+    function isExpense(transaction) {
+
+        const type =
+            transactionType(
+                transaction
+            );
+
+        return (
+            type === "expense" ||
+            type === "debit" ||
+            type === "spending" ||
+            transaction.income === false
+        );
+
+    }
+
+
+    /* =====================================================
+       MONEY LEAK SCORE
+    ===================================================== */
+
+    function calculateMoneyLeakScore() {
+
+        const transactions =
+            getTransactions();
+
+        if (!transactions.length) {
+
+            return {
+                score: 0,
+                grade: "Getting started",
+                message:
+                    "Add income and expenses to unlock your personalized MoneyLeak Score."
+            };
+
+        }
+
+
+        const now =
+            new Date();
+
+
+        const monthStart =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                1
+            );
+
+
+        const monthTransactions =
+            transactions.filter(
+                transaction => {
+
+                    const date =
+                        transactionDate(
+                            transaction
+                        );
+
+                    return (
+                        date &&
+                        date >= monthStart &&
+                        date <= now
+                    );
+
+                }
+            );
+
+
+        let income = 0;
+        let expenses = 0;
+
+
+        monthTransactions.forEach(
+            transaction => {
+
+                if (
+                    isIncome(
+                        transaction
+                    )
+                ) {
+
+                    income +=
+                        amount(
+                            transaction
+                        );
+
+                }
+
+
+                if (
+                    isExpense(
+                        transaction
+                    )
+                ) {
+
+                    expenses +=
+                        amount(
+                            transaction
+                        );
+
+                }
+
+            }
+        );
+
+
+        /*
+         * If there isn't enough current-month
+         * data, use all available data.
+         */
+
+        if (
+            income === 0 &&
+            expenses === 0
+        ) {
+
+            transactions.forEach(
+                transaction => {
+
+                    if (
+                        isIncome(
+                            transaction
+                        )
+                    ) {
+
+                        income +=
+                            amount(
+                                transaction
+                            );
+
+                    }
+
+
+                    if (
+                        isExpense(
+                            transaction
+                        )
+                    ) {
+
+                        expenses +=
+                            amount(
+                                transaction
+                            );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        let score = 50;
+
+
+        /* Savings behavior */
+
+        if (income > 0) {
+
+            const savingsRate =
+                (
+                    (income - expenses) /
+                    income
+                ) * 100;
+
+
+            if (
+                savingsRate >= 30
+            ) {
+
+                score += 25;
+
+            } else if (
+                savingsRate >= 20
+            ) {
+
+                score += 18;
+
+            } else if (
+                savingsRate >= 10
+            ) {
+
+                score += 10;
+
+            } else if (
+                savingsRate > 0
+            ) {
+
+                score += 4;
+
+            } else {
+
+                score -= 15;
+
+            }
+
+        }
+
+
+        /* Expense pressure */
+
+        if (
+            income > 0 &&
+            expenses > income
+        ) {
+
+            score -= 20;
+
+        } else if (
+            income > 0 &&
+            expenses >
+                income * 0.8
+        ) {
+
+            score -= 12;
+
+        } else if (
+            income > 0 &&
+            expenses <
+                income * 0.5
+        ) {
+
+            score += 10;
+
+        }
+
+
+        /* Activity bonus */
+
+        if (
+            monthTransactions.length >= 5
+        ) {
+
+            score += 5;
+
+        }
+
+
+        score =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    Math.round(score)
+                )
+            );
+
+
+        let grade;
+        let message;
+
+
+        if (
+            score >= 85
+        ) {
+
+            grade = "Excellent";
+
+            message =
+                "Your money habits are looking strong. Keep protecting your savings rate and avoid unnecessary spending.";
+
+        } else if (
+            score >= 70
+        ) {
+
+            grade = "Healthy";
+
+            message =
+                "You're building a healthy financial position. A little more control over spending could push your score higher.";
+
+        } else if (
+            score >= 50
+        ) {
+
+            grade = "Building";
+
+            message =
+                "You're on the way. Focus on keeping expenses below income and consistently putting money aside.";
+
+        } else if (
+            score >= 30
+        ) {
+
+            grade = "Needs attention";
+
+            message =
+                "Your spending is putting pressure on your finances. Start by identifying the biggest leaks this month.";
+
+        } else {
+
+            grade = "Critical";
+
+            message =
+                "Your expenses are currently putting significant pressure on your money. Focus on essential spending first.";
+
+        }
+
+
+        return {
+            score,
+            grade,
+            message
+        };
+
+    }
+
+
+    function updateMoneyLeakScore() {
+
+        const result =
+            calculateMoneyLeakScore();
+
+
+        const scoreElement =
+            document.getElementById(
+                "moneyLeakScore"
+            );
+
+        const gradeElement =
+            document.getElementById(
+                "moneyLeakGrade"
+            );
+
+        const messageElement =
+            document.getElementById(
+                "moneyLeakScoreMessage"
+            );
+
+        const ring =
+            document.getElementById(
+                "moneyLeakScoreRing"
+            );
+
+
+        if (scoreElement) {
+
+            scoreElement.textContent =
+                result.score;
+
+        }
+
+
+        if (gradeElement) {
+
+            gradeElement.textContent =
+                result.grade;
+
+        }
+
+
+        if (messageElement) {
+
+            messageElement.textContent =
+                result.message;
+
+        }
+
+
+        if (ring) {
+
+            ring.style.setProperty(
+                "--score",
+                result.score + "%"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       REAL CASH FLOW CHART
+    ===================================================== */
+
+    function getWeekStart(date) {
+
+        const result =
+            new Date(date);
+
+        const day =
+            result.getDay();
+
+        const difference =
+            day === 0
+                ? -6
+                : 1 - day;
+
+        result.setDate(
+            result.getDate() +
+            difference
+        );
+
+        result.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+        return result;
+
+    }
+
+
+    function updateCashFlowChart() {
+
+        const chart =
+            document.getElementById(
+                "dashboardCashFlowChart"
+            );
+
+        if (!chart) {
+            return;
+        }
+
+
+        const transactions =
+            getTransactions();
+
+
+        const today =
+            new Date();
+
+
+        const currentWeek =
+            getWeekStart(
+                today
+            );
+
+
+        const weeks = [];
+
+
+        for (
+            let i = 3;
+            i >= 0;
+            i--
+        ) {
+
+            const start =
+                new Date(
+                    currentWeek
+                );
+
+            start.setDate(
+                start.getDate() -
+                i * 7
+            );
+
+
+            const end =
+                new Date(
+                    start
+                );
+
+            end.setDate(
+                end.getDate() +
+                6
+            );
+
+            end.setHours(
+                23,
+                59,
+                59,
+                999
+            );
+
+
+            let income = 0;
+            let expenses = 0;
+
+
+            transactions.forEach(
+                transaction => {
+
+                    const date =
+                        transactionDate(
+                            transaction
+                        );
+
+                    if (
+                        !date ||
+                        date < start ||
+                        date > end
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    if (
+                        isIncome(
+                            transaction
+                        )
+                    ) {
+
+                        income +=
+                            amount(
+                                transaction
+                            );
+
+                    }
+
+
+                    if (
+                        isExpense(
+                            transaction
+                        )
+                    ) {
+
+                        expenses +=
+                            amount(
+                                transaction
+                            );
+
+                    }
+
+                }
+            );
+
+
+            weeks.push({
+                income,
+                expenses,
+                label:
+                    "W" +
+                    (4 - i)
+            });
+
+        }
+
+
+        const maximum =
+            Math.max(
+                1,
+                ...weeks.flatMap(
+                    week => [
+                        week.income,
+                        week.expenses
+                    ]
+                )
+            );
+
+
+        chart.innerHTML =
+            weeks.map(
+                week => {
+
+                    const incomeHeight =
+                        Math.max(
+                            week.income
+                                ? 6
+                                : 0,
+                            (
+                                week.income /
+                                maximum
+                            ) * 100
+                        );
+
+
+                    const expenseHeight =
+                        Math.max(
+                            week.expenses
+                                ? 6
+                                : 0,
+                            (
+                                week.expenses /
+                                maximum
+                            ) * 100
+                        );
+
+
+                    return `
+                        <div class="cash-flow-bar-group">
+
+                            <div
+                                class="cash-flow-bars"
+                                style="
+                                    height: 100%;
+                                    display: flex;
+                                    align-items: flex-end;
+                                    justify-content: center;
+                                    gap: 5px;
+                                "
+                            >
+
+                                <div
+                                    class="cash-flow-bar"
+                                    title="Income: ${week.income.toLocaleString()}"
+                                    style="height:${incomeHeight}%"
+                                ></div>
+
+                                <div
+                                    class="cash-flow-bar expense"
+                                    title="Expenses: ${week.expenses.toLocaleString()}"
+                                    style="height:${expenseHeight}%"
+                                ></div>
+
+                            </div>
+
+                            <div class="cash-flow-label">
+                                ${week.label}
+                            </div>
+
+                        </div>
+                    `;
+
+                }
+            ).join("");
+
+    }
+
+
+    /* =====================================================
+       RUN DASHBOARD INTELLIGENCE
+    ===================================================== */
+
+    function refreshDashboardIntelligence() {
+
+        updateMoneyLeakScore();
+
+        updateCashFlowChart();
+
+    }
+
+
+    /*
+     * Wait until the main MoneyLeak application
+     * has finished loading.
+     */
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            setTimeout(
+                refreshDashboardIntelligence,
+                250
+            );
+
+        }
+    );
+
+
+    /*
+     * Refresh if another MoneyLeak page
+     * sends an update event.
+     */
+
+    window.addEventListener(
+        "moneyLeakUpdated",
+        refreshDashboardIntelligence
+    );
+
+
+    /*
+     * Refresh whenever the tab becomes active.
+     */
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (
+                document.visibilityState ===
+                "visible"
+            ) {
+
+                refreshDashboardIntelligence();
+
+            }
+
+        }
+    );
+
+
+})();
+</script>
+
 </body>
 </html>
