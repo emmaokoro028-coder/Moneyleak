@@ -2771,124 +2771,135 @@
     }
 
     function setupSearch() {
-        const overlay =
-            $("#searchOverlay");
+    const overlay = document.getElementById("searchOverlay");
+    const input = document.getElementById("globalSearch");
+    const closeButton = document.getElementById("closeSearch");
+    const searchButton = document.getElementById("searchButton");
 
-        const input =
-            $("#globalSearch");
+    console.log("MoneyLeak search:", {
+        overlay: !!overlay,
+        input: !!input,
+        closeButton: !!closeButton,
+        searchButton: !!searchButton
+    });
 
-        const close =
-            $("#closeSearch");
+    if (!overlay) {
+        console.error("MoneyLeak: #searchOverlay not found.");
+        return;
+    }
 
-        const button =
-            $("#searchButton");
+    function openSearch() {
+        overlay.classList.add("open");
+        overlay.classList.add("active");
 
-        if (!overlay) return;
+        overlay.setAttribute("aria-hidden", "false");
 
-        function openSearch() {
-            overlay.classList.add("open");
-            overlay.classList.add("active");
+        document.body.style.overflow = "hidden";
 
-            overlay.setAttribute(
-                "aria-hidden",
-                "false"
-            );
-
+        if (typeof renderSearchResults === "function") {
             renderSearchResults("");
-
-            setTimeout(
-                () => input?.focus(),
-                50
-            );
         }
 
-        function closeSearch() {
-            overlay.classList.remove("open");
-            overlay.classList.remove("active");
-
-            overlay.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-
+        setTimeout(() => {
             if (input) {
-                input.value = "";
+                input.focus();
             }
+        }, 100);
+    }
+
+    function closeSearch() {
+        overlay.classList.remove("open");
+        overlay.classList.remove("active");
+
+        overlay.setAttribute("aria-hidden", "true");
+
+        document.body.style.overflow = "";
+
+        if (input) {
+            input.value = "";
         }
+    }
 
-        button?.addEventListener(
-            "click",
-            event => {
-                event.preventDefault();
-                openSearch();
+    if (searchButton) {
+        searchButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            openSearch();
+        });
+    }
+
+    if (closeButton) {
+        closeButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeSearch();
+        });
+    }
+
+    overlay.addEventListener("click", function (event) {
+        if (event.target === overlay) {
+            closeSearch();
+        }
+    });
+
+    if (input) {
+        input.addEventListener("input", function (event) {
+            const query = event.target.value.trim();
+
+            if (typeof renderSearchResults === "function") {
+                renderSearchResults(query);
             }
-        );
+        });
+    }
 
-        close?.addEventListener(
-            "click",
-            event => {
-                event.preventDefault();
-                event.stopPropagation();
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape") {
+            if (
+                overlay.classList.contains("open") ||
+                overlay.classList.contains("active")
+            ) {
                 closeSearch();
             }
-        );
+        }
 
-        overlay.addEventListener(
-            "click",
-            event => {
-                if (event.target === overlay) {
-                    closeSearch();
-                }
+        if (
+            (event.metaKey || event.ctrlKey) &&
+            event.key.toLowerCase() === "k"
+        ) {
+            event.preventDefault();
+
+            if (
+                overlay.classList.contains("open") ||
+                overlay.classList.contains("active")
+            ) {
+                closeSearch();
+            } else {
+                openSearch();
             }
-        );
+        }
 
-        input?.addEventListener(
-            "input",
-            () => {
-                renderSearchResults(
-                    input.value
-                );
-            }
-        );
+        const active = document.activeElement;
 
-        document.addEventListener(
-            "keydown",
-            event => {
-                if (
-                    event.key === "/" &&
-                    document.activeElement?.tagName !==
-                        "INPUT" &&
-                    document.activeElement?.tagName !==
-                        "TEXTAREA"
-                ) {
-                    event.preventDefault();
-                    openSearch();
-                }
+        const typing =
+            active &&
+            (
+                active.tagName === "INPUT" ||
+                active.tagName === "TEXTAREA" ||
+                active.tagName === "SELECT" ||
+                active.isContentEditable
+            );
 
-                if (
-                    (
-                        event.metaKey ||
-                        event.ctrlKey
-                    ) &&
-                    event.key.toLowerCase() === "k"
-                ) {
-                    event.preventDefault();
-                    openSearch();
-                }
+        if (event.key === "/" && !typing) {
+            event.preventDefault();
+            openSearch();
+        }
+    });
 
-                if (
-                    event.key === "Escape"
-                ) {
-                    closeSearch();
-
-                    $("#notificationPanel")
-                        ?.classList.remove(
-                            "open"
-                        );
-                }
-            }
-        );
-    }
+    console.log("MoneyLeak search system ready.");
+}
 
     /* =====================================================
        TOAST
