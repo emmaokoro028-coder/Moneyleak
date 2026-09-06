@@ -1,2418 +1,917 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta charset="UTF-8">
+    <title>Income — MoneyLeak</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta
+        name="description"
+        content="Track every income stream and understand your earning power with MoneyLeak."
+    >
 
-  <meta
-    name="description"
-    content="MoneyLeak income management and income intelligence."
-  >
-
-  <title>MoneyLeak — Income</title>
-
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
+<body data-page="income">
 
-<body>
+<div class="app-shell">
 
-  <div class="app-shell">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
 
+        <div class="brand">
+            <div class="brand-mark">M</div>
 
-    <!-- =====================================================
-         SIDEBAR
-         ===================================================== -->
-
-    <aside class="sidebar">
-
-      <div class="brand">
-
-        <div class="brand-mark">
-          ₦
+            <div class="brand-copy">
+                <strong>MoneyLeak</strong>
+                <span>Personal Finance OS</span>
+            </div>
         </div>
 
-        <div>
+        <nav class="sidebar-nav">
 
-          <div class="brand-text">
-            MoneyLeak
-          </div>
+            <div class="nav-label">Overview</div>
 
-          <div class="brand-subtitle">
-            Personal Finance OS
-          </div>
+            <a href="index.html" class="nav-item">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
 
-        </div>
+            <a href="analytics.html" class="nav-item">
+                <span class="nav-icon">◔</span>
+                <span>Analytics</span>
+            </a>
 
-      </div>
+            <div class="nav-label">Money</div>
 
+            <a href="income.html" class="nav-item active">
+                <span class="nav-icon">↗</span>
+                <span>Income</span>
+            </a>
 
-      <nav class="sidebar-nav">
+            <a href="expenses.html" class="nav-item">
+                <span class="nav-icon">↘</span>
+                <span>Expenses</span>
+            </a>
 
+            <a href="budgets.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Budgets</span>
+            </a>
 
-        <div class="nav-section">
+            <a href="recurring.html" class="nav-item">
+                <span class="nav-icon">↻</span>
+                <span>Recurring</span>
+            </a>
 
-          <div class="nav-section-title">
-            Overview
-          </div>
+            <div class="nav-label">Goals</div>
 
-          <a href="index.html">
-            <span class="nav-icon">⌂</span>
-            Dashboard
-          </a>
+            <a href="savings.html" class="nav-item">
+                <span class="nav-icon">◎</span>
+                <span>Savings Goals</span>
+            </a>
 
-          <a href="analytics.html">
-            <span class="nav-icon">◉</span>
-            Analytics
-          </a>
+            <div class="nav-label">System</div>
 
-        </div>
+            <a href="settings.html" class="nav-item">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
 
+        </nav>
 
-        <div class="nav-section">
+        <div class="sidebar-bottom">
 
-          <div class="nav-section-title">
-            Money
-          </div>
+            <div class="sidebar-status">
+                <span class="status-dot"></span>
 
-          <a
-            href="income.html"
-            class="active"
-          >
-            <span class="nav-icon">↗</span>
-            Income
-          </a>
-
-          <a href="expenses.html">
-            <span class="nav-icon">↘</span>
-            Expenses
-          </a>
-
-          <a href="budgets.html">
-            <span class="nav-icon">▣</span>
-            Budgets
-          </a>
-
-        </div>
-
-
-        <div class="nav-section">
-
-          <div class="nav-section-title">
-            Planning
-          </div>
-
-          <a href="savings.html">
-            <span class="nav-icon">◎</span>
-            Savings Goals
-          </a>
-
-          <a href="recurring.html">
-            <span class="nav-icon">↻</span>
-            Recurring
-          </a>
-
-        </div>
-
-
-        <div class="nav-section">
-
-          <div class="nav-section-title">
-            System
-          </div>
-
-          <a href="settings.html">
-            <span class="nav-icon">⚙</span>
-            Settings
-          </a>
-
-        </div>
-
-      </nav>
-
-
-      <div class="sidebar-footer">
-
-        <div class="sidebar-profile">
-
-          <div class="profile-avatar">
-            M
-          </div>
-
-          <div>
-
-            <div
-              class="profile-name"
-              data-user-name
-            >
-              My Money
+                <div>
+                    <strong>MoneyLeak AI</strong>
+                    <small>Intelligence active</small>
+                </div>
             </div>
 
-            <div class="profile-label">
-              Personal account
-            </div>
-
-          </div>
-
         </div>
-
-      </div>
 
     </aside>
 
 
-    <!-- =====================================================
-         MOBILE OVERLAY
-         ===================================================== -->
-
-    <div
-      id="mobileOverlay"
-      class="mobile-overlay"
-    ></div>
-
-
-    <!-- =====================================================
-         MAIN
-         ===================================================== -->
-
+    <!-- MAIN -->
     <main class="main-content">
 
-
-      <!-- ===================================================
-           TOPBAR
-           =================================================== -->
-
-      <header class="topbar">
-
-        <div class="topbar-left">
-
-          <button
-            id="mobileMenuButton"
-            class="icon-button mobile-menu-button"
-            type="button"
-            aria-label="Open menu"
-          >
-            ☰
-          </button>
-
-          <div class="page-title">
-            Income
-          </div>
-
-        </div>
-
-
-        <div class="topbar-right">
-
-          <button
-            class="topbar-search"
-            type="button"
-            data-open-search
-            aria-label="Search MoneyLeak"
-          >
-
-            <span>⌕</span>
-
-            <span>
-              Search MoneyLeak
-            </span>
-
-            <span class="search-shortcut">
-              ⌘K
-            </span>
-
-          </button>
-
-
-          <button
-            id="notificationButton"
-            class="icon-button"
-            type="button"
-            aria-label="Notifications"
-          >
-            🔔
-          </button>
-
-        </div>
-
-      </header>
-
-
-      <!-- ===================================================
-           PAGE CONTENT
-           =================================================== -->
-
-      <div class="page-container">
-
-
-        <!-- =================================================
-             INTRO
-             ================================================= -->
-
-        <section class="page-intro fade-in">
-
-          <h1>
-            Income Command Center
-          </h1>
-
-          <p>
-            Track every source of money coming into
-            your life and understand how your income
-            is changing over time.
-          </p>
-
-        </section>
-
-
-        <!-- =================================================
-             INCOME OVERVIEW
-             ================================================= -->
-
-        <section class="overview-grid">
-
-
-          <div class="card stat-card">
-
-            <div class="stat-top">
-
-              <span class="stat-label">
-                This month
-              </span>
-
-              <div class="stat-icon">
-                ↗
-              </div>
-
-            </div>
-
-            <div
-              id="incomeThisMonth"
-              class="stat-value positive"
-            >
-              ₦0
-            </div>
-
-            <div class="stat-meta">
-              Total income received
-            </div>
-
-          </div>
-
-
-          <div class="card stat-card">
-
-            <div class="stat-top">
-
-              <span class="stat-label">
-                Previous month
-              </span>
-
-              <div class="stat-icon">
-                ←
-              </div>
-
-            </div>
-
-            <div
-              id="incomePreviousMonth"
-              class="stat-value"
-            >
-              ₦0
-            </div>
-
-            <div class="stat-meta">
-              Previous month's income
-            </div>
-
-          </div>
-
-
-          <div class="card stat-card">
-
-            <div class="stat-top">
-
-              <span class="stat-label">
-                Change
-              </span>
-
-              <div class="stat-icon">
-                %
-              </div>
-
-            </div>
-
-            <div
-              id="incomeMonthComparison"
-              class="stat-value"
-            >
-              0%
-            </div>
-
-            <div class="stat-meta">
-              Compared with last month
-            </div>
-
-          </div>
-
-
-          <div class="card stat-card">
-
-            <div class="stat-top">
-
-              <span class="stat-label">
-                Average
-              </span>
-
-              <div class="stat-icon">
-                ≈
-              </div>
-
-            </div>
-
-            <div
-              id="incomeAverage"
-              class="stat-value"
-            >
-              ₦0
-            </div>
-
-            <div class="stat-meta">
-              Average monthly income
-            </div>
-
-          </div>
-
-
-        </section>
-
-
-        <!-- =================================================
-             ADD INCOME
-             ================================================= -->
-
-        <div class="section-header">
-
-          <div>
-
-            <h2>
-              Add income
-            </h2>
-
-            <p>
-              Record money you've received
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <section class="card card-padding">
-
-
-          <form id="incomeForm">
-
-
-            <div class="form-grid">
-
-
-              <!-- Amount -->
-
-              <div class="form-group">
-
-                <label
-                  class="form-label"
-                  for="incomeAmount"
-                >
-                  Amount
-                </label>
-
-                <input
-                  id="incomeAmount"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  placeholder="e.g. 250000"
-                  required
-                >
-
-              </div>
-
-
-              <!-- Source -->
-
-              <div class="form-group">
-
-                <label
-                  class="form-label"
-                  for="incomeSource"
-                >
-                  Income source
-                </label>
-
-                <select
-                  id="incomeSource"
-                  required
-                >
-
-                  <option value="">
-                    Select source
-                  </option>
-
-                  <option value="Salary">
-                    Salary
-                  </option>
-
-                  <option value="Freelance">
-                    Freelance
-                  </option>
-
-                  <option value="Business">
-                    Business
-                  </option>
-
-                  <option value="Investment">
-                    Investment
-                  </option>
-
-                  <option value="Gift">
-                    Gift
-                  </option>
-
-                  <option value="Bonus">
-                    Bonus
-                  </option>
-
-                  <option value="Side Hustle">
-                    Side Hustle
-                  </option>
-
-                  <option value="Other Income">
-                    Other Income
-                  </option>
-
-                </select>
-
-              </div>
-
-
-              <!-- Date -->
-
-              <div class="form-group">
-
-                <label
-                  class="form-label"
-                  for="incomeDate"
-                >
-                  Date received
-                </label>
-
-                <input
-                  id="incomeDate"
-                  type="date"
-                  required
-                >
-
-              </div>
-
-
-              <!-- Description -->
-
-              <div class="form-group">
-
-                <label
-                  class="form-label"
-                  for="incomeDescription"
-                >
-                  Description
-                </label>
-
-                <input
-                  id="incomeDescription"
-                  type="text"
-                  placeholder="e.g. September salary"
-                >
-
-              </div>
-
-
-            </div>
-
-
-            <div class="form-actions">
-
-              <button
-                class="btn btn-primary"
-                type="submit"
-              >
-                + Add income
-              </button>
-
-              <button
-                id="incomeReset"
-                class="btn btn-secondary"
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <button
+                class="mobile-menu-button"
+                id="mobileMenuButton"
                 type="button"
-              >
-                Clear
-              </button>
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
 
-            </div>
+            <div class="topbar-left">
 
-
-          </form>
-
-        </section>
-
-
-        <!-- =================================================
-             INCOME INTELLIGENCE
-             ================================================= -->
-
-        <div class="section-header">
-
-          <div>
-
-            <h2>
-              Income intelligence
-            </h2>
-
-            <p>
-              Understand the strength and structure of your income
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <section class="content-columns">
-
-
-          <!-- Main insight -->
-
-          <div
-            class="intelligence-card"
-          >
-
-            <div class="intelligence-badge">
-              ✦ Income intelligence
-            </div>
-
-            <h3>
-              Your income picture
-            </h3>
-
-            <p id="incomeInsight">
-              Add income transactions to unlock
-              MoneyLeak income intelligence.
-            </p>
-
-          </div>
-
-
-          <!-- Source stats -->
-
-          <div class="card card-padding">
-
-            <div class="card-header">
-
-              <div>
-
-                <div class="card-title">
-                  Income profile
-                </div>
-
-                <div class="card-subtitle">
-                  Your strongest sources
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="inline-stats">
-
-
-              <div class="inline-stat">
-
-                <div class="inline-stat-label">
-                  Sources
-                </div>
-
-                <div
-                  id="incomeSourceCount"
-                  class="inline-stat-value"
+                <button
+                    class="search-trigger"
+                    id="openSearch"
+                    type="button"
                 >
-                  0
-                </div>
+                    <span>⌕</span>
+                    <span>Search MoneyLeak</span>
+                    <kbd>⌘ K</kbd>
+                </button>
 
-              </div>
+            </div>
 
+            <div class="topbar-right">
 
-              <div class="inline-stat">
-
-                <div class="inline-stat-label">
-                  Strongest source
-                </div>
-
-                <div
-                  id="strongestIncomeSource"
-                  class="inline-stat-value"
+                <button
+                    class="icon-button"
+                    id="notificationButton"
+                    type="button"
+                    aria-label="Notifications"
                 >
-                  —
-                </div>
+                    ♢
+                    <span
+                        class="notification-badge"
+                        id="notificationBadge"
+                    ></span>
+                </button>
 
-              </div>
-
-
-              <div class="inline-stat">
-
-                <div class="inline-stat-label">
-                  Largest income
-                </div>
-
-                <div
-                  id="largestIncome"
-                  class="inline-stat-value positive"
+                <a
+                    href="settings.html"
+                    class="profile-button"
                 >
-                  ₦0
+                    <span
+                        class="profile-avatar"
+                        id="profileAvatar"
+                    >
+                        M
+                    </span>
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE -->
+        <div class="page-content">
+
+            <!-- HERO -->
+            <section class="hero">
+
+                <div class="hero-copy">
+
+                    <div class="eyebrow">
+                        INCOME INTELLIGENCE
+                    </div>
+
+                    <h1>
+                        Your earning power.
+                    </h1>
+
+                    <p>
+                        Track every source of income and
+                        understand how consistently money
+                        is coming into your life.
+                    </p>
+
                 </div>
 
-              </div>
+                <div class="hero-actions">
 
+                    <button
+                        class="button button-primary"
+                        id="openIncomeForm"
+                        type="button"
+                    >
+                        + Add Income
+                    </button>
 
-            </div>
+                </div>
 
+            </section>
 
-            <div class="divider"></div>
 
+            <!-- METRICS -->
+            <section class="metric-grid">
 
-            <div>
+                <article class="metric-card primary-metric">
 
-              <div class="inline-stat-label">
-                Income stability
-              </div>
+                    <div class="metric-card-top">
 
-              <div
-                id="incomeStability"
-                class="badge badge-info"
-              >
-                Building data
-              </div>
-
-            </div>
-
-          </div>
-
-
-        </section>
-
-
-        <!-- =================================================
-             SOURCE BREAKDOWN
-             ================================================= -->
-
-        <div class="section-header">
-
-          <div>
-
-            <h2>
-              Income sources
-            </h2>
-
-            <p>
-              See where your money is coming from
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <section class="card card-padding">
-
-          <div
-            id="incomeSources"
-          >
-
-            <div class="empty-state">
-
-              <strong>
-                No income sources yet
-              </strong>
-
-              <span>
-                Add income to see your source breakdown.
-              </span>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             INCOME HISTORY
-             ================================================= -->
-
-        <div class="section-header">
-
-          <div>
-
-            <h2>
-              Income history
-            </h2>
-
-            <p>
-              Search and manage your recorded income
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <section class="card card-padding">
-
-
-          <!-- Filters -->
-
-          <div class="filters">
-
-
-            <div class="filter-item">
-
-              <select
-                id="incomeFilterSource"
-              >
-
-                <option value="">
-                  All sources
-                </option>
-
-                <option value="Salary">
-                  Salary
-                </option>
-
-                <option value="Freelance">
-                  Freelance
-                </option>
-
-                <option value="Business">
-                  Business
-                </option>
-
-                <option value="Investment">
-                  Investment
-                </option>
-
-                <option value="Gift">
-                  Gift
-                </option>
-
-                <option value="Bonus">
-                  Bonus
-                </option>
-
-                <option value="Side Hustle">
-                  Side Hustle
-                </option>
-
-                <option value="Other Income">
-                  Other Income
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <div class="filter-item">
-
-              <input
-                id="incomeSearch"
-                type="search"
-                placeholder="Search income..."
-              >
-
-            </div>
-
-
-          </div>
-
-
-          <!-- History -->
-
-          <div
-            id="incomeHistory"
-            class="transaction-list"
-          >
-
-            <div class="empty-state">
-
-              <strong>
-                No income recorded
-              </strong>
-
-              <span>
-                Your income history will appear here.
-              </span>
-
-            </div>
-
-          </div>
-
-
-        </section>
-
-
-        <!-- =================================================
-             QUICK ACTIONS
-             ================================================= -->
-
-        <div class="section-header">
-
-          <div>
-
-            <h2>
-              Keep going
-            </h2>
-
-            <p>
-              Continue building your financial picture
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <section class="quick-actions">
-
-
-          <a
-            href="expenses.html"
-            class="quick-action"
-          >
-
-            <div class="quick-action-icon">
-              ↘
-            </div>
-
-            <div>
-
-              <strong>
-                Track expenses
-              </strong>
-
-              <span>
-                See where your income goes
-              </span>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="budgets.html"
-            class="quick-action"
-          >
-
-            <div class="quick-action-icon">
-              ▣
-            </div>
-
-            <div>
-
-              <strong>
-                Set a budget
-              </strong>
-
-              <span>
-                Give your income a plan
-              </span>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="savings.html"
-            class="quick-action"
-          >
-
-            <div class="quick-action-icon">
-              ◎
-            </div>
-
-            <div>
-
-              <strong>
-                Build savings
-              </strong>
-
-              <span>
-                Turn income into progress
-              </span>
-
-            </div>
-
-          </a>
-
-
-          <a
-            href="analytics.html"
-            class="quick-action"
-          >
-
-            <div class="quick-action-icon">
-              ◉
-            </div>
-
-            <div>
-
-              <strong>
-                Analyze finances
-              </strong>
-
-              <span>
-                Understand your trends
-              </span>
-
-            </div>
-
-          </a>
-
-
-        </section>
-
-
-        <!-- =================================================
-             FOOTER
-             ================================================= -->
-
-        <footer class="footer">
-
-          MoneyLeak Personal Finance OS
-          <br>
-
-          Your money. Your decisions. Your future.
-
-        </footer>
-
-
-      </div>
-
-    </main>
-
-  </div>
-
-
-  <!-- =====================================================
-       SEARCH OVERLAY
-       ===================================================== -->
-
-  <div
-    id="searchOverlay"
-    hidden
-  >
-
-    <div class="search-modal">
-
-      <div class="search-header">
-
-        <span>
-          ⌕
-        </span>
-
-        <input
-          id="globalSearch"
-          type="search"
-          placeholder="Search transactions, goals, categories..."
-          autocomplete="off"
-        >
-
-        <button
-          id="closeSearch"
-          class="icon-button"
-          type="button"
-          aria-label="Close search"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div
-        id="searchResults"
-        class="search-results"
-      >
-
-        <div class="search-empty">
-
-          <strong>
-            Search MoneyLeak
-          </strong>
-
-          <span>
-            Try a category, transaction, goal or amount.
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       NOTIFICATIONS
-       ===================================================== -->
-
-  <aside
-    id="notificationPanel"
-    class="notification-panel"
-  >
-
-    <div class="notification-header">
-
-      <strong>
-        Notifications
-      </strong>
-
-      <button
-        id="closeNotifications"
-        class="icon-button"
-        type="button"
-        aria-label="Close notifications"
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <div id="notificationList">
-
-      <div class="notification-empty">
-
-        <strong>
-          You're all caught up
-        </strong>
-
-        <span>
-          No important alerts right now.
-        </span>
-
-      </div>
-
-    </div>
-
-  </aside>
-
-
-  <!-- =====================================================
-       INCOME PAGE JAVASCRIPT
-       ===================================================== -->
-
-  <script>
-
-    (() => {
-
-      "use strict";
-
-
-      function moneyLeakReady(
-        callback
-      ) {
-
-        if (
-          window.MoneyLeak
-        ) {
-
-          callback(
-            window.MoneyLeak
-          );
-
-          return;
-
-        }
-
-
-        setTimeout(
-          () => {
-            moneyLeakReady(
-              callback
-            );
-          },
-          50
-        );
-
-      }
-
-
-      function initializeIncomePage(
-        MoneyLeak
-      ) {
-
-        const amountInput =
-          document.getElementById(
-            "incomeAmount"
-          );
-
-        const sourceInput =
-          document.getElementById(
-            "incomeSource"
-          );
-
-        const dateInput =
-          document.getElementById(
-            "incomeDate"
-          );
-
-        const descriptionInput =
-          document.getElementById(
-            "incomeDescription"
-          );
-
-        const form =
-          document.getElementById(
-            "incomeForm"
-          );
-
-        const resetButton =
-          document.getElementById(
-            "incomeReset"
-          );
-
-        const filterSource =
-          document.getElementById(
-            "incomeFilterSource"
-          );
-
-        const searchInput =
-          document.getElementById(
-            "incomeSearch"
-          );
-
-
-        /* ===================================================
-           DEFAULT DATE
-           =================================================== */
-
-        if (
-          dateInput &&
-          !dateInput.value
-        ) {
-
-          const now =
-            new Date();
-
-          dateInput.value =
-            `${now.getFullYear()}-${String(
-              now.getMonth() + 1
-            ).padStart(2, "0")}-${String(
-              now.getDate()
-            ).padStart(2, "0")}`;
-
-        }
-
-
-        /* ===================================================
-           ADD INCOME
-           =================================================== */
-
-        if (form) {
-
-          form.addEventListener(
-            "submit",
-            (event) => {
-
-              event.preventDefault();
-
-
-              const amount =
-                Number(
-                  amountInput?.value
-                );
-
-
-              const source =
-                sourceInput?.value ||
-                "Other Income";
-
-
-              const date =
-                dateInput?.value ||
-                new Date()
-                  .toISOString()
-                  .slice(0, 10);
-
-
-              const description =
-                descriptionInput?.value
-                  ?.trim() ||
-                source;
-
-
-              if (
-                !amount ||
-                amount <= 0
-              ) {
-
-                alert(
-                  "Please enter a valid income amount."
-                );
-
-                amountInput?.focus();
-
-                return;
-
-              }
-
-
-              MoneyLeak.addTransaction({
-
-                type: "income",
-
-                amount,
-
-                source,
-
-                category: source,
-
-                description,
-
-                date
-
-              });
-
-
-              form.reset();
-
-
-              if (dateInput) {
-
-                const now =
-                  new Date();
-
-                dateInput.value =
-                  `${now.getFullYear()}-${String(
-                    now.getMonth() + 1
-                  ).padStart(2, "0")}-${String(
-                    now.getDate()
-                  ).padStart(2, "0")}`;
-
-              }
-
-
-              renderIncomePage();
-
-            }
-          );
-
-        }
-
-
-        /* ===================================================
-           RESET
-           =================================================== */
-
-        if (resetButton) {
-
-          resetButton.addEventListener(
-            "click",
-            () => {
-
-              form?.reset();
-
-              if (dateInput) {
-
-                const now =
-                  new Date();
-
-                dateInput.value =
-                  `${now.getFullYear()}-${String(
-                    now.getMonth() + 1
-                  ).padStart(2, "0")}-${String(
-                    now.getDate()
-                  ).padStart(2, "0")}`;
-
-              }
-
-            }
-          );
-
-        }
-
-
-        /* ===================================================
-           FILTERS
-           =================================================== */
-
-        filterSource?.addEventListener(
-          "change",
-          renderHistory
-        );
-
-
-        searchInput?.addEventListener(
-          "input",
-          renderHistory
-        );
-
-
-        /* ===================================================
-           PAGE RENDER
-           =================================================== */
-
-        function renderIncomePage() {
-
-          renderOverview();
-
-          renderIntelligence();
-
-          renderSources();
-
-          renderHistory();
-
-        }
-
-
-        /* ===================================================
-           OVERVIEW
-           =================================================== */
-
-        function renderOverview() {
-
-          const current =
-            MoneyLeak.getPeriodTransactions(
-              "month"
-            );
-
-
-          const previous =
-            MoneyLeak.getPeriodTransactions(
-              "lastMonth"
-            );
-
-
-          const currentIncome =
-            MoneyLeak.getIncome(
-              current
-            );
-
-
-          const previousIncome =
-            MoneyLeak.getIncome(
-              previous
-            );
-
-
-          const allTransactions =
-            MoneyLeak.getTransactions();
-
-
-          const incomeTransactions =
-            allTransactions.filter(
-              transaction =>
-                transaction.type ===
-                "income"
-            );
-
-
-          const monthlyValues = [];
-
-
-          const monthsSeen = {};
-
-
-          incomeTransactions.forEach(
-            transaction => {
-
-              const key =
-                transaction.date
-                  .slice(0, 7);
-
-              monthsSeen[key] =
-                true;
-
-            }
-          );
-
-
-          Object.keys(
-            monthsSeen
-          ).forEach(
-            month => {
-
-              const monthTransactions =
-                incomeTransactions.filter(
-                  transaction =>
-                    transaction.date
-                      .slice(0, 7) ===
-                    month
-                );
-
-
-              monthlyValues.push(
-                MoneyLeak.getIncome(
-                  monthTransactions
-                )
-              );
-
-            }
-          );
-
-
-          const average =
-            monthlyValues.length
-              ? monthlyValues.reduce(
-                  (
-                    total,
-                    value
-                  ) =>
-                    total + value,
-                  0
-                ) /
-                monthlyValues.length
-              : 0;
-
-
-          let comparison = 0;
-
-
-          if (
-            previousIncome > 0
-          ) {
-
-            comparison =
-              ((currentIncome -
-                previousIncome) /
-                previousIncome) *
-              100;
-
-          } else if (
-            currentIncome > 0
-          ) {
-
-            comparison = 100;
-
-          }
-
-
-          const thisMonthElement =
-            document.getElementById(
-              "incomeThisMonth"
-            );
-
-
-          const previousElement =
-            document.getElementById(
-              "incomePreviousMonth"
-            );
-
-
-          const comparisonElement =
-            document.getElementById(
-              "incomeMonthComparison"
-            );
-
-
-          const averageElement =
-            document.getElementById(
-              "incomeAverage"
-            );
-
-
-          if (
-            thisMonthElement
-          ) {
-
-            thisMonthElement.textContent =
-              MoneyLeak.displayCurrency(
-                currentIncome
-              );
-
-          }
-
-
-          if (
-            previousElement
-          ) {
-
-            previousElement.textContent =
-              MoneyLeak.displayCurrency(
-                previousIncome
-              );
-
-          }
-
-
-          if (
-            comparisonElement
-          ) {
-
-            comparisonElement.textContent =
-              `${comparison >= 0 ? "+" : ""}${Math.round(
-                comparison
-              )}%`;
-
-
-            comparisonElement.className =
-              `stat-value ${
-                comparison >= 0
-                  ? "positive"
-                  : "negative"
-              }`;
-
-          }
-
-
-          if (
-            averageElement
-          ) {
-
-            averageElement.textContent =
-              MoneyLeak.displayCurrency(
-                average
-              );
-
-          }
-
-        }
-
-
-        /* ===================================================
-           INTELLIGENCE
-           =================================================== */
-
-        function renderIntelligence() {
-
-          const transactions =
-            MoneyLeak
-              .getTransactions()
-              .filter(
-                transaction =>
-                  transaction.type ===
-                  "income"
-              );
-
-
-          const sources = {};
-
-
-          transactions.forEach(
-            transaction => {
-
-              const source =
-                transaction.source ||
-                transaction.category ||
-                "Other Income";
-
-
-              sources[source] =
-                (sources[source] || 0) +
-                transaction.amount;
-
-            }
-          );
-
-
-          const sourceEntries =
-            Object.entries(
-              sources
-            ).sort(
-              (a, b) =>
-                b[1] - a[1]
-            );
-
-
-          const sourceCount =
-            sourceEntries.length;
-
-
-          const strongest =
-            sourceEntries[0];
-
-
-          const largest =
-            [...transactions]
-              .sort(
-                (a, b) =>
-                  b.amount - a.amount
-              )[0];
-
-
-          const current =
-            MoneyLeak.getIncome(
-              MoneyLeak.getPeriodTransactions(
-                "month"
-              )
-            );
-
-
-          const previous =
-            MoneyLeak.getIncome(
-              MoneyLeak.getPeriodTransactions(
-                "lastMonth"
-              )
-            );
-
-
-          let insight =
-            "Keep recording your income to build a stronger financial picture.";
-
-
-          if (
-            transactions.length === 0
-          ) {
-
-            insight =
-              "You haven't recorded any income yet. Add your income so MoneyLeak can understand your earning pattern.";
-
-          } else if (
-            sourceCount === 1
-          ) {
-
-            insight =
-              `Your income currently comes from one main source: ${
-                strongest[0]
-              }. Consider developing additional income streams over time.`;
-
-          } else if (
-            previous > 0 &&
-            current > previous
-          ) {
-
-            insight =
-              `Your income is higher this month than last month. That's positive momentum — consider directing some of the increase toward savings.`;
-
-          } else if (
-            previous > 0 &&
-            current < previous
-          ) {
-
-            insight =
-              `Your income is currently below last month's level. Keep an eye on cash flow and make sure your essential expenses remain covered.`;
-
-          } else if (
-            strongest
-          ) {
-
-            insight =
-              `${strongest[0]} is currently your strongest income source, contributing ${MoneyLeak.displayCurrency(
-                strongest[1]
-              )} across your recorded history.`;
-
-          }
-
-
-          const insightElement =
-            document.getElementById(
-              "incomeInsight"
-            );
-
-
-          const sourceCountElement =
-            document.getElementById(
-              "incomeSourceCount"
-            );
-
-
-          const strongestElement =
-            document.getElementById(
-              "strongestIncomeSource"
-            );
-
-
-          const largestElement =
-            document.getElementById(
-              "largestIncome"
-            );
-
-
-          const stabilityElement =
-            document.getElementById(
-              "incomeStability"
-            );
-
-
-          if (
-            insightElement
-          ) {
-
-            insightElement.textContent =
-              insight;
-
-          }
-
-
-          if (
-            sourceCountElement
-          ) {
-
-            sourceCountElement.textContent =
-              sourceCount;
-
-          }
-
-
-          if (
-            strongestElement
-          ) {
-
-            strongestElement.textContent =
-              strongest
-                ? strongest[0]
-                : "—";
-
-          }
-
-
-          if (
-            largestElement
-          ) {
-
-            largestElement.textContent =
-              largest
-                ? MoneyLeak.displayCurrency(
-                    largest.amount
-                  )
-                : MoneyLeak.displayCurrency(
-                    0
-                  );
-
-          }
-
-
-          if (
-            stabilityElement
-          ) {
-
-            let label =
-              "Building data";
-
-
-            let className =
-              "badge badge-info";
-
-
-            if (
-              transactions.length >=
-              6
-            ) {
-
-              const monthly =
-                getMonthlyIncomeValues();
-
-
-              if (
-                monthly.length >=
-                3
-              ) {
-
-                const average =
-                  monthly.reduce(
-                    (
-                      total,
-                      value
-                    ) =>
-                      total + value,
-                    0
-                  ) /
-                  monthly.length;
-
-
-                const deviations =
-                  monthly.map(
-                    value =>
-                      Math.abs(
-                        value -
-                        average
-                      )
-                  );
-
-
-                const deviation =
-                  deviations.reduce(
-                    (
-                      total,
-                      value
-                    ) =>
-                      total + value,
-                    0
-                  ) /
-                  deviations.length;
-
-
-                const volatility =
-                  average > 0
-                    ? deviation /
-                      average
-                    : 1;
-
-
-                if (
-                  volatility <
-                  0.15
-                ) {
-
-                  label =
-                    "Very stable";
-
-                  className =
-                    "badge badge-success";
-
-                } else if (
-                  volatility <
-                  0.35
-                ) {
-
-                  label =
-                    "Fairly stable";
-
-                  className =
-                    "badge badge-info";
-
-                } else {
-
-                  label =
-                    "Variable";
-
-                  className =
-                    "badge badge-warning";
-
-                }
-
-              }
-
-            }
-
-
-            stabilityElement.textContent =
-              label;
-
-
-            stabilityElement.className =
-              className;
-
-          }
-
-        }
-
-
-        /* ===================================================
-           MONTHLY INCOME VALUES
-           =================================================== */
-
-        function getMonthlyIncomeValues() {
-
-          const transactions =
-            MoneyLeak
-              .getTransactions()
-              .filter(
-                transaction =>
-                  transaction.type ===
-                  "income"
-              );
-
-
-          const months = {};
-
-
-          transactions.forEach(
-            transaction => {
-
-              const month =
-                transaction.date
-                  .slice(0, 7);
-
-
-              months[month] =
-                (months[month] || 0) +
-                transaction.amount;
-
-            }
-          );
-
-
-          return Object.values(
-            months
-          ).sort(
-            (a, b) =>
-              a - b
-          );
-
-        }
-
-
-        /* ===================================================
-           SOURCE BREAKDOWN
-           =================================================== */
-
-        function renderSources() {
-
-          const container =
-            document.getElementById(
-              "incomeSources"
-            );
-
-
-          if (!container) {
-            return;
-          }
-
-
-          const transactions =
-            MoneyLeak
-              .getTransactions()
-              .filter(
-                transaction =>
-                  transaction.type ===
-                  "income"
-              );
-
-
-          const totals = {};
-
-
-          transactions.forEach(
-            transaction => {
-
-              const source =
-                transaction.source ||
-                transaction.category ||
-                "Other Income";
-
-
-              totals[source] =
-                (totals[source] || 0) +
-                transaction.amount;
-
-            }
-          );
-
-
-          const entries =
-            Object.entries(
-              totals
-            ).sort(
-              (a, b) =>
-                b[1] - a[1]
-            );
-
-
-          if (
-            entries.length === 0
-          ) {
-
-            container.innerHTML = `
-              <div class="empty-state">
-                <strong>
-                  No income sources yet
-                </strong>
-
-                <span>
-                  Add income to see your source breakdown.
-                </span>
-              </div>
-            `;
-
-            return;
-
-          }
-
-
-          const total =
-            entries.reduce(
-              (
-                sum,
-                entry
-              ) =>
-                sum + entry[1],
-              0
-            );
-
-
-          container.innerHTML =
-            entries
-              .map(
-                entry => {
-
-                  const source =
-                    entry[0];
-
-                  const amount =
-                    entry[1];
-
-                  const percent =
-                    total > 0
-                      ? (amount /
-                          total) *
-                        100
-                      : 0;
-
-
-                  return `
-                    <div class="category-row">
-
-                      <div class="category-row-top">
-
-                        <strong>
-                          ${escapeHTML(
-                            source
-                          )}
-                        </strong>
-
-                        <span>
-                          ${MoneyLeak.displayCurrency(
-                            amount
-                          )}
+                        <span class="metric-label">
+                            This Month
                         </span>
 
-                      </div>
-
-
-                      <div class="mini-progress">
-
-                        <span
-                          style="width:${Math.min(
-                            100,
-                            percent
-                          )}%"
-                        ></span>
-
-                      </div>
-
-
-                      <div class="stat-meta">
-
-                        ${Math.round(
-                          percent
-                        )}% of recorded income
-
-                      </div>
+                        <span class="metric-icon">
+                            ↑
+                        </span>
 
                     </div>
-                  `;
 
-                }
-              )
-              .join("");
+                    <div
+                        class="metric-value"
+                        id="incomePageTotal"
+                    >
+                        ₦0
+                    </div>
 
-        }
+                    <div class="metric-footer">
+                        Total income
+                    </div>
 
-
-        /* ===================================================
-           HISTORY
-           =================================================== */
-
-        function renderHistory() {
-
-          const container =
-            document.getElementById(
-              "incomeHistory"
-            );
+                </article>
 
 
-          if (!container) {
-            return;
-          }
+                <article class="metric-card">
+
+                    <div class="metric-card-top">
+
+                        <span class="metric-label">
+                            Monthly Average
+                        </span>
+
+                        <span class="metric-icon">
+                            ≈
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="metric-value"
+                        id="incomePageAverage"
+                    >
+                        ₦0
+                    </div>
+
+                    <div class="metric-footer">
+                        Based on recent history
+                    </div>
+
+                </article>
 
 
-          let transactions =
-            MoneyLeak
-              .getTransactions()
-              .filter(
-                transaction =>
-                  transaction.type ===
-                  "income"
-              );
+                <article class="metric-card">
+
+                    <div class="metric-card-top">
+
+                        <span class="metric-label">
+                            Income Sources
+                        </span>
+
+                        <span class="metric-icon">
+                            ◉
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="metric-value"
+                        id="incomeSourceCount"
+                    >
+                        0
+                    </div>
+
+                    <div class="metric-footer">
+                        Active sources
+                    </div>
+
+                </article>
 
 
-          const selectedSource =
-            filterSource?.value ||
-            "";
+                <article class="metric-card">
+
+                    <div class="metric-card-top">
+
+                        <span class="metric-label">
+                            Consistency
+                        </span>
+
+                        <span class="metric-icon">
+                            %
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="metric-value"
+                        id="incomeConsistency"
+                    >
+                        0%
+                    </div>
+
+                    <div class="metric-footer">
+                        Income stability score
+                    </div>
+
+                </article>
+
+            </section>
 
 
-          const search =
-            searchInput?.value
-              ?.trim()
-              .toLowerCase() ||
-            "";
+            <!-- MAIN GRID -->
+            <section class="dashboard-grid">
+
+                <!-- INCOME INTELLIGENCE -->
+                <article class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <div class="card-kicker">
+                                MONEY INTELLIGENCE
+                            </div>
+
+                            <h2>
+                                Income Stability
+                            </h2>
+
+                        </div>
+
+                        <span
+                            class="status-pill"
+                            id="incomeStatus"
+                        >
+                            Building
+                        </span>
+
+                    </div>
+
+                    <div class="insight-body">
+
+                        <div
+                            class="insight-title"
+                            id="incomeInsightTitle"
+                        >
+                            Build your income picture
+                        </div>
+
+                        <p
+                            id="incomeInsightText"
+                        >
+                            Add income transactions to help
+                            MoneyLeak understand your earning
+                            consistency and identify changes
+                            over time.
+                        </p>
+
+                    </div>
+
+                </article>
 
 
-          if (
-            selectedSource
-          ) {
+                <!-- TOP SOURCE -->
+                <article class="card">
 
-            transactions =
-              transactions.filter(
-                transaction =>
-                  (
-                    transaction.source ||
-                    transaction.category
-                  ) ===
-                  selectedSource
-              );
+                    <div class="card-header">
 
-          }
+                        <div>
 
+                            <div class="card-kicker">
+                                LEADING SOURCE
+                            </div>
 
-          if (search) {
+                            <h2>
+                                Top Income Source
+                            </h2>
 
-            transactions =
-              transactions.filter(
-                transaction => {
+                        </div>
 
-                  const text =
-                    [
-                      transaction.source,
-                      transaction.category,
-                      transaction.description,
-                      transaction.date,
-                      transaction.amount
-                    ]
-                      .join(" ")
-                      .toLowerCase();
+                        <span class="card-header-icon">
+                            ↗
+                        </span>
 
+                    </div>
 
-                  return text.includes(
-                    search
-                  );
+                    <div class="safe-amount">
 
-                }
-              );
+                        <span id="topIncomeSource">
+                            —
+                        </span>
 
-          }
+                    </div>
+
+                    <p
+                        class="safe-description"
+                        id="topIncomeSourceAmount"
+                    >
+                        No income data yet.
+                    </p>
+
+                </article>
+
+            </section>
 
 
-          transactions.sort(
-            (a, b) =>
-              new Date(
-                b.date
-              ) -
-              new Date(
-                a.date
-              )
-          );
+            <!-- INCOME FORM -->
+            <section
+                class="card"
+                id="incomeFormCard"
+            >
 
-
-          if (
-            transactions.length ===
-            0
-          ) {
-
-            container.innerHTML = `
-              <div class="empty-state">
-
-                <strong>
-                  No matching income
-                </strong>
-
-                <span>
-                  Try changing your filters or add a new income transaction.
-                </span>
-
-              </div>
-            `;
-
-            return;
-
-          }
-
-
-          container.innerHTML =
-            transactions
-              .map(
-                transaction => `
-
-                  <div class="transaction-row">
+                <div class="card-header">
 
                     <div>
 
-                      <strong>
-                        ${escapeHTML(
-                          transaction.description ||
-                          transaction.source ||
-                          "Income"
-                        )}
-                      </strong>
+                        <div class="card-kicker">
+                            NEW ENTRY
+                        </div>
 
-                      <small>
-                        ${escapeHTML(
-                          transaction.source ||
-                          transaction.category ||
-                          "Income"
-                        )}
-                        •
-                        ${escapeHTML(
-                          transaction.date
-                        )}
-                      </small>
+                        <h2>
+                            Record Income
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <form
+                    id="incomeForm"
+                    class="form-grid"
+                >
+
+                    <div class="form-field">
+
+                        <label for="incomeAmount">
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="incomeAmount"
+                            name="amount"
+                            min="0"
+                            step="0.01"
+                            placeholder="0"
+                            required
+                        >
 
                     </div>
 
 
-                    <div style="display:flex;align-items:center;gap:10px;">
+                    <div class="form-field">
 
-                      <strong class="amount-positive">
-                        +${MoneyLeak.displayCurrency(
-                          transaction.amount
-                        )}
-                      </strong>
+                        <label for="incomeSource">
+                            Source
+                        </label>
 
-                      <button
+                        <select
+                            id="incomeSource"
+                            name="source"
+                            required
+                        >
+
+                            <option value="">
+                                Select source
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="incomeDate">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="incomeDate"
+                            name="date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="incomeDescription">
+                            Description
+                        </label>
+
+                        <input
+                            type="text"
+                            id="incomeDescription"
+                            name="description"
+                            placeholder="e.g. August salary"
+                        >
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            class="button button-primary"
+                        >
+                            Save Income
+                        </button>
+
+                        <button
+                            type="reset"
+                            class="button button-secondary"
+                        >
+                            Clear
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- SOURCE BREAKDOWN -->
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-kicker">
+                            BREAKDOWN
+                        </div>
+
+                        <h2>
+                            Income Sources
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="goals-list"
+                    id="incomeSourceBreakdown"
+                >
+
+                    <div class="empty-state">
+
+                        <div class="empty-state-icon">
+                            ↗
+                        </div>
+
+                        <strong>
+                            No income recorded
+                        </strong>
+
+                        <p>
+                            Add your first income entry to
+                            see where your money comes from.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- HISTORY -->
+            <section class="card transactions-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-kicker">
+                            HISTORY
+                        </div>
+
+                        <h2>
+                            Income History
+                        </h2>
+
+                    </div>
+
+                    <button
+                        class="text-button"
+                        id="clearIncomeFilter"
                         type="button"
-                        class="btn btn-danger btn-small"
-                        data-delete-income="${escapeHTML(
-                          transaction.id
-                        )}"
-                      >
-                        Delete
-                      </button>
+                    >
+                        Reset
+                    </button>
+
+                </div>
+
+
+                <div class="filter-row">
+
+                    <div class="search-input-wrapper compact">
+
+                        <span>⌕</span>
+
+                        <input
+                            type="search"
+                            id="incomeSearch"
+                            placeholder="Search income..."
+                        >
 
                     </div>
 
-                  </div>
 
-                `
-              )
-              .join("");
+                    <select
+                        id="incomeSourceFilter"
+                        class="filter-select"
+                    >
 
+                        <option value="">
+                            All sources
+                        </option>
 
-          container
-            .querySelectorAll(
-              "[data-delete-income]"
-            )
-            .forEach(
-              button => {
+                    </select>
 
-                button.addEventListener(
-                  "click",
-                  () => {
-
-                    const id =
-                      button.dataset
-                        .deleteIncome;
+                </div>
 
 
-                    const confirmed =
-                      confirm(
-                        "Delete this income transaction?"
-                      );
+                <div class="transactions-table-wrap">
+
+                    <table class="transactions-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Income
+                                </th>
+
+                                <th>
+                                    Source
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th class="align-right">
+                                    Amount
+                                </th>
+
+                                <th></th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="incomeTransactions">
+
+                            <tr>
+
+                                <td colspan="5">
+
+                                    <div class="table-empty">
+
+                                        <span>
+                                            No income transactions yet.
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
 
 
-                    if (
-                      !confirmed
-                    ) {
-                      return;
-                    }
+            <!-- COACH -->
+            <section class="coach-banner">
+
+                <div class="coach-icon">
+                    ✦
+                </div>
+
+                <div class="coach-content">
+
+                    <div class="coach-label">
+                        MONEY COACH
+                    </div>
+
+                    <h2 id="incomeCoachHeadline">
+                        Build more than one income stream.
+                    </h2>
+
+                    <p id="incomeCoachMessage">
+                        MoneyLeak will help you understand
+                        which income sources are strongest
+                        and how consistent they are.
+                    </p>
+
+                </div>
+
+            </section>
 
 
-                    MoneyLeak.deleteTransaction(
-                      id
-                    );
+            <!-- FOOTER -->
+            <footer class="app-footer">
+
+                <div>
+                    <strong>MoneyLeak</strong>
+                    <span>
+                        Personal Finance OS
+                    </span>
+                </div>
+
+                <div>
+                    Your financial data stays in your browser.
+                </div>
+
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
 
 
-                    renderIncomePage();
+<!-- SEARCH -->
+<div
+    class="search-overlay"
+    id="searchOverlay"
+    aria-hidden="true"
+>
 
-                  }
-                );
+    <div class="search-modal">
 
-              }
-            );
+        <div class="search-modal-header">
 
-        }
+            <div>
 
+                <div class="search-modal-eyebrow">
+                    MONEYSEARCH
+                </div>
 
-        /* ===================================================
-           ESCAPE HTML
-           =================================================== */
+                <h2>
+                    Search MoneyLeak
+                </h2>
 
-        function escapeHTML(
-          value
-        ) {
+            </div>
 
-          return String(
-            value ?? ""
-          )
-            .replace(
-              /&/g,
-              "&amp;"
-            )
-            .replace(
-              /</g,
-              "&lt;"
-            )
-            .replace(
-              />/g,
-              "&gt;"
-            )
-            .replace(
-              /"/g,
-              "&quot;"
-            )
-            .replace(
-              /'/g,
-              "&#039;"
-            );
+            <button
+                class="search-close"
+                id="closeSearch"
+                type="button"
+            >
+                ×
+            </button>
 
-        }
+        </div>
 
+        <div class="search-input-wrapper">
 
-        /* ===================================================
-           UPDATE LISTENER
-           =================================================== */
+            <span>⌕</span>
 
-        window.addEventListener(
-          "moneyLeakUpdated",
-          renderIncomePage
-        );
+            <input
+                type="search"
+                id="globalSearchInput"
+                placeholder="Search transactions, goals, budgets..."
+                autocomplete="off"
+            >
 
+            <kbd>ESC</kbd>
 
-        /* ===================================================
-           FIRST RENDER
-           =================================================== */
+        </div>
 
-        renderIncomePage();
+        <div
+            class="search-results"
+            id="searchResults"
+        >
 
-      }
+            <div class="search-empty">
+                Start typing to search MoneyLeak.
+            </div>
 
+        </div>
 
-      moneyLeakReady(
-        initializeIncomePage
-      );
+    </div>
 
-    })();
-
-  </script>
+</div>
 
 
-  <!-- =====================================================
-       MAIN APP
-       ===================================================== -->
+<!-- NOTIFICATIONS -->
+<div
+    class="notification-panel"
+    id="notificationPanel"
+    aria-hidden="true"
+>
 
-  <script src="app.js"></script>
+    <div class="notification-panel-header">
+
+        <div>
+
+            <div class="notification-heading">
+                NOTIFICATIONS
+            </div>
+
+            <div class="notification-title-row">
+
+                <h2>
+                    Your Money
+                </h2>
+
+                <span
+                    class="notification-unread-badge"
+                    id="notificationUnreadCount"
+                >
+                    0
+                </span>
+
+            </div>
+
+        </div>
+
+        <button
+            class="notification-close"
+            id="closeNotifications"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+    <div class="notification-toolbar">
+
+        <div class="notification-tabs">
+
+            <button
+                class="notification-tab active"
+                data-notification-filter="all"
+                type="button"
+            >
+                All
+            </button>
+
+            <button
+                class="notification-tab"
+                data-notification-filter="unread"
+                type="button"
+            >
+                Unread
+            </button>
+
+        </div>
+
+        <div class="notification-actions">
+
+            <button
+                class="notification-action"
+                id="markNotificationsRead"
+                type="button"
+            >
+                Mark read
+            </button>
+
+        </div>
+
+    </div>
+
+    <div
+        class="notification-list"
+        id="notificationList"
+    ></div>
+
+</div>
+
+
+<!-- MOBILE OVERLAY -->
+<div
+    class="mobile-nav-overlay"
+    id="mobileNavOverlay"
+></div>
+
+
+<!-- TOAST -->
+<div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+>
+    <span id="toastMessage"></span>
+</div>
+
+
+<script src="app.js"></script>
 
 </body>
-
 </html>
