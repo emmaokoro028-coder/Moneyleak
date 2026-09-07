@@ -3309,8 +3309,10 @@ function normalizeTransaction(transaction) {
             ),
 
         category:
-            transaction.category ||
-            "Other",
+            normalizeCategory(
+                transaction.category ||
+                "Other"
+            ),
 
         source:
             transaction.source ||
