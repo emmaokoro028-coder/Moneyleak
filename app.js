@@ -6903,3 +6903,136 @@
     }
 
 })();
+
+// ===============================
+// MONEY LEAK - TRANSACTIONS
+// ===============================
+
+let transactions = JSON.parse(localStorage.getItem("moneyLeakTransactions")) || [];
+
+function saveTransactions() {
+    localStorage.setItem(
+        "moneyLeakTransactions",
+        JSON.stringify(transactions)
+    );
+}
+
+function addTransaction(type, description, amount, category) {
+    const transaction = {
+        id: Date.now(),
+        type: type,
+        description: description,
+        amount: Number(amount),
+        category: category,
+        date: new Date().toISOString()
+    };
+
+    transactions.unshift(transaction);
+    saveTransactions();
+    updateDashboard();
+    renderTransactions();
+}
+
+function deleteTransaction(id) {
+    transactions = transactions.filter(transaction => transaction.id !== id);
+
+    saveTransactions();
+    updateDashboard();
+    renderTransactions();
+}
+
+function calculateTotals() {
+    let income = 0;
+    let expenses = 0;
+
+    transactions.forEach(transaction => {
+        if (transaction.type === "income") {
+            income += transaction.amount;
+        } else if (transaction.type === "expense") {
+            expenses += transaction.amount;
+        }
+    });
+
+    return {
+        income,
+        expenses,
+        balance: income - expenses
+    };
+}
+
+function updateDashboard() {
+    const totals = calculateTotals();
+
+    const incomeElement = document.getElementById("totalIncome");
+    const expenseElement = document.getElementById("totalExpenses");
+    const balanceElement = document.getElementById("currentBalance");
+
+    if (incomeElement) {
+        incomeElement.textContent =
+            `₦${totals.income.toLocaleString()}`;
+    }
+
+    if (expenseElement) {
+        expenseElement.textContent =
+            `₦${totals.expenses.toLocaleString()}`;
+    }
+
+    if (balanceElement) {
+        balanceElement.textContent =
+            `₦${totals.balance.toLocaleString()}`;
+    }
+}
+
+function renderTransactions() {
+    const container = document.getElementById("transactionsList");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    if (transactions.length === 0) {
+        container.innerHTML = `
+            <div class="empty-transactions">
+                <p>No transactions yet.</p>
+                <span>Add your first income or expense.</span>
+            </div>
+        `;
+        return;
+    }
+
+    transactions.forEach(transaction => {
+        const item = document.createElement("div");
+
+        item.className =
+            `transaction-item ${transaction.type}`;
+
+        const sign = transaction.type === "income" ? "+" : "-";
+
+        item.innerHTML = `
+            <div class="transaction-info">
+                <strong>${transaction.description}</strong>
+                <span>${transaction.category}</span>
+            </div>
+
+            <div class="transaction-right">
+                <strong>
+                    ${sign}₦${transaction.amount.toLocaleString()}
+                </strong>
+
+                <button
+                    onclick="deleteTransaction(${transaction.id})"
+                    class="delete-transaction"
+                >
+                    ×
+                </button>
+            </div>
+        `;
+
+        container.appendChild(item);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateDashboard();
+    renderTransactions();
+});
