@@ -3526,6 +3526,34 @@ function savingsRate() {
 }
 
 
+function normalizeCategory(category) {
+
+    const value =
+        String(category || "Other")
+            .trim();
+
+    if (!value) {
+        return "Other";
+    }
+
+    const match =
+        CATEGORIES.find(
+            item =>
+                item.toLowerCase() ===
+                value.toLowerCase()
+        );
+
+    if (match) {
+        return match;
+    }
+
+    return (
+        value.charAt(0).toUpperCase() +
+        value.slice(1).toLowerCase()
+    );
+}
+
+
 function categoryTotals() {
 
     const totals = {};
@@ -3538,8 +3566,9 @@ function categoryTotals() {
         .forEach(t => {
 
             const category =
-                t.category ||
-                "Other";
+                normalizeCategory(
+                    t.category
+                );
 
             totals[category] =
                 (
@@ -3558,14 +3587,12 @@ function categoryTotals() {
             })
         )
         .sort(
-            (a,b) =>
+            (a, b) =>
                 b.amount -
                 a.amount
         );
 
 }
-
-
 /* =========================================================
    SCORE
 ========================================================= */
