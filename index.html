@@ -5189,11 +5189,8 @@ function renderBudgets() {
 
 function renderGoals() {
 
-    const grid =
-        $("#goalGrid");
-
-    const goals =
-        getGoals();
+    const grid = $("#goalGrid");
+    const goals = getGoals();
 
     if (!goals.length) {
 
@@ -5219,97 +5216,292 @@ function renderGoals() {
     }
 
     grid.innerHTML =
-        goals.map(
-            goal => {
+        goals.map(goal => {
 
-                const percent =
-                    goal.target
-                        ? Math.min(
-                            100,
-                            Math.round(
-                                goal.current /
-                                goal.target *
-                                100
-                            )
+            const target =
+                Math.max(0, num(goal.target));
+
+            const current =
+                Math.max(
+                    0,
+                    Math.min(
+                        target || Infinity,
+                        num(goal.current)
+                    )
+                );
+
+            const percent =
+                target > 0
+                    ? Math.min(
+                        100,
+                        Math.round(
+                            current /
+                            target *
+                            100
                         )
-                        : 0;
+                    )
+                    : 0;
 
-                return `
-                    <div class="card goal-card">
+            const remaining =
+                Math.max(
+                    0,
+                    target - current
+                );
 
-                        <div class="goal-top">
+            let deadlineText =
+                "No deadline";
 
+            let monthlyRequired =
+                0;
+
+            let status =
+                "No deadline";
+
+            let statusClass =
+                "goal-status-neutral";
+
+            if (goal.deadline) {
+
+                const deadline =
+                    new Date(
+                        goal.deadline +
+                        "T23:59:59"
+                    );
+
+                if (
+                    !Number.isNaN(
+                        deadline.getTime()
+                    )
+                ) {
+
+                    deadlineText =
+                        "Deadline " +
+                        formatDate(
+                            goal.deadline
+                        );
+
+                    const todayDate =
+                        new Date();
+
+                    const daysLeft =
+                        Math.ceil(
+                            (
+                                deadline -
+                                todayDate
+                            ) /
+                            (
+                                1000 *
+                                60 *
+                                60 *
+                                24
+                            )
+                        );
+
+                    if (
+                        remaining <= 0
+                    ) {
+
+                        status =
+                            "Goal complete";
+
+                        statusClass =
+                            "goal-status-good";
+
+                    } else if (
+                        daysLeft <= 0
+                    ) {
+
+                        status =
+                            "Deadline passed";
+
+                        statusClass =
+                            "goal-status-danger";
+
+                    } else {
+
+                        monthlyRequired =
+                            Math.ceil(
+                                remaining /
+                                Math.max(
+                                    1,
+                                    daysLeft /
+                                    30.4375
+                                )
+                            );
+
+                        const expectedProgress =
+                            Math.min(
+                                100,
+                                Math.round(
+                                    (
+                                        (
+                                            new Date()
+                                                .getTime() -
+                                            new Date(
+                                                goal.createdAt ||
+                                                today()
+                                            ).getTime()
+                                        ) /
+                                        Math.max(
+                                            1,
+                                            deadline.getTime() -
+                                            new Date(
+                                                goal.createdAt ||
+                                                today()
+                                            ).getTime()
+                                        )
+                                    ) * 100
+                                )
+                            );
+
+                        if (
+                            percent >=
+                            expectedProgress
+                        ) {
+
+                            status =
+                                "On track";
+
+                            statusClass =
+                                "goal-status-good";
+
+                        } else {
+
+                            status =
+                                "Behind schedule";
+
+                            statusClass =
+                                "goal-status-warning";
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            return `
+                <div class="card goal-card">
+
+                    <div class="goal-top">
+
+                        <div>
                             <div class="goal-name">
                                 ${escapeHTML(
-                                    goal.name
+                                    goal.name ||
+                                    "Savings Goal"
                                 )}
                             </div>
 
-                            <div class="goal-percent">
-                                ${percent}%
+                            <div class="goal-values">
+                                <strong>
+                                    ${formatCurrency(
+                                        current
+                                    )}
+                                </strong>
+
+                                <span>
+                                    of
+                                    ${formatCurrency(
+                                        target
+                                    )}
+                                </span>
                             </div>
-
                         </div>
 
-                        <div class="goal-values">
-                            <strong>
-                                ${formatCurrency(
-                                    goal.current
-                                )}
-                            </strong>
-                            of
-                            ${formatCurrency(
-                                goal.target
-                            )}
-                        </div>
-
-                        <div class="goal-progress">
-
-                            <div
-                                class="goal-fill"
-                                style="
-                                    width:
-                                    ${percent}%
-                                ">
-                            </div>
-
-                        </div>
-
-                        <div class="goal-footer">
-
-                            <span>
-                                ${
-                                    goal.deadline
-                                        ? "Deadline " +
-                                          formatDate(
-                                              goal.deadline
-                                          )
-                                        : "No deadline"
-                                }
-                            </span>
-
-                            <span>
-                                ${formatCurrency(
-                                    Math.max(
-                                        0,
-                                        goal.target -
-                                        goal.current
-                                    )
-                                )}
-                                left
-                            </span>
-
+                        <div class="goal-percent">
+                            ${percent}%
                         </div>
 
                     </div>
-                `;
 
-            }
-        )
-        .join("");
+                    <div class="goal-progress">
+
+                        <div
+                            class="goal-fill"
+                            style="
+                                width:${percent}%
+                            ">
+                        </div>
+
+                    </div>
+
+                    <div class="goal-footer">
+
+                        <span>
+                            ${deadlineText}
+                        </span>
+
+                        <span>
+                            ${formatCurrency(
+                                remaining
+                            )}
+                            remaining
+                        </span>
+
+                    </div>
+
+                    <div class="goal-extra">
+
+                        <span
+                            class="
+                                goal-status
+                                ${statusClass}
+                            ">
+                            ${status}
+                        </span>
+
+                        ${
+                            monthlyRequired > 0
+                                ? `
+                                    <span>
+                                        Save
+                                        ${formatCurrency(
+                                            monthlyRequired
+                                        )}
+                                        / month
+                                    </span>
+                                  `
+                                : ""
+                        }
+
+                    </div>
+
+                    <div class="goal-actions">
+
+                        <button
+                            class="small-btn"
+                            data-add-goal-money="${goal.id}">
+                            + Add money
+                        </button>
+
+                        <button
+                            class="small-btn"
+                            data-withdraw-goal-money="${goal.id}">
+                            Withdraw
+                        </button>
+
+                        <button
+                            class="small-btn"
+                            data-edit-goal="${goal.id}">
+                            Edit
+                        </button>
+
+                        <button
+                            class="small-btn delete"
+                            data-delete-goal="${goal.id}">
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
 
 }
-
 
 /* =========================================================
    RECURRING
@@ -6194,7 +6386,247 @@ document.addEventListener(
     }
 );
 
+/* =========================================================
+   SAVINGS GOAL ACTIONS
+========================================================= */
 
+document.addEventListener(
+    "click",
+    event => {
+
+        const add =
+            event.target.closest(
+                "[data-add-goal-money]"
+            );
+
+        if (add) {
+
+            const id =
+                add.dataset.addGoalMoney;
+
+            const goals =
+                getGoals();
+
+            const goal =
+                goals.find(
+                    item =>
+                        item.id === id
+                );
+
+            if (!goal) {
+                return;
+            }
+
+            const value =
+                prompt(
+                    `How much would you like to add to "${goal.name}"?`,
+                    ""
+                );
+
+            if (
+                value === null
+            ) {
+                return;
+            }
+
+            const amount =
+                num(value);
+
+            if (
+                amount <= 0
+            ) {
+
+                toast(
+                    "Invalid amount",
+                    "Enter an amount greater than zero."
+                );
+
+                return;
+            }
+
+            goal.current =
+                Math.min(
+                    num(goal.target),
+                    num(goal.current) +
+                    amount
+                );
+
+            saveGoals(goals);
+            renderAll();
+
+            toast(
+                "Money added",
+                `${formatCurrency(amount)} added to ${goal.name}.`
+            );
+
+            return;
+        }
+
+
+        const withdraw =
+            event.target.closest(
+                "[data-withdraw-goal-money]"
+            );
+
+        if (withdraw) {
+
+            const id =
+                withdraw.dataset
+                    .withdrawGoalMoney;
+
+            const goals =
+                getGoals();
+
+            const goal =
+                goals.find(
+                    item =>
+                        item.id === id
+                );
+
+            if (!goal) {
+                return;
+            }
+
+            const value =
+                prompt(
+                    `How much would you like to withdraw from "${goal.name}"?`,
+                    ""
+                );
+
+            if (
+                value === null
+            ) {
+                return;
+            }
+
+            const amount =
+                num(value);
+
+            if (
+                amount <= 0
+            ) {
+
+                toast(
+                    "Invalid amount",
+                    "Enter an amount greater than zero."
+                );
+
+                return;
+            }
+
+            if (
+                amount >
+                num(goal.current)
+            ) {
+
+                toast(
+                    "Not enough saved",
+                    "You cannot withdraw more than the amount saved."
+                );
+
+                return;
+            }
+
+            goal.current =
+                Math.max(
+                    0,
+                    num(goal.current) -
+                    amount
+                );
+
+            saveGoals(goals);
+            renderAll();
+
+            toast(
+                "Money withdrawn",
+                `${formatCurrency(amount)} withdrawn from ${goal.name}.`
+            );
+
+            return;
+        }
+
+
+        const remove =
+            event.target.closest(
+                "[data-delete-goal]"
+            );
+
+        if (remove) {
+
+            const id =
+                remove.dataset
+                    .deleteGoal;
+
+            const goals =
+                getGoals();
+
+            const goal =
+                goals.find(
+                    item =>
+                        item.id === id
+                );
+
+            if (!goal) {
+                return;
+            }
+
+            if (
+                !confirm(
+                    `Delete "${goal.name}"? This cannot be undone.`
+                )
+            ) {
+                return;
+            }
+
+            saveGoals(
+                goals.filter(
+                    item =>
+                        item.id !== id
+                )
+            );
+
+            renderAll();
+
+            toast(
+                "Goal deleted",
+                `${goal.name} was removed.`
+            );
+
+            return;
+        }
+
+
+        const edit =
+            event.target.closest(
+                "[data-edit-goal]"
+            );
+
+        if (edit) {
+
+            const id =
+                edit.dataset.editGoal;
+
+            const goals =
+                getGoals();
+
+            const goal =
+                goals.find(
+                    item =>
+                        item.id === id
+                );
+
+            if (!goal) {
+                return;
+            }
+
+            openGoalEditModal(
+                goal
+            );
+
+        }
+
+    }
+);
 /* =========================================================
    BUDGET BUTTON
 ========================================================= */
