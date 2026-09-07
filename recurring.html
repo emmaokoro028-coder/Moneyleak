@@ -1,96 +1,712 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Recurring — MoneyLeak</title>
 
     <meta
         name="description"
-        content="Track recurring income and expenses and forecast upcoming cash flow with MoneyLeak."
+        content="Track recurring bills, subscriptions and income with MoneyLeak."
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           MONEYLEAK RECURRING — PREMIUM
+        ===================================================== */
+
+        .recurring-hero {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 28px;
+        }
+
+        .recurring-hero-copy {
+            max-width: 720px;
+        }
+
+        .recurring-eyebrow {
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .recurring-hero h1 {
+            margin: 0;
+            font-size: clamp(32px, 4vw, 48px);
+            line-height: 1.05;
+            letter-spacing: -.045em;
+        }
+
+        .recurring-hero p {
+            max-width: 650px;
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .recurring-summary {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .recurring-stat {
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            background: var(--card);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .recurring-stat-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 17px;
+            border-radius: 13px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .recurring-stat-label {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .recurring-stat-value {
+            margin-top: 7px;
+            font-size: 26px;
+            font-weight: 850;
+            line-height: 1.1;
+            letter-spacing: -.035em;
+        }
+
+        .recurring-stat-meta {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           PANELS
+        ===================================================== */
+
+        .recurring-grid {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1.15fr)
+                minmax(320px, .85fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .recurring-panel {
+            padding: 26px;
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            background: var(--card);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .recurring-panel-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 23px;
+        }
+
+        .recurring-panel-title {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -.025em;
+        }
+
+        .recurring-panel-subtitle {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           CASH FLOW CARD
+        ===================================================== */
+
+        .recurring-flow {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .flow-box {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: var(--surface);
+        }
+
+        .flow-box-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .flow-box-value {
+            margin-top: 9px;
+            font-size: 25px;
+            font-weight: 850;
+            letter-spacing: -.035em;
+        }
+
+        .flow-box-meta {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .net-flow {
+            margin-top: 15px;
+            padding: 19px;
+            border-radius: 18px;
+            background: var(--primary-soft);
+        }
+
+        .net-flow-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .net-flow-value {
+            margin-top: 6px;
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -.04em;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .recurring-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .recurring-form-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .recurring-field {
+            display: grid;
+            gap: 7px;
+        }
+
+        .recurring-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .recurring-field label {
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .recurring-field input,
+        .recurring-field select,
+        .recurring-field textarea {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--surface);
+            color: var(--text);
+            font: inherit;
+            outline: none;
+        }
+
+        .recurring-field input,
+        .recurring-field select {
+            min-height: 47px;
+            padding: 0 13px;
+        }
+
+        .recurring-field textarea {
+            min-height: 85px;
+            padding: 12px 13px;
+            resize: vertical;
+        }
+
+        .recurring-field input:focus,
+        .recurring-field select:focus,
+        .recurring-field textarea:focus {
+            border-color: var(--primary);
+            box-shadow:
+                0 0 0 4px var(--primary-soft);
+        }
+
+        .recurring-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .recurring-submit,
+        .recurring-reset {
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 13px;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .recurring-submit {
+            border: 0;
+            background: var(--primary);
+            color: white;
+        }
+
+        .recurring-reset {
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+        }
+
+        /* =====================================================
+           UPCOMING
+        ===================================================== */
+
+        .upcoming-list,
+        .recurring-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .recurring-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            background: var(--surface);
+        }
+
+        .recurring-main {
+            display: flex;
+            align-items: center;
+            min-width: 0;
+            gap: 13px;
+        }
+
+        .recurring-icon {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 850;
+        }
+
+        .recurring-icon.income {
+            background: rgba(34, 197, 94, .12);
+            color: #16a34a;
+        }
+
+        .recurring-main strong {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        .recurring-main small {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .recurring-amount {
+            flex-shrink: 0;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .recurring-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .delete-button {
+            padding: 7px 10px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* =====================================================
+           INTELLIGENCE
+        ===================================================== */
+
+        .recurring-insight {
+            display: flex;
+            gap: 14px;
+            padding: 18px;
+            border-radius: 18px;
+            background: var(--primary-soft);
+        }
+
+        .recurring-insight-icon {
+            width: 39px;
+            height: 39px;
+            flex: 0 0 39px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-weight: 800;
+        }
+
+        .recurring-insight strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .recurring-insight p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           INFO CARDS
+        ===================================================== */
+
+        .recurring-info-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .recurring-info {
+            padding: 21px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card);
+        }
+
+        .recurring-info-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 13px;
+            border-radius: 12px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .recurring-info strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .recurring-info p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .recurring-summary {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .recurring-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recurring-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .recurring-hero {
+                display: block;
+            }
+
+            .recurring-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .recurring-panel {
+                padding: 20px;
+                border-radius: 21px;
+            }
+
+            .recurring-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recurring-field.full {
+                grid-column: auto;
+            }
+
+            .recurring-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .recurring-row {
+                align-items: flex-start;
+            }
+
+            .recurring-actions {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
+        }
+
+    </style>
+
 </head>
 
-<body data-page="recurring">
+
+<body>
 
 <div class="app-shell">
 
-    <!-- SIDEBAR -->
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
     <aside class="sidebar" id="sidebar">
 
         <div class="brand">
-            <div class="brand-mark">M</div>
 
-            <div class="brand-copy">
-                <strong>MoneyLeak</strong>
-                <span>Personal Finance OS</span>
-            </div>
+            <a
+                href="./index.html"
+                class="brand-link"
+            >
+
+                <div
+                    class="brand-mark"
+                    data-brand-logo
+                >
+                    M
+                </div>
+
+                <div class="brand-copy">
+
+                    <strong>
+                        MoneyLeak
+                    </strong>
+
+                    <span>
+                        Personal Finance OS
+                    </span>
+
+                </div>
+
+            </a>
+
         </div>
+
 
         <nav class="sidebar-nav">
 
-            <div class="nav-label">Overview</div>
+            <div class="nav-section">
 
-            <a href="index.html" class="nav-item">
-                <span class="nav-icon">⌂</span>
-                <span>Dashboard</span>
-            </a>
+                <div class="nav-section-label">
+                    Overview
+                </div>
 
-            <a href="analytics.html" class="nav-item">
-                <span class="nav-icon">◔</span>
-                <span>Analytics</span>
-            </a>
+                <a
+                    href="./index.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </a>
 
-            <div class="nav-label">Money</div>
+                <a
+                    href="./analytics.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">◈</span>
+                    <span>Analytics</span>
+                </a>
 
-            <a href="income.html" class="nav-item">
-                <span class="nav-icon">↗</span>
-                <span>Income</span>
-            </a>
+            </div>
 
-            <a href="expenses.html" class="nav-item">
-                <span class="nav-icon">↘</span>
-                <span>Expenses</span>
-            </a>
 
-            <a href="budgets.html" class="nav-item">
-                <span class="nav-icon">▣</span>
-                <span>Budgets</span>
-            </a>
+            <div class="nav-section">
 
-            <a href="recurring.html" class="nav-item active">
-                <span class="nav-icon">↻</span>
-                <span>Recurring</span>
-            </a>
+                <div class="nav-section-label">
+                    Money
+                </div>
 
-            <div class="nav-label">Goals</div>
+                <a
+                    href="./income.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">↗</span>
+                    <span>Income</span>
+                </a>
 
-            <a href="savings.html" class="nav-item">
-                <span class="nav-icon">◎</span>
-                <span>Savings Goals</span>
-            </a>
+                <a
+                    href="./expenses.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">↘</span>
+                    <span>Expenses</span>
+                </a>
 
-            <div class="nav-label">System</div>
+                <a
+                    href="./budgets.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">▣</span>
+                    <span>Budgets</span>
+                </a>
 
-            <a href="settings.html" class="nav-item">
-                <span class="nav-icon">⚙</span>
-                <span>Settings</span>
-            </a>
+            </div>
+
+
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Planning
+                </div>
+
+                <a
+                    href="./savings.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">◎</span>
+                    <span>Savings Goals</span>
+                </a>
+
+                <a
+                    href="./recurring.html"
+                    class="nav-link active"
+                >
+                    <span class="nav-icon">↻</span>
+                    <span>Recurring</span>
+                </a>
+
+            </div>
+
+
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    System
+                </div>
+
+                <a
+                    href="./settings.html"
+                    class="nav-link"
+                >
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+            </div>
 
         </nav>
 
-        <div class="sidebar-bottom">
 
-            <div class="sidebar-status">
-                <span class="status-dot"></span>
+        <div class="sidebar-account">
 
-                <div>
-                    <strong>MoneyLeak AI</strong>
-                    <small>Cash-flow forecast active</small>
-                </div>
+            <div class="sidebar-account-avatar">
+                M
+            </div>
+
+            <div>
+
+                <strong>
+                    My Money
+                </strong>
+
+                <span>
+                    Personal account
+                </span>
+
             </div>
 
         </div>
@@ -98,217 +714,221 @@
     </aside>
 
 
-    <!-- MAIN -->
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
     <main class="main-content">
 
-        <!-- TOPBAR -->
-        <header class="topbar">
 
-            <button
-                class="mobile-menu-button"
-                id="mobileMenuButton"
-                type="button"
-                aria-label="Open menu"
-            >
-                ☰
-            </button>
+        <!-- TOPBAR -->
+
+        <header class="topbar">
 
             <div class="topbar-left">
 
                 <button
-                    class="search-trigger"
-                    id="openSearch"
                     type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Open menu"
                 >
-                    <span>⌕</span>
-                    <span>Search MoneyLeak</span>
-                    <kbd>⌘ K</kbd>
+                    ☰
                 </button>
+
+                <div class="page-location">
+                    Recurring
+                </div>
 
             </div>
 
-            <div class="topbar-right">
+
+            <div class="topbar-actions">
 
                 <button
-                    class="icon-button"
-                    id="notificationButton"
                     type="button"
+                    class="topbar-search"
+                    id="openSearch"
+                >
+                    <span>⌕</span>
+                    Search MoneyLeak
+                    <kbd>⌘K</kbd>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="notification-button"
+                    id="notificationButton"
                     aria-label="Notifications"
                 >
-                    ♢
+                    ♧
 
                     <span
                         class="notification-badge"
                         id="notificationBadge"
-                    ></span>
+                    >
+                        0
+                    </span>
+
                 </button>
 
-                <a
-                    href="settings.html"
-                    class="profile-button"
+
+                <button
+                    type="button"
+                    class="theme-button"
+                    id="themeToggle"
+                    aria-label="Toggle theme"
                 >
-                    <span
-                        class="profile-avatar"
-                        id="profileAvatar"
-                    >
-                        M
-                    </span>
-                </a>
+                    ◐
+                </button>
 
             </div>
 
         </header>
 
 
-        <!-- PAGE CONTENT -->
-        <div class="page-content">
+
+        <!-- =====================================================
+             CONTENT
+        ====================================================== -->
+
+        <section class="page-content">
+
 
             <!-- HERO -->
-            <section class="hero">
 
-                <div class="hero-copy">
+            <section class="recurring-hero">
 
-                    <div class="eyebrow">
-                        RECURRING MONEY
+                <div class="recurring-hero-copy">
+
+                    <div class="recurring-eyebrow">
+                        AUTOMATIC MONEY PLANNING
                     </div>
 
                     <h1>
-                        Know what is coming next.
+                        Know what's coming next.
                     </h1>
 
                     <p>
-                        Track repeating bills, subscriptions,
-                        income and commitments so unexpected
-                        payments don't catch you off guard.
+                        Track recurring bills, subscriptions and income
+                        so MoneyLeak can understand the commitments
+                        already built into your monthly cash flow.
                     </p>
 
                 </div>
 
-                <div class="hero-actions">
 
-                    <button
-                        class="button button-primary"
-                        id="openRecurringForm"
-                        type="button"
-                    >
-                        + Add Recurring
-                    </button>
-
-                </div>
+                <a
+                    href="#recurringForm"
+                    class="button button-primary"
+                >
+                    Add recurring item
+                </a>
 
             </section>
 
 
-            <!-- METRICS -->
-            <section class="metric-grid">
 
-                <article class="metric-card primary-metric">
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
 
-                    <div class="metric-card-top">
+            <section class="recurring-summary">
 
-                        <span class="metric-label">
-                            Monthly Expenses
-                        </span>
 
-                        <span class="metric-icon">
-                            ↓
-                        </span>
+                <article class="recurring-stat">
 
+                    <div class="recurring-stat-icon">
+                        ↻
+                    </div>
+
+                    <div class="recurring-stat-label">
+                        Monthly commitments
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="recurringMonthlyExpenses"
+                        class="recurring-stat-value"
+                        id="recurringMonthly"
                     >
                         ₦0
                     </div>
 
-                    <div class="metric-footer">
-                        Recurring money going out
+                    <div class="recurring-stat-meta">
+                        Recurring expenses per month
                     </div>
 
                 </article>
 
 
-                <article class="metric-card">
+                <article class="recurring-stat">
 
-                    <div class="metric-card-top">
+                    <div class="recurring-stat-icon">
+                        ↘
+                    </div>
 
-                        <span class="metric-label">
-                            Monthly Income
-                        </span>
-
-                        <span class="metric-icon">
-                            ↑
-                        </span>
-
+                    <div class="recurring-stat-label">
+                        Recurring expenses
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="recurringMonthlyIncome"
+                        class="recurring-stat-value"
+                        id="recurringExpenses"
                     >
                         ₦0
                     </div>
 
-                    <div class="metric-footer">
-                        Recurring money coming in
+                    <div class="recurring-stat-meta">
+                        Estimated monthly outflow
                     </div>
 
                 </article>
 
 
-                <article class="metric-card">
+                <article class="recurring-stat">
 
-                    <div class="metric-card-top">
+                    <div class="recurring-stat-icon">
+                        ↗
+                    </div>
 
-                        <span class="metric-label">
-                            Net Recurring
-                        </span>
-
-                        <span class="metric-icon">
-                            ◈
-                        </span>
-
+                    <div class="recurring-stat-label">
+                        Recurring income
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="recurringNet"
+                        class="recurring-stat-value"
+                        id="recurringIncome"
                     >
                         ₦0
                     </div>
 
-                    <div class="metric-footer">
-                        Monthly recurring balance
+                    <div class="recurring-stat-meta">
+                        Estimated monthly inflow
                     </div>
 
                 </article>
 
 
-                <article class="metric-card">
+                <article class="recurring-stat">
 
-                    <div class="metric-card-top">
+                    <div class="recurring-stat-icon">
+                        #
+                    </div>
 
-                        <span class="metric-label">
-                            Active Items
-                        </span>
-
-                        <span class="metric-icon">
-                            ↻
-                        </span>
-
+                    <div class="recurring-stat-label">
+                        Active items
                     </div>
 
                     <div
-                        class="metric-value"
-                        id="recurringActiveCount"
+                        class="recurring-stat-value"
+                        id="recurringCount"
                     >
                         0
                     </div>
 
-                    <div class="metric-footer">
-                        Recurring transactions
+                    <div class="recurring-stat-meta">
+                        Bills, subscriptions and income
                     </div>
 
                 </article>
@@ -316,530 +936,510 @@
             </section>
 
 
-            <!-- RECURRING INTELLIGENCE -->
-            <section class="dashboard-grid">
 
-                <article class="card">
+            <!-- =================================================
+                 FLOW + ADD FORM
+            ================================================== -->
 
-                    <div class="card-header">
+            <section class="recurring-grid">
+
+
+                <!-- CASH FLOW -->
+
+                <article class="recurring-panel">
+
+                    <div class="recurring-panel-header">
 
                         <div>
 
-                            <div class="card-kicker">
-                                CASH FLOW PRESSURE
+                            <div class="recurring-panel-title">
+                                Recurring cash flow
                             </div>
 
-                            <h2>
-                                Recurring Expenses
-                            </h2>
+                            <div class="recurring-panel-subtitle">
+                                The predictable money entering and leaving
+                                your account every month.
+                            </div>
 
                         </div>
 
-                        <span
-                            class="status-pill"
-                            id="recurringExpenseStatus"
-                        >
-                            Stable
-                        </span>
+                    </div>
+
+
+                    <div class="recurring-flow">
+
+
+                        <div class="flow-box">
+
+                            <div class="flow-box-label">
+                                Largest commitment
+                            </div>
+
+                            <div
+                                class="flow-box-value"
+                                id="largestRecurring"
+                            >
+                                No recurring items
+                            </div>
+
+                            <div class="flow-box-meta">
+                                Highest active recurring amount
+                            </div>
+
+                        </div>
+
+
+                        <div class="flow-box">
+
+                            <div class="flow-box-label">
+                                Next scheduled
+                            </div>
+
+                            <div
+                                class="flow-box-value"
+                                id="nextRecurring"
+                            >
+                                Nothing scheduled
+                            </div>
+
+                            <div class="flow-box-meta">
+                                Closest upcoming item
+                            </div>
+
+                        </div>
 
                     </div>
 
-                    <div class="safe-amount">
 
-                        <span
-                            id="recurringExpensePressure"
+                    <div class="net-flow">
+
+                        <div class="net-flow-label">
+                            Estimated monthly net recurring flow
+                        </div>
+
+                        <div
+                            class="net-flow-value"
+                            id="netRecurring"
                         >
                             ₦0
-                        </span>
+                        </div>
 
                     </div>
 
-                    <p
-                        class="safe-description"
-                        id="recurringExpenseText"
-                    >
-                        Your recurring expenses will appear
-                        here once you add bills and subscriptions.
-                    </p>
 
-                </article>
+                    <div class="recurring-insight"
+                         style="margin-top:15px;">
 
-
-                <article class="card">
-
-                    <div class="card-header">
+                        <div class="recurring-insight-icon">
+                            ✦
+                        </div>
 
                         <div>
 
-                            <div class="card-kicker">
-                                NEXT PAYMENT
+                            <strong>
+                                MoneyLeak insight
+                            </strong>
+
+                            <p id="recurringInsight">
+                                Add recurring bills, subscriptions,
+                                or income so MoneyLeak can anticipate
+                                your regular cash flow.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ADD ITEM -->
+
+                <article class="recurring-panel">
+
+                    <div class="recurring-panel-header">
+
+                        <div>
+
+                            <div class="recurring-panel-title">
+                                Add recurring item
                             </div>
 
-                            <h2>
-                                Coming Up
-                            </h2>
+                            <div class="recurring-panel-subtitle">
+                                Create a bill, subscription, salary,
+                                or other repeating transaction.
+                            </div>
 
                         </div>
 
-                        <span class="card-header-icon">
-                            →
-                        </span>
-
                     </div>
 
-                    <div
-                        class="insight-body"
-                        id="nextRecurringPayment"
+
+                    <form
+                        id="recurringForm"
+                        class="recurring-form"
                     >
 
-                        <div class="insight-title">
-                            Nothing scheduled
+                        <div class="recurring-form-grid">
+
+
+                            <div class="recurring-field">
+
+                                <label for="recurringName">
+                                    Name
+                                </label>
+
+                                <input
+                                    id="recurringName"
+                                    type="text"
+                                    placeholder="Netflix, Rent, Salary..."
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="recurring-field">
+
+                                <label for="recurringAmount">
+                                    Amount
+                                </label>
+
+                                <input
+                                    id="recurringAmount"
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="50000"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="recurring-field">
+
+                                <label for="recurringType">
+                                    Type
+                                </label>
+
+                                <select id="recurringType">
+
+                                    <option value="expense">
+                                        Expense
+                                    </option>
+
+                                    <option value="income">
+                                        Income
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="recurring-field">
+
+                                <label for="recurringCategory">
+                                    Category
+                                </label>
+
+                                <select id="recurringCategory">
+
+                                    <option value="Bills">
+                                        Bills
+                                    </option>
+
+                                    <option value="Housing">
+                                        Housing
+                                    </option>
+
+                                    <option value="Subscriptions">
+                                        Subscriptions
+                                    </option>
+
+                                    <option value="Transport">
+                                        Transport
+                                    </option>
+
+                                    <option value="Food">
+                                        Food
+                                    </option>
+
+                                    <option value="Health">
+                                        Health
+                                    </option>
+
+                                    <option value="Education">
+                                        Education
+                                    </option>
+
+                                    <option value="Family">
+                                        Family
+                                    </option>
+
+                                    <option value="Business">
+                                        Business
+                                    </option>
+
+                                    <option value="Personal">
+                                        Personal
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="recurring-field">
+
+                                <label for="recurringFrequency">
+                                    Frequency
+                                </label>
+
+                                <select id="recurringFrequency">
+
+                                    <option value="monthly">
+                                        Monthly
+                                    </option>
+
+                                    <option value="weekly">
+                                        Weekly
+                                    </option>
+
+                                    <option value="yearly">
+                                        Yearly
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="recurring-field">
+
+                                <label for="recurringNextDate">
+                                    Next date
+                                </label>
+
+                                <input
+                                    id="recurringNextDate"
+                                    type="date"
+                                >
+
+                            </div>
+
+
+                            <div class="recurring-field full">
+
+                                <label for="recurringDescription">
+                                    Description
+                                </label>
+
+                                <textarea
+                                    id="recurringDescription"
+                                    placeholder="Optional note..."
+                                ></textarea>
+
+                            </div>
+
                         </div>
 
-                        <p>
-                            Add a recurring transaction to
-                            see your upcoming financial commitments.
-                        </p>
 
-                    </div>
+                        <div class="recurring-actions">
+
+                            <button
+                                type="submit"
+                                class="recurring-submit"
+                            >
+                                Add recurring item
+                            </button>
+
+                            <button
+                                type="button"
+                                id="recurringReset"
+                                class="recurring-reset"
+                            >
+                                Clear
+                            </button>
+
+                        </div>
+
+                    </form>
 
                 </article>
 
             </section>
 
 
-            <!-- ADD RECURRING FORM -->
-            <section
-                class="card"
-                id="recurringFormCard"
-            >
 
-                <div class="card-header">
+            <!-- =================================================
+                 UPCOMING
+            ================================================== -->
 
-                    <div>
+            <section class="recurring-panel"
+                     style="margin-bottom:20px;">
 
-                        <div class="card-kicker">
-                            NEW RECURRING ITEM
-                        </div>
-
-                        <h2>
-                            Schedule Recurring Money
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <form
-                    id="recurringForm"
-                    class="form-grid"
-                >
-
-                    <div class="form-field">
-
-                        <label for="recurringDescription">
-                            Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="recurringDescription"
-                            name="description"
-                            placeholder="e.g. Netflix"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="recurringAmount">
-                            Amount
-                        </label>
-
-                        <input
-                            type="number"
-                            id="recurringAmount"
-                            name="amount"
-                            min="0"
-                            step="0.01"
-                            placeholder="0"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="recurringType">
-                            Type
-                        </label>
-
-                        <select
-                            id="recurringType"
-                            name="type"
-                            required
-                        >
-
-                            <option value="expense">
-                                Expense
-                            </option>
-
-                            <option value="income">
-                                Income
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="recurringFrequency">
-                            Frequency
-                        </label>
-
-                        <select
-                            id="recurringFrequency"
-                            name="frequency"
-                            required
-                        >
-
-                            <option value="monthly">
-                                Monthly
-                            </option>
-
-                            <option value="weekly">
-                                Weekly
-                            </option>
-
-                            <option value="yearly">
-                                Yearly
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="recurringNextDate">
-                            Next Date
-                        </label>
-
-                        <input
-                            type="date"
-                            id="recurringNextDate"
-                            name="nextDate"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-field">
-
-                        <label for="recurringCategory">
-                            Category
-                        </label>
-
-                        <select
-                            id="recurringCategory"
-                            name="category"
-                        >
-
-                            <option value="">
-                                Select category
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-actions">
-
-                        <button
-                            type="submit"
-                            class="button button-primary"
-                        >
-                            Save Recurring Item
-                        </button>
-
-                        <button
-                            type="reset"
-                            class="button button-secondary"
-                        >
-                            Clear
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </section>
-
-
-            <!-- UPCOMING -->
-            <section class="card">
-
-                <div class="card-header">
+                <div class="recurring-panel-header">
 
                     <div>
 
-                        <div class="card-kicker">
-                            UPCOMING
+                        <div class="recurring-panel-title">
+                            Coming up
                         </div>
 
-                        <h2>
-                            Upcoming Money
-                        </h2>
+                        <div class="recurring-panel-subtitle">
+                            Your next recurring payments and income.
+                        </div>
 
                     </div>
 
-                    <span class="status-pill">
-                        Forecast
+                    <span class="badge">
+                        Upcoming
                     </span>
 
                 </div>
 
+
                 <div
-                    class="goals-list"
-                    id="upcomingRecurringList"
-                >
-
-                    <div class="empty-state">
-
-                        <div class="empty-state-icon">
-                            ↻
-                        </div>
-
-                        <strong>
-                            Nothing scheduled
-                        </strong>
-
-                        <p>
-                            Add recurring payments or income
-                            to build your cash-flow forecast.
-                        </p>
-
-                    </div>
-
-                </div>
+                    id="upcomingRecurring"
+                    class="upcoming-list"
+                ></div>
 
             </section>
 
 
-            <!-- ACTIVE RECURRING -->
-            <section class="card">
 
-                <div class="card-header">
+            <!-- =================================================
+                 ALL RECURRING
+            ================================================== -->
+
+            <section class="recurring-panel"
+                     style="margin-bottom:20px;">
+
+                <div class="recurring-panel-header">
 
                     <div>
 
-                        <div class="card-kicker">
-                            RECURRING SCHEDULE
+                        <div class="recurring-panel-title">
+                            Active recurring items
                         </div>
 
-                        <h2>
-                            Active Recurring Items
-                        </h2>
+                        <div class="recurring-panel-subtitle">
+                            Manage the repeating transactions MoneyLeak
+                            uses for your financial projections.
+                        </div>
 
                     </div>
 
                 </div>
 
+
                 <div
-                    class="goals-list"
                     id="recurringList"
-                >
-
-                    <div class="empty-state">
-
-                        <div class="empty-state-icon">
-                            ↻
-                        </div>
-
-                        <strong>
-                            No recurring items yet
-                        </strong>
-
-                        <p>
-                            Your active bills, subscriptions,
-                            salary and other recurring items
-                            will appear here.
-                        </p>
-
-                    </div>
-
-                </div>
+                    class="recurring-list"
+                ></div>
 
             </section>
 
 
-            <!-- FORECAST -->
-            <section class="card">
 
-                <div class="card-header">
+            <!-- =================================================
+                 EDUCATION
+            ================================================== -->
 
-                    <div>
+            <section class="recurring-info-grid">
 
-                        <div class="card-kicker">
-                            CASH-FLOW FORECAST
-                        </div>
 
-                        <h2>
-                            Monthly Outlook
-                        </h2>
+                <article class="recurring-info">
 
+                    <div class="recurring-info-icon">
+                        ◷
                     </div>
 
-                </div>
-
-                <div class="score-mini-grid">
-
-                    <div>
-
-                        <span>
-                            Expected Income
-                        </span>
-
-                        <strong
-                            id="forecastIncome"
-                        >
-                            ₦0
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Expected Expenses
-                        </span>
-
-                        <strong
-                            id="forecastExpenses"
-                        >
-                            ₦0
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Expected Net
-                        </span>
-
-                        <strong
-                            id="forecastNet"
-                        >
-                            ₦0
-                        </strong>
-
-                    </div>
-
-                </div>
-
-                <div class="progress-track large">
-
-                    <div
-                        class="progress-fill"
-                        id="forecastProgress"
-                        style="width:0%"
-                    ></div>
-
-                </div>
-
-                <div class="progress-meta">
-
-                    <span>
-                        Recurring income vs expenses
-                    </span>
-
-                    <strong
-                        id="forecastLabel"
-                    >
-                        No forecast yet
+                    <strong>
+                        Never forget a bill
                     </strong>
 
-                </div>
-
-            </section>
-
-
-            <!-- COACH -->
-            <section class="coach-banner">
-
-                <div class="coach-icon">
-                    ✦
-                </div>
-
-                <div class="coach-content">
-
-                    <div class="coach-label">
-                        MONEY COACH
-                    </div>
-
-                    <h2 id="recurringCoachHeadline">
-                        Know your commitments before they arrive.
-                    </h2>
-
-                    <p id="recurringCoachMessage">
-                        Recurring payments can quietly consume
-                        a large part of your monthly income.
-                        MoneyLeak keeps them visible.
+                    <p>
+                        Add important payments once and keep their
+                        next dates visible in one place.
                     </p>
 
-                </div>
+                </article>
 
-                <div class="coach-action">
 
-                    <a
-                        href="analytics.html"
-                        class="button button-secondary"
-                    >
-                        View Analytics
-                    </a>
+                <article class="recurring-info">
 
-                </div>
+                    <div class="recurring-info-icon">
+                        ◈
+                    </div>
+
+                    <strong>
+                        See your real commitments
+                    </strong>
+
+                    <p>
+                        Recurring expenses are converted into monthly
+                        estimates so you can understand fixed cash flow.
+                    </p>
+
+                </article>
+
+
+                <article class="recurring-info">
+
+                    <div class="recurring-info-icon">
+                        ✦
+                    </div>
+
+                    <strong>
+                        Plan before payday
+                    </strong>
+
+                    <p>
+                        Knowing what is already committed makes the
+                        money left after bills much easier to understand.
+                    </p>
+
+                </article>
 
             </section>
 
 
-            <!-- FOOTER -->
-            <footer class="app-footer">
 
-                <div>
-                    <strong>MoneyLeak</strong>
-                    <span>
-                        Personal Finance OS
-                    </span>
-                </div>
+            <footer class="page-footer">
 
-                <div>
-                    Your financial data stays in your browser.
-                </div>
+                <strong>
+                    MoneyLeak
+                </strong>
+
+                <span>
+                    Know what's coming. Spend with intention.
+                </span>
 
             </footer>
 
-        </div>
+        </section>
 
     </main>
 
 </div>
 
 
-<!-- SEARCH OVERLAY -->
+
+<!-- =========================================================
+     SEARCH
+========================================================== -->
+
 <div
-    class="search-overlay"
     id="searchOverlay"
+    class="search-overlay"
     aria-hidden="true"
 >
 
@@ -849,20 +1449,20 @@
 
             <div>
 
-                <div class="search-modal-eyebrow">
-                    MONEYSEARCH
-                </div>
-
-                <h2>
+                <strong>
                     Search MoneyLeak
-                </h2>
+                </strong>
+
+                <span>
+                    Find pages, transactions and goals.
+                </span>
 
             </div>
 
             <button
-                class="search-close"
-                id="closeSearch"
                 type="button"
+                id="closeSearch"
+                class="search-close"
                 aria-label="Close search"
             >
                 ×
@@ -870,142 +1470,110 @@
 
         </div>
 
-        <div class="search-input-wrapper">
+
+        <div class="search-input-wrap">
 
             <span>⌕</span>
 
             <input
+                id="globalSearch"
                 type="search"
-                id="globalSearchInput"
-                placeholder="Search transactions, goals, budgets..."
+                placeholder="Search anything..."
                 autocomplete="off"
             >
 
-            <kbd>ESC</kbd>
-
         </div>
+
 
         <div
-            class="search-results"
             id="searchResults"
-        >
-
-            <div class="search-empty">
-                Start typing to search MoneyLeak.
-            </div>
-
-        </div>
+            class="search-results"
+        ></div>
 
     </div>
 
 </div>
 
 
-<!-- NOTIFICATIONS -->
+
+<!-- =========================================================
+     NOTIFICATIONS
+========================================================== -->
+
 <div
-    class="notification-panel"
-    id="notificationPanel"
+    id="notificationCenter"
+    class="notification-center"
     aria-hidden="true"
 >
 
-    <div class="notification-panel-header">
+    <div class="notification-center-header">
 
         <div>
 
-            <div class="notification-heading">
-                NOTIFICATIONS
-            </div>
+            <strong>
+                Notifications
+            </strong>
 
-            <div class="notification-title-row">
-
-                <h2>
-                    Your Money
-                </h2>
-
-                <span
-                    class="notification-unread-badge"
-                    id="notificationUnreadCount"
-                >
-                    0
-                </span>
-
-            </div>
+            <span>
+                MoneyLeak intelligence
+            </span>
 
         </div>
 
         <button
-            class="notification-close"
-            id="closeNotifications"
             type="button"
+            id="closeNotifications"
+            aria-label="Close notifications"
         >
             ×
         </button>
 
     </div>
 
-    <div class="notification-toolbar">
 
-        <div class="notification-tabs">
+    <div class="notification-tabs">
 
-            <button
-                class="notification-tab active"
-                data-notification-filter="all"
-                type="button"
-            >
-                All
-            </button>
+        <button
+            type="button"
+            class="notification-tab active"
+            data-notification-tab="all"
+        >
+            All
+        </button>
 
-            <button
-                class="notification-tab"
-                data-notification-filter="unread"
-                type="button"
-            >
-                Unread
-            </button>
-
-        </div>
-
-        <div class="notification-actions">
-
-            <button
-                class="notification-action"
-                id="markNotificationsRead"
-                type="button"
-            >
-                Mark read
-            </button>
-
-        </div>
+        <button
+            type="button"
+            class="notification-tab"
+            data-notification-tab="unread"
+        >
+            Unread
+        </button>
 
     </div>
 
+
     <div
-        class="notification-list"
         id="notificationList"
+        class="notification-list"
     ></div>
 
 </div>
 
 
-<!-- MOBILE NAV -->
+
+<!-- =========================================================
+     MOBILE
+========================================================== -->
+
 <div
-    class="mobile-nav-overlay"
-    id="mobileNavOverlay"
+    id="mobileBackdrop"
+    class="mobile-backdrop"
 ></div>
 
 
-<!-- TOAST -->
-<div
-    id="toast"
-    class="toast"
-    role="status"
-    aria-live="polite"
->
-    <span id="toastMessage"></span>
-</div>
 
-
-<script src="app.js"></script>
+<script src="./app.js"></script>
 
 </body>
+
 </html>
