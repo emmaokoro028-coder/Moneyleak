@@ -984,34 +984,46 @@
     ===================================================== */
 
     function getCategoryTotals(
-        transactions = getTransactions()
-    ) {
-        const totals = {};
+    transactions = getTransactions()
+) {
+    const totals = {};
 
-        transactions
-            .filter(t => t.type === "expense")
-            .forEach(t => {
-                const category =
-                    t.category || "Other";
+    transactions
+        .filter(item => item.type === "expense")
+        .forEach(item => {
 
-                totals[category] =
-                    (totals[category] || 0) +
-                    t.amount;
-            });
+            const rawCategory =
+                String(item.category || "Other").trim();
 
-        return Object.entries(totals)
-            .map(
-                ([category, amount]) => ({
-                    category,
-                    amount: round(amount)
-                })
-            )
-            .sort(
-                (a, b) =>
-                    b.amount -
-                    a.amount
-            );
-    }
+            // Make categories case-insensitive
+            const key =
+                rawCategory.toLowerCase();
+
+            if (!totals[key]) {
+                totals[key] = {
+                    category: rawCategory
+                        .toLowerCase()
+                        .replace(/\b\w/g, letter =>
+                            letter.toUpperCase()
+                        ),
+                    amount: 0
+                };
+            }
+
+            totals[key].amount +=
+                Number(item.amount || 0);
+        });
+
+    return Object.values(totals)
+        .map(item => ({
+            category: item.category,
+            amount: round(item.amount)
+        }))
+        .sort(
+            (a, b) =>
+                b.amount - a.amount
+        );
+}
 
     function getLargestExpense(
         transactions = getTransactions()
