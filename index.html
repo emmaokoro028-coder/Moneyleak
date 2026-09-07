@@ -6149,19 +6149,86 @@ $("#modalForm")
                 }
 
             } else if (
-                modalMode === "goal"
-            ) {
+    modalMode === "goal"
+) {
 
-                addGoal(data);
+    if (editingId) {
 
-                toast(
-                    "Savings goal created",
-                    "Your new goal is ready to track."
-                );
+        const goals =
+            getGoals();
 
-            } else if (
-                modalMode === "recurring"
-            ) {
+        const goal =
+            goals.find(
+                item =>
+                    item.id === editingId
+            );
+
+        if (!goal) {
+            toast(
+                "Goal not found",
+                "The savings goal could not be updated."
+            );
+
+            closeModal();
+            return;
+        }
+
+        const target =
+            num(data.target);
+
+        const current =
+            num(data.current);
+
+        if (
+            !data.name.trim() ||
+            target <= 0 ||
+            current < 0
+        ) {
+
+            toast(
+                "Invalid goal",
+                "Please enter a valid name, target and saved amount."
+            );
+
+            return;
+        }
+
+        goal.name =
+            data.name.trim();
+
+        goal.target =
+            target;
+
+        goal.current =
+            Math.min(
+                current,
+                target
+            );
+
+        goal.deadline =
+            data.deadline || "";
+
+        saveGoals(goals);
+
+        toast(
+            "Savings goal updated",
+            "Your goal has been successfully updated."
+        );
+
+    } else {
+
+        addGoal(data);
+
+        toast(
+            "Savings goal created",
+            "Your new goal is ready to track."
+        );
+
+    }
+
+} else if (
+    modalMode === "recurring"
+) {
 
                 const items =
                     getRecurring();
@@ -6385,6 +6452,115 @@ document.addEventListener(
 
     }
 );
+
+);
+
+
+/* =========================================================
+   EDIT SAVINGS GOAL
+========================================================= */
+
+function openGoalEditModal(goal) {
+
+    modalMode = "goal";
+
+    editingId = goal.id;
+
+    $("#modalTitle")
+        .textContent =
+        "Edit savings goal";
+
+    const html = `
+        <div class="form-grid">
+
+            <div class="form-group full">
+
+                <label>
+                    Goal name
+                </label>
+
+                <input
+                    class="input"
+                    name="name"
+                    required
+                    value="${escapeHTML(
+                        goal.name || ""
+                    )}"
+                    placeholder="e.g. Emergency fund"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Target amount
+                </label>
+
+                <input
+                    class="input"
+                    name="target"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    required
+                    value="${num(
+                        goal.target
+                    )}"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Already saved
+                </label>
+
+                <input
+                    class="input"
+                    name="current"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="${num(
+                        goal.current
+                    )}"
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Deadline
+                </label>
+
+                <input
+                    class="input"
+                    name="deadline"
+                    type="date"
+                    value="${escapeHTML(
+                        goal.deadline || ""
+                    )}"
+                >
+
+            </div>
+
+        </div>
+    `;
+
+    $("#modalBody")
+        .innerHTML =
+        html;
+
+    $("#modalBackdrop")
+        .classList.add("open");
+}
+
 
 /* =========================================================
    SAVINGS GOAL ACTIONS
