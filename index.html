@@ -6627,6 +6627,98 @@ document.addEventListener(
 
     }
 );
+
+/* =========================================================
+   EDIT SAVINGS GOAL
+========================================================= */
+
+function openGoalEditModal(goal) {
+
+    modalMode = "goal";
+    editingId = goal.id;
+
+    $("#modalTitle").textContent =
+        "Edit savings goal";
+
+    $("#modalBody").innerHTML = `
+        <div class="form-grid">
+
+            <div class="form-group full">
+                <label>
+                    Goal name
+                </label>
+
+                <input
+                    class="input"
+                    name="name"
+                    required
+                    value="${escapeHTML(
+                        goal.name || ""
+                    )}"
+                    placeholder="e.g. Emergency fund"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>
+                    Target amount
+                </label>
+
+                <input
+                    class="input"
+                    name="target"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    required
+                    value="${num(
+                        goal.target
+                    )}"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label>
+                    Already saved
+                </label>
+
+                <input
+                    class="input"
+                    name="current"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="${num(
+                        goal.current
+                    )}"
+                >
+            </div>
+
+
+            <div class="form-group full">
+                <label>
+                    Deadline
+                </label>
+
+                <input
+                    class="input"
+                    name="deadline"
+                    type="date"
+                    value="${escapeHTML(
+                        goal.deadline || ""
+                    )}"
+                >
+            </div>
+
+        </div>
+    `;
+
+    $("#modalBackdrop")
+        .classList.add("open");
+}
+   
 /* =========================================================
    BUDGET BUTTON
 ========================================================= */
