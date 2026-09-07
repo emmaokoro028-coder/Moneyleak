@@ -6904,127 +6904,181 @@
 
 })();
 
-// ===============================
-// MONEY LEAK - TRANSACTIONS
-// ===============================
+// =====================================================
+// MONEY LEAK - DASHBOARD TRANSACTION BRIDGE
+// =====================================================
 
-let transactions = JSON.parse(localStorage.getItem("moneyLeakTransactions")) || [];
+function refreshSimpleDashboard() {
+    if (!window.MoneyLeak) return;
 
-function saveTransactions() {
-    localStorage.setItem(
-        "moneyLeakTransactions",
-        JSON.stringify(transactions)
-    );
-}
+    const transactions = window.MoneyLeak.getTransactions();
 
-function addTransaction(type, description, amount, category) {
-    const transaction = {
-        id: Date.now(),
-        type: type,
-        description: description,
-        amount: Number(amount),
-        category: category,
-        date: new Date().toISOString()
-    };
+    const income = window.MoneyLeak.getIncome(transactions);
+    const expenses = window.MoneyLeak.getExpenses(transactions);
+    const balance = income - expenses;
 
-    transactions.unshift(transaction);
-    saveTransactions();
-    updateDashboard();
-    renderTransactions();
-}
-
-function deleteTransaction(id) {
-    transactions = transactions.filter(transaction => transaction.id !== id);
-
-    saveTransactions();
-    updateDashboard();
-    renderTransactions();
-}
-
-function calculateTotals() {
-    let income = 0;
-    let expenses = 0;
-
-    transactions.forEach(transaction => {
-        if (transaction.type === "income") {
-            income += transaction.amount;
-        } else if (transaction.type === "expense") {
-            expenses += transaction.amount;
-        }
-    });
-
-    return {
-        income,
-        expenses,
-        balance: income - expenses
-    };
-}
-
-function updateDashboard() {
-    const totals = calculateTotals();
-
-    const incomeElement = document.getElementById("totalIncome");
-    const expenseElement = document.getElementById("totalExpenses");
-    const balanceElement = document.getElementById("currentBalance");
-
-    if (incomeElement) {
-        incomeElement.textContent =
-            `₦${totals.income.toLocaleString()}`;
-    }
-
-    if (expenseElement) {
-        expenseElement.textContent =
-            `₦${totals.expenses.toLocaleString()}`;
-    }
+    const balanceElement = document.getElementById("balance");
+    const incomeElement = document.getElementById("income");
+    const expensesElement = document.getElementById("expenses");
 
     if (balanceElement) {
         balanceElement.textContent =
-            `₦${totals.balance.toLocaleString()}`;
+            `₦${balance.toLocaleString()}`;
     }
+
+    if (incomeElement) {
+        incomeElement.textContent =
+            `₦${income.toLocaleString()}`;
+    }
+
+    if (expensesElement) {
+        expensesElement.textContent =
+            `₦${expenses.toLocaleString()}`;
+    }
+
+    renderSimpleTransactions();
 }
 
-function renderTransactions() {
-    const container = document.getElementById("transactionsList");
 
-    if (!container) return;
+// =====================================================
+// ADD TRANSACTION
+// =====================================================
 
-    container.innerHTML = "";
+function addTransaction() {
+
+    const amountInput =
+        document.getElementById("amount");
+
+    const typeInput =
+        document.getElementById("type");
+
+    const categoryInput =
+        document.getElementById("category");
+
+    const amount =
+        Number(amountInput?.value || 0);
+
+    const type =
+        typeInput?.value || "expense";
+
+    const category =
+        categoryInput?.value.trim() || "Other";
+
+    if (!amount || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+    }
+
+    if (!window.MoneyLeak) {
+        alert("MoneyLeak is still loading. Please refresh the page.");
+        return;
+    }
+
+    window.MoneyLeak.addTransaction({
+        amount: amount,
+        type: type,
+        category: category,
+        description: category,
+        date: new Date().toISOString()
+    });
+
+    // Clear form
+    if (amountInput) {
+        amountInput.value = "";
+    }
+
+    if (categoryInput) {
+        categoryInput.value = "";
+    }
+
+    refreshSimpleDashboard();
+
+    window.MoneyLeak.showToast(
+        type === "income"
+            ? "Income added successfully."
+            : "Expense added successfully."
+    );
+}
+
+
+// =====================================================
+// RENDER TRANSACTIONS
+// =====================================================
+
+function renderSimpleTransactions() {
+
+    const container =
+        document.getElementById("transactionList");
+
+    if (!container || !window.MoneyLeak) {
+        return;
+    }
+
+    const transactions =
+        window.MoneyLeak
+            .getTransactions()
+            .slice()
+            .reverse();
 
     if (transactions.length === 0) {
+
         container.innerHTML = `
             <div class="empty-transactions">
                 <p>No transactions yet.</p>
                 <span>Add your first income or expense.</span>
             </div>
         `;
+
         return;
     }
 
-    transactions.forEach(transaction => {
-        const item = document.createElement("div");
+    container.innerHTML = "";
+
+    transactions.slice(0, 10).forEach(transaction => {
+
+        const item =
+            document.createElement("div");
 
         item.className =
             `transaction-item ${transaction.type}`;
 
-        const sign = transaction.type === "income" ? "+" : "-";
+        const sign =
+            transaction.type === "income"
+                ? "+"
+                : "-";
 
         item.innerHTML = `
             <div class="transaction-info">
-                <strong>${transaction.description}</strong>
-                <span>${transaction.category}</span>
+                <strong>
+                    ${escapeTransactionText(
+                        transaction.description ||
+                        transaction.category
+                    )}
+                </strong>
+
+                <span>
+                    ${escapeTransactionText(
+                        transaction.category
+                    )}
+                </span>
             </div>
 
             <div class="transaction-right">
+
                 <strong>
-                    ${sign}₦${transaction.amount.toLocaleString()}
+                    ${sign}₦${Number(
+                        transaction.amount
+                    ).toLocaleString()}
                 </strong>
 
                 <button
-                    onclick="deleteTransaction(${transaction.id})"
+                    type="button"
                     class="delete-transaction"
+                    onclick="removeMoneyLeakTransaction('${transaction.id}')"
                 >
                     ×
                 </button>
+
             </div>
         `;
 
@@ -7032,7 +7086,56 @@ function renderTransactions() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    updateDashboard();
-    renderTransactions();
-});
+
+// =====================================================
+// DELETE TRANSACTION
+// =====================================================
+
+function removeMoneyLeakTransaction(id) {
+
+    if (!window.MoneyLeak) return;
+
+    window.MoneyLeak.deleteTransaction(id);
+
+    refreshSimpleDashboard();
+
+    window.MoneyLeak.showToast(
+        "Transaction deleted."
+    );
+}
+
+
+// =====================================================
+// SAFE TEXT
+// =====================================================
+
+function escapeTransactionText(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+// =====================================================
+// START
+// =====================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        refreshSimpleDashboard();
+
+        document.addEventListener(
+            "moneyLeakUpdated",
+            function () {
+                refreshSimpleDashboard();
+            }
+        );
+
+    }
+);
