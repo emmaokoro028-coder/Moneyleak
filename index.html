@@ -1,22 +1,1644 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard — MoneyLeak</title>
+<title>MoneyLeak — Personal Finance OS</title>
 
-    <meta
-        name="description"
-        content="MoneyLeak personal finance dashboard."
-    >
+<style>
+/* =========================================================
+   MONEY LEAK
+   PROFESSIONAL PERSONAL FINANCE OS
+========================================================= */
 
-    <link rel="stylesheet" href="./style.css">
+:root {
+    --green-950: #022d24;
+    --green-900: #034536;
+    --green-800: #075b47;
+    --green-700: #087856;
+    --green-600: #0b9569;
+    --green-500: #13ad7a;
+    --green-100: #dff7ed;
+    --green-50: #effbf6;
+
+    --red: #e75b68;
+    --red-soft: #fff0f1;
+
+    --yellow: #e9a72f;
+    --yellow-soft: #fff8e7;
+
+    --blue: #4387e8;
+    --blue-soft: #edf4ff;
+
+    --text: #122b24;
+    --muted: #84938e;
+    --muted-dark: #60736d;
+
+    --background: #f4f7f5;
+    --surface: #ffffff;
+    --surface-2: #f8faf9;
+    --border: #e3ebe7;
+
+    --sidebar: 250px;
+
+    --shadow-sm:
+        0 1px 2px rgba(16, 42, 34, .04),
+        0 5px 16px rgba(16, 42, 34, .035);
+
+    --shadow-md:
+        0 12px 32px rgba(16, 42, 34, .08);
+
+    --radius: 18px;
+    --radius-sm: 12px;
+
+    --transition: 180ms ease;
+}
+
+[data-theme="dark"] {
+    --text: #edf8f4;
+    --muted: #8da39b;
+    --muted-dark: #b2c4be;
+
+    --background: #071713;
+    --surface: #0d211b;
+    --surface-2: #112920;
+    --border: #1d3a31;
+
+    --green-50: #102d25;
+    --green-100: #173f34;
+
+    --red-soft: #351d22;
+    --yellow-soft: #342a15;
+    --blue-soft: #172a42;
+
+    --shadow-sm:
+        0 1px 2px rgba(0,0,0,.2),
+        0 5px 16px rgba(0,0,0,.15);
+
+    --shadow-md:
+        0 15px 40px rgba(0,0,0,.3);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    color: var(--text);
+    background: var(--background);
+    min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* =========================================================
+   APP SHELL
+========================================================= */
+
+.app {
+    min-height: 100vh;
+    display: flex;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    width: var(--sidebar);
+    background:
+        linear-gradient(
+            180deg,
+            #034c3a 0%,
+            #023c30 55%,
+            #022e26 100%
+        );
+    color: #fff;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px 18px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 10px 30px;
+}
+
+.brand-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #10ad79;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    font-size: 20px;
+    box-shadow: 0 5px 16px rgba(0,0,0,.12);
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.brand-title {
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -.2px;
+}
+
+.brand-subtitle {
+    color: rgba(255,255,255,.52);
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.nav-group {
+    margin-bottom: 21px;
+}
+
+.nav-label {
+    color: rgba(255,255,255,.35);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    padding: 0 12px;
+    margin-bottom: 8px;
+}
+
+.nav-item {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: rgba(255,255,255,.66);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 11px;
+    font-size: 12px;
+    font-weight: 650;
+    margin-bottom: 2px;
+    text-align: left;
+    transition: var(--transition);
+}
+
+.nav-item:hover {
+    color: #fff;
+    background: rgba(255,255,255,.07);
+}
+
+.nav-item.active {
+    color: #fff;
+    background: linear-gradient(
+        90deg,
+        rgba(13,173,121,.3),
+        rgba(13,173,121,.08)
+    );
+    box-shadow: inset 3px 0 0 #13c98d;
+}
+
+.nav-icon {
+    width: 20px;
+    text-align: center;
+    opacity: .9;
+}
+
+.sidebar-spacer {
+    flex: 1;
+}
+
+.sidebar-profile {
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding: 16px 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.1);
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.profile-name {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-label {
+    color: rgba(255,255,255,.42);
+    font-size: 9px;
+    margin-top: 2px;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    margin-left: var(--sidebar);
+    width: calc(100% - var(--sidebar));
+    min-height: 100vh;
+}
+
+.topbar {
+    height: 72px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.page-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted-dark);
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.search {
+    width: 245px;
+    height: 38px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 0 13px;
+    color: var(--text);
+    outline: none;
+    font-size: 11px;
+}
+
+.search:focus {
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 3px rgba(19,173,122,.09);
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted-dark);
+    display: grid;
+    place-items: center;
+    transition: var(--transition);
+}
+
+.icon-btn:hover {
+    color: var(--green-700);
+    border-color: var(--green-500);
+    background: var(--green-50);
+}
+
+.content {
+    padding: 27px 28px 40px;
+    max-width: 1600px;
+    margin: auto;
+}
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 22px;
+}
+
+.eyebrow {
+    color: var(--green-600);
+    font-size: 9px;
+    letter-spacing: 1.7px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}
+
+.greeting {
+    font-size: clamp(25px, 3vw, 37px);
+    letter-spacing: -1.7px;
+    margin: 0;
+    font-weight: 850;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 11px;
+    margin: 7px 0 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    height: 40px;
+    border-radius: 10px;
+    padding: 0 15px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 750;
+    font-size: 11px;
+    transition: var(--transition);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary {
+    border-color: var(--green-600);
+    color: white;
+    background: linear-gradient(
+        135deg,
+        #0aa979,
+        #07865f
+    );
+}
+
+.btn-danger {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+}
+
+.btn-soft {
+    background: var(--green-50);
+    color: var(--green-700);
+    border-color: transparent;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-card {
+    padding: 18px;
+    min-height: 126px;
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-icon {
+    width: 31px;
+    height: 31px;
+    border-radius: 9px;
+    background: var(--green-100);
+    color: var(--green-700);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+}
+
+.stat-label {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 850;
+    letter-spacing: -.8px;
+    margin-top: 4px;
+}
+
+.stat-note {
+    color: var(--muted);
+    font-size: 9px;
+    margin-top: 3px;
+}
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.grid-main {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr .72fr;
+    gap: 12px;
+}
+
+.card-header {
+    padding: 17px 17px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-title {
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.card-description {
+    color: var(--muted);
+    font-size: 9px;
+    margin-top: 3px;
+}
+
+.card-link {
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.card-body {
+    padding: 15px 17px 17px;
+}
+
+/* =========================================================
+   CASH FLOW CHART
+========================================================= */
+
+.cash-card {
+    min-height: 290px;
+}
+
+.chart-wrap {
+    height: 190px;
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    padding: 20px 8px 8px;
+    position: relative;
+}
+
+.chart-grid-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border);
+    opacity: .65;
+}
+
+.chart-grid-line:nth-child(1) {
+    top: 25%;
+}
+
+.chart-grid-line:nth-child(2) {
+    top: 50%;
+}
+
+.chart-grid-line:nth-child(3) {
+    top: 75%;
+}
+
+.chart-column {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+    z-index: 2;
+}
+
+.bar {
+    width: 14px;
+    border-radius: 5px 5px 2px 2px;
+    min-height: 4px;
+}
+
+.bar.income {
+    background: #13ad7a;
+}
+
+.bar.expense {
+    background: #ea606c;
+}
+
+.chart-label {
+    position: absolute;
+    bottom: -18px;
+    color: var(--muted);
+    font-size: 8px;
+}
+
+.legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 13px;
+}
+
+.legend-item {
+    color: var(--muted);
+    font-size: 9px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.legend-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.legend-income {
+    background: #13ad7a;
+}
+
+.legend-expense {
+    background: #ea606c;
+}
+
+/* =========================================================
+   MONEY SCORE
+========================================================= */
+
+.score-card {
+    min-height: 290px;
+}
+
+.score-content {
+    display: flex;
+    gap: 19px;
+    align-items: center;
+    padding: 17px;
+}
+
+.score-ring {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background:
+        conic-gradient(
+            var(--green-500) var(--score, 70%),
+            #e7efeb 0
+        );
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+}
+
+.score-ring-inner {
+    width: 83px;
+    height: 83px;
+    border-radius: 50%;
+    background: var(--surface);
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+.score-number {
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.score-small {
+    font-size: 8px;
+    color: var(--muted);
+}
+
+.score-heading {
+    color: var(--green-700);
+    font-size: 18px;
+    font-weight: 850;
+    line-height: 1.22;
+}
+
+.score-caption {
+    color: var(--muted);
+    font-size: 9px;
+    margin-top: 7px;
+}
+
+.score-bars {
+    margin-top: 15px;
+}
+
+.score-row {
+    display: grid;
+    grid-template-columns: 58px 1fr 24px;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+}
+
+.score-row span {
+    font-size: 8px;
+    color: var(--muted);
+}
+
+.progress {
+    height: 6px;
+    background: #e5eee9;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .progress {
+    background: #20372f;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: #11ae79;
+}
+
+/* =========================================================
+   MONEY COACH
+========================================================= */
+
+.coach-card {
+    min-height: 290px;
+    background:
+        linear-gradient(
+            135deg,
+            #e9f9f2,
+            #f8fcfa
+        );
+}
+
+[data-theme="dark"] .coach-card {
+    background:
+        linear-gradient(
+            135deg,
+            #0f3328,
+            #10271f
+        );
+}
+
+.coach-content {
+    padding: 18px;
+}
+
+.coach-label {
+    font-size: 11px;
+    font-weight: 850;
+}
+
+.coach-title {
+    font-size: 17px;
+    line-height: 1.25;
+    margin-top: 4px;
+}
+
+.coach-text {
+    color: var(--muted-dark);
+    font-size: 10px;
+    line-height: 1.6;
+    margin: 11px 0 17px;
+}
+
+/* =========================================================
+   LOWER CARDS
+========================================================= */
+
+.lower-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.metric-card {
+    padding: 17px;
+    min-height: 150px;
+}
+
+.metric-label {
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.metric-value {
+    font-size: 23px;
+    font-weight: 850;
+    margin-top: 9px;
+}
+
+.metric-title {
+    font-size: 12px;
+    font-weight: 800;
+    margin-top: 6px;
+}
+
+.metric-text {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.5;
+    margin-top: 5px;
+}
+
+/* =========================================================
+   DASHBOARD LOWER
+========================================================= */
+
+.dashboard-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.transactions-card,
+.categories-card,
+.goals-card,
+.alerts-card {
+    min-height: 100px;
+}
+
+.transaction-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 17px;
+    border-top: 1px solid var(--border);
+}
+
+.transaction-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.transaction-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    font-weight: 900;
+}
+
+.transaction-icon.income {
+    color: var(--green-700);
+    background: var(--green-100);
+}
+
+.transaction-icon.expense {
+    color: var(--red);
+    background: var(--red-soft);
+}
+
+.transaction-name {
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.transaction-meta {
+    color: var(--muted);
+    font-size: 8px;
+    margin-top: 3px;
+}
+
+.transaction-amount {
+    font-size: 11px;
+    font-weight: 850;
+}
+
+.positive {
+    color: var(--green-700);
+}
+
+.negative {
+    color: var(--red);
+}
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.category-row {
+    padding: 11px 17px;
+    border-top: 1px solid var(--border);
+}
+
+.category-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    font-weight: 750;
+}
+
+.category-bar {
+    height: 5px;
+    border-radius: 999px;
+    background: var(--border);
+    margin-top: 7px;
+    overflow: hidden;
+}
+
+.category-fill {
+    height: 100%;
+    background: #11aa77;
+    border-radius: inherit;
+}
+
+/* =========================================================
+   PAGE SECTIONS
+========================================================= */
+
+.page {
+    display: none;
+    animation: pageIn .2s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes pageIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-heading {
+    margin-bottom: 20px;
+}
+
+.page-heading h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: -1px;
+}
+
+.page-heading p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+.table-card {
+    overflow: hidden;
+}
+
+.table-toolbar {
+    padding: 15px 17px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.toolbar-left,
+.toolbar-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.select,
+.input {
+    height: 38px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    border-radius: 9px;
+    padding: 0 11px;
+    outline: none;
+    font-size: 10px;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 3px rgba(19,173,122,.08);
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+}
+
+th {
+    text-align: left;
+    padding: 12px 17px;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+td {
+    padding: 13px 17px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+}
+
+td strong {
+    font-weight: 800;
+}
+
+.row-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.small-btn {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted-dark);
+    border-radius: 7px;
+    height: 29px;
+    padding: 0 9px;
+    font-size: 8px;
+    font-weight: 750;
+}
+
+.small-btn:hover {
+    border-color: var(--green-500);
+    color: var(--green-700);
+}
+
+.small-btn.delete:hover {
+    border-color: var(--red);
+    color: var(--red);
+}
+
+/* =========================================================
+   ANALYTICS
+========================================================= */
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: 1.3fr .7fr;
+    gap: 12px;
+}
+
+.analytics-card {
+    padding: 17px;
+}
+
+.big-chart {
+    height: 300px;
+    position: relative;
+    margin-top: 20px;
+    border-bottom: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+}
+
+.line-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.analytics-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.analytics-stat {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px;
+}
+
+.analytics-stat span {
+    display: block;
+    color: var(--muted);
+    font-size: 8px;
+}
+
+.analytics-stat strong {
+    display: block;
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+/* =========================================================
+   GOALS
+========================================================= */
+
+.goal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.goal-card {
+    padding: 17px;
+}
+
+.goal-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.goal-name {
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.goal-percent {
+    font-size: 11px;
+    color: var(--green-700);
+    font-weight: 850;
+}
+
+.goal-values {
+    margin-top: 15px;
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.goal-values strong {
+    color: var(--text);
+}
+
+.goal-progress {
+    height: 8px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.goal-fill {
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #0aa879,
+        #20c58d
+    );
+}
+
+.goal-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 8px;
+}
+
+/* =========================================================
+   BUDGETS
+========================================================= */
+
+.budget-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.budget-card {
+    padding: 17px;
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.budget-category {
+    font-weight: 850;
+    font-size: 12px;
+}
+
+.budget-amount {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.budget-progress {
+    height: 8px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 15px 0 9px;
+}
+
+.budget-fill {
+    height: 100%;
+    background: #11a977;
+}
+
+.budget-fill.warning {
+    background: var(--yellow);
+}
+
+.budget-fill.danger {
+    background: var(--red);
+}
+
+.budget-bottom {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 8px;
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 12px;
+}
+
+.settings-menu {
+    padding: 8px;
+    height: fit-content;
+}
+
+.settings-tab {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--muted-dark);
+    padding: 11px;
+    border-radius: 9px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+.settings-tab.active,
+.settings-tab:hover {
+    color: var(--green-700);
+    background: var(--green-50);
+}
+
+.settings-content {
+    padding: 21px;
+}
+
+.setting-section {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.setting-section:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+
+.setting-section h3 {
+    margin: 0;
+    font-size: 13px;
+}
+
+.setting-section p {
+    color: var(--muted);
+    font-size: 9px;
+    margin: 5px 0 14px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 9px;
+    font-weight: 750;
+    color: var(--muted-dark);
+}
+
+.textarea {
+    min-height: 90px;
+    resize: vertical;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    border-radius: 9px;
+    padding: 10px;
+    outline: none;
+    font-size: 10px;
+}
+
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.toggle-title {
+    font-size: 10px;
+    font-weight: 750;
+}
+
+.toggle-description {
+    color: var(--muted);
+    font-size: 8px;
+    margin-top: 3px;
+}
+
+.switch {
+    position: relative;
+    width: 39px;
+    height: 21px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #ccd8d3;
+    border-radius: 999px;
+    transition: .2s;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.switch input:checked + .slider {
+    background: #10ab77;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(18px);
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(2,20,16,.5);
+    backdrop-filter: blur(5px);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-backdrop.open {
+    display: flex;
+}
+
+.modal {
+    width: min(520px, 100%);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.2);
+    animation: modalIn .2s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(.98);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.modal-header {
+    padding: 19px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.modal-close {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 18px;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast-container {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast {
+    min-width: 250px;
+    max-width: 340px;
+    padding: 13px 15px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    font-size: 10px;
+    animation: toastIn .2s ease;
+}
+
+.toast strong {
+    display: block;
+    font-size: 10px;
+    margin-bottom: 3px;
+}
+
+.toast span {
+    color: var(--muted);
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateX(15px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty {
+    padding: 35px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.empty strong {
+    color: var(--text);
+    display: block;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.mobile-menu {
+    display: none;
+}
+
+@media (max-width: 1150px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-main {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .coach-card {
+        grid-column: 1 / -1;
+    }
+
+    .goal-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 850px) {
+    :root {
+        --sidebar: 0px;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform .2s ease;
+        width: 250px;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .mobile-menu {
+        display: grid;
+    }
+
+    .topbar {
+        padding: 0 15px;
+    }
+
+    .topbar-right .search {
+        display: none;
+    }
+
+    .content {
+        padding: 20px 15px 35px;
+    }
+
+    .dashboard-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .grid-main,
+    .lower-grid,
+    .dashboard-bottom,
+    .analytics-grid,
+    .budget-grid,
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-actions {
+        width: 100%;
+    }
+
+    .header-actions .btn {
+        flex: 1;
+    }
+
+    .score-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .analytics-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .table-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<div class="app-shell">
+<div class="app">
 
     <!-- =====================================================
          SIDEBAR
@@ -25,193 +1647,156 @@
     <aside class="sidebar" id="sidebar">
 
         <div class="brand">
-            <div class="brand-mark">M</div>
+            <div class="brand-logo">M</div>
+
+            <div class="brand-text">
+                <div class="brand-title">MoneyLeak</div>
+                <div class="brand-subtitle">
+                    Personal Finance OS
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-group">
+
+            <div class="nav-label">
+                OVERVIEW
+            </div>
+
+            <button class="nav-item active"
+                    data-page="dashboard">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </button>
+
+            <button class="nav-item"
+                    data-page="analytics">
+                <span class="nav-icon">◈</span>
+                Analytics
+            </button>
+
+        </div>
+
+        <div class="nav-group">
+
+            <div class="nav-label">
+                MONEY
+            </div>
+
+            <button class="nav-item"
+                    data-page="income">
+                <span class="nav-icon">↗</span>
+                Income
+            </button>
+
+            <button class="nav-item"
+                    data-page="expenses">
+                <span class="nav-icon">↘</span>
+                Expenses
+            </button>
+
+            <button class="nav-item"
+                    data-page="budgets">
+                <span class="nav-icon">▣</span>
+                Budgets
+            </button>
+
+        </div>
+
+        <div class="nav-group">
+
+            <div class="nav-label">
+                PLANNING
+            </div>
+
+            <button class="nav-item"
+                    data-page="goals">
+                <span class="nav-icon">◎</span>
+                Savings Goals
+            </button>
+
+            <button class="nav-item"
+                    data-page="recurring">
+                <span class="nav-icon">⟳</span>
+                Recurring
+            </button>
+
+        </div>
+
+        <div class="nav-group">
+
+            <div class="nav-label">
+                SYSTEM
+            </div>
+
+            <button class="nav-item"
+                    data-page="settings">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </button>
+
+        </div>
+
+        <div class="sidebar-spacer"></div>
+
+        <div class="sidebar-profile">
+            <div class="avatar"
+                 id="sidebarAvatar">
+                M
+            </div>
 
             <div>
-                <div class="brand-name">MoneyLeak</div>
-                <div class="brand-subtitle">Personal Finance OS</div>
-            </div>
-        </div>
-
-        <div class="sidebar-section">
-
-            <div class="sidebar-section-title">
-                Overview
-            </div>
-
-            <nav class="sidebar-nav">
-
-                <a href="./index.html" class="active">
-                    <span class="nav-icon">⌂</span>
-                    <span>Dashboard</span>
-                </a>
-
-                <a href="./analytics.html">
-                    <span class="nav-icon">◈</span>
-                    <span>Analytics</span>
-                </a>
-
-            </nav>
-
-        </div>
-
-        <div class="sidebar-section">
-
-            <div class="sidebar-section-title">
-                Money
-            </div>
-
-            <nav class="sidebar-nav">
-
-                <a href="./income.html">
-                    <span class="nav-icon">↗</span>
-                    <span>Income</span>
-                </a>
-
-                <a href="./expenses.html">
-                    <span class="nav-icon">↘</span>
-                    <span>Expenses</span>
-                </a>
-
-                <a href="./budgets.html">
-                    <span class="nav-icon">▣</span>
-                    <span>Budgets</span>
-                </a>
-
-            </nav>
-
-        </div>
-
-        <div class="sidebar-section">
-
-            <div class="sidebar-section-title">
-                Planning
-            </div>
-
-            <nav class="sidebar-nav">
-
-                <a href="./savings.html">
-                    <span class="nav-icon">◎</span>
-                    <span>Savings Goals</span>
-                </a>
-
-                <a href="./recurring.html">
-                    <span class="nav-icon">⟳</span>
-                    <span>Recurring</span>
-                </a>
-
-            </nav>
-
-        </div>
-
-        <div class="sidebar-section">
-
-            <div class="sidebar-section-title">
-                System
-            </div>
-
-            <nav class="sidebar-nav">
-
-                <a href="./settings.html">
-                    <span class="nav-icon">⚙</span>
-                    <span>Settings</span>
-                </a>
-
-            </nav>
-
-        </div>
-
-        <div class="sidebar-footer">
-
-            <div class="transaction-main">
-
-                <div
-                    class="transaction-icon"
-                    style="background:#e2f6ed;color:#16865c;"
-                >
-                    E
+                <div class="profile-name"
+                     id="sidebarName">
+                    MoneyLeak User
                 </div>
 
-                <div>
-                    <div class="transaction-description">
-                        Emmanuel
-                    </div>
-
-                    <div class="transaction-meta">
-                        Personal account
-                    </div>
+                <div class="profile-label">
+                    Personal account
                 </div>
-
             </div>
-
         </div>
 
     </aside>
-
 
     <!-- =====================================================
          MAIN
     ====================================================== -->
 
-    <main class="main-content">
-
-        <!-- TOPBAR -->
+    <main class="main">
 
         <header class="topbar">
 
             <div class="topbar-left">
 
-                <button
-                    class="mobile-menu-button icon-button"
-                    id="mobileMenuButton"
-                    aria-label="Open menu"
-                >
+                <button class="icon-btn mobile-menu"
+                        id="mobileMenu">
                     ☰
                 </button>
 
-                <div class="topbar-title">
+                <div class="page-title"
+                     id="pageTitle">
                     Dashboard
                 </div>
 
             </div>
 
-
             <div class="topbar-right">
 
-                <button
-                    class="search-trigger"
-                    id="openSearch"
-                    type="button"
-                    aria-label="Search MoneyLeak"
+                <input
+                    class="search"
+                    id="globalSearch"
+                    type="search"
+                    placeholder="Search MoneyLeak..."
                 >
-                    ⌕
-                    <span>Search MoneyLeak...</span>
-                    <span style="margin-left:auto;">⌘ K</span>
+
+                <button class="icon-btn"
+                        id="notificationBtn">
+                    ♢
                 </button>
 
-                <button
-                    class="icon-button"
-                    id="notificationButton"
-                    type="button"
-                    aria-label="Notifications"
-                    style="position:relative;"
-                >
-                    ◌
-                    <span
-                        id="notificationBadge"
-                        class="notification-badge"
-                        style="display:none;"
-                    >
-                        0
-                    </span>
-                </button>
-
-                <button
-                    class="icon-button"
-                    id="themeToggle"
-                    type="button"
-                    aria-label="Toggle theme"
-                >
+                <button class="icon-btn"
+                        id="themeBtn">
                     ☼
                 </button>
 
@@ -219,997 +1804,875 @@
 
         </header>
 
+        <div class="content">
 
-        <div class="page-container">
+            <!-- =================================================
+                 DASHBOARD
+            ================================================== -->
+
+            <section class="page active"
+                     id="page-dashboard">
+
+                <div class="dashboard-header">
+
+                    <div>
+
+                        <div class="eyebrow"
+                             id="todayLabel">
+                            TODAY
+                        </div>
+
+                        <h1 class="greeting"
+                            id="greeting">
+                            Good morning, MoneyLeak User.
+                        </h1>
+
+                        <p class="subtitle">
+                            Your money at a glance. See what's
+                            happening, what needs attention,
+                            and where you're heading.
+                        </p>
+
+                    </div>
+
+                    <div class="header-actions">
+
+                        <button class="btn btn-primary"
+                                data-open-modal="income">
+                            + Add income
+                        </button>
+
+                        <button class="btn"
+                                data-open-modal="expense">
+                            + Add expense
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- STATS -->
+
+                <div class="stats-grid">
+
+                    <div class="card stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon">◉</div>
+                        </div>
+
+                        <div class="stat-label">
+                            Money position
+                        </div>
+
+                        <div class="stat-value"
+                             id="statBalance">
+                            ₦0
+                        </div>
+
+                        <div class="stat-note">
+                            Current cash flow
+                        </div>
+
+                    </div>
+
+                    <div class="card stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon">↗</div>
+                        </div>
+
+                        <div class="stat-label">
+                            Income
+                        </div>
+
+                        <div class="stat-value"
+                             id="statIncome">
+                            ₦0
+                        </div>
+
+                        <div class="stat-note">
+                            This month
+                        </div>
+
+                    </div>
+
+                    <div class="card stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon">↘</div>
+                        </div>
+
+                        <div class="stat-label">
+                            Expenses
+                        </div>
+
+                        <div class="stat-value"
+                             id="statExpenses">
+                            ₦0
+                        </div>
+
+                        <div class="stat-note">
+                            This month
+                        </div>
+
+                    </div>
+
+                    <div class="card stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon">✦</div>
+                        </div>
+
+                        <div class="stat-label">
+                            Savings rate
+                        </div>
+
+                        <div class="stat-value"
+                             id="statSavingsRate">
+                            0%
+                        </div>
+
+                        <div class="stat-note">
+                            Money kept this month
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- MAIN THREE -->
+
+                <div class="grid-main">
+
+                    <!-- CASH FLOW -->
+
+                    <div class="card cash-card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <div class="card-title">
+                                    Cash flow
+                                </div>
+
+                                <div class="card-description">
+                                    Your income and spending picture
+                                </div>
+                            </div>
+
+                            <button class="card-link"
+                                    data-page-link="analytics">
+                                View analytics →
+                            </button>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="chart-wrap"
+                                 id="cashFlowChart">
+
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+
+                            </div>
+
+                            <div class="legend">
+
+                                <div class="legend-item">
+                                    <span class="legend-dot legend-income"></span>
+                                    Income
+                                </div>
+
+                                <div class="legend-item">
+                                    <span class="legend-dot legend-expense"></span>
+                                    Expenses
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- SCORE -->
+
+                    <div class="card score-card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <div class="card-title">
+                                    MoneyLeak Score
+                                </div>
+
+                                <div class="card-description">
+                                    Your overall financial position
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="score-content">
+
+                            <div class="score-ring"
+                                 id="scoreRing"
+                                 style="--score:70%">
+
+                                <div class="score-ring-inner">
+
+                                    <div>
+                                        <div class="score-number"
+                                             id="scoreNumber">
+                                            70
+                                        </div>
+
+                                        <div class="score-small">
+                                            /100
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div>
+
+                                <div class="score-heading"
+                                     id="scoreHeading">
+                                    Your finances are moving
+                                    in a healthy direction.
+                                </div>
+
+                                <div class="score-caption">
+                                    MoneyLeak Score:
+                                    <strong id="scoreLevel">
+                                        Strong
+                                    </strong>
+                                </div>
+
+                                <div class="score-bars">
+
+                                    <div class="score-row">
+                                        <span>Income</span>
+
+                                        <div class="progress">
+                                            <div class="progress-fill"
+                                                 id="scoreIncome"
+                                                 style="width:80%">
+                                            </div>
+                                        </div>
+
+                                        <span>20</span>
+                                    </div>
+
+                                    <div class="score-row">
+                                        <span>Budget</span>
+
+                                        <div class="progress">
+                                            <div class="progress-fill"
+                                                 id="scoreBudget"
+                                                 style="width:80%">
+                                            </div>
+                                        </div>
+
+                                        <span>20</span>
+                                    </div>
+
+                                    <div class="score-row">
+                                        <span>Savings</span>
+
+                                        <div class="progress">
+                                            <div class="progress-fill"
+                                                 id="scoreSavings"
+                                                 style="width:80%">
+                                            </div>
+                                        </div>
+
+                                        <span>20</span>
+                                    </div>
+
+                                    <div class="score-row">
+                                        <span>Recurring</span>
+
+                                        <div class="progress">
+                                            <div class="progress-fill"
+                                                 id="scoreRecurring"
+                                                 style="width:80%">
+                                            </div>
+                                        </div>
+
+                                        <span>10</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- COACH -->
+
+                    <div class="card coach-card">
+
+                        <div class="coach-content">
+
+                            <div class="coach-label">
+                                ✦ Money Coach
+                            </div>
+
+                            <div class="coach-title">
+                                Your next best move
+                            </div>
+
+                            <div class="coach-text"
+                                 id="coachText">
+                                Add your first transactions
+                                and MoneyLeak will create a
+                                personalized recommendation.
+                            </div>
+
+                            <button class="btn btn-primary"
+                                    data-page-link="goals">
+                                View savings goals
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- LOWER METRICS -->
+
+                <div class="lower-grid">
+
+                    <div class="card metric-card">
+
+                        <div class="metric-label">
+                            Safe to spend
+                        </div>
+
+                        <div class="metric-value"
+                             id="safeSpend">
+                            ₦0
+                        </div>
+
+                        <div class="metric-title">
+                            Daily spending guide
+                        </div>
+
+                        <div class="metric-text"
+                             id="safeSpendText">
+                            Add income and expenses to calculate
+                            your safe daily spending amount.
+                        </div>
+
+                    </div>
+
+                    <div class="card metric-card">
+
+                        <div class="metric-label">
+                            Financial health
+                        </div>
+
+                        <div class="metric-value">
+                            <span id="healthScore">
+                                70
+                            </span>
+                            <span style="
+                                font-size:11px;
+                                color:var(--muted);
+                            ">
+                                / 100
+                            </span>
+                        </div>
+
+                        <div class="progress"
+                             style="margin-top:10px">
+
+                            <div class="progress-fill"
+                                 id="healthProgress"
+                                 style="width:70%">
+                            </div>
+
+                        </div>
+
+                        <div class="metric-title"
+                             id="healthText">
+                            Strong
+                        </div>
+
+                    </div>
+
+                    <div class="card metric-card">
+
+                        <div class="metric-label">
+                            Monthly budget
+                        </div>
+
+                        <div class="metric-value"
+                             id="budgetPercent">
+                            0%
+                        </div>
+
+                        <div class="progress"
+                             style="margin-top:10px">
+
+                            <div class="progress-fill"
+                                 id="budgetProgress"
+                                 style="width:0%">
+                            </div>
+
+                        </div>
+
+                        <div class="metric-text">
+                            <span id="budgetRemaining">
+                                ₦0
+                            </span>
+                            remaining
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- DASHBOARD BOTTOM -->
+
+                <div class="dashboard-bottom">
+
+                    <div class="card transactions-card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <div class="card-title">
+                                    Recent transactions
+                                </div>
+
+                                <div class="card-description">
+                                    Your latest money activity
+                                </div>
+                            </div>
+
+                            <button class="card-link"
+                                    data-page-link="income">
+                                See all →
+                            </button>
+
+                        </div>
+
+                        <div id="recentTransactions"></div>
+
+                    </div>
+
+                    <div class="card categories-card">
+
+                        <div class="card-header">
+
+                            <div>
+                                <div class="card-title">
+                                    Top spending categories
+                                </div>
+
+                                <div class="card-description">
+                                    Your biggest spending leaks
+                                </div>
+                            </div>
+
+                            <button class="card-link"
+                                    data-page-link="expenses">
+                                View all →
+                            </button>
+
+                        </div>
+
+                        <div id="topCategories"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
 
 
             <!-- =================================================
-                 HERO
+                 ANALYTICS
             ================================================== -->
 
-            <section class="dashboard-hero">
+            <section class="page"
+                     id="page-analytics">
 
-                <div class="dashboard-hero-copy">
+                <div class="page-heading">
 
-                    <div
-                        class="dashboard-hero-eyebrow"
-                        id="dashboardDate"
-                    >
-                        Sunday, 7 September 2026
-                    </div>
-
-                    <h1 id="dashboardGreeting">
-                        Good morning, MoneyLeak User.
-                    </h1>
+                    <h1>Analytics</h1>
 
                     <p>
-                        Your money at a glance. See what's happening,
-                        what needs attention, and where you're heading.
+                        Understand your money with clear,
+                        actionable financial insights.
                     </p>
 
                 </div>
 
+                <div class="analytics-grid">
 
-                <div class="dashboard-hero-actions">
+                    <div class="card analytics-card">
 
-                    <a
-                        href="./income.html"
-                        class="primary-button"
-                    >
+                        <div class="card-title">
+                            Income vs expenses
+                        </div>
+
+                        <div class="card-description">
+                            Monthly financial performance
+                        </div>
+
+                        <div class="big-chart">
+                            <svg class="line-svg"
+                                 viewBox="0 0 700 300"
+                                 preserveAspectRatio="none">
+
+                                <polyline
+                                    id="incomeLine"
+                                    fill="none"
+                                    stroke="#10aa78"
+                                    stroke-width="4"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    points="">
+                                </polyline>
+
+                                <polyline
+                                    id="expenseLine"
+                                    fill="none"
+                                    stroke="#e75b68"
+                                    stroke-width="4"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    points="">
+                                </polyline>
+
+                            </svg>
+                        </div>
+
+                        <div class="analytics-stats">
+
+                            <div class="analytics-stat">
+                                <span>Total income</span>
+                                <strong id="analyticsIncome">
+                                    ₦0
+                                </strong>
+                            </div>
+
+                            <div class="analytics-stat">
+                                <span>Total expenses</span>
+                                <strong id="analyticsExpenses">
+                                    ₦0
+                                </strong>
+                            </div>
+
+                            <div class="analytics-stat">
+                                <span>Net cash flow</span>
+                                <strong id="analyticsNet">
+                                    ₦0
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card analytics-card">
+
+                        <div class="card-title">
+                            Spending breakdown
+                        </div>
+
+                        <div class="card-description">
+                            Where your money goes
+                        </div>
+
+                        <div id="analyticsCategories"
+                             style="margin-top:20px">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 INCOME
+            ================================================== -->
+
+            <section class="page"
+                     id="page-income">
+
+                <div class="page-heading"
+                     style="display:flex;justify-content:space-between;align-items:flex-end;gap:15px">
+
+                    <div>
+                        <h1>Income</h1>
+                        <p>
+                            Track every source of money coming in.
+                        </p>
+                    </div>
+
+                    <button class="btn btn-primary"
+                            data-open-modal="income">
                         + Add income
-                    </a>
+                    </button>
 
-                    <a
-                        href="./expenses.html"
-                        class="secondary-button"
-                    >
+                </div>
+
+                <div class="card table-card">
+
+                    <div class="table-toolbar">
+
+                        <div class="toolbar-left">
+
+                            <input
+                                class="input"
+                                id="incomeSearch"
+                                placeholder="Search income..."
+                            >
+
+                            <select class="select"
+                                    id="incomeCategoryFilter">
+                                <option value="all">
+                                    All sources
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <div class="toolbar-right">
+                            <strong id="incomeTotal">
+                                ₦0
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="table-scroll">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Source</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="incomeTable"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 EXPENSES
+            ================================================== -->
+
+            <section class="page"
+                     id="page-expenses">
+
+                <div class="page-heading"
+                     style="display:flex;justify-content:space-between;align-items:flex-end;gap:15px">
+
+                    <div>
+                        <h1>Expenses</h1>
+                        <p>
+                            Find the leaks and take control
+                            of your spending.
+                        </p>
+                    </div>
+
+                    <button class="btn btn-primary"
+                            data-open-modal="expense">
                         + Add expense
-                    </a>
+                    </button>
 
                 </div>
 
-            </section>
+                <div class="card table-card">
 
+                    <div class="table-toolbar">
 
-            <!-- =================================================
-                 METRICS
-            ================================================== -->
+                        <div class="toolbar-left">
 
-            <section class="dashboard-metrics">
-
-
-                <!-- MONEY POSITION -->
-
-                <article class="dashboard-metric">
-
-                    <div class="dashboard-metric-icon">
-                        ◉
-                    </div>
-
-                    <div class="dashboard-metric-label">
-                        Money position
-                    </div>
-
-                    <div
-                        class="dashboard-metric-value"
-                        id="overviewBalance"
-                    >
-                        ₦0
-                    </div>
-
-                    <div
-                        class="dashboard-metric-meta"
-                        id="overviewBalanceMeta"
-                    >
-                        Current cash flow
-                    </div>
-
-                </article>
-
-
-                <!-- INCOME -->
-
-                <article class="dashboard-metric">
-
-                    <div class="dashboard-metric-icon">
-                        ↗
-                    </div>
-
-                    <div class="dashboard-metric-label">
-                        Income
-                    </div>
-
-                    <div
-                        class="dashboard-metric-value"
-                        id="overviewIncome"
-                    >
-                        ₦0
-                    </div>
-
-                    <div class="dashboard-metric-meta">
-                        This month
-                    </div>
-
-                </article>
-
-
-                <!-- EXPENSES -->
-
-                <article class="dashboard-metric">
-
-                    <div
-                        class="dashboard-metric-icon"
-                        style="
-                            background:var(--danger-light);
-                            color:var(--danger);
-                        "
-                    >
-                        ↘
-                    </div>
-
-                    <div class="dashboard-metric-label">
-                        Expenses
-                    </div>
-
-                    <div
-                        class="dashboard-metric-value"
-                        id="overviewExpenses"
-                    >
-                        ₦0
-                    </div>
-
-                    <div class="dashboard-metric-meta">
-                        This month
-                    </div>
-
-                </article>
-
-
-                <!-- SAVINGS RATE -->
-
-                <article class="dashboard-metric">
-
-                    <div class="dashboard-metric-icon">
-                        ✦
-                    </div>
-
-                    <div class="dashboard-metric-label">
-                        Savings rate
-                    </div>
-
-                    <div
-                        class="dashboard-metric-value"
-                        id="overviewSavingsRate"
-                    >
-                        0%
-                    </div>
-
-                    <div class="dashboard-metric-meta">
-                        Money kept this month
-                    </div>
-
-                </article>
-
-            </section>
-
-
-            <!-- =================================================
-                 PERIOD SUMMARY
-            ================================================== -->
-
-            <div class="period-summary">
-
-                <div class="period-item">
-
-                    <span class="period-label">
-                        Income
-                    </span>
-
-                    <span
-                        class="period-value positive"
-                        id="periodIncome"
-                    >
-                        ₦0
-                    </span>
-
-                </div>
-
-                <div class="period-item">
-
-                    <span class="period-label">
-                        Expenses
-                    </span>
-
-                    <span
-                        class="period-value negative"
-                        id="periodExpenses"
-                    >
-                        ₦0
-                    </span>
-
-                </div>
-
-                <div class="period-item">
-
-                    <span class="period-label">
-                        Cash flow
-                    </span>
-
-                    <span
-                        class="period-value"
-                        id="periodCashFlow"
-                    >
-                        ₦0
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 MAIN INTELLIGENCE GRID
-            ================================================== -->
-
-            <section class="dashboard-main-grid">
-
-
-                <!-- CASH FLOW -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                Cash flow
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                Your income and spending picture
-                            </div>
-
-                        </div>
-
-                        <a
-                            href="./analytics.html"
-                            class="secondary-button"
-                            style="
-                                min-height:34px;
-                                padding:0 11px;
-                                font-size:11px;
-                            "
-                        >
-                            View analytics →
-                        </a>
-
-                    </div>
-
-
-                    <div class="cash-flow-visual">
-
-                        <div
-                            class="cash-flow-bars"
-                            id="cashFlowChart"
-                        >
-
-                            <div class="cash-flow-bar-group">
-                                <div
-                                    class="cash-flow-bar"
-                                    style="height:42%;"
-                                ></div>
-                                <div
-                                    class="cash-flow-bar expense"
-                                    style="height:25%;"
-                                ></div>
-                            </div>
-
-                            <div class="cash-flow-bar-group">
-                                <div
-                                    class="cash-flow-bar"
-                                    style="height:55%;"
-                                ></div>
-                                <div
-                                    class="cash-flow-bar expense"
-                                    style="height:34%;"
-                                ></div>
-                            </div>
-
-                            <div class="cash-flow-bar-group">
-                                <div
-                                    class="cash-flow-bar"
-                                    style="height:35%;"
-                                ></div>
-                                <div
-                                    class="cash-flow-bar expense"
-                                    style="height:22%;"
-                                ></div>
-                            </div>
-
-                            <div class="cash-flow-bar-group">
-                                <div
-                                    class="cash-flow-bar"
-                                    style="height:70%;"
-                                ></div>
-                                <div
-                                    class="cash-flow-bar expense"
-                                    style="height:52%;"
-                                ></div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-legend">
-
-                        <span class="legend-item">
-                            <span class="legend-dot"></span>
-                            Income
-                        </span>
-
-                        <span class="legend-item">
-                            <span class="legend-dot expense"></span>
-                            Expenses
-                        </span>
-
-                    </div>
-
-                </article>
-
-
-                <!-- MONEY SCORE -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                MoneyLeak Score
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                Your overall financial position
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="score-card">
-
-                        <div
-                            class="score-ring"
-                            id="scoreRing"
-                        >
-
-                            <div
-                                class="score-ring-value"
-                                id="healthScore"
+                            <input
+                                class="input"
+                                id="expenseSearch"
+                                placeholder="Search expenses..."
                             >
-                                0
-                            </div>
+
+                            <select class="select"
+                                    id="expenseCategoryFilter">
+                                <option value="all">
+                                    All categories
+                                </option>
+                            </select>
 
                         </div>
 
-
-                        <div>
-
-                            <div
-                                id="healthMessage"
-                                style="
-                                    font-size:18px;
-                                    font-weight:850;
-                                    margin-bottom:5px;
-                                "
-                            >
-                                Building
-                            </div>
-
-                            <div
-                                id="healthExplanation"
-                                style="
-                                    color:var(--muted);
-                                    font-size:12px;
-                                "
-                            >
-                                Your financial position is being calculated.
-                            </div>
-
+                        <div class="toolbar-right">
+                            <strong id="expenseTotal">
+                                ₦0
+                            </strong>
                         </div>
 
                     </div>
 
+                    <div class="table-scroll">
 
-                    <div class="health-factors">
+                        <table>
 
-                        <div class="health-factor">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
 
-                            <span class="health-factor-name">
-                                Income
-                            </span>
+                            <tbody id="expenseTable"></tbody>
 
-                            <div class="progress-track">
-
-                                <div
-                                    class="progress-fill"
-                                    id="healthIncomeBar"
-                                    style="width:0%;"
-                                ></div>
-
-                            </div>
-
-                            <span id="healthIncomeFactor">
-                                —
-                            </span>
-
-                        </div>
-
-
-                        <div class="health-factor">
-
-                            <span class="health-factor-name">
-                                Budget
-                            </span>
-
-                            <div class="progress-track">
-
-                                <div
-                                    class="progress-fill"
-                                    id="healthBudgetBar"
-                                    style="width:0%;"
-                                ></div>
-
-                            </div>
-
-                            <span id="healthBudgetFactor">
-                                —
-                            </span>
-
-                        </div>
-
-
-                        <div class="health-factor">
-
-                            <span class="health-factor-name">
-                                Savings
-                            </span>
-
-                            <div class="progress-track">
-
-                                <div
-                                    class="progress-fill"
-                                    id="healthSavingsBar"
-                                    style="width:0%;"
-                                ></div>
-
-                            </div>
-
-                            <span id="healthSavingsFactor">
-                                —
-                            </span>
-
-                        </div>
-
-
-                        <div class="health-factor">
-
-                            <span class="health-factor-name">
-                                Recurring
-                            </span>
-
-                            <div class="progress-track">
-
-                                <div
-                                    class="progress-fill"
-                                    id="healthRecurringBar"
-                                    style="width:0%;"
-                                ></div>
-
-                            </div>
-
-                            <span id="healthRecurringFactor">
-                                —
-                            </span>
-
-                        </div>
+                        </table>
 
                     </div>
 
-                </article>
-
-
-                <!-- MONEY COACH -->
-
-                <article class="smart-coach">
-
-                    <div
-                        class="smart-coach-title"
-                        style="font-size:17px;"
-                    >
-                        ✦ Money Coach
-                    </div>
-
-                    <div
-                        style="
-                            color:var(--text);
-                            font-weight:800;
-                            margin-bottom:10px;
-                        "
-                    >
-                        Your next best move
-                    </div>
-
-                    <div
-                        class="smart-coach-text"
-                        id="overviewInsightText"
-                    >
-                        Add your income and expenses to receive
-                        personalized financial guidance.
-                    </div>
-
-                    <div style="margin-top:17px;">
-
-                        <a
-                            href="./savings.html"
-                            class="primary-button"
-                            style="
-                                min-height:35px;
-                                padding:0 12px;
-                                font-size:11px;
-                            "
-                        >
-                            View savings goals
-                        </a>
-
-                    </div>
-
-                </article>
+                </div>
 
             </section>
 
 
             <!-- =================================================
-                 SECONDARY INTELLIGENCE
+                 BUDGETS
             ================================================== -->
 
-            <section class="three-column"
-                     style="margin-top:16px;">
-
-
-                <!-- SAFE TO SPEND -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-title">
-                        Safe to spend
-                    </div>
-
-                    <div class="dashboard-panel-subtitle">
-                        A daily spending guide
-                    </div>
-
-                    <div
-                        class="safe-to-spend-value"
-                        id="safeToSpendDashboard"
-                        style="
-                            color:var(--primary);
-                            margin-top:12px;
-                        "
-                    >
-                        ₦0
-                    </div>
-
-                    <div
-                        id="safeToSpendMessage"
-                        style="
-                            font-weight:750;
-                            margin-top:4px;
-                        "
-                    >
-                        Your spending guide
-                    </div>
-
-                    <div
-                        id="safeToSpendAdvice"
-                        style="
-                            color:var(--muted);
-                            font-size:11px;
-                            margin-top:5px;
-                        "
-                    >
-                        Stay within this guide to protect your goals.
-                    </div>
-
-                </article>
-
-
-                <!-- FINANCIAL HEALTH -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-title">
-                        Financial health
-                    </div>
-
-                    <div class="dashboard-panel-subtitle">
-                        Your current financial score
-                    </div>
-
-                    <div style="
-                        display:flex;
-                        align-items:center;
-                        gap:10px;
-                        margin-top:14px;
-                    ">
-
-                        <strong
-                            id="overviewHealthScore"
-                            style="
-                                font-size:26px;
-                                letter-spacing:-.03em;
-                            "
-                        >
-                            0
-                        </strong>
-
-                        <span style="color:var(--muted);">
-                            / 100
-                        </span>
-
-                    </div>
-
-                    <div
-                        class="progress-track"
-                        style="margin-top:10px;"
-                    >
-
-                        <div
-                            class="progress-fill"
-                            id="healthFill"
-                            style="width:0%;"
-                        ></div>
-
-                    </div>
-
-                    <div
-                        id="overviewHealthStatus"
-                        style="
-                            color:var(--muted);
-                            font-size:11px;
-                            margin-top:7px;
-                        "
-                    >
-                        Calculating...
-                    </div>
-
-                </article>
-
-
-                <!-- MONTHLY BUDGET -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-title">
-                        Monthly budget
-                    </div>
-
-                    <div class="dashboard-panel-subtitle">
-                        How much of your plan you've used
-                    </div>
-
-                    <div style="
-                        display:flex;
-                        justify-content:space-between;
-                        align-items:end;
-                        margin-top:13px;
-                    ">
-
-                        <strong
-                            id="dashboardBudgetPercent"
-                            style="
-                                font-size:25px;
-                            "
-                        >
-                            0%
-                        </strong>
-
-                        <span
-                            id="dashboardBudgetSpent"
-                            style="
-                                color:var(--muted);
-                                font-size:11px;
-                            "
-                        >
-                            ₦0
-                        </span>
-
-                    </div>
-
-                    <div
-                        class="progress-track"
-                        style="margin-top:9px;"
-                    >
-
-                        <div
-                            class="progress-fill"
-                            id="dashboardBudgetFill"
-                            style="width:0%;"
-                        ></div>
-
-                    </div>
-
-                    <div
-                        style="
-                            display:flex;
-                            justify-content:space-between;
-                            margin-top:6px;
-                            font-size:10px;
-                            color:var(--muted);
-                        "
-                    >
-
-                        <span>
-                            Remaining
-                        </span>
-
-                        <span id="dashboardBudgetRemaining">
-                            ₦0
-                        </span>
-
-                    </div>
-
-                    <div
-                        id="dashboardBudgetLimit"
-                        style="display:none;"
-                    >
-                        ₦0
-                    </div>
-
-                </article>
-
-            </section>
-
-
-            <!-- =================================================
-                 GOALS + CATEGORIES
-            ================================================== -->
-
-            <section class="two-column"
-                     style="margin-top:16px;">
-
-
-                <!-- GOALS -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                Savings goals
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                Turn your goals into progress.
-                            </div>
-
-                        </div>
-
-                        <a
-                            href="./savings.html"
-                            class="secondary-button"
-                            style="
-                                min-height:34px;
-                                padding:0 11px;
-                                font-size:11px;
-                            "
-                        >
-                            View goals →
-                        </a>
-
-                    </div>
-
-
-                    <div
-                        id="dashboardGoals"
-                        class="dashboard-goals"
-                    >
-
-                        <div class="empty-state">
-
-                            <div class="empty-state-icon">
-                                ◎
-                            </div>
-
-                            <div class="empty-state-title">
-                                No goals yet
-                            </div>
-
-                            <div style="font-size:11px;">
-                                Create a savings goal to start tracking progress.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <!-- TOP CATEGORIES -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                Top spending categories
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                Your biggest spending leaks
-                            </div>
-
-                        </div>
-
-                        <a
-                            href="./expenses.html"
-                            style="
-                                color:var(--primary);
-                                font-size:11px;
-                                font-weight:750;
-                            "
-                        >
-                            View all →
-                        </a>
-
-                    </div>
-
-
-                    <div
-                        id="topSpendingCategories"
-                        class="category-list"
-                    >
-
-                        <div class="empty-state">
-
-                            <div class="empty-state-icon">
-                                ◌
-                            </div>
-
-                            <div class="empty-state-title">
-                                No spending data
-                            </div>
-
-                            <div style="font-size:11px;">
-                                Add expenses to see your biggest categories.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-            </section>
-
-
-            <!-- =================================================
-                 RECENT TRANSACTIONS
-            ================================================== -->
-
-            <section
-                class="dashboard-panel"
-                style="margin-top:16px;"
-            >
-
-                <div class="dashboard-panel-header">
+            <section class="page"
+                     id="page-budgets">
+
+                <div class="page-heading"
+                     style="display:flex;justify-content:space-between;align-items:flex-end">
 
                     <div>
-
-                        <div class="dashboard-panel-title">
-                            Recent transactions
-                        </div>
-
-                        <div class="dashboard-panel-subtitle">
-                            Your latest money activity
-                        </div>
-
+                        <h1>Budgets</h1>
+                        <p>
+                            Set limits and prevent unnecessary
+                            money leaks.
+                        </p>
                     </div>
 
-                    <a
-                        href="./expenses.html"
-                        style="
-                            color:var(--primary);
-                            font-size:11px;
-                            font-weight:750;
-                        "
-                    >
-                        See all →
-                    </a>
+                    <button class="btn btn-primary"
+                            id="setBudgetBtn">
+                        Set monthly budget
+                    </button>
 
                 </div>
 
-
-                <div
-                    id="recentTransactions"
-                    class="transactions-list"
-                >
-
-                    <div class="empty-state">
-
-                        <div class="empty-state-icon">
-                            ₦
-                        </div>
-
-                        <div class="empty-state-title">
-                            No recent transactions
-                        </div>
-
-                        <div style="font-size:11px;">
-                            Your latest income and expenses will appear here.
-                        </div>
-
-                    </div>
-
+                <div class="budget-grid"
+                     id="budgetGrid">
                 </div>
 
             </section>
 
 
             <!-- =================================================
-                 ALERTS
+                 SAVINGS GOALS
             ================================================== -->
 
-            <section
-                class="dashboard-panel"
-                style="margin-top:16px;"
-            >
+            <section class="page"
+                     id="page-goals">
 
-                <div class="dashboard-panel-header">
+                <div class="page-heading"
+                     style="display:flex;justify-content:space-between;align-items:flex-end">
 
                     <div>
-
-                        <div class="dashboard-panel-title">
-                            Money alerts
-                        </div>
-
-                        <div class="dashboard-panel-subtitle">
-                            Things that may need your attention
-                        </div>
-
+                        <h1>Savings Goals</h1>
+                        <p>
+                            Give every financial goal a clear
+                            destination.
+                        </p>
                     </div>
+
+                    <button class="btn btn-primary"
+                            data-open-modal="goal">
+                        + New goal
+                    </button>
 
                 </div>
 
+                <div class="goal-grid"
+                     id="goalGrid">
+                </div>
 
-                <div
-                    id="financialAlerts"
-                    class="alert-list"
-                >
+            </section>
 
-                    <div class="empty-state">
 
-                        <div class="empty-state-icon">
-                            ✓
-                        </div>
+            <!-- =================================================
+                 RECURRING
+            ================================================== -->
 
-                        <div class="empty-state-title">
-                            You're all caught up
-                        </div>
+            <section class="page"
+                     id="page-recurring">
 
-                        <div style="font-size:11px;">
-                            MoneyLeak will surface important financial alerts here.
-                        </div>
+                <div class="page-heading"
+                     style="display:flex;justify-content:space-between;align-items:flex-end">
+
+                    <div>
+                        <h1>Recurring</h1>
+                        <p>
+                            Keep track of subscriptions,
+                            bills and repeated income.
+                        </p>
+                    </div>
+
+                    <button class="btn btn-primary"
+                            data-open-modal="recurring">
+                        + Add recurring
+                    </button>
+
+                </div>
+
+                <div class="card table-card">
+
+                    <div class="table-scroll">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Frequency</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="recurringTable"></tbody>
+
+                        </table>
 
                     </div>
 
@@ -1219,22 +2682,222 @@
 
 
             <!-- =================================================
-                 FOOTER
+                 SETTINGS
             ================================================== -->
 
-            <footer class="footer">
+            <section class="page"
+                     id="page-settings">
 
-                MoneyLeak
-                <span>•</span>
-                Discipline
-                <span>•</span>
-                Clarity
-                <span>•</span>
-                Progress
-                <span>•</span>
-                A better financial future
+                <div class="page-heading">
 
-            </footer>
+                    <h1>Settings</h1>
+
+                    <p>
+                        Customize your MoneyLeak experience.
+                    </p>
+
+                </div>
+
+                <div class="settings-grid">
+
+                    <div class="card settings-menu">
+
+                        <button class="settings-tab active">
+                            Profile
+                        </button>
+
+                        <button class="settings-tab">
+                            Appearance
+                        </button>
+
+                        <button class="settings-tab">
+                            Notifications
+                        </button>
+
+                        <button class="settings-tab">
+                            Data
+                        </button>
+
+                    </div>
+
+                    <div class="card settings-content">
+
+                        <div class="setting-section">
+
+                            <h3>
+                                Profile
+                            </h3>
+
+                            <p>
+                                Personalize your MoneyLeak
+                                account.
+                            </p>
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Your name
+                                    </label>
+
+                                    <input
+                                        class="input"
+                                        id="settingsName"
+                                        placeholder="Your name"
+                                    >
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Currency
+                                    </label>
+
+                                    <select
+                                        class="select"
+                                        id="settingsCurrency">
+
+                                        <option value="NGN">
+                                            Nigerian Naira — ₦
+                                        </option>
+
+                                        <option value="USD">
+                                            US Dollar — $
+                                        </option>
+
+                                        <option value="GBP">
+                                            British Pound — £
+                                        </option>
+
+                                        <option value="EUR">
+                                            Euro — €
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <button
+                                class="btn btn-primary"
+                                id="saveSettings"
+                                style="margin-top:15px">
+
+                                Save changes
+
+                            </button>
+
+                        </div>
+
+                        <div class="setting-section">
+
+                            <h3>
+                                Appearance
+                            </h3>
+
+                            <p>
+                                Control how MoneyLeak looks.
+                            </p>
+
+                            <div class="toggle-row">
+
+                                <div>
+                                    <div class="toggle-title">
+                                        Dark mode
+                                    </div>
+
+                                    <div class="toggle-description">
+                                        Use a darker interface.
+                                    </div>
+                                </div>
+
+                                <label class="switch">
+
+                                    <input
+                                        type="checkbox"
+                                        id="darkToggle"
+                                    >
+
+                                    <span class="slider"></span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <div class="setting-section">
+
+                            <h3>
+                                Notifications
+                            </h3>
+
+                            <p>
+                                Control MoneyLeak alerts.
+                            </p>
+
+                            <div class="toggle-row">
+
+                                <div>
+                                    <div class="toggle-title">
+                                        Financial alerts
+                                    </div>
+
+                                    <div class="toggle-description">
+                                        Receive useful spending
+                                        reminders.
+                                    </div>
+                                </div>
+
+                                <label class="switch">
+
+                                    <input
+                                        type="checkbox"
+                                        id="notificationToggle"
+                                        checked
+                                    >
+
+                                    <span class="slider"></span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <div class="setting-section">
+
+                            <h3>
+                                Data
+                            </h3>
+
+                            <p>
+                                Manage your local MoneyLeak data.
+                            </p>
+
+                            <button
+                                class="btn"
+                                id="exportData">
+                                Export data
+                            </button>
+
+                            <button
+                                class="btn btn-danger"
+                                id="clearData"
+                                style="margin-left:7px">
+                                Clear all data
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
 
         </div>
 
@@ -1244,37 +2907,50 @@
 
 
 <!-- =========================================================
-     SEARCH OVERLAY
-========================================================== -->
+     MODAL
+========================================================= -->
 
-<div id="searchOverlay">
+<div class="modal-backdrop"
+     id="modalBackdrop">
 
-    <div class="search-modal">
+    <div class="modal">
 
-        <div class="search-header">
+        <div class="modal-header">
 
-            <span style="color:var(--muted);">
-                ⌕
-            </span>
+            <h2 id="modalTitle">
+                Add transaction
+            </h2>
 
-            <input
-                id="globalSearch"
-                type="search"
-                placeholder="Search MoneyLeak..."
-                autocomplete="off"
-            >
-
-            <button
-                id="closeSearch"
-                type="button"
-                aria-label="Close search"
-            >
+            <button class="modal-close"
+                    id="modalClose">
                 ×
             </button>
 
         </div>
 
-        <div id="searchResults"></div>
+        <form id="modalForm">
+
+            <div class="modal-body"
+                 id="modalBody">
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn"
+                        id="modalCancel">
+                    Cancel
+                </button>
+
+                <button type="submit"
+                        class="btn btn-primary"
+                        id="modalSubmit">
+                    Save
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 
@@ -1282,79 +2958,3756 @@
 
 
 <!-- =========================================================
-     NOTIFICATION CENTER
-========================================================== -->
+     TOASTS
+========================================================= -->
 
-<div id="notificationCenter">
-
-    <div class="notification-header">
-
-        <strong>
-            Notifications
-        </strong>
-
-        <button
-            id="closeNotifications"
-            class="icon-button"
-            type="button"
-        >
-            ×
-        </button>
-
-    </div>
+<div class="toast-container"
+     id="toastContainer">
+</div>
 
 
-    <div class="notification-tabs">
+<script>
+/* =========================================================
+   MONEY LEAK — COMPLETE APPLICATION ENGINE
+========================================================= */
 
-        <button
-            class="notification-tab active"
-            data-notification-tab="all"
-        >
-            All
-        </button>
+(() => {
 
-        <button
-            class="notification-tab"
-            data-notification-tab="unread"
-        >
-            Unread
-        </button>
+"use strict";
 
-    </div>
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const KEYS = {
+    transactions: "moneyLeakTransactions",
+    goals: "moneyLeakSavingsGoals",
+    budget: "moneyLeakMonthlyBudget",
+    categoryBudgets: "moneyLeakCategoryBudgets",
+    recurring: "moneyLeakRecurringTransactions",
+    settings: "moneyLeakSettings"
+};
 
 
-    <div id="notificationList">
+/* =========================================================
+   CONSTANTS
+========================================================= */
 
-        <div class="empty-state">
+const CATEGORIES = [
+    "Food",
+    "Transport",
+    "Shopping",
+    "Bills",
+    "Housing",
+    "Entertainment",
+    "Health",
+    "Education",
+    "Family",
+    "Travel",
+    "Subscriptions",
+    "Personal",
+    "Business",
+    "Other"
+];
 
-            <div class="empty-state-icon">
-                ✓
+const INCOME_SOURCES = [
+    "Salary",
+    "Freelance",
+    "Business",
+    "Investment",
+    "Gift",
+    "Bonus",
+    "Side Hustle",
+    "Other"
+];
+
+const CURRENCIES = {
+    NGN: {
+        symbol: "₦",
+        locale: "en-NG"
+    },
+
+    USD: {
+        symbol: "$",
+        locale: "en-US"
+    },
+
+    GBP: {
+        symbol: "£",
+        locale: "en-GB"
+    },
+
+    EUR: {
+        symbol: "€",
+        locale: "en-IE"
+    }
+};
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ = selector =>
+    document.querySelector(selector);
+
+const $$ = selector =>
+    Array.from(document.querySelectorAll(selector));
+
+function num(value) {
+
+    const number = Number(value);
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+}
+
+
+function uid(prefix = "ml") {
+
+    return (
+        prefix +
+        "_" +
+        Date.now() +
+        "_" +
+        Math.random()
+            .toString(36)
+            .slice(2, 8)
+    );
+}
+
+
+function read(key, fallback) {
+
+    try {
+
+        const value =
+            localStorage.getItem(key);
+
+        return value === null
+            ? fallback
+            : JSON.parse(value);
+
+    } catch {
+
+        return fallback;
+
+    }
+}
+
+
+function write(key, value) {
+
+    localStorage.setItem(
+        key,
+        JSON.stringify(value)
+    );
+}
+
+
+function today() {
+
+    const d = new Date();
+
+    return [
+        d.getFullYear(),
+        String(d.getMonth() + 1)
+            .padStart(2, "0"),
+        String(d.getDate())
+            .padStart(2, "0")
+    ].join("-");
+}
+
+
+function monthKey(date) {
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+        return today().slice(0,7);
+    }
+
+    return (
+        d.getFullYear() +
+        "-" +
+        String(d.getMonth() + 1)
+            .padStart(2, "0")
+    );
+}
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function initials(name) {
+
+    return (
+        String(name || "MoneyLeak User")
+            .trim()
+            .charAt(0)
+            .toUpperCase() ||
+        "M"
+    );
+}
+
+
+function formatCurrency(value) {
+
+    const settings =
+        getSettings();
+
+    const currency =
+        CURRENCIES[settings.currency]
+        || CURRENCIES.NGN;
+
+    try {
+
+        return new Intl.NumberFormat(
+            currency.locale,
+            {
+                style: "currency",
+                currency: settings.currency,
+                maximumFractionDigits: 0
+            }
+        ).format(num(value));
+
+    } catch {
+
+        return (
+            currency.symbol +
+            num(value).toLocaleString()
+        );
+
+    }
+}
+
+
+function formatDate(date) {
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+        return String(date || "");
+    }
+
+    return d.toLocaleDateString(
+        "en-GB",
+        {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        }
+    );
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function getSettings() {
+
+    return {
+        name: "MoneyLeak User",
+        currency: "NGN",
+        theme: "light",
+        notifications: true,
+        ...read(KEYS.settings, {})
+    };
+
+}
+
+
+function saveSettings(settings) {
+
+    write(
+        KEYS.settings,
+        {
+            ...getSettings(),
+            ...settings
+        }
+    );
+
+    applySettings();
+
+    renderAll();
+
+    toast(
+        "Settings saved",
+        "Your MoneyLeak preferences were updated."
+    );
+
+}
+
+
+function applySettings() {
+
+    const settings =
+        getSettings();
+
+    document.documentElement.dataset.theme =
+        settings.theme === "dark"
+            ? "dark"
+            : "light";
+
+    const name =
+        settings.name ||
+        "MoneyLeak User";
+
+    $("#sidebarName").textContent =
+        name;
+
+    $("#sidebarAvatar").textContent =
+        initials(name);
+
+    $("#settingsName").value =
+        name;
+
+    $("#settingsCurrency").value =
+        settings.currency;
+
+    $("#darkToggle").checked =
+        settings.theme === "dark";
+
+    $("#notificationToggle").checked =
+        settings.notifications !== false;
+
+}
+
+
+/* =========================================================
+   TRANSACTIONS
+========================================================= */
+
+function normalizeTransaction(transaction) {
+
+    const type =
+        transaction.type === "income"
+            ? "income"
+            : "expense";
+
+    return {
+
+        id:
+            transaction.id ||
+            uid("txn"),
+
+        type,
+
+        amount:
+            Math.abs(
+                num(transaction.amount)
+            ),
+
+        category:
+            transaction.category ||
+            "Other",
+
+        source:
+            transaction.source ||
+            "",
+
+        description:
+            transaction.description ||
+            transaction.note ||
+            "",
+
+        date:
+            transaction.date ||
+            today(),
+
+        createdAt:
+            transaction.createdAt ||
+            new Date().toISOString()
+
+    };
+
+}
+
+
+function getTransactions() {
+
+    const data =
+        read(KEYS.transactions, []);
+
+    if (!Array.isArray(data)) {
+        return [];
+    }
+
+    return data.map(
+        normalizeTransaction
+    );
+
+}
+
+
+function saveTransactions(items) {
+
+    write(
+        KEYS.transactions,
+        items.map(
+            normalizeTransaction
+        )
+    );
+
+}
+
+
+function addTransaction(data) {
+
+    const transactions =
+        getTransactions();
+
+    transactions.push(
+        normalizeTransaction(data)
+    );
+
+    saveTransactions(
+        transactions
+    );
+
+    renderAll();
+
+}
+
+
+function updateTransaction(
+    id,
+    changes
+) {
+
+    const transactions =
+        getTransactions();
+
+    const index =
+        transactions.findIndex(
+            item =>
+                item.id === id
+        );
+
+    if (index === -1) {
+        return;
+    }
+
+    transactions[index] =
+        normalizeTransaction({
+            ...transactions[index],
+            ...changes,
+            id
+        });
+
+    saveTransactions(
+        transactions
+    );
+
+    renderAll();
+
+}
+
+
+function deleteTransaction(id) {
+
+    saveTransactions(
+        getTransactions()
+            .filter(
+                item =>
+                    item.id !== id
+            )
+    );
+
+    renderAll();
+
+}
+
+
+/* =========================================================
+   FINANCIAL CALCULATIONS
+========================================================= */
+
+function currentTransactions() {
+
+    const current =
+        monthKey(today());
+
+    return getTransactions()
+        .filter(
+            t =>
+                monthKey(t.date) === current
+        );
+
+}
+
+
+function incomeOf(items) {
+
+    return items
+        .filter(
+            t =>
+                t.type === "income"
+        )
+        .reduce(
+            (sum, t) =>
+                sum + num(t.amount),
+            0
+        );
+
+}
+
+
+function expensesOf(items) {
+
+    return items
+        .filter(
+            t =>
+                t.type === "expense"
+        )
+        .reduce(
+            (sum, t) =>
+                sum + num(t.amount),
+            0
+        );
+
+}
+
+
+function currentIncome() {
+
+    return incomeOf(
+        currentTransactions()
+    );
+
+}
+
+
+function currentExpenses() {
+
+    return expensesOf(
+        currentTransactions()
+    );
+
+}
+
+
+function currentBalance() {
+
+    return (
+        currentIncome() -
+        currentExpenses()
+    );
+
+}
+
+
+function savingsRate() {
+
+    const income =
+        currentIncome();
+
+    if (!income) {
+        return 0;
+    }
+
+    return Math.round(
+        (
+            currentBalance() /
+            income
+        ) * 100
+    );
+
+}
+
+
+function categoryTotals() {
+
+    const totals = {};
+
+    currentTransactions()
+        .filter(
+            t =>
+                t.type === "expense"
+        )
+        .forEach(t => {
+
+            const category =
+                t.category ||
+                "Other";
+
+            totals[category] =
+                (
+                    totals[category] ||
+                    0
+                ) +
+                num(t.amount);
+
+        });
+
+    return Object.entries(totals)
+        .map(
+            ([category, amount]) => ({
+                category,
+                amount
+            })
+        )
+        .sort(
+            (a,b) =>
+                b.amount -
+                a.amount
+        );
+
+}
+
+
+/* =========================================================
+   SCORE
+========================================================= */
+
+function financialScore() {
+
+    const income =
+        currentIncome();
+
+    const expenses =
+        currentExpenses();
+
+    const budget =
+        num(
+            read(
+                KEYS.budget,
+                0
+            )
+        );
+
+    let score = 50;
+
+    if (income > 0) {
+        score += 15;
+    }
+
+    if (
+        income > 0 &&
+        expenses < income * .7
+    ) {
+        score += 15;
+    }
+
+    if (
+        budget > 0 &&
+        expenses <= budget
+    ) {
+        score += 10;
+    }
+
+    const goals =
+        getGoals();
+
+    if (goals.length) {
+        score += 5;
+    }
+
+    const recurring =
+        getRecurring();
+
+    if (
+        recurring.filter(
+            x => x.active
+        ).length
+    ) {
+        score += 5;
+    }
+
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            Math.round(score)
+        )
+    );
+
+}
+
+
+/* =========================================================
+   GOALS
+========================================================= */
+
+function getGoals() {
+
+    const data =
+        read(KEYS.goals, []);
+
+    return Array.isArray(data)
+        ? data
+        : [];
+
+}
+
+
+function saveGoals(goals) {
+
+    write(
+        KEYS.goals,
+        goals
+    );
+
+}
+
+
+function addGoal(goal) {
+
+    const goals =
+        getGoals();
+
+    goals.push({
+        id: uid("goal"),
+        name: goal.name,
+        target: num(goal.target),
+        current: num(goal.current),
+        deadline: goal.deadline || "",
+        createdAt:
+            new Date().toISOString()
+    });
+
+    saveGoals(goals);
+
+    renderAll();
+
+}
+
+
+/* =========================================================
+   RECURRING
+========================================================= */
+
+function getRecurring() {
+
+    const data =
+        read(
+            KEYS.recurring,
+            []
+        );
+
+    return Array.isArray(data)
+        ? data
+        : [];
+
+}
+
+
+function saveRecurring(items) {
+
+    write(
+        KEYS.recurring,
+        items
+    );
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+const pageNames = {
+
+    dashboard: "Dashboard",
+    analytics: "Analytics",
+    income: "Income",
+    expenses: "Expenses",
+    budgets: "Budgets",
+    goals: "Savings Goals",
+    recurring: "Recurring",
+    settings: "Settings"
+
+};
+
+
+function showPage(page) {
+
+    $$(".page")
+        .forEach(section => {
+
+            section.classList.toggle(
+                "active",
+                section.id ===
+                `page-${page}`
+            );
+
+        });
+
+    $$(".nav-item")
+        .forEach(item => {
+
+            item.classList.toggle(
+                "active",
+                item.dataset.page === page
+            );
+
+        });
+
+    $("#pageTitle").textContent =
+        pageNames[page] ||
+        "Dashboard";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+    $("#sidebar")
+        .classList.remove("open");
+
+    renderAll();
+
+}
+
+
+$$(".nav-item")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () =>
+                showPage(
+                    button.dataset.page
+                )
+        );
+
+    });
+
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const link =
+            event.target.closest(
+                "[data-page-link]"
+            );
+
+        if (!link) {
+            return;
+        }
+
+        showPage(
+            link.dataset.pageLink
+        );
+
+    }
+);
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+$("#mobileMenu")
+    .addEventListener(
+        "click",
+        () => {
+
+            $("#sidebar")
+                .classList.toggle(
+                    "open"
+                );
+
+        }
+    );
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function renderDashboard() {
+
+    const income =
+        currentIncome();
+
+    const expenses =
+        currentExpenses();
+
+    const balance =
+        currentBalance();
+
+    const rate =
+        savingsRate();
+
+    $("#statBalance")
+        .textContent =
+        formatCurrency(balance);
+
+    $("#statIncome")
+        .textContent =
+        formatCurrency(income);
+
+    $("#statExpenses")
+        .textContent =
+        formatCurrency(expenses);
+
+    $("#statSavingsRate")
+        .textContent =
+        `${rate}%`;
+
+    const score =
+        financialScore();
+
+    $("#scoreNumber")
+        .textContent =
+        score;
+
+    $("#healthScore")
+        .textContent =
+        score;
+
+    $("#scoreRing")
+        .style
+        .setProperty(
+            "--score",
+            `${score}%`
+        );
+
+    $("#healthProgress")
+        .style.width =
+        `${score}%`;
+
+    let health =
+        "Needs attention";
+
+    if (score >= 80) {
+        health = "Excellent";
+    } else if (score >= 65) {
+        health = "Strong";
+    } else if (score >= 50) {
+        health = "Fair";
+    }
+
+    $("#healthText")
+        .textContent =
+        health;
+
+    $("#scoreLevel")
+        .textContent =
+        health;
+
+    $("#scoreHeading")
+        .textContent =
+        score >= 70
+            ? "Your finances are moving in a healthy direction."
+            : "Your finances need a little more attention.";
+
+    const budget =
+        num(
+            read(
+                KEYS.budget,
+                0
+            )
+        );
+
+    const budgetPercent =
+        budget > 0
+            ? Math.round(
+                expenses /
+                budget *
+                100
+            )
+            : 0;
+
+    $("#budgetPercent")
+        .textContent =
+        `${budgetPercent}%`;
+
+    $("#budgetProgress")
+        .style.width =
+        `${Math.min(
+            100,
+            budgetPercent
+        )}%`;
+
+    $("#budgetRemaining")
+        .textContent =
+        formatCurrency(
+            Math.max(
+                0,
+                budget -
+                expenses
+            )
+        );
+
+    renderCashFlow();
+    renderRecentTransactions();
+    renderTopCategories();
+    renderCoach();
+
+}
+
+
+/* =========================================================
+   CASH FLOW
+========================================================= */
+
+function renderCashFlow() {
+
+    const chart =
+        $("#cashFlowChart");
+
+    chart.innerHTML = `
+        <div class="chart-grid-line"></div>
+        <div class="chart-grid-line"></div>
+        <div class="chart-grid-line"></div>
+    `;
+
+    const all =
+        getTransactions();
+
+    const now =
+        new Date();
+
+    const months = [];
+
+    for (
+        let i = 5;
+        i >= 0;
+        i--
+    ) {
+
+        const date =
+            new Date(
+                now.getFullYear(),
+                now.getMonth() - i,
+                1
+            );
+
+        const key =
+            monthKey(date);
+
+        const items =
+            all.filter(
+                t =>
+                    monthKey(t.date) === key
+            );
+
+        months.push({
+            label:
+                date.toLocaleDateString(
+                    "en-US",
+                    {
+                        month: "short"
+                    }
+                ),
+            income:
+                incomeOf(items),
+            expenses:
+                expensesOf(items)
+        });
+
+    }
+
+    const max =
+        Math.max(
+            1,
+            ...months.flatMap(
+                x => [
+                    x.income,
+                    x.expenses
+                ]
+            )
+        );
+
+    months.forEach(month => {
+
+        const column =
+            document.createElement(
+                "div"
+            );
+
+        column.className =
+            "chart-column";
+
+        const incomeBar =
+            document.createElement(
+                "div"
+            );
+
+        incomeBar.className =
+            "bar income";
+
+        incomeBar.style.height =
+            `${Math.max(
+                4,
+                month.income /
+                max *
+                100
+            )}%`;
+
+        const expenseBar =
+            document.createElement(
+                "div"
+            );
+
+        expenseBar.className =
+            "bar expense";
+
+        expenseBar.style.height =
+            `${Math.max(
+                4,
+                month.expenses /
+                max *
+                100
+            )}%`;
+
+        const label =
+            document.createElement(
+                "span"
+            );
+
+        label.className =
+            "chart-label";
+
+        label.textContent =
+            month.label;
+
+        column.append(
+            incomeBar,
+            expenseBar,
+            label
+        );
+
+        chart.appendChild(
+            column
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   RECENT TRANSACTIONS
+========================================================= */
+
+function renderRecentTransactions() {
+
+    const container =
+        $("#recentTransactions");
+
+    const transactions =
+        getTransactions()
+            .sort(
+                (a,b) =>
+                    new Date(b.date) -
+                    new Date(a.date)
+            )
+            .slice(0, 7);
+
+    if (!transactions.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+
+                <strong>
+                    No transactions yet
+                </strong>
+
+                Add your first income or
+                expense to get started.
+
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        transactions.map(
+            transaction => {
+
+                const positive =
+                    transaction.type ===
+                    "income";
+
+                return `
+                    <div class="transaction-row">
+
+                        <div class="transaction-main">
+
+                            <div class="
+                                transaction-icon
+                                ${positive
+                                    ? "income"
+                                    : "expense"}
+                            ">
+                                ${positive
+                                    ? "↗"
+                                    : "↘"}
+                            </div>
+
+                            <div>
+
+                                <div class="
+                                    transaction-name
+                                ">
+                                    ${escapeHTML(
+                                        transaction.description ||
+                                        transaction.category ||
+                                        "Transaction"
+                                    )}
+                                </div>
+
+                                <div class="
+                                    transaction-meta
+                                ">
+                                    ${escapeHTML(
+                                        transaction.category ||
+                                        "Other"
+                                    )}
+                                    ·
+                                    ${formatDate(
+                                        transaction.date
+                                    )}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="
+                            transaction-amount
+                            ${positive
+                                ? "positive"
+                                : "negative"}
+                        ">
+                            ${positive ? "+" : "-"}
+                            ${formatCurrency(
+                                transaction.amount
+                            )}
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+function renderTopCategories() {
+
+    const container =
+        $("#topCategories");
+
+    const categories =
+        categoryTotals()
+            .slice(0, 5);
+
+    if (!categories.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                <strong>
+                    No spending yet
+                </strong>
+                Your spending categories
+                will appear here.
+            </div>
+        `;
+
+        return;
+    }
+
+    const max =
+        categories[0].amount;
+
+    container.innerHTML =
+        categories.map(
+            item => {
+
+                const percent =
+                    item.amount /
+                    max *
+                    100;
+
+                return `
+                    <div class="category-row">
+
+                        <div class="category-top">
+
+                            <span>
+                                ${escapeHTML(
+                                    item.category
+                                )}
+                            </span>
+
+                            <strong>
+                                ${formatCurrency(
+                                    item.amount
+                                )}
+                            </strong>
+
+                        </div>
+
+                        <div class="category-bar">
+
+                            <div
+                                class="category-fill"
+                                style="
+                                    width:
+                                    ${percent}%
+                                "
+                            ></div>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =========================================================
+   MONEY COACH
+========================================================= */
+
+function renderCoach() {
+
+    const income =
+        currentIncome();
+
+    const expenses =
+        currentExpenses();
+
+    const budget =
+        num(
+            read(
+                KEYS.budget,
+                0
+            )
+        );
+
+    let text =
+        "Add your first transactions and MoneyLeak will create a personalized recommendation.";
+
+    if (!income && !expenses) {
+
+        text =
+            "Start by recording your income and regular expenses. MoneyLeak will use your activity to build a clearer financial picture.";
+
+    } else if (
+        budget > 0 &&
+        expenses > budget
+    ) {
+
+        text =
+            `You've used ${Math.round(
+                expenses / budget * 100
+            )}% of your monthly budget. Review your largest spending category before adding more non-essential spending.`;
+
+    } else if (
+        income > 0 &&
+        expenses < income * .5
+    ) {
+
+        text =
+            "Your spending is comfortably below your income. This is a good opportunity to increase your savings goal.";
+
+    } else {
+
+        text =
+            "Review your largest spending category and compare it with your monthly budget. Small adjustments can make a big difference.";
+
+    }
+
+    $("#coachText")
+        .textContent =
+        text;
+
+    const daily =
+        Math.max(
+            0,
+            income -
+            expenses
+        ) /
+        Math.max(
+            1,
+            new Date().getDate()
+        );
+
+    $("#safeSpend")
+        .textContent =
+        formatCurrency(
+            daily
+        );
+
+    $("#safeSpendText")
+        .textContent =
+        "Estimated daily amount available from your current monthly cash position.";
+
+}
+
+
+/* =========================================================
+   ANALYTICS
+========================================================= */
+
+function renderAnalytics() {
+
+    const transactions =
+        currentTransactions();
+
+    const income =
+        incomeOf(transactions);
+
+    const expenses =
+        expensesOf(transactions);
+
+    $("#analyticsIncome")
+        .textContent =
+        formatCurrency(income);
+
+    $("#analyticsExpenses")
+        .textContent =
+        formatCurrency(expenses);
+
+    $("#analyticsNet")
+        .textContent =
+        formatCurrency(
+            income -
+            expenses
+        );
+
+    renderAnalyticsLines();
+    renderAnalyticsCategories();
+
+}
+
+
+function renderAnalyticsLines() {
+
+    const all =
+        getTransactions();
+
+    const now =
+        new Date();
+
+    const months = [];
+
+    for (
+        let i = 5;
+        i >= 0;
+        i--
+    ) {
+
+        const date =
+            new Date(
+                now.getFullYear(),
+                now.getMonth() - i,
+                1
+            );
+
+        const key =
+            monthKey(date);
+
+        const items =
+            all.filter(
+                t =>
+                    monthKey(t.date) === key
+            );
+
+        months.push({
+            income:
+                incomeOf(items),
+            expenses:
+                expensesOf(items)
+        });
+
+    }
+
+    const max =
+        Math.max(
+            1,
+            ...months.flatMap(
+                x => [
+                    x.income,
+                    x.expenses
+                ]
+            )
+        );
+
+    const points =
+        values =>
+
+            values.map(
+                (value, index) => {
+
+                    const x =
+                        index *
+                        (
+                            700 /
+                            Math.max(
+                                1,
+                                values.length - 1
+                            )
+                        );
+
+                    const y =
+                        290 -
+                        (
+                            value /
+                            max *
+                            260
+                        );
+
+                    return `${x},${y}`;
+
+                }
+            ).join(" ");
+
+    $("#incomeLine")
+        .setAttribute(
+            "points",
+            points(
+                months.map(
+                    x => x.income
+                )
+            )
+        );
+
+    $("#expenseLine")
+        .setAttribute(
+            "points",
+            points(
+                months.map(
+                    x => x.expenses
+                )
+            )
+        );
+
+}
+
+
+function renderAnalyticsCategories() {
+
+    const container =
+        $("#analyticsCategories");
+
+    const categories =
+        categoryTotals();
+
+    if (!categories.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No spending data yet.
+            </div>
+        `;
+
+        return;
+    }
+
+    const total =
+        categories.reduce(
+            (sum, x) =>
+                sum + x.amount,
+            0
+        );
+
+    container.innerHTML =
+        categories.map(
+            item => {
+
+                const percent =
+                    total
+                        ? Math.round(
+                            item.amount /
+                            total *
+                            100
+                        )
+                        : 0;
+
+                return `
+                    <div class="category-row">
+
+                        <div class="category-top">
+
+                            <span>
+                                ${escapeHTML(
+                                    item.category
+                                )}
+                            </span>
+
+                            <strong>
+                                ${formatCurrency(
+                                    item.amount
+                                )}
+                                · ${percent}%
+                            </strong>
+
+                        </div>
+
+                        <div class="category-bar">
+
+                            <div
+                                class="category-fill"
+                                style="
+                                    width:${percent}%
+                                "
+                            ></div>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =========================================================
+   INCOME TABLE
+========================================================= */
+
+function renderIncome() {
+
+    const search =
+        (
+            $("#incomeSearch")
+                ?.value ||
+            ""
+        )
+            .toLowerCase();
+
+    const filter =
+        $(
+            "#incomeCategoryFilter"
+        )?.value ||
+        "all";
+
+    const items =
+        getTransactions()
+            .filter(
+                t =>
+                    t.type === "income"
+            )
+            .filter(
+                t => {
+
+                    const text =
+                        (
+                            t.description +
+                            " " +
+                            t.category +
+                            " " +
+                            t.source
+                        )
+                            .toLowerCase();
+
+                    return (
+                        !search ||
+                        text.includes(search)
+                    );
+
+                }
+            )
+            .filter(
+                t =>
+                    filter === "all" ||
+                    t.source === filter
+            )
+            .sort(
+                (a,b) =>
+                    new Date(b.date) -
+                    new Date(a.date)
+            );
+
+    $("#incomeTotal")
+        .textContent =
+        formatCurrency(
+            items.reduce(
+                (sum, t) =>
+                    sum + t.amount,
+                0
+            )
+        );
+
+    $("#incomeTable")
+        .innerHTML =
+        items.length
+            ? items.map(
+                transaction =>
+                    `
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${escapeHTML(
+                                    transaction.description ||
+                                    "Income"
+                                )}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                transaction.source ||
+                                transaction.category
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatDate(
+                                transaction.date
+                            )}
+                        </td>
+
+                        <td class="positive">
+                            +
+                            ${formatCurrency(
+                                transaction.amount
+                            )}
+                        </td>
+
+                        <td>
+
+                            <div class="row-actions">
+
+                                <button
+                                    class="small-btn"
+                                    data-edit-transaction="${transaction.id}">
+                                    Edit
+                                </button>
+
+                                <button
+                                    class="small-btn delete"
+                                    data-delete-transaction="${transaction.id}">
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                    `
+            ).join("")
+            :
+            `
+            <tr>
+                <td colspan="5">
+                    <div class="empty">
+                        <strong>
+                            No income found
+                        </strong>
+                        Try adding an income transaction.
+                    </div>
+                </td>
+            </tr>
+            `;
+
+}
+
+
+/* =========================================================
+   EXPENSE TABLE
+========================================================= */
+
+function renderExpenses() {
+
+    const search =
+        (
+            $("#expenseSearch")
+                ?.value ||
+            ""
+        )
+            .toLowerCase();
+
+    const filter =
+        $(
+            "#expenseCategoryFilter"
+        )?.value ||
+        "all";
+
+    const items =
+        getTransactions()
+            .filter(
+                t =>
+                    t.type === "expense"
+            )
+            .filter(
+                t => {
+
+                    const text =
+                        (
+                            t.description +
+                            " " +
+                            t.category
+                        )
+                            .toLowerCase();
+
+                    return (
+                        !search ||
+                        text.includes(search)
+                    );
+
+                }
+            )
+            .filter(
+                t =>
+                    filter === "all" ||
+                    t.category === filter
+            )
+            .sort(
+                (a,b) =>
+                    new Date(b.date) -
+                    new Date(a.date)
+            );
+
+    $("#expenseTotal")
+        .textContent =
+        formatCurrency(
+            items.reduce(
+                (sum, t) =>
+                    sum + t.amount,
+                0
+            )
+        );
+
+    $("#expenseTable")
+        .innerHTML =
+        items.length
+            ? items.map(
+                transaction =>
+                    `
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${escapeHTML(
+                                    transaction.description ||
+                                    "Expense"
+                                )}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                transaction.category
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatDate(
+                                transaction.date
+                            )}
+                        </td>
+
+                        <td class="negative">
+                            -
+                            ${formatCurrency(
+                                transaction.amount
+                            )}
+                        </td>
+
+                        <td>
+
+                            <div class="row-actions">
+
+                                <button
+                                    class="small-btn"
+                                    data-edit-transaction="${transaction.id}">
+                                    Edit
+                                </button>
+
+                                <button
+                                    class="small-btn delete"
+                                    data-delete-transaction="${transaction.id}">
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                    `
+            ).join("")
+            :
+            `
+            <tr>
+                <td colspan="5">
+                    <div class="empty">
+                        <strong>
+                            No expenses found
+                        </strong>
+                        Try adding an expense.
+                    </div>
+                </td>
+            </tr>
+            `;
+
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+function populateFilters() {
+
+    const incomeSelect =
+        $("#incomeCategoryFilter");
+
+    const expenseSelect =
+        $("#expenseCategoryFilter");
+
+    if (incomeSelect) {
+
+        const current =
+            incomeSelect.value;
+
+        incomeSelect.innerHTML =
+            `<option value="all">
+                All sources
+            </option>` +
+            INCOME_SOURCES.map(
+                source =>
+                    `<option value="${escapeHTML(
+                        source
+                    )}">
+                        ${escapeHTML(
+                            source
+                        )}
+                    </option>`
+            ).join("");
+
+        incomeSelect.value =
+            current || "all";
+
+    }
+
+    if (expenseSelect) {
+
+        const current =
+            expenseSelect.value;
+
+        expenseSelect.innerHTML =
+            `<option value="all">
+                All categories
+            </option>` +
+            CATEGORIES.map(
+                category =>
+                    `<option value="${escapeHTML(
+                        category
+                    )}">
+                        ${escapeHTML(
+                            category
+                        )}
+                    </option>`
+            ).join("");
+
+        expenseSelect.value =
+            current || "all";
+
+    }
+
+}
+
+
+/* =========================================================
+   BUDGETS
+========================================================= */
+
+function renderBudgets() {
+
+    const grid =
+        $("#budgetGrid");
+
+    const monthlyBudget =
+        num(
+            read(
+                KEYS.budget,
+                0
+            )
+        );
+
+    const totalExpenses =
+        currentExpenses();
+
+    const monthlyPercent =
+        monthlyBudget
+            ? Math.round(
+                totalExpenses /
+                monthlyBudget *
+                100
+            )
+            : 0;
+
+    const monthlyCard = `
+        <div class="card budget-card"
+             style="grid-column:1/-1">
+
+            <div class="budget-header">
+
+                <div class="budget-category">
+                    Monthly budget
+                </div>
+
+                <div class="budget-amount">
+                    ${formatCurrency(
+                        totalExpenses
+                    )}
+                    /
+                    ${formatCurrency(
+                        monthlyBudget
+                    )}
+                </div>
+
             </div>
 
-            <div class="empty-state-title">
-                No notifications
+            <div class="budget-progress">
+
+                <div
+                    class="budget-fill ${
+                        monthlyPercent > 100
+                            ? "danger"
+                            : monthlyPercent > 80
+                                ? "warning"
+                                : ""
+                    }"
+                    style="
+                        width:
+                        ${Math.min(
+                            100,
+                            monthlyPercent
+                        )}%
+                    ">
+                </div>
+
+            </div>
+
+            <div class="budget-bottom">
+
+                <span>
+                    ${monthlyPercent}%
+                    used
+                </span>
+
+                <span>
+                    ${formatCurrency(
+                        Math.max(
+                            0,
+                            monthlyBudget -
+                            totalExpenses
+                        )
+                    )}
+                    remaining
+                </span>
+
             </div>
 
         </div>
+    `;
 
-    </div>
+    const categories =
+        categoryTotals();
 
-</div>
+    const categoryCards =
+        categories.length
+            ? categories.map(
+                item => {
+
+                    const budgetMap =
+                        read(
+                            KEYS.categoryBudgets,
+                            {}
+                        );
+
+                    const limit =
+                        num(
+                            budgetMap[
+                                item.category
+                            ]
+                        );
+
+                    const percent =
+                        limit
+                            ? Math.round(
+                                item.amount /
+                                limit *
+                                100
+                            )
+                            : 0;
+
+                    return `
+                        <div class="card budget-card">
+
+                            <div class="budget-header">
+
+                                <div class="budget-category">
+                                    ${escapeHTML(
+                                        item.category
+                                    )}
+                                </div>
+
+                                <div class="budget-amount">
+                                    ${formatCurrency(
+                                        item.amount
+                                    )}
+                                </div>
+
+                            </div>
+
+                            <div class="budget-progress">
+
+                                <div
+                                    class="budget-fill ${
+                                        percent > 100
+                                            ? "danger"
+                                            : percent > 80
+                                                ? "warning"
+                                                : ""
+                                    }"
+                                    style="
+                                        width:
+                                        ${Math.min(
+                                            100,
+                                            percent
+                                        )}%
+                                    ">
+                                </div>
+
+                            </div>
+
+                            <div class="budget-bottom">
+
+                                <span>
+                                    ${
+                                        limit
+                                            ? percent + "% used"
+                                            : "No limit"
+                                    }
+                                </span>
+
+                                <span>
+                                    ${
+                                        limit
+                                            ? formatCurrency(
+                                                Math.max(
+                                                    0,
+                                                    limit -
+                                                    item.amount
+                                                )
+                                            ) +
+                                            " left"
+                                            : ""
+                                    }
+                                </span>
+
+                            </div>
+
+                        </div>
+                    `;
+
+                }
+            ).join("")
+            :
+            `
+                <div class="card budget-card"
+                     style="grid-column:1/-1">
+
+                    <div class="empty">
+                        <strong>
+                            No spending data
+                        </strong>
+
+                        Add expenses to see
+                        budget categories.
+                    </div>
+
+                </div>
+            `;
+
+    grid.innerHTML =
+        monthlyCard +
+        categoryCards;
+
+}
 
 
-<!-- MOBILE BACKDROP -->
+/* =========================================================
+   GOALS
+========================================================= */
 
-<div
-    class="mobile-backdrop"
-    id="mobileBackdrop"
-></div>
+function renderGoals() {
+
+    const grid =
+        $("#goalGrid");
+
+    const goals =
+        getGoals();
+
+    if (!goals.length) {
+
+        grid.innerHTML = `
+            <div class="card goal-card"
+                 style="grid-column:1/-1">
+
+                <div class="empty">
+
+                    <strong>
+                        No savings goals yet
+                    </strong>
+
+                    Create your first goal
+                    and start tracking progress.
+
+                </div>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    grid.innerHTML =
+        goals.map(
+            goal => {
+
+                const percent =
+                    goal.target
+                        ? Math.min(
+                            100,
+                            Math.round(
+                                goal.current /
+                                goal.target *
+                                100
+                            )
+                        )
+                        : 0;
+
+                return `
+                    <div class="card goal-card">
+
+                        <div class="goal-top">
+
+                            <div class="goal-name">
+                                ${escapeHTML(
+                                    goal.name
+                                )}
+                            </div>
+
+                            <div class="goal-percent">
+                                ${percent}%
+                            </div>
+
+                        </div>
+
+                        <div class="goal-values">
+                            <strong>
+                                ${formatCurrency(
+                                    goal.current
+                                )}
+                            </strong>
+                            of
+                            ${formatCurrency(
+                                goal.target
+                            )}
+                        </div>
+
+                        <div class="goal-progress">
+
+                            <div
+                                class="goal-fill"
+                                style="
+                                    width:
+                                    ${percent}%
+                                ">
+                            </div>
+
+                        </div>
+
+                        <div class="goal-footer">
+
+                            <span>
+                                ${
+                                    goal.deadline
+                                        ? "Deadline " +
+                                          formatDate(
+                                              goal.deadline
+                                          )
+                                        : "No deadline"
+                                }
+                            </span>
+
+                            <span>
+                                ${formatCurrency(
+                                    Math.max(
+                                        0,
+                                        goal.target -
+                                        goal.current
+                                    )
+                                )}
+                                left
+                            </span>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        )
+        .join("");
+
+}
 
 
-<!-- =========================================================
-     APP ENGINE
-========================================================== -->
+/* =========================================================
+   RECURRING
+========================================================= */
 
-<script src="./app.js"></script>
+function renderRecurring() {
+
+    const items =
+        getRecurring();
+
+    $("#recurringTable")
+        .innerHTML =
+        items.length
+            ? items.map(
+                item =>
+                    `
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${escapeHTML(
+                                    item.name ||
+                                    "Recurring payment"
+                                )}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${item.type}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                item.category ||
+                                "Other"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                item.frequency ||
+                                "monthly"
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatCurrency(
+                                item.amount
+                            )}
+                        </td>
+
+                        <td>
+                            ${
+                                item.active !== false
+                                    ? "Active"
+                                    : "Paused"
+                            }
+                        </td>
+
+                        <td>
+
+                            <div class="row-actions">
+
+                                <button
+                                    class="small-btn"
+                                    data-toggle-recurring="${item.id}">
+                                    ${
+                                        item.active !== false
+                                            ? "Pause"
+                                            : "Resume"
+                                    }
+                                </button>
+
+                                <button
+                                    class="small-btn delete"
+                                    data-delete-recurring="${item.id}">
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                    `
+            ).join("")
+            :
+            `
+            <tr>
+
+                <td colspan="7">
+
+                    <div class="empty">
+
+                        <strong>
+                            No recurring items
+                        </strong>
+
+                        Add subscriptions,
+                        bills or recurring income.
+
+                    </div>
+
+                </td>
+
+            </tr>
+            `;
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+let modalMode =
+    null;
+
+let editingId =
+    null;
+
+
+function openModal(
+    type,
+    existing = null
+) {
+
+    modalMode =
+        type;
+
+    editingId =
+        existing?.id ||
+        null;
+
+    const title =
+        existing
+            ? "Edit transaction"
+            : type === "income"
+                ? "Add income"
+                : type === "expense"
+                    ? "Add expense"
+                    : type === "goal"
+                        ? "Create savings goal"
+                        : "Add recurring item";
+
+    $("#modalTitle")
+        .textContent =
+        title;
+
+    let html = "";
+
+    if (
+        type === "income" ||
+        type === "expense"
+    ) {
+
+        const isIncome =
+            type === "income";
+
+        const category =
+            existing?.category ||
+            (
+                isIncome
+                    ? "Salary"
+                    : "Food"
+            );
+
+        const source =
+            existing?.source ||
+            "Salary";
+
+        html = `
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <input
+                        class="input"
+                        name="description"
+                        required
+                        value="${escapeHTML(
+                            existing?.description ||
+                            ""
+                        )}"
+                        placeholder="${
+                            isIncome
+                                ? "e.g. September salary"
+                                : "e.g. Groceries"
+                        }"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Amount
+                    </label>
+
+                    <input
+                        class="input"
+                        name="amount"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                        value="${
+                            existing?.amount ||
+                            ""
+                        }"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Date
+                    </label>
+
+                    <input
+                        class="input"
+                        name="date"
+                        type="date"
+                        required
+                        value="${
+                            existing?.date ||
+                            today()
+                        }"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        ${
+                            isIncome
+                                ? "Income source"
+                                : "Category"
+                        }
+                    </label>
+
+                    <select
+                        class="select"
+                        name="${
+                            isIncome
+                                ? "source"
+                                : "category"
+                        }">
+
+                        ${
+                            (
+                                isIncome
+                                    ? INCOME_SOURCES
+                                    : CATEGORIES
+                            ).map(
+                                option =>
+                                    `
+                                    <option
+                                        value="${escapeHTML(
+                                            option
+                                        )}"
+                                        ${
+                                            option ===
+                                            (
+                                                isIncome
+                                                    ? source
+                                                    : category
+                                            )
+                                                ? "selected"
+                                                : ""
+                                        }
+                                    >
+                                        ${escapeHTML(
+                                            option
+                                        )}
+                                    </option>
+                                    `
+                            ).join("")
+                        }
+
+                    </select>
+
+                </div>
+
+                ${
+                    isIncome
+                        ? `
+                            <div class="form-group">
+                                <label>
+                                    Category
+                                </label>
+
+                                <select
+                                    class="select"
+                                    name="category">
+
+                                    ${CATEGORIES.map(
+                                        option =>
+                                            `
+                                            <option
+                                                value="${escapeHTML(
+                                                    option
+                                                )}">
+                                                ${escapeHTML(
+                                                    option
+                                                )}
+                                            </option>
+                                            `
+                                    ).join("")}
+
+                                </select>
+                            </div>
+                        `
+                        : ""
+                }
+
+            </div>
+
+        `;
+
+    } else if (
+        type === "goal"
+    ) {
+
+        html = `
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+
+                    <label>
+                        Goal name
+                    </label>
+
+                    <input
+                        class="input"
+                        name="name"
+                        required
+                        placeholder="e.g. Emergency fund"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Target amount
+                    </label>
+
+                    <input
+                        class="input"
+                        name="target"
+                        type="number"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Already saved
+                    </label>
+
+                    <input
+                        class="input"
+                        name="current"
+                        type="number"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+                <div class="form-group full">
+
+                    <label>
+                        Deadline
+                    </label>
+
+                    <input
+                        class="input"
+                        name="deadline"
+                        type="date"
+                    >
+
+                </div>
+
+            </div>
+
+        `;
+
+    } else {
+
+        html = `
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+
+                    <label>
+                        Name
+                    </label>
+
+                    <input
+                        class="input"
+                        name="name"
+                        required
+                        placeholder="e.g. Netflix"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Amount
+                    </label>
+
+                    <input
+                        class="input"
+                        name="amount"
+                        type="number"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Type
+                    </label>
+
+                    <select
+                        class="select"
+                        name="type">
+
+                        <option value="expense">
+                            Expense
+                        </option>
+
+                        <option value="income">
+                            Income
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Frequency
+                    </label>
+
+                    <select
+                        class="select"
+                        name="frequency">
+
+                        <option value="weekly">
+                            Weekly
+                        </option>
+
+                        <option value="monthly"
+                                selected>
+                            Monthly
+                        </option>
+
+                        <option value="yearly">
+                            Yearly
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select
+                        class="select"
+                        name="category">
+
+                        ${CATEGORIES.map(
+                            category =>
+                                `
+                                <option>
+                                    ${escapeHTML(
+                                        category
+                                    )}
+                                </option>
+                                `
+                        ).join("")}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+    $("#modalBody")
+        .innerHTML =
+        html;
+
+    $("#modalBackdrop")
+        .classList.add("open");
+
+}
+
+
+function closeModal() {
+
+    $("#modalBackdrop")
+        .classList.remove("open");
+
+    modalMode =
+        null;
+
+    editingId =
+        null;
+
+}
+
+
+$("#modalClose")
+    .addEventListener(
+        "click",
+        closeModal
+    );
+
+$("#modalCancel")
+    .addEventListener(
+        "click",
+        closeModal
+    );
+
+$("#modalBackdrop")
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                $("#modalBackdrop")
+            ) {
+                closeModal();
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   MODAL SUBMIT
+========================================================= */
+
+$("#modalForm")
+    .addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+            const form =
+                new FormData(
+                    event.currentTarget
+                );
+
+            const data =
+                Object.fromEntries(
+                    form.entries()
+                );
+
+            if (
+                modalMode === "income" ||
+                modalMode === "expense"
+            ) {
+
+                const transaction = {
+
+                    type:
+                        modalMode,
+
+                    amount:
+                        num(
+                            data.amount
+                        ),
+
+                    description:
+                        data.description,
+
+                    date:
+                        data.date,
+
+                    category:
+                        data.category ||
+                        "Other",
+
+                    source:
+                        data.source ||
+                        ""
+
+                };
+
+                if (editingId) {
+
+                    updateTransaction(
+                        editingId,
+                        transaction
+                    );
+
+                    toast(
+                        "Transaction updated",
+                        "Your transaction has been updated."
+                    );
+
+                } else {
+
+                    addTransaction(
+                        transaction
+                    );
+
+                    toast(
+                        "Transaction added",
+                        "Your financial data has been updated."
+                    );
+
+                }
+
+            } else if (
+                modalMode === "goal"
+            ) {
+
+                addGoal(data);
+
+                toast(
+                    "Savings goal created",
+                    "Your new goal is ready to track."
+                );
+
+            } else if (
+                modalMode === "recurring"
+            ) {
+
+                const items =
+                    getRecurring();
+
+                items.push({
+
+                    id: uid("rec"),
+
+                    name:
+                        data.name,
+
+                    amount:
+                        num(data.amount),
+
+                    type:
+                        data.type,
+
+                    category:
+                        data.category,
+
+                    frequency:
+                        data.frequency,
+
+                    active:
+                        true
+
+                });
+
+                saveRecurring(items);
+
+                renderAll();
+
+                toast(
+                    "Recurring item added",
+                    "Your recurring payment has been saved."
+                );
+
+            }
+
+            closeModal();
+
+        }
+    );
+
+
+/* =========================================================
+   OPEN MODAL BUTTONS
+========================================================= */
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                "[data-open-modal]"
+            );
+
+        if (!button) {
+            return;
+        }
+
+        openModal(
+            button.dataset.openModal
+        );
+
+    }
+);
+
+
+/* =========================================================
+   EDIT / DELETE TRANSACTIONS
+========================================================= */
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const edit =
+            event.target.closest(
+                "[data-edit-transaction]"
+            );
+
+        if (edit) {
+
+            const id =
+                edit.dataset
+                    .editTransaction;
+
+            const transaction =
+                getTransactions()
+                    .find(
+                        t =>
+                            t.id === id
+                    );
+
+            if (transaction) {
+
+                openModal(
+                    transaction.type,
+                    transaction
+                );
+
+            }
+
+            return;
+
+        }
+
+        const remove =
+            event.target.closest(
+                "[data-delete-transaction]"
+            );
+
+        if (remove) {
+
+            const id =
+                remove.dataset
+                    .deleteTransaction;
+
+            if (
+                confirm(
+                    "Delete this transaction?"
+                )
+            ) {
+
+                deleteTransaction(
+                    id
+                );
+
+                toast(
+                    "Transaction deleted",
+                    "The transaction was removed."
+                );
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   RECURRING ACTIONS
+========================================================= */
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const toggle =
+            event.target.closest(
+                "[data-toggle-recurring]"
+            );
+
+        if (toggle) {
+
+            const id =
+                toggle.dataset
+                    .toggleRecurring;
+
+            const items =
+                getRecurring();
+
+            const item =
+                items.find(
+                    x =>
+                        x.id === id
+                );
+
+            if (item) {
+
+                item.active =
+                    item.active === false;
+
+                saveRecurring(items);
+
+                renderAll();
+
+            }
+
+            return;
+        }
+
+        const remove =
+            event.target.closest(
+                "[data-delete-recurring]"
+            );
+
+        if (remove) {
+
+            const id =
+                remove.dataset
+                    .deleteRecurring;
+
+            if (
+                confirm(
+                    "Delete this recurring item?"
+                )
+            ) {
+
+                saveRecurring(
+                    getRecurring()
+                        .filter(
+                            x =>
+                                x.id !== id
+                        )
+                );
+
+                renderAll();
+
+                toast(
+                    "Recurring item deleted",
+                    "The recurring item was removed."
+                );
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   BUDGET BUTTON
+========================================================= */
+
+$("#setBudgetBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            const current =
+                read(
+                    KEYS.budget,
+                    0
+                );
+
+            const value =
+                prompt(
+                    "Enter your monthly budget:",
+                    current || ""
+                );
+
+            if (
+                value === null
+            ) {
+                return;
+            }
+
+            const amount =
+                num(value);
+
+            write(
+                KEYS.budget,
+                amount
+            );
+
+            renderAll();
+
+            toast(
+                "Budget updated",
+                "Your monthly budget has been saved."
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+$("#globalSearch")
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key !== "Enter"
+            ) {
+                return;
+            }
+
+            const query =
+                event.target.value
+                    .trim()
+                    .toLowerCase();
+
+            if (!query) {
+                return;
+            }
+
+            const transactions =
+                getTransactions();
+
+            const match =
+                transactions.find(
+                    transaction =>
+                        (
+                            transaction.description +
+                            " " +
+                            transaction.category +
+                            " " +
+                            transaction.source
+                        )
+                            .toLowerCase()
+                            .includes(query)
+                );
+
+            if (match) {
+
+                showPage(
+                    match.type ===
+                    "income"
+                        ? "income"
+                        : "expenses"
+                );
+
+                toast(
+                    "Transaction found",
+                    match.description ||
+                    match.category
+                );
+
+            } else {
+
+                toast(
+                    "Nothing found",
+                    "No transaction matched your search."
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   TABLE SEARCH
+========================================================= */
+
+$("#incomeSearch")
+    .addEventListener(
+        "input",
+        renderIncome
+    );
+
+$("#expenseSearch")
+    .addEventListener(
+        "input",
+        renderExpenses
+    );
+
+$("#incomeCategoryFilter")
+    .addEventListener(
+        "change",
+        renderIncome
+    );
+
+$("#expenseCategoryFilter")
+    .addEventListener(
+        "change",
+        renderExpenses
+    );
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+$("#themeBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            const current =
+                getSettings()
+                    .theme;
+
+            saveSettings({
+                theme:
+                    current === "dark"
+                        ? "light"
+                        : "dark"
+            });
+
+        }
+    );
+
+
+$("#darkToggle")
+    .addEventListener(
+        "change",
+        event => {
+
+            saveSettings({
+                theme:
+                    event.target.checked
+                        ? "dark"
+                        : "light"
+            });
+
+        }
+    );
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+$("#saveSettings")
+    .addEventListener(
+        "click",
+        () => {
+
+            saveSettings({
+
+                name:
+                    $("#settingsName")
+                        .value
+                        .trim() ||
+                    "MoneyLeak User",
+
+                currency:
+                    $("#settingsCurrency")
+                        .value
+
+            });
+
+        }
+    );
+
+
+$("#notificationToggle")
+    .addEventListener(
+        "change",
+        event => {
+
+            saveSettings({
+                notifications:
+                    event.target.checked
+            });
+
+        }
+    );
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+$("#notificationBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            const score =
+                financialScore();
+
+            const expenses =
+                currentExpenses();
+
+            const budget =
+                num(
+                    read(
+                        KEYS.budget,
+                        0
+                    )
+                );
+
+            if (
+                budget &&
+                expenses > budget
+            ) {
+
+                toast(
+                    "Budget alert",
+                    "Your monthly expenses are above your budget."
+                );
+
+            } else if (
+                score >= 75
+            ) {
+
+                toast(
+                    "MoneyLeak looks good",
+                    "Your current financial health is strong."
+                );
+
+            } else {
+
+                toast(
+                    "MoneyLeak reminder",
+                    "Review your spending and savings goals."
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   EXPORT DATA
+========================================================= */
+
+$("#exportData")
+    .addEventListener(
+        "click",
+        () => {
+
+            const data = {
+
+                transactions:
+                    getTransactions(),
+
+                goals:
+                    getGoals(),
+
+                budget:
+                    read(
+                        KEYS.budget,
+                        0
+                    ),
+
+                categoryBudgets:
+                    read(
+                        KEYS.categoryBudgets,
+                        {}
+                    ),
+
+                recurring:
+                    getRecurring(),
+
+                settings:
+                    getSettings(),
+
+                exportedAt:
+                    new Date()
+                        .toISOString()
+
+            };
+
+            const blob =
+                new Blob(
+                    [
+                        JSON.stringify(
+                            data,
+                            null,
+                            2
+                        )
+                    ],
+                    {
+                        type:
+                            "application/json"
+                    }
+                );
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+            const a =
+                document.createElement(
+                    "a"
+                );
+
+            a.href =
+                url;
+
+            a.download =
+                "moneyleak-backup.json";
+
+            a.click();
+
+            URL.revokeObjectURL(
+                url
+            );
+
+            toast(
+                "Backup exported",
+                "Your MoneyLeak data was downloaded."
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   CLEAR DATA
+========================================================= */
+
+$("#clearData")
+    .addEventListener(
+        "click",
+        () => {
+
+            const confirmed =
+                confirm(
+                    "This will permanently remove your MoneyLeak transactions, goals, budgets and recurring items. Continue?"
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+            Object.values(KEYS)
+                .forEach(
+                    key =>
+                        localStorage.removeItem(
+                            key
+                        )
+                );
+
+            location.reload();
+
+        }
+    );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function toast(
+    title,
+    message
+) {
+
+    const container =
+        $("#toastContainer");
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+    item.className =
+        "toast";
+
+    item.innerHTML = `
+        <strong>
+            ${escapeHTML(title)}
+        </strong>
+
+        <span>
+            ${escapeHTML(message)}
+        </span>
+    `;
+
+    container.appendChild(
+        item
+    );
+
+    setTimeout(
+        () => {
+
+            item.style.opacity =
+                "0";
+
+            item.style.transform =
+                "translateX(15px)";
+
+            setTimeout(
+                () =>
+                    item.remove(),
+                200
+            );
+
+        },
+        3500
+    );
+
+}
+
+
+/* =========================================================
+   DATE / GREETING
+========================================================= */
+
+function renderDate() {
+
+    const now =
+        new Date();
+
+    $("#todayLabel")
+        .textContent =
+        now.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+            }
+        ).toUpperCase();
+
+    const hour =
+        now.getHours();
+
+    let greeting =
+        "Good morning";
+
+    if (hour >= 12) {
+        greeting =
+            "Good afternoon";
+    }
+
+    if (hour >= 17) {
+        greeting =
+            "Good evening";
+    }
+
+    const name =
+        getSettings()
+            .name ||
+        "MoneyLeak User";
+
+    $("#greeting")
+        .textContent =
+        `${greeting}, ${name}.`;
+
+}
+
+
+/* =========================================================
+   RENDER EVERYTHING
+========================================================= */
+
+function renderAll() {
+
+    populateFilters();
+
+    renderDate();
+
+    applySettings();
+
+    renderDashboard();
+
+    renderAnalytics();
+
+    renderIncome();
+
+    renderExpenses();
+
+    renderBudgets();
+
+    renderGoals();
+
+    renderRecurring();
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderAll();
+
+
+})();
+</script>
 
 </body>
 </html>
