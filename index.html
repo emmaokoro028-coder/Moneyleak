@@ -5129,31 +5129,61 @@ function renderBudgets() {
 
                             <div class="budget-bottom">
 
-                                <span>
-                                    ${
-                                        limit
-                                            ? percent + "% used"
-                                            : "No limit"
-                                    }
-                                </span>
+    <span>
+        ${
+            limit
+                ? percent + "% used"
+                : "No limit"
+        }
+    </span>
 
-                                <span>
-                                    ${
-                                        limit
-                                            ? formatCurrency(
-                                                Math.max(
-                                                    0,
-                                                    limit -
-                                                    item.amount
-                                                )
-                                            ) +
-                                            " left"
-                                            : ""
-                                    }
-                                </span>
+    <span>
+        ${
+            limit
+                ? formatCurrency(
+                    Math.max(
+                        0,
+                        limit -
+                        item.amount
+                    )
+                ) +
+                " left"
+                : ""
+        }
+    </span>
 
-                            </div>
+</div>
 
+<div
+    class="row-actions"
+    style="margin-top:10px;"
+>
+
+    <button
+        class="small-btn"
+        data-set-category-budget="${escapeHTML(
+            item.category
+        )}"
+    >
+        ${limit ? "Edit budget" : "Set budget"}
+    </button>
+
+    ${
+        limit
+            ? `
+                <button
+                    class="small-btn delete"
+                    data-delete-category-budget="${escapeHTML(
+                        item.category
+                    )}"
+                >
+                    Delete
+                </button>
+            `
+            : ""
+    }
+
+</div>
                         </div>
                     `;
 
