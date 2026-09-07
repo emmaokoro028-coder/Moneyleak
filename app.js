@@ -3950,56 +3950,87 @@
     }
 
     function renderRecentTransactions() {
-        const container =
-            $("#recentTransactions");
+    const container = $("#recentTransactions");
 
-        if (!container) return;
+    if (!container) return;
 
-        const transactions =
-            getTransactions()
-                .sort(
-                    (a, b) =>
-                        parseDate(b.date) -
-                        parseDate(a.date)
-                )
-                .slice(0, 8);
+    const transactions =
+        getTransactions()
+            .sort(
+                (a, b) =>
+                    parseDate(b.date) -
+                    parseDate(a.date)
+            )
+            .slice(0, 8);
 
-        if (!transactions.length) {
-            container.innerHTML =
-                emptyHTML(
-                    "No transactions yet",
-                    "Add your first income or expense."
+    if (!transactions.length) {
+        container.innerHTML =
+            emptyHTML(
+                "No transactions yet",
+                "Add your first income or expense."
+            );
+        return;
+    }
+
+    container.innerHTML =
+        transactions.map(t => {
+
+            const formattedDate =
+                parseDate(t.date).toLocaleDateString(
+                    "en-NG",
+                    {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric"
+                    }
                 );
 
-            return;
-        }
+            const category =
+                String(
+                    t.category || "Other"
+                )
+                    .trim()
+                    .toLowerCase()
+                    .replace(
+                        /\b\w/g,
+                        letter => letter.toUpperCase()
+                    );
 
-        container.innerHTML =
-            transactions.map(t => `
+            return `
                 <div class="transaction-row">
+
                     <div>
                         <strong>
                             ${escapeHTML(
                                 t.description ||
-                                t.category ||
+                                category ||
                                 "Transaction"
                             )}
                         </strong>
+
                         <small>
-                            ${escapeHTML(t.category)}
+                            ${escapeHTML(category)}
                             ·
-                            ${escapeHTML(t.date)}
+                            ${escapeHTML(formattedDate)}
                         </small>
                     </div>
 
-                    <strong class="${t.type === "income" ? "income" : "expense"}">
+                    <strong
+                        class="${
+                            t.type === "income"
+                                ? "income"
+                                : "expense"
+                        }"
+                    >
                         ${t.type === "income" ? "+" : "-"}
                         ${displayCurrency(t.amount)}
                     </strong>
-                </div>
-            `).join("");
-    }
 
+                </div>
+            `;
+
+        }).join("");
+}
     function renderTopCategories() {
         const container =
             $("#topSpendingCategories");
