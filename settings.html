@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,89 +9,467 @@
 
     <meta
         name="description"
-        content="Customize and manage your MoneyLeak personal finance system."
+        content="Customize your MoneyLeak personal finance experience."
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+
+        /* =====================================================
+           MONEYLEAK SETTINGS — PREMIUM
+        ===================================================== */
+
+        .settings-hero {
+            margin-bottom: 28px;
+        }
+
+        .settings-eyebrow {
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 850;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .settings-hero h1 {
+            margin: 0;
+            font-size: clamp(32px, 4vw, 48px);
+            line-height: 1.05;
+            letter-spacing: -.045em;
+        }
+
+        .settings-hero p {
+            max-width: 680px;
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .settings-menu {
+            position: sticky;
+            top: 90px;
+            display: grid;
+            gap: 7px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .settings-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            border-radius: 12px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .settings-menu a:hover,
+        .settings-menu a.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .settings-content {
+            display: grid;
+            gap: 20px;
+        }
+
+        .settings-card {
+            padding: 26px;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            background: var(--card);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .settings-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .settings-card-title {
+            font-size: 18px;
+            font-weight: 850;
+            letter-spacing: -.025em;
+        }
+
+        .settings-card-description {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .settings-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 16px;
+        }
+
+        .settings-field {
+            display: grid;
+            gap: 7px;
+        }
+
+        .settings-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .settings-field label {
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .settings-field input,
+        .settings-field select {
+            width: 100%;
+            min-height: 47px;
+            padding: 0 13px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: var(--surface);
+            color: var(--text);
+            font: inherit;
+            outline: none;
+        }
+
+        .settings-field input:focus,
+        .settings-field select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+
+        .settings-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .settings-button {
+            min-height: 45px;
+            padding: 0 17px;
+            border-radius: 12px;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .settings-button.primary {
+            border: 0;
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .settings-button.secondary {
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+        }
+
+        .settings-button.danger {
+            border: 1px solid rgba(239,68,68,.3);
+            background: rgba(239,68,68,.07);
+            color: #dc2626;
+        }
+
+        .settings-toggle-list {
+            display: grid;
+            gap: 2px;
+        }
+
+        .settings-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 17px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .settings-toggle:last-child {
+            border-bottom: 0;
+        }
+
+        .settings-toggle-copy strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .settings-toggle-copy span {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .toggle {
+            width: 48px;
+            height: 27px;
+            flex: 0 0 48px;
+            position: relative;
+            border: 0;
+            border-radius: 99px;
+            background: var(--border);
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .toggle::after {
+            content: "";
+            position: absolute;
+            width: 21px;
+            height: 21px;
+            top: 3px;
+            left: 3px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,.18);
+            transition: .2s ease;
+        }
+
+        .toggle.active {
+            background: var(--primary);
+        }
+
+        .toggle.active::after {
+            transform: translateX(21px);
+        }
+
+        .data-actions {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 12px;
+        }
+
+        .data-action {
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            background: var(--surface);
+        }
+
+        .data-action strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .data-action p {
+            margin: 5px 0 13px;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.55;
+        }
+
+        .settings-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            border-radius: 15px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .settings-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        .danger-zone {
+            border-color: rgba(239,68,68,.2);
+        }
+
+        .danger-zone .settings-card-title {
+            color: #dc2626;
+        }
+
+        @media(max-width:900px) {
+
+            .settings-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-menu {
+                position: static;
+                display: flex;
+                overflow-x: auto;
+            }
+
+            .settings-menu a {
+                white-space: nowrap;
+            }
+
+        }
+
+        @media(max-width:650px) {
+
+            .settings-card {
+                padding: 20px;
+                border-radius: 21px;
+            }
+
+            .settings-form-grid,
+            .data-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-field.full {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
 </head>
 
-<body data-page="settings">
+
+<body>
 
 <div class="app-shell">
 
     <!-- SIDEBAR -->
+
     <aside class="sidebar" id="sidebar">
 
         <div class="brand">
-            <div class="brand-mark">M</div>
 
-            <div class="brand-copy">
-                <strong>MoneyLeak</strong>
-                <span>Personal Finance OS</span>
-            </div>
+            <a href="./index.html" class="brand-link">
+
+                <div
+                    class="brand-mark"
+                    data-brand-logo
+                >
+                    M
+                </div>
+
+                <div class="brand-copy">
+                    <strong>MoneyLeak</strong>
+                    <span>Personal Finance OS</span>
+                </div>
+
+            </a>
+
         </div>
+
 
         <nav class="sidebar-nav">
 
-            <div class="nav-label">Overview</div>
+            <div class="nav-section">
 
-            <a href="index.html" class="nav-item">
-                <span class="nav-icon">⌂</span>
-                <span>Dashboard</span>
-            </a>
+                <div class="nav-section-label">
+                    Overview
+                </div>
 
-            <a href="analytics.html" class="nav-item">
-                <span class="nav-icon">◔</span>
-                <span>Analytics</span>
-            </a>
+                <a href="./index.html" class="nav-link">
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </a>
 
-            <div class="nav-label">Money</div>
+                <a href="./analytics.html" class="nav-link">
+                    <span class="nav-icon">◈</span>
+                    <span>Analytics</span>
+                </a>
 
-            <a href="income.html" class="nav-item">
-                <span class="nav-icon">↗</span>
-                <span>Income</span>
-            </a>
+            </div>
 
-            <a href="expenses.html" class="nav-item">
-                <span class="nav-icon">↘</span>
-                <span>Expenses</span>
-            </a>
 
-            <a href="budgets.html" class="nav-item">
-                <span class="nav-icon">▣</span>
-                <span>Budgets</span>
-            </a>
+            <div class="nav-section">
 
-            <a href="recurring.html" class="nav-item">
-                <span class="nav-icon">↻</span>
-                <span>Recurring</span>
-            </a>
+                <div class="nav-section-label">
+                    Money
+                </div>
 
-            <div class="nav-label">Goals</div>
+                <a href="./income.html" class="nav-link">
+                    <span class="nav-icon">↗</span>
+                    <span>Income</span>
+                </a>
 
-            <a href="savings.html" class="nav-item">
-                <span class="nav-icon">◎</span>
-                <span>Savings Goals</span>
-            </a>
+                <a href="./expenses.html" class="nav-link">
+                    <span class="nav-icon">↘</span>
+                    <span>Expenses</span>
+                </a>
 
-            <div class="nav-label">System</div>
+                <a href="./budgets.html" class="nav-link">
+                    <span class="nav-icon">▣</span>
+                    <span>Budgets</span>
+                </a>
 
-            <a href="settings.html" class="nav-item active">
-                <span class="nav-icon">⚙</span>
-                <span>Settings</span>
-            </a>
+            </div>
+
+
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Planning
+                </div>
+
+                <a href="./savings.html" class="nav-link">
+                    <span class="nav-icon">◎</span>
+                    <span>Savings Goals</span>
+                </a>
+
+                <a href="./recurring.html" class="nav-link">
+                    <span class="nav-icon">↻</span>
+                    <span>Recurring</span>
+                </a>
+
+            </div>
+
+
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    System
+                </div>
+
+                <a
+                    href="./settings.html"
+                    class="nav-link active"
+                >
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+            </div>
 
         </nav>
 
-        <div class="sidebar-bottom">
 
-            <div class="sidebar-status">
-                <span class="status-dot"></span>
+        <div class="sidebar-account">
 
-                <div>
-                    <strong>MoneyLeak</strong>
-                    <small>Your data stays private</small>
-                </div>
+            <div class="sidebar-account-avatar">
+                M
+            </div>
+
+            <div>
+                <strong>My Money</strong>
+                <span>Personal account</span>
             </div>
 
         </div>
@@ -99,111 +478,143 @@
 
 
     <!-- MAIN -->
+
     <main class="main-content">
 
-        <!-- TOPBAR -->
         <header class="topbar">
-
-            <button
-                class="mobile-menu-button"
-                id="mobileMenuButton"
-                type="button"
-                aria-label="Open menu"
-            >
-                ☰
-            </button>
 
             <div class="topbar-left">
 
                 <button
-                    class="search-trigger"
-                    id="openSearch"
                     type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Open menu"
                 >
-                    <span>⌕</span>
-                    <span>Search MoneyLeak</span>
-                    <kbd>⌘ K</kbd>
+                    ☰
                 </button>
+
+                <div class="page-location">
+                    Settings
+                </div>
 
             </div>
 
-            <div class="topbar-right">
+
+            <div class="topbar-actions">
 
                 <button
-                    class="icon-button"
-                    id="notificationButton"
                     type="button"
+                    class="topbar-search"
+                    id="openSearch"
+                >
+                    <span>⌕</span>
+                    Search MoneyLeak
+                    <kbd>⌘K</kbd>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="notification-button"
+                    id="notificationButton"
                     aria-label="Notifications"
                 >
-                    ♢
+                    ♧
 
                     <span
                         class="notification-badge"
                         id="notificationBadge"
-                    ></span>
+                    >
+                        0
+                    </span>
+
                 </button>
 
-                <a
-                    href="settings.html"
-                    class="profile-button"
+
+                <button
+                    type="button"
+                    class="theme-button"
+                    id="themeToggle"
+                    aria-label="Toggle theme"
                 >
-                    <span
-                        class="profile-avatar"
-                        id="profileAvatar"
-                    >
-                        M
-                    </span>
-                </a>
+                    ◐
+                </button>
 
             </div>
 
         </header>
 
 
-        <!-- CONTENT -->
-        <div class="page-content settings-page">
+        <section class="page-content">
+
 
             <!-- HERO -->
+
             <section class="settings-hero">
 
-                <div>
-
-                    <div class="settings-eyebrow">
-                        MONEYLEAK CONTROL CENTER
-                    </div>
-
-                    <h1>
-                        Make MoneyLeak yours.
-                    </h1>
-
-                    <p>
-                        Manage your profile, preferences,
-                        appearance and financial data.
-                    </p>
-
+                <div class="settings-eyebrow">
+                    YOUR MONEY • YOUR CONTROL
                 </div>
 
-                <div class="status-pill">
-                    System ready
-                </div>
+                <h1>
+                    Settings
+                </h1>
+
+                <p>
+                    Customize MoneyLeak, manage your preferences,
+                    and keep control of your financial data.
+                </p>
 
             </section>
 
 
-            <div class="settings-grid">
+            <div class="settings-layout">
 
-                <!-- LEFT COLUMN -->
-                <div class="settings-column">
+
+                <!-- SETTINGS MENU -->
+
+                <aside class="settings-menu">
+
+                    <a
+                        href="#profile"
+                        class="active"
+                    >
+                        <span>●</span>
+                        Profile
+                    </a>
+
+                    <a href="#preferences">
+                        <span>◐</span>
+                        Preferences
+                    </a>
+
+                    <a href="#data">
+                        <span>▣</span>
+                        Your data
+                    </a>
+
+                    <a href="#danger">
+                        <span>!</span>
+                        Reset
+                    </a>
+
+                </aside>
+
+
+                <!-- SETTINGS CONTENT -->
+
+                <div class="settings-content">
 
 
                     <!-- PROFILE -->
-                    <section class="settings-card">
+
+                    <section
+                        class="settings-card"
+                        id="profile"
+                    >
 
                         <div class="settings-card-header">
-
-                            <div class="settings-card-icon">
-                                ◉
-                            </div>
 
                             <div>
 
@@ -212,7 +623,7 @@
                                 </div>
 
                                 <div class="settings-card-description">
-                                    Personalize your MoneyLeak experience.
+                                    Personalize how MoneyLeak addresses you.
                                 </div>
 
                             </div>
@@ -220,123 +631,81 @@
                         </div>
 
 
-                        <div class="profile-preview">
+                        <div class="settings-status">
 
-                            <div
-                                class="profile-preview-avatar"
-                                id="settingsProfileAvatar"
-                            >
-                                M
-                            </div>
+                            <span class="settings-status-dot"></span>
 
-                            <div>
-
-                                <strong
-                                    id="settingsProfileName"
-                                >
-                                    MoneyLeak User
-                                </strong>
-
-                                <span>
-                                    Personal Finance OS
-                                </span>
-
-                            </div>
+                            Your settings are stored locally on this device.
 
                         </div>
 
 
-                        <form id="profileSettingsForm">
+                        <div class="settings-form-grid">
 
-                            <div class="form-field">
+
+                            <div class="settings-field">
 
                                 <label for="settingsName">
-                                    Your Name
+                                    Your name
                                 </label>
 
                                 <input
-                                    type="text"
                                     id="settingsName"
-                                    name="name"
-                                    placeholder="Enter your name"
-                                    autocomplete="name"
+                                    type="text"
+                                    placeholder="Your name"
                                 >
 
                             </div>
 
-                            <div class="form-actions">
 
-                                <button
-                                    type="submit"
-                                    class="button button-primary"
-                                >
-                                    Save Profile
-                                </button>
+                            <div class="settings-field">
 
-                            </div>
-
-                        </form>
-
-                    </section>
-
-
-                    <!-- CURRENCY -->
-                    <section class="settings-card">
-
-                        <div class="settings-card-header">
-
-                            <div class="settings-card-icon">
-                                ₦
-                            </div>
-
-                            <div>
-
-                                <div class="settings-card-title">
+                                <label for="settingsCurrency">
                                     Currency
-                                </div>
+                                </label>
 
-                                <div class="settings-card-description">
-                                    Choose how MoneyLeak displays amounts.
-                                </div>
+                                <select id="settingsCurrency">
+
+                                    <option value="NGN">
+                                        Nigerian Naira (₦)
+                                    </option>
+
+                                    <option value="USD">
+                                        US Dollar ($)
+                                    </option>
+
+                                    <option value="GBP">
+                                        British Pound (£)
+                                    </option>
+
+                                    <option value="EUR">
+                                        Euro (€)
+                                    </option>
+
+                                    <option value="CAD">
+                                        Canadian Dollar (C$)
+                                    </option>
+
+                                    <option value="AUD">
+                                        Australian Dollar (A$)
+                                    </option>
+
+                                </select>
 
                             </div>
 
                         </div>
 
 
-                        <div class="form-field">
+                        <div class="settings-actions">
 
-                            <label for="settingsCurrency">
-                                Default Currency
-                            </label>
-
-                            <select id="settingsCurrency">
-
-                                <option value="NGN">
-                                    Nigerian Naira — ₦
-                                </option>
-
-                                <option value="USD">
-                                    US Dollar — $
-                                </option>
-
-                                <option value="GBP">
-                                    British Pound — £
-                                </option>
-
-                                <option value="EUR">
-                                    Euro — €
-                                </option>
-
-                                <option value="CAD">
-                                    Canadian Dollar — C$
-                                </option>
-
-                                <option value="AUD">
-                                    Australian Dollar — A$
-                                </option>
-
-                            </select>
+                            <button
+                                type="button"
+                                class="settings-button primary"
+                                id="saveSettings"
+                            >
+                                Save changes
+                            </button>
 
                         </div>
 
@@ -344,13 +713,13 @@
 
 
                     <!-- PREFERENCES -->
-                    <section class="settings-card">
+
+                    <section
+                        class="settings-card"
+                        id="preferences"
+                    >
 
                         <div class="settings-card-header">
-
-                            <div class="settings-card-icon">
-                                ⚙
-                            </div>
 
                             <div>
 
@@ -359,7 +728,7 @@
                                 </div>
 
                                 <div class="settings-card-description">
-                                    Control how MoneyLeak behaves.
+                                    Control the MoneyLeak experience.
                                 </div>
 
                             </div>
@@ -367,214 +736,107 @@
                         </div>
 
 
-                        <div class="preference-list">
+                        <div class="settings-toggle-list">
 
 
-                            <div class="preference-row">
+                            <div class="settings-toggle">
 
-                                <div class="preference-main">
+                                <div class="settings-toggle-copy">
 
-                                    <div class="preference-icon">
-                                        ♢
-                                    </div>
+                                    <strong>
+                                        Notifications
+                                    </strong>
 
-                                    <div class="preference-text">
-
-                                        <strong>
-                                            Notifications
-                                        </strong>
-
-                                        <span>
-                                            Receive important money alerts.
-                                        </span>
-
-                                    </div>
+                                    <span>
+                                        Allow MoneyLeak to show financial alerts
+                                        and useful reminders.
+                                    </span>
 
                                 </div>
 
-                                <label class="switch">
-
-                                    <input
-                                        type="checkbox"
-                                        id="settingsNotifications"
-                                    >
-
-                                    <span class="switch-slider"></span>
-
-                                </label>
+                                <button
+                                    type="button"
+                                    class="toggle active"
+                                    id="notificationsToggle"
+                                    aria-label="Toggle notifications"
+                                ></button>
 
                             </div>
 
 
-                            <div class="preference-row">
+                            <div class="settings-toggle">
 
-                                <div class="preference-main">
+                                <div class="settings-toggle-copy">
 
-                                    <div class="preference-icon">
-                                        ✦
-                                    </div>
+                                    <strong>
+                                        Financial insights
+                                    </strong>
 
-                                    <div class="preference-text">
-
-                                        <strong>
-                                            Smart Insights
-                                        </strong>
-
-                                        <span>
-                                            Show personalized financial guidance.
-                                        </span>
-
-                                    </div>
+                                    <span>
+                                        Show intelligent observations about
+                                        your spending and cash flow.
+                                    </span>
 
                                 </div>
 
-                                <label class="switch">
-
-                                    <input
-                                        type="checkbox"
-                                        id="settingsInsights"
-                                    >
-
-                                    <span class="switch-slider"></span>
-
-                                </label>
+                                <button
+                                    type="button"
+                                    class="toggle active"
+                                    id="insightsToggle"
+                                    aria-label="Toggle insights"
+                                ></button>
 
                             </div>
 
 
-                            <div class="preference-row">
+                            <div class="settings-toggle">
 
-                                <div class="preference-main">
+                                <div class="settings-toggle-copy">
 
-                                    <div class="preference-icon">
-                                        ≈
-                                    </div>
+                                    <strong>
+                                        Compact numbers
+                                    </strong>
 
-                                    <div class="preference-text">
-
-                                        <strong>
-                                            Compact Numbers
-                                        </strong>
-
-                                        <span>
-                                            Display large amounts in shorter form.
-                                        </span>
-
-                                    </div>
+                                    <span>
+                                        Display large values in a shorter format
+                                        when possible.
+                                    </span>
 
                                 </div>
 
-                                <label class="switch">
-
-                                    <input
-                                        type="checkbox"
-                                        id="settingsCompactNumbers"
-                                    >
-
-                                    <span class="switch-slider"></span>
-
-                                </label>
+                                <button
+                                    type="button"
+                                    class="toggle"
+                                    id="compactNumbersToggle"
+                                    aria-label="Toggle compact numbers"
+                                ></button>
 
                             </div>
 
-                        </div>
 
-                    </section>
+                            <div class="settings-toggle">
 
-                </div>
+                                <div class="settings-toggle-copy">
 
+                                    <strong>
+                                        Dark mode
+                                    </strong>
 
-                <!-- RIGHT COLUMN -->
-                <div class="settings-column">
+                                    <span>
+                                        Switch between the light and dark
+                                        MoneyLeak experience.
+                                    </span>
 
-
-                    <!-- APPEARANCE -->
-                    <section class="settings-card">
-
-                        <div class="settings-card-header">
-
-                            <div class="settings-card-icon">
-                                ◐
-                            </div>
-
-                            <div>
-
-                                <div class="settings-card-title">
-                                    Appearance
                                 </div>
 
-                                <div class="settings-card-description">
-                                    Choose how MoneyLeak looks.
-                                </div>
+                                <button
+                                    type="button"
+                                    class="toggle"
+                                    id="settingsThemeToggle"
+                                    aria-label="Toggle dark mode"
+                                ></button>
 
                             </div>
-
-                        </div>
-
-
-                        <div class="theme-options">
-
-                            <button
-                                class="theme-option"
-                                data-theme-option="light"
-                                type="button"
-                            >
-
-                                <div class="theme-preview light-preview">
-                                    ☀
-                                </div>
-
-                                <strong>
-                                    Light
-                                </strong>
-
-                                <span>
-                                    Clean and bright
-                                </span>
-
-                            </button>
-
-
-                            <button
-                                class="theme-option"
-                                data-theme-option="dark"
-                                type="button"
-                            >
-
-                                <div class="theme-preview dark-preview">
-                                    ◐
-                                </div>
-
-                                <strong>
-                                    Dark
-                                </strong>
-
-                                <span>
-                                    Easy on the eyes
-                                </span>
-
-                            </button>
-
-
-                            <button
-                                class="theme-option"
-                                data-theme-option="system"
-                                type="button"
-                            >
-
-                                <div class="theme-preview system-preview">
-                                    ◑
-                                </div>
-
-                                <strong>
-                                    System
-                                </strong>
-
-                                <span>
-                                    Follow device
-                                </span>
-
-                            </button>
 
                         </div>
 
@@ -582,22 +844,23 @@
 
 
                     <!-- DATA -->
-                    <section class="settings-card">
+
+                    <section
+                        class="settings-card"
+                        id="data"
+                    >
 
                         <div class="settings-card-header">
-
-                            <div class="settings-card-icon">
-                                ⇅
-                            </div>
 
                             <div>
 
                                 <div class="settings-card-title">
-                                    Your Data
+                                    Your financial data
                                 </div>
 
                                 <div class="settings-card-description">
-                                    Backup or restore your MoneyLeak data.
+                                    Export a backup or restore MoneyLeak data
+                                    whenever you need it.
                                 </div>
 
                             </div>
@@ -607,243 +870,137 @@
 
                         <div class="data-actions">
 
-                            <button
-                                class="data-action"
-                                id="exportDataButton"
-                                type="button"
-                            >
 
-                                <span class="data-action-icon">
-                                    ↓
-                                </span>
+                            <div class="data-action">
 
-                                <span>
+                                <strong>
+                                    Export backup
+                                </strong>
 
-                                    <strong>
-                                        Export Data
-                                    </strong>
+                                <p>
+                                    Download your MoneyLeak data as a
+                                    backup file.
+                                </p>
 
-                                    <small>
-                                        Download a backup of your data.
-                                    </small>
-
-                                </span>
-
-                            </button>
-
-
-                            <button
-                                class="data-action"
-                                id="importDataButton"
-                                type="button"
-                            >
-
-                                <span class="data-action-icon">
-                                    ↑
-                                </span>
-
-                                <span>
-
-                                    <strong>
-                                        Import Data
-                                    </strong>
-
-                                    <small>
-                                        Restore a previous MoneyLeak backup.
-                                    </small>
-
-                                </span>
-
-                            </button>
-
-                        </div>
-
-
-                        <input
-                            type="file"
-                            id="importFile"
-                            accept=".json,application/json"
-                            hidden
-                        >
-
-                    </section>
-
-
-                    <!-- PRIVACY -->
-                    <section class="settings-card">
-
-                        <div class="settings-card-header">
-
-                            <div class="settings-card-icon">
-                                ✓
-                            </div>
-
-                            <div>
-
-                                <div class="settings-card-title">
-                                    Privacy
-                                </div>
-
-                                <div class="settings-card-description">
-                                    Understand where your financial data lives.
-                                </div>
+                                <button
+                                    type="button"
+                                    class="settings-button secondary"
+                                    id="exportData"
+                                >
+                                    Export data
+                                </button>
 
                             </div>
 
-                        </div>
 
+                            <div class="data-action">
 
-                        <div class="privacy-box">
+                                <strong>
+                                    Import backup
+                                </strong>
 
-                            <div class="status-pill">
-                                Local-first
+                                <p>
+                                    Restore data from a previous MoneyLeak
+                                    backup.
+                                </p>
+
+                                <input
+                                    type="file"
+                                    id="importData"
+                                    accept=".json,application/json"
+                                    hidden
+                                >
+
+                                <button
+                                    type="button"
+                                    class="settings-button secondary"
+                                    id="importDataButton"
+                                >
+                                    Import data
+                                </button>
+
                             </div>
-
-                            <p>
-                                Your MoneyLeak financial data is
-                                stored locally in your browser.
-                                It isn't automatically uploaded
-                                to a MoneyLeak server.
-                            </p>
 
                         </div>
 
                     </section>
 
 
-                    <!-- DANGER ZONE -->
-                    <section class="settings-card">
+                    <!-- DANGER -->
+
+                    <section
+                        class="settings-card danger-zone"
+                        id="danger"
+                    >
 
                         <div class="settings-card-header">
-
-                            <div class="settings-card-icon">
-                                !
-                            </div>
 
                             <div>
 
                                 <div class="settings-card-title">
-                                    Reset Data
+                                    Reset MoneyLeak
                                 </div>
 
                                 <div class="settings-card-description">
-                                    Permanently clear your local MoneyLeak data.
+                                    Permanently remove your locally stored
+                                    MoneyLeak financial data.
                                 </div>
 
                             </div>
+
+                        </div>
+
+
+                        <div class="settings-status">
+
+                            <span class="settings-status-dot"></span>
+
+                            Export a backup before resetting if you may need
+                            your current data later.
 
                         </div>
 
 
                         <button
-                            class="button button-danger"
-                            id="resetDataButton"
                             type="button"
+                            class="settings-button danger"
+                            id="resetAllData"
                         >
-                            Reset MoneyLeak Data
+                            Reset all financial data
                         </button>
 
                     </section>
+
 
                 </div>
 
             </div>
 
 
-            <!-- SYSTEM INFO -->
-            <section class="settings-card">
+            <footer class="page-footer">
 
-                <div class="settings-card-header">
+                <strong>
+                    MoneyLeak
+                </strong>
 
-                    <div class="settings-card-icon">
-                        ⓘ
-                    </div>
-
-                    <div>
-
-                        <div class="settings-card-title">
-                            System Information
-                        </div>
-
-                        <div class="settings-card-description">
-                            MoneyLeak application status.
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="score-mini-grid">
-
-                    <div>
-
-                        <span>
-                            Application
-                        </span>
-
-                        <strong>
-                            MoneyLeak
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Engine
-                        </span>
-
-                        <strong id="settingsEngineVersion">
-                            Intelligence
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Storage
-                        </span>
-
-                        <strong>
-                            Local
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- FOOTER -->
-            <footer class="app-footer">
-
-                <div>
-                    <strong>MoneyLeak</strong>
-                    <span>
-                        Personal Finance OS
-                    </span>
-                </div>
-
-                <div>
-                    Built for better financial decisions.
-                </div>
+                <span>
+                    Your money. Your decisions. Your control.
+                </span>
 
             </footer>
 
-        </div>
+        </section>
 
     </main>
 
 </div>
 
 
-<!-- SEARCH OVERLAY -->
+<!-- SEARCH -->
+
 <div
-    class="search-overlay"
     id="searchOverlay"
+    class="search-overlay"
     aria-hidden="true"
 >
 
@@ -853,52 +1010,45 @@
 
             <div>
 
-                <div class="search-modal-eyebrow">
-                    MONEYSEARCH
-                </div>
-
-                <h2>
+                <strong>
                     Search MoneyLeak
-                </h2>
+                </strong>
+
+                <span>
+                    Find pages, transactions and goals.
+                </span>
 
             </div>
 
             <button
-                class="search-close"
-                id="closeSearch"
                 type="button"
-                aria-label="Close search"
+                id="closeSearch"
+                class="search-close"
             >
                 ×
             </button>
 
         </div>
 
-        <div class="search-input-wrapper">
+
+        <div class="search-input-wrap">
 
             <span>⌕</span>
 
             <input
+                id="globalSearch"
                 type="search"
-                id="globalSearchInput"
-                placeholder="Search transactions, goals, budgets..."
+                placeholder="Search anything..."
                 autocomplete="off"
             >
 
-            <kbd>ESC</kbd>
-
         </div>
+
 
         <div
-            class="search-results"
             id="searchResults"
-        >
-
-            <div class="search-empty">
-                Start typing to search MoneyLeak.
-            </div>
-
-        </div>
+            class="search-results"
+        ></div>
 
     </div>
 
@@ -906,41 +1056,30 @@
 
 
 <!-- NOTIFICATIONS -->
+
 <div
-    class="notification-panel"
-    id="notificationPanel"
+    id="notificationCenter"
+    class="notification-center"
     aria-hidden="true"
 >
 
-    <div class="notification-panel-header">
+    <div class="notification-center-header">
 
         <div>
 
-            <div class="notification-heading">
-                NOTIFICATIONS
-            </div>
+            <strong>
+                Notifications
+            </strong>
 
-            <div class="notification-title-row">
-
-                <h2>
-                    Your Money
-                </h2>
-
-                <span
-                    class="notification-unread-badge"
-                    id="notificationUnreadCount"
-                >
-                    0
-                </span>
-
-            </div>
+            <span>
+                MoneyLeak intelligence
+            </span>
 
         </div>
 
         <button
-            class="notification-close"
-            id="closeNotifications"
             type="button"
+            id="closeNotifications"
         >
             ×
         </button>
@@ -948,70 +1087,73 @@
     </div>
 
 
-    <div class="notification-toolbar">
+    <div class="notification-tabs">
 
-        <div class="notification-tabs">
+        <button
+            type="button"
+            class="notification-tab active"
+            data-notification-tab="all"
+        >
+            All
+        </button>
 
-            <button
-                class="notification-tab active"
-                data-notification-filter="all"
-                type="button"
-            >
-                All
-            </button>
-
-            <button
-                class="notification-tab"
-                data-notification-filter="unread"
-                type="button"
-            >
-                Unread
-            </button>
-
-        </div>
-
-        <div class="notification-actions">
-
-            <button
-                class="notification-action"
-                id="markNotificationsRead"
-                type="button"
-            >
-                Mark read
-            </button>
-
-        </div>
+        <button
+            type="button"
+            class="notification-tab"
+            data-notification-tab="unread"
+        >
+            Unread
+        </button>
 
     </div>
 
 
     <div
-        class="notification-list"
         id="notificationList"
+        class="notification-list"
     ></div>
 
 </div>
 
 
-<!-- MOBILE NAV OVERLAY -->
 <div
-    class="mobile-nav-overlay"
-    id="mobileNavOverlay"
+    id="mobileBackdrop"
+    class="mobile-backdrop"
 ></div>
 
 
-<!-- TOAST -->
-<div
-    id="toast"
-    class="toast"
-    role="status"
-    aria-live="polite"
->
-    <span id="toastMessage"></span>
-</div>
+<script src="./app.js"></script>
 
 
-<script src="app.js"></script>
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const themeButton =
+        document.getElementById("settingsThemeToggle");
+
+    const mainTheme =
+        document.getElementById("themeToggle");
+
+    if (themeButton && mainTheme) {
+
+        themeButton.addEventListener("click", () => {
+
+            mainTheme.click();
+
+            themeButton.classList.toggle(
+                "active",
+                document.documentElement.classList.contains("dark") ||
+                document.body.classList.contains("dark")
+            );
+
+        });
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
