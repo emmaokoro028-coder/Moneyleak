@@ -6148,7 +6148,7 @@ $("#modalForm")
 
                 }
 
-            } else if (
+           } else if (
     modalMode === "goal"
 ) {
 
@@ -6164,12 +6164,14 @@ $("#modalForm")
             );
 
         if (!goal) {
+
             toast(
                 "Goal not found",
                 "The savings goal could not be updated."
             );
 
             closeModal();
+
             return;
         }
 
@@ -6209,6 +6211,8 @@ $("#modalForm")
             data.deadline || "";
 
         saveGoals(goals);
+
+        renderAll();
 
         toast(
             "Savings goal updated",
