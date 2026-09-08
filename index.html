@@ -7047,6 +7047,58 @@ document.addEventListener(
 
     }
 );
+
+/* =========================================================
+   DELETE CATEGORY BUDGET
+========================================================= */
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                "[data-delete-category-budget]"
+            );
+
+        if (!button) {
+            return;
+        }
+
+        const category =
+            button.dataset.deleteCategoryBudget;
+
+        const confirmed =
+            confirm(
+                `Delete the ${category} budget?`
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        const budgets =
+            read(
+                KEYS.categoryBudgets,
+                {}
+            );
+
+        delete budgets[category];
+
+        write(
+            KEYS.categoryBudgets,
+            budgets
+        );
+
+        renderAll();
+
+        toast(
+            "Category budget deleted",
+            `${category} budget has been removed.`
+        );
+
+    }
+);
    
 /* =========================================================
    SEARCH
