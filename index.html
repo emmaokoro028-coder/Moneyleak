@@ -6972,7 +6972,82 @@ $("#setBudgetBtn")
         }
     );
 
+/* =========================================================
+   CATEGORY BUDGET ACTIONS
+========================================================= */
 
+document.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                "[data-set-category-budget]"
+            );
+
+        if (!button) {
+            return;
+        }
+
+        const category =
+            button.dataset
+                .setCategoryBudget;
+
+        const budgets =
+            read(
+                KEYS.categoryBudgets,
+                {}
+            );
+
+        const current =
+            num(
+                budgets[category]
+            );
+
+        const value =
+            prompt(
+                `Enter a budget for ${category}:`,
+                current || ""
+            );
+
+        if (
+            value === null
+        ) {
+            return;
+        }
+
+        const amount =
+            num(value);
+
+        if (
+            amount <= 0
+        ) {
+            toast(
+                "Invalid budget",
+                "Enter a budget greater than zero."
+            );
+
+            return;
+        }
+
+        budgets[category] =
+            amount;
+
+        write(
+            KEYS.categoryBudgets,
+            budgets
+        );
+
+        renderAll();
+
+        toast(
+            "Category budget saved",
+            `${category} budget has been set to ${formatCurrency(amount)}.`
+        );
+
+    }
+);
+   
 /* =========================================================
    SEARCH
 ========================================================= */
