@@ -1,115 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b8f68">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MoneyLeak — Income</title>
 <style>
-:root{--bg:#f5f8f7;--card:#fff;--text:#10251f;--muted:#6d7e78;--line:#e1ebe7;--accent:#0b8f68;--soft:#e7f7f1;--danger:#d94b5b;--shadow:0 10px 30px rgba(16,37,31,.07)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{min-height:100vh;display:flex}.sidebar{position:fixed;inset:0 auto 0 0;width:250px;background:var(--card);border-right:1px solid var(--line);padding:24px 16px}.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 26px;font-weight:850;font-size:21px}.logo{width:40px;height:40px;border-radius:13px;background:var(--soft);display:grid;place-items:center;color:var(--accent);font-weight:900}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:var(--muted);padding:12px 13px;border-radius:13px;text-align:left;font-weight:650;cursor:pointer}.nav button:hover,.nav button.active{background:var(--soft);color:var(--accent)}.bottom{position:absolute;bottom:20px;left:16px;right:16px}.main{margin-left:250px;width:calc(100% - 250px);padding:28px;max-width:1450px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}.top h1{margin:0;font-size:30px;letter-spacing:-.8px}.top p{margin:6px 0;color:var(--muted)}.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 14px;border-radius:12px;font-weight:750;cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.danger{color:var(--danger)}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}.label{color:var(--muted);font-size:13px;font-weight:700}.value{font-size:27px;font-weight:850;margin-top:8px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.head h2{font-size:17px;margin:0}.filters{display:flex;gap:9px;margin-bottom:12px}.filters input,.filters select,.form input,.form select{border:1px solid var(--line);background:var(--card);color:var(--text);padding:11px 12px;border-radius:11px;outline:none}.filters input{flex:1}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:13px 9px;border-bottom:1px solid var(--line);font-size:14px}.table th{color:var(--muted);font-size:12px}.income{color:var(--accent);font-weight:800}.empty{text-align:center;color:var(--muted);padding:35px 10px}.form{display:grid;gap:12px}.field{display:grid;gap:7px}.field label{font-size:13px;font-weight:750}.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:5px}.overlay{position:fixed;inset:0;background:rgba(4,15,12,.48);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}.overlay.open{display:flex}.modal{width:min(520px,100%);background:var(--card);border-radius:21px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.2)}.modal h2{margin:0 0 16px}.toast{position:fixed;right:20px;bottom:20px;background:var(--text);color:#fff;padding:13px 16px;border-radius:12px;display:none}.toast.show{display:block}body.dark{--bg:#0b1512;--card:#10201b;--text:#edf7f3;--muted:#91a8a0;--line:#213932;--soft:#163a30;--accent:#20b886;--shadow:0 10px 30px rgba(0,0,0,.2)}@media(max-width:900px){.layout{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}}@media(max-width:700px){.sidebar{display:none}.main{margin:0;width:100%;padding:16px}.top{display:block}.top .btn{margin-top:10px}.summary{grid-template-columns:1fr}.filters{flex-direction:column}.table th:nth-child(3),.table td:nth-child(3){display:none}}
+:root{--bg:#071b16;--sidebar:#0a211c;--card:#0d2721;--card2:#102d26;--border:#183e33;--text:#eef8f4;--muted:#91aaa2;--green:#20c997;--red:#ff5a67;--input:#0b211c;--shadow:0 12px 30px rgba(0,0,0,.18)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+body.light{--bg:#f5f8f7;--sidebar:#fff;--card:#fff;--card2:#f2f6f4;--border:#dce8e3;--text:#16231f;--muted:#6e7d77;--input:#f7faf9;--shadow:0 8px 24px rgba(20,50,40,.08)}
+button,input,select{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}.layout{display:flex;min-height:100vh}.sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:var(--sidebar);border-right:1px solid var(--border);padding:27px 15px;z-index:5}.brand{font-size:22px;font-weight:800;padding:5px 12px 30px}.brand-mark{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#123b31;color:var(--green);margin-right:10px}.brand-name{vertical-align:middle}.nav a{display:flex;align-items:center;gap:13px;padding:12px 14px;margin:4px 0;border-radius:12px;color:var(--muted);font-size:15px;font-weight:650}.nav a:hover{background:var(--card2);color:var(--text)}.nav a.active{background:#123d31;color:var(--green)}.nav-icon{width:18px;text-align:center}.bottom{position:absolute;left:15px;right:15px;bottom:22px}.theme,.reset{width:100%;background:transparent;color:var(--text);border:1px solid var(--border);padding:11px;border-radius:11px;font-weight:700}.reset{margin-top:8px;color:var(--red)}
+.main{margin-left:250px;width:calc(100% - 250px);padding:32px 34px 50px;max-width:1500px}.header{display:flex;justify-content:space-between;align-items:flex-start;gap:25px;margin-bottom:28px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--green);font-weight:800;margin-bottom:7px}.header h1{font-size:31px;margin:0 0 6px;letter-spacing:-.7px}.header p{margin:0;color:var(--muted);font-size:14px}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--border);background:var(--card);color:var(--text);padding:10px 14px;border-radius:10px;font-weight:750}.btn.primary{background:var(--green);border-color:var(--green);color:#062018}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.stat{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:20px;box-shadow:var(--shadow)}.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:800}.value{font-size:27px;font-weight:850;margin-top:9px}.green{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:17px;box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:17px}.filters{display:flex;gap:8px;flex-wrap:wrap}.filters input,.filters select{background:var(--input);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:10px 11px;outline:0;font-size:13px}.filters input:focus,.filters select:focus{border-color:var(--green)}table{width:100%;border-collapse:collapse}.table-wrap{overflow:auto}th,td{text-align:left;padding:15px 21px;border-bottom:1px solid var(--border);white-space:nowrap}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.07em}td{font-size:13px}tr:last-child td{border-bottom:0}.category{display:inline-block;background:#12362d;color:#a8c7bc;padding:5px 9px;border-radius:7px;font-size:11px;font-weight:750}body.light .category{background:#edf5f1;color:#41665a}.amount{font-weight:850}.delete{border:0;background:none;color:var(--red);font-size:12px;font-weight:750}.empty{text-align:center;padding:55px 20px;color:var(--muted);font-size:14px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:20;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-box{width:min(470px,100%);background:var(--card);border:1px solid var(--border);border-radius:17px;padding:25px}.modal-box h2{margin:0 0 5px}.modal-box p{margin:0 0 20px;color:var(--muted);font-size:13px}.form-group{margin:14px 0}.form-group label{display:block;font-size:12px;font-weight:750;margin-bottom:6px}.form-group input,.form-group select{width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--input);color:var(--text);outline:0}.form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.toast{position:fixed;right:24px;bottom:24px;background:#eaf8f3;color:#0a3528;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:750;display:none;z-index:30}.toast.show{display:block}
+@media(max-width:850px){.sidebar{position:static;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border);padding:15px}.layout{display:block}.main{margin-left:0;width:100%;padding:21px}.brand{padding:4px 8px 15px}.nav{display:flex;overflow-x:auto}.nav a{white-space:nowrap}.bottom{position:static;margin-top:12px;display:flex;gap:8px}.bottom button{margin:0}.stats{grid-template-columns:1fr}.header{flex-direction:column}}
 </style>
 </head>
 <body>
-<div class="app">
-<aside class="sidebar">
-  <div class="brand"><div class="logo">₦</div>MoneyLeak</div>
-  <nav class="nav">
-    <button data-page="index.html">⌂ &nbsp; Dashboard</button>
-    <button class="active">↗ &nbsp; Income</button>
-    <button data-page="expenses.html">↘ &nbsp; Expenses</button>
-    <button data-page="budgets.html">▣ &nbsp; Budgets</button>
-    <button data-page="savings.html">◎ &nbsp; Savings goals</button>
-    <button data-page="recurring.html">↻ &nbsp; Recurring</button>
-    <button data-page="analytics.html">◈ &nbsp; Analytics</button>
-    <button id="settingsBtn">⚙ &nbsp; Settings</button>
-  </nav>
-  <div class="bottom"><button class="btn" id="themeBtn">☾ Toggle theme</button></div>
+<div class="layout"><aside class="sidebar">
+<div class="brand"><span class="brand-mark">₦</span><span class="brand-name">MoneyLeak</span></div>
+<nav class="nav">
+<a href="index.html"><span class="nav-icon">⌂</span>Dashboard</a><a class="active" href="income.html"><span class="nav-icon">↗</span>Income</a><a href="expenses.html"><span class="nav-icon">↘</span>Expenses</a><a href="budgets.html"><span class="nav-icon">▣</span>Budgets</a><a href="savings.html"><span class="nav-icon">◎</span>Savings goals</a><a href="recurring.html"><span class="nav-icon">↻</span>Recurring</a><a href="analytics.html"><span class="nav-icon">◇</span>Analytics</a><a href="settings.html"><span class="nav-icon">⚙</span>Settings</a>
+</nav><div class="bottom"><button class="theme" id="theme">☾ Toggle dark</button><button class="reset" id="reset">Reset local data</button></div>
 </aside>
-
 <main class="main">
-<header class="top">
-  <div><h1>Income</h1><p>Manage every source of money coming in.</p></div>
-  <button class="btn primary" id="addBtn">+ Add income</button>
-</header>
-
-<section class="summary">
- <article class="card"><div class="label">This month</div><div class="value" id="monthTotal">₦0</div></article>
- <article class="card"><div class="label">All income</div><div class="value" id="allTotal">₦0</div></article>
- <article class="card"><div class="label">Income sources</div><div class="value" id="sourceCount">0</div></article>
-</section>
-
-<section class="layout">
- <article class="card">
-  <div class="head"><h2>Income history</h2><span id="count" style="color:var(--muted);font-size:12px"></span></div>
-  <div class="filters"><input id="search" placeholder="Search income…"><select id="categoryFilter"><option value="">All categories</option><option>Salary</option><option>Business</option><option>Freelance</option><option>Investment</option><option>Gift</option><option>Other</option></select></div>
-  <div style="overflow:auto"><table class="table"><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
- </article>
- <aside class="card">
-   <div class="head"><h2>Income tips</h2></div>
-   <div style="color:var(--muted);font-size:14px;line-height:1.65">
-     <p><strong style="color:var(--text)">Track everything.</strong><br>Small income sources add up and make your financial picture more accurate.</p>
-     <p><strong style="color:var(--text)">Separate sources.</strong><br>Use categories to see whether salary, business or freelance work is growing.</p>
-     <p><strong style="color:var(--text)">Pay yourself first.</strong><br>When income arrives, move a planned amount toward savings before discretionary spending.</p>
-   </div>
- </aside>
-</section>
-</main>
-</div>
-
-<div class="overlay" id="overlay"><div class="modal">
-<h2>Add income</h2>
-<form class="form" id="form">
-<div class="field"><label>Amount</label><input id="amount" type="number" min="0.01" step="0.01" required placeholder="e.g. 150000"></div>
-<div class="field"><label>Description / source</label><input id="description" required placeholder="e.g. Monthly salary"></div>
-<div class="field"><label>Category</label><select id="category"><option>Salary</option><option>Business</option><option>Freelance</option><option>Investment</option><option>Gift</option><option>Other</option></select></div>
-<div class="field"><label>Date</label><input id="date" type="date" required></div>
-<div class="actions"><button type="button" class="btn" id="cancel">Cancel</button><button class="btn primary">Save income</button></div>
-</form>
-</div></div>
-
-<div class="overlay" id="settingsOverlay"><div class="modal"><h2>Settings</h2><div class="form">
-<button class="btn" id="exportBtn">Export backup JSON</button>
-<button class="btn" id="closeSettings">Close</button>
-</div></div></div>
+<header class="header"><div><div class="eyebrow">Money coming in</div><h1>Income</h1><p>Track every source of income and keep your cash flow accurate.</p></div><div class="actions"><button class="btn" id="export">Export backup</button><button class="btn primary" id="add">+ Add income</button></div></header>
+<section class="stats"><div class="stat"><div class="label">This month</div><div class="value green" id="month">₦0.00</div></div><div class="stat"><div class="label">All income</div><div class="value green" id="all">₦0.00</div></div><div class="stat"><div class="label">Transactions</div><div class="value" id="count">0</div></div></section>
+<section class="panel"><div class="panel-head"><h2>Income history</h2><div class="filters"><input id="search" type="search" placeholder="Search"><select id="category"><option value="">All sources</option><option>Salary</option><option>Business</option><option>Freelance</option><option>Investment</option><option>Gift</option><option>Other</option></select><input id="month" type="month"></div></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Source</th><th>Amount</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table><div class="empty" id="empty">No income found.</div></div></section>
+</main></div>
+<div class="modal" id="modal"><div class="modal-box"><h2>Add income</h2><p>Record money you received so your dashboard stays accurate.</p><div class="form-group"><label>Description</label><input id="desc" placeholder="e.g. Monthly salary"></div><div class="form-group"><label>Amount (₦)</label><input id="amount" type="number" min="0" step="0.01" placeholder="150000"></div><div class="form-group"><label>Source</label><select id="cat"><option>Salary</option><option>Business</option><option>Freelance</option><option>Investment</option><option>Gift</option><option>Other</option></select></div><div class="form-group"><label>Date</label><input id="date" type="date"></div><div class="form-actions"><button class="btn" id="cancel">Cancel</button><button class="btn primary" id="save">Save income</button></div></div></div>
 <div class="toast" id="toast"></div>
-
 <script>
-(()=>{"use strict";
-const KEY="moneyLeakTransactions";
-const $=id=>document.getElementById(id);
-const read=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch{return[]}};
-const write=v=>localStorage.setItem(KEY,JSON.stringify(v));
-const money=n=>"₦"+Number(n||0).toLocaleString("en-NG",{maximumFractionDigits:2});
-const today=()=>new Date().toISOString().slice(0,10);
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function month(d){const x=new Date(d),n=new Date();return x.getFullYear()===n.getFullYear()&&x.getMonth()===n.getMonth()}
-function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2200)}
+const KEY="moneyLeakTransactions",SET="moneyLeakSettings";
+function tx(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch{return[]}}
+function income(){return tx().filter(t=>String(t.type||"").toLowerCase()==="income")}
+function money(n){return"₦"+Number(n||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function settings(){try{return JSON.parse(localStorage.getItem(SET)||"{}")}catch{return{}}}
+function theme(){const d=!!settings().dark;document.body.classList.toggle("light",!d);document.getElementById("theme").textContent=d?"☀ Toggle light":"☾ Toggle dark"}
+function today(){return new Date().toISOString().slice(0,10)}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function toast(x){const e=document.getElementById("toast");e.textContent=x;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),2200)}
 function render(){
- const list=read().filter(x=>x.type==="income").sort((a,b)=>new Date(b.date)-new Date(a.date));
- const total=list.reduce((s,x)=>s+Number(x.amount),0),mt=list.filter(x=>month(x.date)).reduce((s,x)=>s+Number(x.amount),0);
- $("monthTotal").textContent=money(mt);$("allTotal").textContent=money(total);
- $("sourceCount").textContent=new Set(list.map(x=>x.category||"Other")).size;
- const q=$("search").value.toLowerCase(),cat=$("categoryFilter").value;
- const filtered=list.filter(x=>(`${x.description} ${x.category}`.toLowerCase().includes(q))&&(!cat||x.category===cat));
- $("count").textContent=filtered.length+" records";
- $("rows").innerHTML=filtered.length?filtered.map(x=>`<tr><td>${esc(x.date)}</td><td><strong>${esc(x.description||"Income")}</strong></td><td>${esc(x.category||"Other")}</td><td class="income">+${money(x.amount)}</td><td><button class="btn danger delete" data-id="${esc(x.id)}">Delete</button></td></tr>`).join(""):`<tr><td colspan="5" class="empty">No income records yet.</td></tr>`;
- document.querySelectorAll(".delete").forEach(b=>b.onclick=()=>{if(confirm("Delete this income record?")){write(read().filter(x=>x.id!==b.dataset.id));render();toast("Income deleted.")}});
+ const all=income(),m=today().slice(0,7);document.getElementById("month").textContent=money(all.filter(t=>String(t.date||"").slice(0,7)===m).reduce((a,t)=>a+Number(t.amount||0),0));document.getElementById("all").textContent=money(all.reduce((a,t)=>a+Number(t.amount||0),0));document.getElementById("count").textContent=all.length;
+ const q=document.getElementById("search").value.trim().toLowerCase(),c=document.getElementById("category").value,mo=document.getElementById("month").value;
+ const list=all.filter(t=>{const text=[t.description,t.category,t.date].join(" ").toLowerCase();return(!q||text.includes(q))&&(!c||t.category===c)&&(!mo||String(t.date||"").slice(0,7)===mo)}).sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+ const rows=document.getElementById("rows");rows.innerHTML="";document.getElementById("empty").style.display=list.length?"none":"block";
+ list.forEach(t=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${esc(t.date||"—")}</td><td>${esc(t.description||"Income")}</td><td><span class="category">${esc(t.category||"Other")}</span></td><td class="amount green">+${money(t.amount)}</td><td><button class="delete" data-delete="${esc(String(t.id))}">Delete</button></td>`;rows.appendChild(tr)})
 }
-$("addBtn").onclick=()=>{$("form").reset();$("date").value=today();$("overlay").classList.add("open");setTimeout(()=>$("amount").focus(),50)};
-$("cancel").onclick=()=>$("overlay").classList.remove("open");
-$("overlay").onclick=e=>{if(e.target===$("overlay"))$("overlay").classList.remove("open")};
-$("form").onsubmit=e=>{e.preventDefault();const amount=Number($("amount").value);if(!amount||amount<=0)return;const list=read();list.push({id:uid(),type:"income",amount,description:$("description").value.trim(),category:$("category").value,date:$("date").value||today()});write(list);$("overlay").classList.remove("open");render();toast("Income saved.")};
-$("search").oninput=render;$("categoryFilter").onchange=render;
-document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>location.href=b.dataset.page);
-$("themeBtn").onclick=()=>{document.body.classList.toggle("dark");localStorage.setItem("moneyLeakDark",document.body.classList.contains("dark"))};
-if(localStorage.getItem("moneyLeakDark")==="true")document.body.classList.add("dark");
-$("settingsBtn").onclick=()=>$("settingsOverlay").classList.add("open");
-$("closeSettings").onclick=()=>$("settingsOverlay").classList.remove("open");
-$("exportBtn").onclick=()=>{const data={transactions:read(),monthlyBudget:localStorage.getItem("moneyLeakMonthlyBudget"),savingsGoals:JSON.parse(localStorage.getItem("moneyLeakSavingsGoals")||"[]"),categoryBudgets:JSON.parse(localStorage.getItem("moneyLeakCategoryBudgets")||"{}")};const a=document.createElement("a"),url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));a.href=url;a.download="moneyleak-backup-"+today()+".json";a.click();URL.revokeObjectURL(url);toast("Backup exported.")};
-render();
-})();
+function open(){document.getElementById("date").value=today();document.getElementById("modal").classList.add("show");setTimeout(()=>document.getElementById("desc").focus(),30)}
+function close(){document.getElementById("modal").classList.remove("show")}
+function add(){
+ const description=document.getElementById("desc").value.trim(),amount=Number(document.getElementById("amount").value),category=document.getElementById("cat").value,date=document.getElementById("date").value||today();
+ if(!description)return toast("Enter a description.");if(!Number.isFinite(amount)||amount<=0)return toast("Enter a valid amount.");
+ const data=tx();data.push({id:Date.now().toString(),type:"income",description,amount,category,date,createdAt:new Date().toISOString()});localStorage.setItem(KEY,JSON.stringify(data));document.getElementById("desc").value="";document.getElementById("amount").value="";close();render();toast("Income added.")
+}
+document.getElementById("add").onclick=open;document.getElementById("cancel").onclick=close;document.getElementById("save").onclick=add;document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")close()};document.getElementById("theme").onclick=()=>{const s=settings();s.dark=!s.dark;localStorage.setItem(SET,JSON.stringify(s));theme()};["search","category","month"].forEach(id=>document.getElementById(id).addEventListener("input",render));
+document.getElementById("rows").onclick=e=>{const b=e.target.closest("[data-delete]");if(!b)return;if(!confirm("Delete this income entry?"))return;localStorage.setItem(KEY,JSON.stringify(tx().filter(t=>String(t.id)!==String(b.dataset.delete))));render();toast("Income deleted.")};
+document.getElementById("reset").onclick=()=>{if(confirm("Reset all MoneyLeak local data? This cannot be undone.")){localStorage.clear();location.reload()}};
+document.getElementById("export").onclick=()=>{const b={version:1,exportedAt:new Date().toISOString(),transactions:localStorage.getItem(KEY),monthlyBudget:localStorage.getItem("moneyLeakMonthlyBudget"),categoryBudgets:localStorage.getItem("moneyLeakCategoryBudgets"),savingsGoals:localStorage.getItem("moneyLeakSavingsGoals"),recurring:localStorage.getItem("moneyLeakRecurring"),settings:localStorage.getItem(SET)};const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(b,null,2)],{type:"application/json"}));a.download="moneyleak-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+theme();render();
 </script>
 </body>
 </html>
