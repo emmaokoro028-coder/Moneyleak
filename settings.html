@@ -1,100 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MoneyLeak — Settings</title>
-<style>
-:root{--bg:#f4f7f5;--surface:#fff;--surface2:#f8faf9;--sidebar:#063b2f;--sidebar2:#0a493a;--text:#12251f;--muted:#70827b;--line:#dce7e2;--green:#12b886;--greenDark:#087b5d;--red:#f0525f;--shadow:0 10px 30px rgba(12,45,35,.06);--radius:16px}
-body.dark{--bg:#061914;--surface:#0a241d;--surface2:#0d2b23;--sidebar:#041b15;--sidebar2:#073226;--text:#edf7f3;--muted:#91aaa2;--line:#183d32;--green:#20c997;--greenDark:#18b98a;--red:#ff5c68;--shadow:0 14px 35px rgba(0,0,0,.2)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,select{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}.sidebar{width:244px;background:var(--sidebar);color:#fff;padding:26px 16px;position:fixed;inset:0 auto 0 0}.brand{font-size:22px;font-weight:800;letter-spacing:-.6px;padding:0 14px 30px}.brand span{color:#65dfb9}.nav-title{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:#8eb3a7;padding:12px 14px 8px}.nav a{display:flex;align-items:center;gap:12px;color:#b9d1c9;text-decoration:none;padding:11px 14px;border-radius:10px;margin:3px 0}.nav a:hover,.nav a.active{background:var(--sidebar2);color:#fff}.nav a.active{box-shadow:inset 3px 0 0 var(--green)}.icon{width:18px;text-align:center}.profile{position:absolute;bottom:20px;left:16px;right:16px;padding:13px 14px;border-top:1px solid rgba(255,255,255,.1);color:#c6d9d3}.main{margin-left:244px;width:calc(100% - 244px);padding:30px 36px 50px}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:28px}.eyebrow{font-size:12px;color:var(--muted);margin-bottom:7px}.title{font-size:30px;letter-spacing:-1px;font-weight:750;margin:0}.subtitle{color:var(--muted);margin-top:7px}.btn{border:1px solid var(--line);background:var(--surface);color:var(--text);padding:10px 15px;border-radius:10px;font-weight:650}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}.section{margin-bottom:20px}.section:last-child{margin-bottom:0}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.section h2{font-size:16px;margin:0}.muted{font-size:12px;color:var(--muted)}.setting{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:15px 0;border-top:1px solid var(--line)}.setting:first-of-type{border-top:0}.setting strong{display:block;font-size:13px;margin-bottom:4px}.setting span{display:block;font-size:12px;color:var(--muted);line-height:1.45}.control{min-width:130px}input,select{width:100%;padding:10px 11px;border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:9px;outline:none}input:focus,select:focus{border-color:var(--green)}.switch{width:45px;height:25px;border-radius:99px;background:var(--line);border:0;position:relative;flex:none}.switch i{position:absolute;width:19px;height:19px;top:3px;left:3px;background:#fff;border-radius:50%;transition:.2s}.switch.on{background:var(--green)}.switch.on i{left:23px}.buttons{display:flex;gap:10px;flex-wrap:wrap}.btn.primary{background:var(--green);border-color:var(--green);color:#fff}.btn.danger{color:var(--red);border-color:var(--red);background:transparent}.notice{padding:13px 14px;background:var(--surface2);border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.55}
-@media(max-width:900px){.sidebar{width:205px}.main{margin-left:205px;width:calc(100% - 205px);padding:24px}.grid{grid-template-columns:1fr}}
-@media(max-width:650px){.sidebar{position:static;width:100%;min-height:auto}.profile{display:none}.app{display:block}.main{margin:0;width:100%;padding:20px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.top{display:block}.grid{grid-template-columns:1fr}.setting{align-items:flex-start;flex-direction:column}.control{width:100%;min-width:0}}
-</style>
-</head>
-<body>
-<div class="app">
-<aside class="sidebar">
-<div class="brand">Money<span>Leak</span></div><div class="nav-title">Workspace</div>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MoneyLeak — Settings</title><style>
+:root{--bg:#061914;--surface:#0a241d;--surface2:#0d2b23;--sidebar:#041b15;--sidebar2:#073226;--top:#05251d;--text:#edf7f3;--muted:#91aaa2;--line:#183d32;--green:#20c997;--green2:#12b886;--red:#ff5c68;--yellow:#f5c451;--shadow:0 14px 35px rgba(0,0,0,.20);--radius:15px}
+body.light{--bg:#f4f7f5;--surface:#fff;--surface2:#f8faf9;--sidebar:#063b2f;--sidebar2:#0a493a;--top:#052f25;--text:#12251f;--muted:#70827b;--line:#dce7e2;--green:#12b886;--green2:#087b5d;--red:#f0525f;--yellow:#c99312;--shadow:0 10px 30px rgba(12,45,35,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:flex}.sidebar{width:244px;position:fixed;inset:0 auto 0 0;background:var(--sidebar);color:#fff;padding:25px 14px;z-index:5}.brand{font-size:21px;font-weight:800;letter-spacing:-.6px;padding:0 14px 28px}.brand b{color:var(--green)}.nav-title{font-size:10px;letter-spacing:1.5px;color:#8eb3a7;padding:12px 14px 7px}.nav a{display:flex;align-items:center;gap:11px;color:#b9d1c9;text-decoration:none;padding:10px 13px;border-radius:10px;margin:3px 0;font-weight:600}.nav a:hover,.nav a.active{background:var(--sidebar2);color:#fff}.nav a.active{box-shadow:inset 3px 0 0 var(--green)}.icon{width:18px;text-align:center}.profile{position:absolute;bottom:18px;left:14px;right:14px;border-top:1px solid rgba(255,255,255,.1);padding:13px 14px;color:#c6d9d3}.profile small{color:#8eb3a7}.main{margin-left:244px;width:calc(100% - 244px);min-width:0}.topbar{height:70px;background:var(--top);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 30px;position:sticky;top:0;z-index:4}.search{flex:1;max-width:360px;background:transparent;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:10px 12px;outline:none}.top-actions{margin-left:auto;display:flex;gap:9px}.topbtn,.btn{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:10px;padding:10px 14px;font-weight:700}.topbtn{background:transparent;color:#d5e7e1}.btn.primary{background:var(--green);border-color:var(--green);color:#05251d}.content{padding:30px 36px 55px}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:24px}.eyebrow{font-size:11px;letter-spacing:1.5px;color:var(--green);font-weight:800;margin-bottom:7px}.title{font-size:30px;letter-spacing:-1px;margin:0;font-weight:800}.subtitle{color:var(--muted);margin-top:7px;line-height:1.45}.actions{display:flex;gap:9px;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.stat{padding:19px}.stat-label{font-size:10px;letter-spacing:1.2px;color:var(--muted);font-weight:800}.stat-value{font-size:25px;font-weight:800;margin-top:8px;letter-spacing:-.6px}.positive{color:var(--green)}.negative{color:var(--red)}.stat-note{font-size:11px;color:var(--muted);margin-top:5px}.grid{display:grid;grid-template-columns:1.4fr .8fr;gap:18px}.panel{padding:21px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}.panel h2{font-size:16px;margin:0}.muted{color:var(--muted);font-size:12px}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:620px}.table th{font-size:9px;letter-spacing:1.1px;color:var(--muted);text-align:left;padding:0 9px 12px}.table td{padding:13px 9px;border-top:1px solid var(--line);font-size:12px}.table th:first-child,.table td:first-child{padding-left:0}.table th:last-child,.table td:last-child{text-align:right;padding-right:0}.delete{background:none;border:0;color:var(--red);font-weight:700}.form{display:grid;gap:12px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;font-size:10px;letter-spacing:.7px;color:var(--muted);font-weight:800}.field input,.field select{width:100%;margin-top:6px;padding:10px 11px;border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:9px;outline:none}.field input:focus,.field select:focus{border-color:var(--green)}.empty{text-align:center;padding:30px;color:var(--muted)}.bars{height:230px;display:flex;align-items:end;gap:10px;border-bottom:1px solid var(--line);padding:10px 4px 4px}.bar-group{height:100%;flex:1;display:flex;align-items:end;justify-content:center;gap:4px;position:relative}.bar{width:15px;border-radius:4px 4px 0 0;background:var(--green);min-height:2px}.bar.exp{background:var(--red)}.bar-label{position:absolute;bottom:-22px;color:var(--muted);font-size:9px}.legend{margin-top:28px;display:flex;gap:16px;color:var(--muted);font-size:11px}.dot{width:7px;height:7px;display:inline-block;border-radius:50%;background:var(--green);margin-right:5px}.dot.red{background:var(--red)}.progress{height:7px;background:var(--line);border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--green);border-radius:99px}.goal,.insight{padding:15px;border:1px solid var(--line);border-radius:11px;background:var(--surface2)}.goal+ .goal,.insight+.insight{margin-top:10px}.goal-head{display:flex;justify-content:space-between;gap:10px}.goal-name{font-weight:750}.goal-amount{font-weight:800}.goal-foot{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--muted)}.badge{display:inline-flex;padding:4px 7px;border-radius:999px;background:rgba(32,201,151,.1);color:var(--green);font-size:10px;font-weight:800}.category{display:grid;grid-template-columns:85px 1fr 65px;gap:9px;align-items:center;margin:12px 0}.category strong{font-size:11px}.category .value{text-align:right;font-size:11px;font-weight:750}.ring{width:145px;height:145px;border-radius:50%;margin:4px auto 15px;display:grid;place-items:center;background:conic-gradient(var(--green) var(--pct),var(--line) 0)}.ring:after{content:"";width:105px;height:105px;border-radius:50%;background:var(--surface);position:absolute}.ring span{position:relative;z-index:1;font-size:23px;font-weight:800}.notice{padding:13px 14px;border:1px solid var(--line);background:var(--surface2);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.5}.setting{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:15px 0;border-top:1px solid var(--line)}.setting:first-of-type{border-top:0}.setting strong{display:block;font-size:13px;margin-bottom:4px}.switch{width:44px;height:24px;border:0;border-radius:99px;background:var(--line);position:relative}.switch i{position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:white;transition:.2s}.switch.on{background:var(--green)}.switch.on i{left:23px}.buttons{display:flex;gap:9px;flex-wrap:wrap}
+@media(max-width:1000px){.sidebar{width:205px}.main{margin-left:205px;width:calc(100% - 205px)}.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+@media(max-width:650px){.sidebar{position:static;width:100%;height:auto}.profile{display:none}.app{display:block}.main{margin:0;width:100%}.topbar{padding:0 15px}.search{max-width:none}.top-actions .topbtn:first-child{display:none}.content{padding:20px}.heading{display:block}.actions{margin-top:15px}.stats{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+</style></head><body>
+<div class="app"><aside class="sidebar">
+<div class="brand">Money<b>Leak</b></div>
+<div class="nav-title">Overview</div>
 <nav class="nav">
-<a href="index.html"><span class="icon">⌂</span>Dashboard</a><a href="income.html"><span class="icon">＋</span>Income</a><a href="expenses.html"><span class="icon">−</span>Expenses</a><a href="budgets.html"><span class="icon">▣</span>Budgets</a><a href="savings.html"><span class="icon">◇</span>Savings Goals</a><a href="recurring.html"><span class="icon">↻</span>Recurring</a><a href="analytics.html"><span class="icon">⌁</span>Analytics</a>
-<div class="nav-title">Account</div><a class="active" href="settings.html"><span class="icon">⚙</span>Settings</a>
-</nav><div class="profile"><strong>MoneyLeak</strong><br><small>Personal finance</small></div>
-</aside>
-<main class="main">
-<div class="top"><div><div class="eyebrow">PREFERENCES & DATA</div><h1 class="title">Settings</h1><div class="subtitle">Control your MoneyLeak experience and protect your financial data.</div></div></div>
-
-<div class="grid">
-<div>
-<section class="card section"><div class="section-head"><h2>Appearance</h2><span class="muted">Personalize your workspace</span></div>
-<div class="setting"><div><strong>Theme</strong><span>Choose how MoneyLeak looks across every page.</span></div><div class="control"><select id="theme"><option value="light">Light</option><option value="dark">Dark</option></select></div></div>
-<div class="setting"><div><strong>Currency</strong><span>Currency used when entering and displaying amounts.</span></div><div class="control"><select id="currency"><option value="NGN">₦ Nigerian Naira</option><option value="USD">$ US Dollar</option><option value="GBP">£ British Pound</option><option value="EUR">€ Euro</option></select></div></div>
-</section>
-
-<section class="card section"><div class="section-head"><h2>Notifications</h2><span class="muted">Stay informed</span></div>
-<div class="setting"><div><strong>Budget alerts</strong><span>Show alerts when spending approaches a budget limit.</span></div><button class="switch" id="budgetAlerts" aria-label="Budget alerts"><i></i></button></div>
-<div class="setting"><div><strong>Goal reminders</strong><span>Keep your savings goals visible and on track.</span></div><button class="switch" id="goalReminders" aria-label="Goal reminders"><i></i></button></div>
-</section>
-</div>
-
-<div>
-<section class="card section"><div class="section-head"><h2>Data management</h2><span class="muted">Your data stays in your browser</span></div>
-<div class="notice">MoneyLeak currently stores your financial records locally in this browser. Export a backup regularly so you can restore your data if you change browsers or clear site storage.</div>
-<div style="height:16px"></div>
-<div class="buttons"><button class="btn primary" id="export">Export backup</button><button class="btn" id="importBtn">Import backup</button><input id="file" type="file" accept=".json" hidden></div>
-</section>
-
-<section class="card section"><div class="section-head"><h2>Account preferences</h2><span class="muted">Optional</span></div>
-<div class="setting"><div><strong>Display name</strong><span>Used for personalization on supported pages.</span></div><div class="control"><input id="name" placeholder="Your name"></div></div>
-<button class="btn primary" id="saveName" style="margin-top:14px">Save preferences</button>
-</section>
-
-<section class="card"><div class="section-head"><h2>Reset local data</h2><span class="muted">Use with care</span></div><div class="notice">This removes MoneyLeak records stored in this browser. Export a backup first if you may need them later.</div><div style="height:14px"></div><button class="btn danger" id="reset">Reset MoneyLeak data</button></section>
-</div>
-</div>
-</main></div>
-
+<a href="index.html" data-page="dashboard"><span class="icon">⌂</span>Dashboard</a>
+<a href="analytics.html" data-page="analytics"><span class="icon">⌁</span>Analytics</a>
+<div class="nav-title">Money</div>
+<a href="income.html" data-page="income"><span class="icon">↗</span>Income</a>
+<a href="expenses.html" data-page="expenses"><span class="icon">↘</span>Expenses</a>
+<a href="budgets.html" data-page="budgets"><span class="icon">▣</span>Budgets</a>
+<div class="nav-title">Planning</div>
+<a href="savings.html" data-page="savings"><span class="icon">◎</span>Savings Goals</a>
+<a href="recurring.html" data-page="recurring"><span class="icon">↻</span>Recurring</a>
+<div class="nav-title">System</div>
+<a class="active" href="settings.html" data-page="settings"><span class="icon">⚙</span>Settings</a>
+</nav>
+<div class="profile"><strong id="sideName">Emmanuel</strong><br><small>Personal account</small></div>
+</aside><main class="main"><header class="topbar"><input class="search" id="search" placeholder="Search transactions..."><div class="top-actions"><button class="topbtn" id="themeBtn">Light mode</button><button class="topbtn" onclick="location.href='settings.html'">⚙</button></div></header>
+<div class="content"><div class="heading"><div><div class="eyebrow">PREFERENCES & DATA</div><h1 class="title">Settings</h1><div class="subtitle">Control your MoneyLeak experience and keep every page on the same theme.</div></div></div>
+<div class="grid"><div><section class="card panel" style="margin-bottom:18px"><div class="panel-head"><h2>Appearance</h2><span class="muted">Match the Dashboard</span></div><div class="setting"><div><strong>Theme</strong><span class="muted">One theme is shared across every MoneyLeak page.</span></div><div style="width:150px"><select id="theme" class="field input"><option value="dark">Dark</option><option value="light">Light</option></select></div></div><div class="setting"><div><strong>Currency</strong><span class="muted">Used for new displays and preferences.</span></div><div style="width:150px"><select id="currency"><option value="NGN">₦ Nigerian Naira</option><option value="USD">$ US Dollar</option><option value="GBP">£ British Pound</option><option value="EUR">€ Euro</option></select></div></div></section>
+<section class="card panel"><div class="panel-head"><h2>Notifications</h2><span class="muted">Stay informed</span></div><div class="setting"><div><strong>Budget alerts</strong><span>Show alerts around budget limits.</span></div><button class="switch" id="budgetAlerts"><i></i></button></div><div class="setting"><div><strong>Goal reminders</strong><span>Keep savings goals visible.</span></div><button class="switch" id="goalReminders"><i></i></button></div></section></div>
+<div><section class="card panel" style="margin-bottom:18px"><div class="panel-head"><h2>Data management</h2><span class="muted">Local browser data</span></div><div class="notice">Your financial records are stored locally in this browser. Export a backup before clearing browser data or changing devices.</div><div class="buttons" style="margin-top:14px"><button class="btn primary" id="export">Export backup</button><button class="btn" id="importBtn">Import backup</button><input id="file" type="file" accept=".json" hidden></div></section>
+<section class="card panel" style="margin-bottom:18px"><div class="panel-head"><h2>Account preferences</h2><span class="muted">Personalization</span></div><div class="field"><label>DISPLAY NAME</label><input id="name" placeholder="Your name"></div><button class="btn primary" id="saveName" style="margin-top:12px">Save preferences</button></section>
+<section class="card panel"><div class="panel-head"><h2>Reset local data</h2><span class="muted">Use with care</span></div><div class="notice">This removes MoneyLeak records from this browser. Export a backup first.</div><button class="btn" id="reset" style="margin-top:13px;color:var(--red);border-color:var(--red)">Reset all data</button></section></div></div>
+</div></main></div>
 <script>
-const SETTINGS='moneyLeakSettings';
-const KEYS=['moneyLeakTransactions','moneyLeakSavingsGoals','moneyLeakMonthlyBudget','moneyLeakCategoryBudgets','moneyLeakRecurring','moneyLeakNotifications'];
-let settings=JSON.parse(localStorage.getItem(SETTINGS)||'{}');
-
+const SETTINGS_KEY='moneyLeakSettings';
+let settings=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}');
+function money(n){return '₦'+Number(n||0).toLocaleString('en-NG',{maximumFractionDigits:2})}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function applyTheme(){
- const dark=settings.theme==='dark';document.body.classList.toggle('dark',dark);
- document.getElementById('theme').value=dark?'dark':'light';
+  /* Backward-compatible: older pages used theme, some used dark. */
+  const dark=settings.theme==='dark'||settings.dark===true;
+  document.body.classList.toggle('light',!dark);
+  const b=document.getElementById('themeBtn'); if(b)b.textContent=dark?'Light mode':'Dark mode';
 }
-function setSwitch(id,on){const b=document.getElementById(id);b.classList.toggle('on',!!on);b.querySelector('i').style.left=on?'23px':'3px'}
-function saveSettings(){localStorage.setItem(SETTINGS,JSON.stringify(settings))}
-document.getElementById('theme').onchange=e=>{settings.theme=e.target.value;saveSettings();applyTheme()};
-document.getElementById('currency').onchange=e=>{settings.currency=e.target.value;saveSettings()};
-document.getElementById('budgetAlerts').onclick=()=>{settings.budgetAlerts=!settings.budgetAlerts;saveSettings();setSwitch('budgetAlerts',settings.budgetAlerts)};
-document.getElementById('goalReminders').onclick=()=>{settings.goalReminders=!settings.goalReminders;saveSettings();setSwitch('goalReminders',settings.goalReminders)};
-document.getElementById('name').value=settings.name||'';
-document.getElementById('currency').value=settings.currency||'NGN';
-document.getElementById('saveName').onclick=()=>{settings.name=document.getElementById('name').value.trim();saveSettings();alert('Preferences saved.')};
+function toggleTheme(){
+  const dark=settings.theme==='dark'||settings.dark===true;
+  settings.theme=dark?'light':'dark'; settings.dark=!dark;
+  localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings)); applyTheme();
+}
+document.addEventListener('DOMContentLoaded',()=>{applyTheme();const b=document.getElementById('themeBtn');if(b)b.onclick=toggleTheme});
 
-document.getElementById('export').onclick=()=>{
- const backup={version:1,exportedAt:new Date().toISOString(),transactions:JSON.parse(localStorage.getItem('moneyLeakTransactions')||'[]'),savingsGoals:JSON.parse(localStorage.getItem('moneyLeakSavingsGoals')||'[]'),monthlyBudget:JSON.parse(localStorage.getItem('moneyLeakMonthlyBudget')||'0'),categoryBudgets:JSON.parse(localStorage.getItem('moneyLeakCategoryBudgets')||'{}'),recurring:JSON.parse(localStorage.getItem('moneyLeakRecurring')||'[]'),settings:JSON.parse(localStorage.getItem('moneyLeakSettings')||'{}'),notifications:JSON.parse(localStorage.getItem('moneyLeakNotifications')||'[]')};
- const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='moneyleak-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)
-};
-document.getElementById('importBtn').onclick=()=>document.getElementById('file').click();
-document.getElementById('file').onchange=e=>{
- const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const b=JSON.parse(r.result);if(!b||typeof b!=='object')throw 0;
- if(Array.isArray(b.transactions))localStorage.setItem('moneyLeakTransactions',JSON.stringify(b.transactions));
- if(Array.isArray(b.savingsGoals))localStorage.setItem('moneyLeakSavingsGoals',JSON.stringify(b.savingsGoals));
- if(b.monthlyBudget!==undefined)localStorage.setItem('moneyLeakMonthlyBudget',JSON.stringify(b.monthlyBudget));
- if(b.categoryBudgets!==undefined)localStorage.setItem('moneyLeakCategoryBudgets',JSON.stringify(b.categoryBudgets));
- if(Array.isArray(b.recurring))localStorage.setItem('moneyLeakRecurring',JSON.stringify(b.recurring));
- if(b.settings&&typeof b.settings==='object')localStorage.setItem('moneyLeakSettings',JSON.stringify(b.settings));
- if(Array.isArray(b.notifications))localStorage.setItem('moneyLeakNotifications',JSON.stringify(b.notifications));
- alert('Backup imported successfully. Reloading MoneyLeak now.');location.reload()
- }catch(err){alert('That backup file could not be imported.')}};r.readAsText(f)
-};
-document.getElementById('reset').onclick=()=>{
- if(!confirm('Reset all MoneyLeak data stored in this browser? This cannot be undone unless you have a backup.'))return;
- KEYS.forEach(k=>localStorage.removeItem(k));location.reload()
-};
-applyTheme();setSwitch('budgetAlerts',!!settings.budgetAlerts);setSwitch('goalReminders',!!settings.goalReminders);
-</script>
-</body></html>
+theme.value=(settings.theme==='dark'||settings.dark===true)?'dark':'light';currency.value=settings.currency||'NGN';name.value=settings.name||'';function sw(id,on){document.getElementById(id).classList.toggle('on',!!on)}sw('budgetAlerts',!!settings.budgetAlerts);sw('goalReminders',!!settings.goalReminders);theme.onchange=()=>{settings.theme=theme.value;settings.dark=theme.value==='dark';localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));applyTheme()};currency.onchange=()=>{settings.currency=currency.value;localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings))};budgetAlerts.onclick=()=>{settings.budgetAlerts=!settings.budgetAlerts;localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));sw('budgetAlerts',settings.budgetAlerts)};goalReminders.onclick=()=>{settings.goalReminders=!settings.goalReminders;localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));sw('goalReminders',settings.goalReminders)};saveName.onclick=()=>{settings.name=name.value.trim()||'Emmanuel';localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));document.getElementById('sideName').textContent=settings.name;alert('Preferences saved.')};
+export.onclick=()=>{let b={version:2,exportedAt:new Date().toISOString(),transactions:JSON.parse(localStorage.getItem('moneyLeakTransactions')||'[]'),savingsGoals:JSON.parse(localStorage.getItem('moneyLeakSavingsGoals')||'[]'),monthlyBudget:localStorage.getItem('moneyLeakMonthlyBudget')||'0',categoryBudgets:JSON.parse(localStorage.getItem('moneyLeakCategoryBudgets')||'{}'),recurring:JSON.parse(localStorage.getItem('moneyLeakRecurring')||'[]'),settings:JSON.parse(localStorage.getItem('moneyLeakSettings')||'{}'),notifications:JSON.parse(localStorage.getItem('moneyLeakNotifications')||'[]')};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(b,null,2)],{type:'application/json'}));a.download='moneyleak-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()};
+importBtn.onclick=()=>file.click();file.onchange=()=>{let f=file.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let b=JSON.parse(r.result);if(Array.isArray(b.transactions))localStorage.setItem('moneyLeakTransactions',JSON.stringify(b.transactions));if(Array.isArray(b.savingsGoals))localStorage.setItem('moneyLeakSavingsGoals',JSON.stringify(b.savingsGoals));if(b.monthlyBudget!==undefined)localStorage.setItem('moneyLeakMonthlyBudget',String(b.monthlyBudget));if(b.categoryBudgets)localStorage.setItem('moneyLeakCategoryBudgets',JSON.stringify(b.categoryBudgets));if(Array.isArray(b.recurring))localStorage.setItem('moneyLeakRecurring',JSON.stringify(b.recurring));if(b.settings)localStorage.setItem('moneyLeakSettings',JSON.stringify(b.settings));alert('Backup imported. Reloading MoneyLeak.');location.reload()}catch(e){alert('Invalid MoneyLeak backup file.')}};r.readAsText(f)};reset.onclick=()=>{if(confirm('Reset all MoneyLeak data from this browser?')){['moneyLeakTransactions','moneyLeakSavingsGoals','moneyLeakMonthlyBudget','moneyLeakCategoryBudgets','moneyLeakRecurring','moneyLeakNotifications','moneyLeakSettings'].forEach(k=>localStorage.removeItem(k));location.reload()}};
+</script></body></html>
