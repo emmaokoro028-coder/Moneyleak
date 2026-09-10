@@ -1,445 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Expenses — MoneyLeak</title>
-
-    <meta
-        name="description"
-        content="Track, understand and reduce your spending with MoneyLeak."
-    >
-
-    <link
-        rel="stylesheet"
-        href="./style.css"
-    >
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyLeak — Expenses</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6b7280;--border:#e5e7eb;--accent:#6d5dfc;--danger:#dc2626;--shadow:0 10px 30px rgba(0,0,0,.07)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+body.dark{--bg:#0f1220;--card:#181c2b;--text:#f5f7ff;--muted:#aab0c0;--border:#2b3144;--shadow:0 10px 30px rgba(0,0,0,.25)}
+a{text-decoration:none;color:inherit}.layout{display:flex;min-height:100vh}.sidebar{width:245px;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;inset:0 auto 0 0;z-index:5}.brand{font-size:25px;font-weight:800;padding:8px 12px 25px}.brand span{color:var(--accent)}
+.nav a{display:block;padding:12px 14px;border-radius:12px;margin:4px 0;color:var(--muted);font-weight:600}.nav a:hover,.nav a.active{background:rgba(109,93,252,.12);color:var(--accent)}
+.main{margin-left:245px;width:calc(100% - 245px);padding:28px;max-width:1500px}.top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:24px}.title h1{margin:0 0 5px;font-size:30px}.title p{margin:0;color:var(--muted)}button,input,select{font:inherit}button{border:0;cursor:pointer}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{padding:11px 16px;border-radius:11px;font-weight:700}.primary{background:var(--accent);color:#fff}.secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--shadow)}.label{font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}.value{font-size:27px;font-weight:800;margin-top:8px}.danger{color:var(--danger)}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.panel-head h2{margin:0;font-size:18px}.filters{display:flex;gap:10px;flex-wrap:wrap}.filters input,.filters select{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 12px;outline:none}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:15px 20px;border-bottom:1px solid var(--border);white-space:nowrap}th{font-size:12px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em}td{font-size:14px}.category{display:inline-block;padding:5px 9px;border-radius:999px;background:rgba(109,93,252,.11);color:var(--accent);font-weight:700;font-size:12px}.amount{font-weight:800}.delete{background:transparent;color:var(--danger);font-weight:700;padding:5px 0}.empty{text-align:center;padding:45px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}.modal-box{width:min(480px,100%);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px}.modal-box h2{margin-top:0}.form-group{margin:14px 0}.form-group label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.form-group input,.form-group select{width:100%;padding:12px;border:1px solid var(--border);border-radius:11px;background:var(--bg);color:var(--text);outline:none}.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.toast{position:fixed;right:22px;bottom:22px;background:var(--text);color:var(--bg);padding:13px 17px;border-radius:12px;display:none;z-index:30;font-weight:700}.toast.show{display:block}
+@media(max-width:800px){.sidebar{position:static;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border)}.layout{display:block}.main{margin-left:0;width:100%;padding:18px}.nav{display:flex;overflow-x:auto;gap:5px}.nav a{white-space:nowrap}.cards{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.brand{padding-bottom:12px}}
+</style>
 </head>
-
 <body>
-
-<div class="app-shell">
-
-
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
-
-    <aside class="sidebar" id="sidebar">
-
-        <div class="brand">
-
-            <a
-                href="./index.html"
-                class="brand-link"
-            >
-
-                <div
-                    class="brand-mark"
-                    data-brand-logo
-                >
-                    M
-                </div>
-
-                <div class="brand-copy">
-
-                    <strong>
-                        MoneyLeak
-                    </strong>
-
-                    <span>
-                        Personal Finance OS
-                    </span>
-
-                </div>
-
-            </a>
-
-        </div>
-
-
-        <nav class="sidebar-nav">
-
-            <div class="nav-section">
-
-                <div class="nav-section-label">
-                    Overview
-                </div>
-
-                <a
-                    href="./index.html"
-                    class="nav-link"
-                >
-                    <span class="nav-icon">⌂</span>
-                    <span>Dashboard</span>
-                </a>
-
-                <a
-                    href="./analytics.html"
-                    class="nav-link"
-                >
-                    <span class="nav-icon">◈</span>
-                    <span>Analytics</span>
-                </a>
-
-            </div>
-
-
-            <div class="nav-section">
-
-                <div class="nav-section-label">
-                    Money
-                </div>
-
-                <a
-                    href="./income.html"
-                    class="nav-link"
-                >
-                    <span class="nav-icon">↗</span>
-                    <span>Income</span>
-                </a>
-
-                <a
-                    href="./expenses.html"
-                    class="nav-link active"
-                >
-                    <span class="nav-icon">↘</span>
-                    <span>Expenses</span>
-                </a>
-
-                <a
-                    href="./budgets.html"
-                    class="nav-link"
-                >
-                    <span class="nav-icon">▣</span>
-                    <span>Budgets</span>
-                </a>
-
-            </div>
-
-
-            <div class="nav-section">
-
-                <div class="nav-section-label">
-                    Planning
-                </div>
-
-                <a
-                    href="./savings.html"
-                    class="nav-link"
-                >
-                    <span class="nav-icon">◎</span>
-                    <span>Savings Goals</span>
-                </a>
-
-                <a
-                    href="./recurring.html"
-                    class="nav-link"
-                >
-                    <span class="nav-icon">↻</span>
-                    <span>Recurring</span>
-                </a>
-
-            </div>
-
-
-            <div class="nav-section">
-
-                <div class="nav-section-label">
-                    System
-                </div>
-
-                <a
-                    href="./settings.html"
-                    class="nav-link"
-                >
-                    <span class="nav-icon">⚙</span>
-                    <span>Settings</span>
-                </a>
-
-            </div>
-
-        </nav>
-
-
-        <div class="sidebar-account">
-
-            <div class="sidebar-account-avatar">
-                M
-            </div>
-
-            <div>
-
-                <strong id="sidebarUserName">
-                    My Money
-                </strong>
-
-                <span>
-                    Personal account
-                </span>
-
-            </div>
-
-        </div>
-
-    </aside>
-
-
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
-    <main class="main-content">
-
-
-        <!-- TOPBAR -->
-
-        <header class="topbar">
-
-            <div class="topbar-left">
-
-                <button
-                    type="button"
-                    class="mobile-menu-button"
-                    id="mobileMenuButton"
-                    aria-label="Open menu"
-                >
-                    ☰
-                </button>
-
-                <div class="page-location">
-                    Expenses
-                </div>
-
-            </div>
-
-
-            <div class="topbar-actions">
-
-                <button
-                    type="button"
-                    class="topbar-search"
-                    id="openSearch"
-                >
-                    <span>⌕</span>
-                    Search MoneyLeak
-                    <kbd>⌘K</kbd>
-                </button>
-
-
-                <button
-                    type="button"
-                    class="notification-button"
-                    id="notificationButton"
-                    aria-label="Notifications"
-                >
-
-                    ♧
-
-                    <span
-                        class="notification-badge"
-                        id="notificationBadge"
-                    >
-                        0
-                    </span>
-
-                </button>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- =================================================
-             PAGE CONTENT
-        ================================================== -->
-
-        <section class="page-content">
-
-
-            <!-- =================================================
-                 HERO
-            ================================================== -->
-
-            <section class="dashboard-hero">
-
-                <div class="dashboard-hero-copy">
-
-                    <div class="dashboard-hero-eyebrow">
-                        SPENDING CONTROL
-                    </div>
-
-                    <h1>
-                        Understand where your money goes.
-                    </h1>
-
-                    <p>
-                        Track every expense, identify your biggest
-                        leaks, and make smarter spending decisions.
-                    </p>
-
-                </div>
-
-
-                <div class="dashboard-hero-actions">
-
-                    <button
-                        type="button"
-                        class="button button-primary"
-                        onclick="document.getElementById('expenseAmount').focus()"
-                    >
-                        + Add expense
-                    </button>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 EXPENSE METRICS
-            ================================================== -->
-
-            <section class="dashboard-metrics">
-
-
-                <article class="dashboard-metric">
-
-                    <div class="dashboard-metric-icon">
-                        ↘
-                    </div>
-
-                    <div class="dashboard-metric-label">
-                        This month
-                    </div>
-
-                    <div
-                        class="dashboard-metric-value"
-                        id="expenseThisMonth"
-                    >
-                        ₦0
-                    </div>
-
-                    <div class="dashboard-metric-meta negative">
-                        Total spending
-                    </div>
-
-                </article>
-
-
-                <article class="dashboard-metric">
-
-                    <div class="dashboard-metric-icon">
-                        ◷
-                    </div>
-
-                    <div class="dashboard-metric-label">
-                        Daily average
-                    </div>
-
-                    <div
-                        class="dashboard-metric-value"
-                        id="expenseDailyAverage"
-                    >
-                        ₦0
-                    </div>
-
-                    <div class="dashboard-metric-meta">
-                        Current month pace
-                    </div>
-
-                </article>
-
-
-                <article class="dashboard-metric">
-
-                    <div class="dashboard-metric-icon">
-                        #
-                    </div>
-
-                    <div class="dashboard-metric-label">
-                        Transactions
-                    </div>
-
-                    <div
-                        class="dashboard-metric-value"
-                        id="expenseTransactionCount"
-                    >
-                        0
-                    </div>
-
-                    <div class="dashboard-metric-meta">
-                        Expenses recorded
-                    </div>
-
-                </article>
-
-
-                <article class="dashboard-metric">
-
-                    <div class="dashboard-metric-icon">
-                        ↔
-                    </div>
-
-                    <div class="dashboard-metric-label">
-                        Month comparison
-                    </div>
-
-                    <div
-                        class="dashboard-metric-value"
-                        id="expenseMonthComparison"
-                    >
-                        No change
-                    </div>
-
-                    <div class="dashboard-metric-meta">
-                        Compared with last month
-                    </div>
-
-                </article>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 ADD EXPENSE + BIGGEST LEAK
-            ================================================== -->
-
-            <section class="dashboard-main-grid">
-
-
-                <!-- ADD EXPENSE -->
-
-                <article class="dashboard-panel">
-
-                    <div class="dashboard-panel-header">
-
-                        <div>
-
-                            <div class="dashboard-panel-title">
-                                Record an expense
-                            </div>
-
-                            <div class="dashboard-panel-subtitle">
-                                Keep your financial picture accurate.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <form
-                        id="expenseForm"
-                        class="
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">Money<span>Leak</span></div>
+  <nav class="nav">
+    <a href="index.html">Dashboard</a>
+    <a href="income.html">Income</a>
+    <a class="active" href="expenses.html">Expenses</a>
+    <a href="budgets.html">Budgets</a>
+    <a href="savings.html">Savings Goals</a>
+    <a href="recurring.html">Recurring</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="settings.html">Settings</a>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="top">
+    <div class="title">
+      <h1>Expenses</h1>
+      <p>Track where your money is going and find your biggest leaks.</p>
+    </div>
+    <div class="actions">
+      <button class="btn secondary" id="themeBtn">🌙 Dark mode</button>
+      <button class="btn secondary" id="exportBtn">⬇ Backup</button>
+      <button class="btn primary" id="addBtn">＋ Add Expense</button>
+    </div>
+  </div>
+
+  <section class="cards">
+    <div class="card"><div class="label">This month</div><div class="value danger" id="monthTotal">₦0</div></div>
+    <div class="card"><div class="label">All expenses</div><div class="value danger" id="allTotal">₦0</div></div>
+    <div class="card"><div class="label">Transactions</div><div class="value" id="countTotal">0</div></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Expense history</h2>
+      <div class="filters">
+        <input id="search" type="search" placeholder="Search expenses...">
+        <select id="category">
+          <option value="">All categories</option>
+          <option>Food</option><option>Transport</option><option>Bills</option>
+          <option>Shopping</option><option>Rent</option><option>Entertainment</option>
+          <option>Health</option><option>Education</option><option>Other</option>
+        </select>
+        <input id="month" type="month">
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty">No expenses found.</div>
+    </div>
+  </section>
+</main>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h2>Add expense</h2>
+    <div class="form-group"><label>Description</label><input id="desc" placeholder="e.g. Lunch"></div>
+    <div class="form-group"><label>Amount (₦)</label><input id="amount" type="number" min="0" step="0.01" placeholder="5000"></div>
+    <div class="form-group"><label>Category</label>
+      <select id="cat"><option>Food</option><option>Transport</option><option>Bills</option><option>Shopping</option><option>Rent</option><option>Entertainment</option><option>Health</option><option>Education</option><option>Other</option></select>
+    </div>
+    <div class="form-group"><label>Date</label><input id="date" type="date"></div>
+    <div class="form-actions"><button class="btn secondary" id="cancel">Cancel</button><button class="btn primary" id="save">Save expense</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY="moneyLeakTransactions", SETTINGS="moneyLeakSettings";
+const categories=["Food","Transport","Bills","Shopping","Rent","Entertainment","Health","Education","Other"];
+
+function getTransactions(){
+  try{return JSON.parse(localStorage.getItem(KEY)||"[]");}catch{return [];}
+}
+function saveTransactions(data){localStorage.setItem(KEY,JSON.stringify(data));}
+function expenses(){
+  return getTransactions().filter(t=>String(t.type||"").toLowerCase()==="expense");
+}
+function money(n){return "₦"+Number(n||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function today(){return new Date().toISOString().slice(0,10);}
+function currentMonth(){return today().slice(0,7);}
+function showToast(msg){
+  const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2200);
+}
+function applyTheme(){
+  let s={};try{s=JSON.parse(localStorage.getItem(SETTINGS)||"{}");}catch{}
+  const dark=!!s.dark;
+  document.body.classList.toggle("dark",dark);
+  document.getElementById("themeBtn").textContent=dark?"☀️ Light mode":"🌙 Dark mode";
+}
+function toggleTheme(){
+  let s={};try{s=JSON.parse(localStorage.getItem(SETTINGS)||"{}");}catch{}
+  s.dark=!s.dark;localStorage.setItem(SETTINGS,JSON.stringify(s));applyTheme();
+}
+function render(){
+  const all=expenses(), month=currentMonth();
+  document.getElementById("monthTotal").textContent=money(all.filter(t=>String(t.date||"").slice(0,7)===month).reduce((a,t)=>a+Number(t.amount||0),0));
+  document.getElementById("allTotal").textContent=money(all.reduce((a,t)=>a+Number(t.amount||0),0));
+  document.getElementById("countTotal").textContent=all.length;
+
+  const q=document.getElementById("search").value.trim().toLowerCase();
+  const c=document.getElementById("category").value;
+  const m=document.getElementById("month").value;
+  const filtered=all.filter(t=>{
+    const text=[t.description,t.category,t.date].join(" ").toLowerCase();
+    return (!q||text.includes(q))&&(!c||t.category===c)&&(!m||String(t.date||"").slice(0,7)===m);
+  }).sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+
+  const rows=document.getElementById("rows"), empty=document.getElementById("empty");
+  rows.innerHTML="";
+  empty.style.display=filtered.length?"none":"block";
+  filtered.forEach(t=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${escapeHtml(t.date||"—")}</td><td>${escapeHtml(t.description||"Expense")}</td><td><span class="category">${escapeHtml(t.category||"Other")}</span></td><td class="amount danger">−${money(t.amount)}</td><td><button class="delete" data-delete="${escapeHtml(String(t.id))}">Delete</button></td>`;
+    rows.appendChild(tr);
+  });
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function openModal(){document.getElementById("date").value=today();document.getElementById("modal").classList.add("show");document.getElementById("desc").focus();}
+function closeModal(){document.getElementById("modal").classList.remove("show");}
+function addExpense(){
+  const description=document.getElementById("desc").value.trim();
+  const amount=Number(document.getElementById("amount").value);
+  const category=document.getElementById("cat").value;
+  const date=document.getElementById("date").value||today();
+  if(!description){showToast("Enter a description.");return;}
+  if(!Number.isFinite(amount)||amount<=0){showToast("Enter a valid amount.");return;}
+  const data=getTransactions();
+  data.push({id:Date.now().toString(),type:"expense",description,amount,category,date,createdAt:new Date().toISOString()});
+  saveTransactions(data);closeModal();
+  document.getElementById("desc").value="";document.getElementById("amount").value="";
+  render();showToast("Expense added.");
+}
+document.getElementById("addBtn").addEventListener("click",openModal);
+document.getElementById("cancel").addEventListener("click",closeModal);
+document.getElementById("save").addEventListener("click",addExpense);
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});
+document.getElementById("themeBtn").addEventListener("click",toggleTheme);
+["search","category","month"].forEach(id=>document.getElementById(id).addEventListener("input",render));
+document.getElementById("rows").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-delete]");if(!btn)return;
+  if(!confirm("Delete this expense?"))return;
+  const id=btn.dataset.delete;
+  saveTransactions(getTransactions().filter(t=>String(t.id)!==String(id)));
+  render();showToast("Expense deleted.");
+});
+document.getElementById("exportBtn").addEventListener("click",()=>{
+  const backup={version:1,exportedAt:new Date().toISOString(),transactions:getTransactions(),monthlyBudget:localStorage.getItem("moneyLeakMonthlyBudget"),categoryBudgets:localStorage.getItem("moneyLeakCategoryBudgets"),savingsGoals:localStorage.getItem("moneyLeakSavingsGoals"),settings:localStorage.getItem(SETTINGS),notifications:localStorage.getItem("moneyLeakNotifications")};
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="moneyleak-backup.json";a.click();URL.revokeObjectURL(a.href);
+});
+applyTheme();render();
+</script>
+</body>
+</html>
