@@ -2,110 +2,75 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MoneyLeak — Budgets</title>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6b7280;--border:#e5e7eb;--accent:#6d5dfc;--good:#16a34a;--danger:#dc2626;--shadow:0 10px 30px rgba(0,0,0,.07)}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}body.dark{--bg:#0f1220;--card:#181c2b;--text:#f5f7ff;--muted:#aab0c0;--border:#2b3144;--shadow:0 10px 30px rgba(0,0,0,.25)}
-button,input,select{font:inherit}button{cursor:pointer;border:0}.layout{display:flex;min-height:100vh}.sidebar{width:245px;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;inset:0 auto 0 0;z-index:5}.brand{font-size:25px;font-weight:800;padding:8px 12px 25px}.brand span{color:var(--accent)}.nav a{display:block;padding:12px 14px;border-radius:12px;margin:4px 0;color:var(--muted);font-weight:600;text-decoration:none}.nav a:hover,.nav a.active{background:rgba(109,93,252,.12);color:var(--accent)}
-.main{margin-left:245px;width:calc(100% - 245px);padding:28px;max-width:1500px}.top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:24px}.title h1{margin:0 0 5px;font-size:30px}.title p{margin:0;color:var(--muted)}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{padding:11px 16px;border-radius:11px;font-weight:700}.primary{background:var(--accent);color:#fff}.secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card,.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)}.card{padding:20px}.card h2,.panel h2{margin:0 0 6px;font-size:18px}.sub{color:var(--muted);font-size:13px}.big{font-size:28px;font-weight:800;margin:12px 0}.progress{height:10px;background:var(--bg);border-radius:99px;overflow:hidden;margin:12px 0}.bar{height:100%;width:0;background:var(--accent);border-radius:99px;transition:.25s}.bar.over{background:var(--danger)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}.stat{padding:13px;border:1px solid var(--border);border-radius:12px}.stat b{display:block;margin-top:5px}.panel{grid-column:1/-1;overflow:hidden}.panel-head{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.panel-head h2{margin:0}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:15px 20px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}th{font-size:12px;color:var(--muted);text-transform:uppercase}td{font-size:14px}.pill{padding:5px 9px;border-radius:999px;background:rgba(109,93,252,.12);color:var(--accent);font-weight:700;font-size:12px}.delete{background:transparent;color:var(--danger);font-weight:700}.empty{text-align:center;padding:35px;color:var(--muted)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}.modal-box{width:min(500px,100%);background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px}.modal-box h2{margin-top:0}.group{margin:14px 0}.group label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.group input,.group select{width:100%;padding:12px;border:1px solid var(--border);border-radius:11px;background:var(--bg);color:var(--text);outline:none}.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.toast{position:fixed;right:22px;bottom:22px;background:var(--text);color:var(--bg);padding:13px 17px;border-radius:12px;display:none;z-index:30;font-weight:700}.toast.show{display:block}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}@media(max-width:800px){.sidebar{position:static;width:100%;height:auto;border:0;border-bottom:1px solid var(--border)}.layout{display:block}.main{margin:0;width:100%;padding:18px}.nav{display:flex;overflow-x:auto;gap:5px}.nav a{white-space:nowrap}.top{flex-direction:column;align-items:flex-start}.stats{grid-template-columns:1fr}}
+:root{--bg:#071b16;--sidebar:#0a211c;--card:#0d2721;--card2:#102d26;--border:#183e33;--text:#eef8f4;--muted:#91aaa2;--green:#20c997;--green2:#17b889;--red:#ff5a67;--yellow:#f2c94c;--input:#0b211c;--shadow:0 12px 30px rgba(0,0,0,.18)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}body.light{--bg:#f5f8f7;--sidebar:#fff;--card:#fff;--card2:#f2f6f4;--border:#dce8e3;--text:#16231f;--muted:#6e7d77;--input:#f7faf9;--shadow:0 8px 24px rgba(20,50,40,.08)}
+button,input{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}.layout{display:flex;min-height:100vh}.sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:var(--sidebar);border-right:1px solid var(--border);padding:27px 15px;z-index:5}.brand{font-size:22px;font-weight:800;padding:5px 12px 30px}.brand-mark{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#123b31;color:var(--green);margin-right:10px}.brand-name{vertical-align:middle}.nav a{display:flex;align-items:center;gap:13px;padding:12px 14px;margin:4px 0;border-radius:12px;color:var(--muted);font-size:15px;font-weight:650}.nav a:hover{background:var(--card2);color:var(--text)}.nav a.active{background:#123d31;color:var(--green)}.nav-icon{width:18px;text-align:center}.bottom{position:absolute;left:15px;right:15px;bottom:22px}.theme,.reset{width:100%;background:transparent;color:var(--text);border:1px solid var(--border);padding:11px;border-radius:11px;font-weight:700}.reset{margin-top:8px;color:var(--red)}
+.main{margin-left:250px;width:calc(100% - 250px);padding:32px 34px 50px;max-width:1500px}.header{display:flex;justify-content:space-between;align-items:flex-start;gap:25px;margin-bottom:28px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--green);font-weight:800;margin-bottom:7px}.header h1{font-size:31px;margin:0 0 6px}.header p{margin:0;color:var(--muted);font-size:14px}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--border);background:var(--card);color:var(--text);padding:11px 15px;border-radius:10px;font-weight:750}.btn.primary{background:var(--green);border-color:var(--green);color:#062018}
+.overview{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.stat{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:20px;box-shadow:var(--shadow)}.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:800}.value{font-size:27px;font-weight:850;margin-top:9px}.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}
+.grid{display:grid;grid-template-columns:1.45fr .8fr;gap:18px}.panel{background:var(--card);border:1px solid var(--border);border-radius:17px;box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:15px}.panel-head h2{margin:0;font-size:17px}.panel-head span{color:var(--muted);font-size:12px}.budget-list{padding:5px 21px 18px}.budget-item{padding:17px 0;border-bottom:1px solid var(--border)}.budget-item:last-child{border-bottom:0}.budget-title{display:flex;justify-content:space-between;gap:15px;margin-bottom:8px;font-size:14px;font-weight:750}.budget-title small{color:var(--muted);font-weight:600}.bar{height:8px;background:var(--card2);border-radius:99px;overflow:hidden}.fill{height:100%;background:var(--green);border-radius:99px;transition:width .25s}.fill.over{background:var(--red)}.budget-meta{display:flex;justify-content:space-between;margin-top:7px;color:var(--muted);font-size:11px}.empty{text-align:center;padding:45px 20px;color:var(--muted);font-size:14px}
+.form{padding:21px}.form-group{margin-bottom:15px}.form-group label{display:block;font-size:12px;font-weight:750;margin-bottom:6px}.form-group input{width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--input);color:var(--text);outline:0}.form-group input:focus{border-color:var(--green)}.save{width:100%;padding:12px;border:0;border-radius:9px;background:var(--green);color:#062018;font-weight:800}.hint{font-size:12px;color:var(--muted);margin-top:13px;line-height:1.5}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:20;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-box{width:min(450px,100%);background:var(--card);border:1px solid var(--border);border-radius:17px;padding:25px}.modal-box h2{margin:0 0 5px}.modal-box p{margin:0 0 20px;color:var(--muted);font-size:13px}.form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.toast{position:fixed;right:24px;bottom:24px;background:#eaf8f3;color:#0a3528;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:750;display:none;z-index:30}.toast.show{display:block}
+@media(max-width:950px){.grid{grid-template-columns:1fr}}@media(max-width:850px){.sidebar{position:static;width:100%;height:auto;border-right:0;border-bottom:1px solid var(--border);padding:15px}.layout{display:block}.main{margin-left:0;width:100%;padding:21px}.brand{padding:4px 8px 15px}.nav{display:flex;overflow-x:auto}.nav a{white-space:nowrap}.bottom{position:static;margin-top:12px;display:flex;gap:8px}.bottom button{margin:0}.overview{grid-template-columns:1fr}.header{flex-direction:column}}
 </style>
 </head>
 <body>
 <div class="layout">
 <aside class="sidebar">
-<div class="brand">Money<span>Leak</span></div>
+<div class="brand"><span class="brand-mark">₦</span><span class="brand-name">MoneyLeak</span></div>
 <nav class="nav">
-<a href="index.html">Dashboard</a><a href="income.html">Income</a><a href="expenses.html">Expenses</a><a class="active" href="budgets.html">Budgets</a><a href="savings.html">Savings Goals</a><a href="recurring.html">Recurring</a><a href="analytics.html">Analytics</a><a href="settings.html">Settings</a>
+<a href="index.html"><span class="nav-icon">⌂</span>Dashboard</a><a href="income.html"><span class="nav-icon">↗</span>Income</a><a href="expenses.html"><span class="nav-icon">↘</span>Expenses</a><a class="active" href="budgets.html"><span class="nav-icon">▣</span>Budgets</a><a href="savings.html"><span class="nav-icon">◎</span>Savings goals</a><a href="recurring.html"><span class="nav-icon">↻</span>Recurring</a><a href="analytics.html"><span class="nav-icon">◇</span>Analytics</a><a href="settings.html"><span class="nav-icon">⚙</span>Settings</a>
 </nav>
+<div class="bottom"><button class="theme" id="theme">☾ Toggle dark</button><button class="reset" id="reset">Reset local data</button></div>
 </aside>
 <main class="main">
-<div class="top">
-<div class="title"><h1>Budgets</h1><p>Set spending limits and keep your money under control.</p></div>
-<div class="actions"><button class="btn secondary" id="theme">🌙 Dark mode</button><button class="btn secondary" id="export">⬇ Backup</button><button class="btn primary" id="add">＋ Set Budget</button></div>
-</div>
-
+<header class="header"><div><div class="eyebrow">Financial planning</div><h1>Budgets</h1><p>Set spending limits and stay in control of your monthly money.</p></div><div class="actions"><button class="btn" id="clear">Clear budgets</button><button class="btn primary" id="add">+ Set budget</button></div></header>
+<section class="overview">
+<div class="stat"><div class="label">Monthly budget</div><div class="value" id="monthly">₦0.00</div></div>
+<div class="stat"><div class="label">Spent this month</div><div class="value red" id="spent">₦0.00</div></div>
+<div class="stat"><div class="label">Remaining</div><div class="value green" id="remaining">₦0.00</div></div>
+</section>
 <div class="grid">
-<section class="card">
-<h2>Monthly budget</h2><div class="sub">Your total spending limit for this month</div>
-<div class="big" id="monthlyBudget">₦0</div>
-<div class="progress"><div class="bar" id="monthlyBar"></div></div>
-<div class="stats"><div class="stat"><span class="sub">Spent</span><b id="monthlySpent">₦0</b></div><div class="stat"><span class="sub">Remaining</span><b id="monthlyRemaining">₦0</b></div><div class="stat"><span class="sub">Used</span><b id="monthlyUsed">0%</b></div></div>
-</section>
-
-<section class="card">
-<h2>Budget health</h2><div class="sub">A quick view of this month's spending</div>
-<div class="big" id="health">No budget set</div>
-<p class="sub" id="healthText">Set a monthly budget to start tracking your progress.</p>
-</section>
-
-<section class="panel">
-<div class="panel-head"><div><h2>Category budgets</h2><div class="sub">Control spending in individual categories.</div></div><button class="btn primary" id="addCategory">＋ Category Budget</button></div>
-<div class="table-wrap"><table><thead><tr><th>Category</th><th>Budget</th><th>Spent</th><th>Remaining</th><th>Used</th><th></th></tr></thead><tbody id="rows"></tbody></table><div class="empty" id="empty">No category budgets yet.</div></div>
-</section>
+<section class="panel"><div class="panel-head"><h2>Budget overview</h2><span id="status">No budget set</span></div><div class="budget-list" id="list"></div></section>
+<section class="panel"><div class="panel-head"><h2>Monthly budget</h2><span>Overall limit</span></div><div class="form">
+<div class="form-group"><label>Monthly spending limit (₦)</label><input id="monthlyInput" type="number" min="0" step="0.01" placeholder="e.g. 150000"></div>
+<button class="save" id="saveMonthly">Save monthly budget</button>
+<div class="hint">Your monthly budget is compared with expenses recorded for the current month.</div>
+</div></section>
 </div>
 </main>
 </div>
-
-<div class="modal" id="modal"><div class="modal-box">
-<h2 id="modalTitle">Set Budget</h2>
-<div class="group"><label>Budget type</label><select id="type"><option value="monthly">Monthly budget</option><option value="category">Category budget</option></select></div>
-<div class="group" id="catGroup" style="display:none"><label>Category</label><select id="category"><option>Food</option><option>Transport</option><option>Bills</option><option>Shopping</option><option>Rent</option><option>Entertainment</option><option>Health</option><option>Education</option><option>Other</option></select></div>
-<div class="group"><label>Limit (₦)</label><input id="limit" type="number" min="0" step="0.01" placeholder="50000"></div>
-<div class="form-actions"><button class="btn secondary" id="cancel">Cancel</button><button class="btn primary" id="save">Save budget</button></div>
-</div></div>
+<div class="modal" id="modal"><div class="modal-box"><h2>Set category budget</h2><p>Create a spending limit for one category.</p><div class="form-group"><label>Category</label><select id="cat" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--input);color:var(--text)"><option>Food</option><option>Transport</option><option>Bills</option><option>Shopping</option><option>Rent</option><option>Entertainment</option><option>Health</option><option>Education</option><option>Other</option></select></div><div class="form-group"><label>Limit (₦)</label><input id="limit" type="number" min="0" step="0.01" placeholder="e.g. 30000"></div><div class="form-actions"><button class="btn" id="cancel">Cancel</button><button class="btn primary" id="saveCat">Save budget</button></div></div></div>
 <div class="toast" id="toast"></div>
-
 <script>
-const MONTHLY="moneyLeakMonthlyBudget", CAT="moneyLeakCategoryBudgets", TX="moneyLeakTransactions", SETTINGS="moneyLeakSettings";
-const categories=["Food","Transport","Bills","Shopping","Rent","Entertainment","Health","Education","Other"];
-const $=id=>document.getElementById(id);
-function read(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch{return fallback}}
-function write(key,v){localStorage.setItem(key,JSON.stringify(v))}
-function money(n){return "₦"+Number(n||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2})}
+const TX="moneyLeakTransactions",MB="moneyLeakMonthlyBudget",CB="moneyLeakCategoryBudgets",SET="moneyLeakSettings";
+const cats=["Food","Transport","Bills","Shopping","Rent","Entertainment","Health","Education","Other"];
+function parse(k,f){try{return JSON.parse(localStorage.getItem(k)??JSON.stringify(f))}catch{return f}}
+function transactions(){return parse(TX,[])} function expenses(){return transactions().filter(t=>String(t.type).toLowerCase()==="expense")}
+function money(n){return"₦"+Number(n||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function month(){return new Date().toISOString().slice(0,7)}
-function expenses(){return read(TX,[]).filter(t=>String(t.type||"").toLowerCase()==="expense")}
-function spentFor(category){return expenses().filter(t=>String(t.date||"").slice(0,7)===month()&&(!category||t.category===category)).reduce((a,t)=>a+Number(t.amount||0),0)}
-function toast(msg){$("toast").textContent=msg;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2200)}
-function theme(){let s=read(SETTINGS,{});document.body.classList.toggle("dark",!!s.dark);$("theme").textContent=s.dark?"☀️ Light mode":"🌙 Dark mode"}
-function toggleTheme(){let s=read(SETTINGS,{});s.dark=!s.dark;write(SETTINGS,s);theme()}
+function spent(cat){return expenses().filter(t=>String(t.date||"").slice(0,7)===month()&&(!cat||t.category===cat)).reduce((a,t)=>a+Number(t.amount||0),0)}
+function toast(x){const e=document.getElementById("toast");e.textContent=x;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),2200)}
+function applyTheme(){const s=parse(SET,{}),dark=!!s.dark;document.body.classList.toggle("light",!dark);document.getElementById("theme").textContent=dark?"☀ Toggle light":"☾ Toggle dark"}
 function render(){
- const budget=Number(read(MONTHLY,0)||0), spent=spentFor("");
- $("monthlyBudget").textContent=money(budget);$("monthlySpent").textContent=money(spent);
- const remaining=budget-spent;$("monthlyRemaining").textContent=money(Math.max(0,remaining));
- const pct=budget>0?(spent/budget)*100:0;$("monthlyUsed").textContent=Math.round(pct)+"%";
- $("monthlyBar").style.width=Math.min(100,pct)+"%";$("monthlyBar").classList.toggle("over",pct>100);
- if(!budget){$("health").textContent="No budget set";$("healthText").textContent="Set a monthly budget to start tracking your progress."}
- else if(pct>100){$("health").textContent="Over budget";$("healthText").textContent="You've exceeded your monthly spending limit by "+money(spent-budget)+"."}
- else if(pct>=80){$("health").textContent="Watch your spending";$("healthText").textContent="You've used "+Math.round(pct)+"% of your budget. Slow down before you hit the limit."}
- else{$("health").textContent="Looking good";$("healthText").textContent="You have "+money(remaining)+" left for this month."}
- const cats=read(CAT,{});
- const entries=Object.entries(cats);
- $("empty").style.display=entries.length?"none":"block";$("rows").innerHTML="";
- entries.forEach(([cat,lim])=>{
-   const limit=Number(lim||0),s=spentFor(cat),r=limit-s,p=limit?s/limit*100:0;
-   const tr=document.createElement("tr");
-   tr.innerHTML=`<td><span class="pill">${esc(cat)}</span></td><td>${money(limit)}</td><td>${money(s)}</td><td>${money(Math.max(0,r))}</td><td>${Math.round(p)}%</td><td><button class="delete" data-del="${esc(cat)}">Delete</button></td>`;
-   $("rows").appendChild(tr);
- })
+ const mb=Number(localStorage.getItem(MB)||0),sp=spent();document.getElementById("monthly").textContent=money(mb);document.getElementById("spent").textContent=money(sp);document.getElementById("remaining").textContent=money(Math.max(0,mb-sp));document.getElementById("remaining").className="value "+(mb&&sp>mb?"red":"green");
+ document.getElementById("status").textContent=mb?(sp>mb?"Over budget":Math.round(sp/mb*100)+"% used"):"No budget set";
+ const budgets=parse(CB,{}),list=document.getElementById("list");list.innerHTML="";
+ if(!mb&&!Object.keys(budgets).length){list.innerHTML='<div class="empty">No budgets yet. Set a monthly or category budget to get started.</div>';return}
+ if(mb){const pct=mb?Math.min(100,sp/mb*100):0;list.innerHTML+=`<div class="budget-item"><div class="budget-title"><span>Overall monthly spending</span><small>${money(sp)} of ${money(mb)}</small></div><div class="bar"><div class="fill ${sp>mb?"over":""}" style="width:${pct}%"></div></div><div class="budget-meta"><span>${Math.round(sp/mb*100)}% used</span><span>${sp>mb?money(sp-mb)+" over":money(mb-sp)+" left"}</span></div></div>`}
+ Object.entries(budgets).forEach(([cat,lim])=>{const n=Number(lim)||0,s=spent(cat),pct=n?Math.min(100,s/n*100):0;list.innerHTML+=`<div class="budget-item"><div class="budget-title"><span>${cat}</span><small>${money(s)} of ${money(n)}</small></div><div class="bar"><div class="fill ${s>n?"over":""}" style="width:${pct}%"></div></div><div class="budget-meta"><span>${n?Math.round(s/n*100):0}% used</span><span>${s>n?money(s-n)+" over":money(n-s)+" left"}</span></div></div>`})
 }
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function openModal(type="monthly"){ $("type").value=type;$("catGroup").style.display=type==="category"?"block":"none";$("limit").value="";$("modal").classList.add("show");$("limit").focus()}
-function closeModal(){$("modal").classList.remove("show")}
-function saveBudget(){
- const type=$("type").value,limit=Number($("limit").value);
- if(!Number.isFinite(limit)||limit<=0){toast("Enter a valid budget.");return}
- if(type==="monthly"){write(MONTHLY,limit);toast("Monthly budget saved.")}
- else{const cat=$("category").value;const data=read(CAT,{});data[cat]=limit;write(CAT,data);toast(cat+" budget saved.")}
- closeModal();render()
-}
-$("add").onclick=()=>openModal("monthly");$("addCategory").onclick=()=>openModal("category");$("cancel").onclick=closeModal;$("save").onclick=saveBudget;$("type").onchange=()=>{$("catGroup").style.display=$("type").value==="category"?"block":"none"};$("modal").onclick=e=>{if(e.target.id==="modal")closeModal()};$("theme").onclick=toggleTheme;
-$("rows").onclick=e=>{const b=e.target.closest("[data-del]");if(!b)return;if(confirm("Delete this category budget?")){const d=read(CAT,{});delete d[b.dataset.del];write(CAT,d);render();toast("Category budget deleted.")}}
-$("export").onclick=()=>{const backup={version:1,exportedAt:new Date().toISOString(),transactions:read(TX,[]),monthlyBudget:read(MONTHLY,0),categoryBudgets:read(CAT,{}),savingsGoals:read("moneyLeakSavingsGoals",[]),settings:read(SETTINGS,{}),notifications:read("moneyLeakNotifications",[])};const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="moneyleak-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-theme();render();
+document.getElementById("add").onclick=()=>document.getElementById("modal").classList.add("show");
+document.getElementById("cancel").onclick=()=>document.getElementById("modal").classList.remove("show");
+document.getElementById("saveCat").onclick=()=>{const c=document.getElementById("cat").value,n=Number(document.getElementById("limit").value);if(!n||n<=0)return toast("Enter a valid budget.");const b=parse(CB,{});b[c]=n;localStorage.setItem(CB,JSON.stringify(b));document.getElementById("limit").value="";document.getElementById("modal").classList.remove("show");render();toast("Category budget saved.")};
+document.getElementById("saveMonthly").onclick=()=>{const n=Number(document.getElementById("monthlyInput").value);if(!n||n<=0)return toast("Enter a valid budget.");localStorage.setItem(MB,String(n));render();toast("Monthly budget saved.")};
+document.getElementById("clear").onclick=()=>{if(confirm("Clear all budgets?")){localStorage.removeItem(MB);localStorage.removeItem(CB);render();toast("Budgets cleared.")}};
+document.getElementById("theme").onclick=()=>{const s=parse(SET,{});s.dark=!s.dark;localStorage.setItem(SET,JSON.stringify(s));applyTheme()};
+document.getElementById("reset").onclick=()=>{if(confirm("Reset all MoneyLeak local data? This cannot be undone.")){localStorage.clear();location.reload()}};
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")e.currentTarget.classList.remove("show")};
+applyTheme();render();
 </script>
 </body>
 </html>
