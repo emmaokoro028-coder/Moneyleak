@@ -6978,7 +6978,7 @@ $("#setBudgetBtn")
 
 document.addEventListener(
     "click",
-    event => {
+    async event => {
 
         const button =
             event.target.closest(
@@ -7236,7 +7236,7 @@ document.addEventListener(
             event.target.closest(
                 "[data-delete-category-budget]"
             );
-
+‹
         if (!button) {
             return;
         }
